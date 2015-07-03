@@ -4,7 +4,8 @@
   "description": "A server for event management",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "",
+    "start": "nodemon server"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,9 @@
   "homepage": "https://github.com/andela-ioraelosi/roots",
   "dependencies": {
     "body-parser": "^1.13.1",
+    "cors": "^2.7.1",
     "express": "^4.13.0",
-    "mongoose": "^4.0.6"
+    "mongoose": "^4.0.6",
+    "morgan": "^1.6.0"
   }
 }
