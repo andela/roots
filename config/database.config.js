@@ -1,3 +1,5 @@
-module.exports = {
-	url : 'mongodb://ds031591.mongolab.com:31591/roots'
-}
+
+module.exports= {
+  development: 'mongodb://localhost/eventroot',
+  production: process.env.MONGOLAB_URI
+};

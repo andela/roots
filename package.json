@@ -1,11 +1,24 @@
 {
-  "name": "starter-node-angular",
+  "name": "roots",
+  "version": "1.0.0",
+  "description": "A server for event management",
   "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andela-ioraelosi/roots.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-ioraelosi/roots/issues"
+  },
+  "homepage": "https://github.com/andela-ioraelosi/roots",
   "dependencies": {
-    "express" : "~4.5.1",
-	"mongoose" : "~3.8.0",
-	"body-parser" : "~1.4.2",
-	"method-override" : "~2.0.2"
+    "body-parser": "^1.13.1",
+    "express": "^4.13.0",
+    "mongoose": "^4.0.6"
   }
 }
-
