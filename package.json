@@ -4,7 +4,7 @@
   "description": "A server for event management",
   "main": "server.js",
   "scripts": {
-    "test": "jasmine-node --autotest --config NODE_ENV test spec/",
+    "test": "jasmine-node --config NODE_ENV test spec/",
     "start": "sudo PORT=3030 nodemon server.js"
   },
   "repository": {
