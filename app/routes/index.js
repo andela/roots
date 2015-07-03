@@ -6,7 +6,7 @@ var config = require('../../config/cors.config');
 module.exports = function(app) {
   router.route('/')
     .get(function(req, res) {
-      res.send('Welcome to World Tree Inc');
+      res.json({success: true, text:'Welcome to World Tree Inc'});
     });
 
 
