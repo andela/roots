@@ -4,8 +4,8 @@
   "description": "A server for event management",
   "main": "server.js",
   "scripts": {
-    "test": "",
-    "start": "nodemon server"
+    "test": "jasmine-node --autotest --config NODE_ENV test spec/",
+    "start": "sudo PORT=3030 nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,10 @@
     "express": "^4.13.0",
     "mongoose": "^4.0.6",
     "morgan": "^1.6.0"
+  },
+  "devDependencies": {
+    "jasmine-node": "^1.14.5",
+    "request": "^2.58.0",
+    "supertest": "^1.0.1"
   }
 }
