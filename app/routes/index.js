@@ -4,13 +4,11 @@ var cors = require('cors');
 var config = require('../../config/cors.config');
 
 module.exports = function(app) {
-  router.route('/')
-    .get(function(req, res) {
-      res.send('Welcome to World Tree Inc');
-    });
+  var UserCtrl = require('../controllers/user.controller');
 
+  router.route('/users')
+    .post(UserCtrl.userSignup);
 
   app.use(cors(config.corsOptions));
-
   app.use('', router);
 };
