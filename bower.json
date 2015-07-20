@@ -1,0 +1,16 @@
+{
+  "name": "roots",
+  "version": "0.0.0",
+  "homepage": "https://github.com/andela/roots",
+  "authors": [
+    "andela-eashikodi <emeka.ashikodi@andela.co>"
+  ],
+  "description": "An event management system",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.3",
+    "angular-ui-router": "~0.2.15",
+    "angular-material": "~0.10.0"
+  }
+}
