@@ -4,7 +4,7 @@ var cors = require('cors');
 var config = require('../../config/cors.config');
 
 module.exports = function(app) {
-  var userCtrl = require('../controllers/user.controller');
+  var UserCtrl = require('../controllers/user.controller');
 
   router.route('/')
     .get(function(req, res) {
@@ -12,7 +12,7 @@ module.exports = function(app) {
     });
 
   router.route('/users')
-    .post(userCtrl.userSignup);
+    .post(UserCtrl.userSignup);
 
   app.use(cors(config.corsOptions));
 
