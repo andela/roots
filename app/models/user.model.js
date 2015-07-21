@@ -22,6 +22,30 @@ var userSchema = new mongoose.Schema({
   password: {
   	type: String, 
   	required: true
+  },
+  phoneNumber1: {
+    type: Number,
+    required: true,
+  },
+  phoneNumber2: {
+    type: Number,
+    required: false,
+  },
+  dateOfBirth: {
+    type: Date,
+    required: false,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  address1: {
+    type: String,
+    required: false,
+  },
+  address2: {
+    type: String,
+    required: false,
   }
 });
 
