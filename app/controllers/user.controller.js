@@ -1,33 +1,33 @@
 'use strict';
-
-require('../models/user.model');
 var express = require('express');
 var mongoose = require('mongoose');
 var config = require('../../config/database.config');
-var User = mongoose.model('User');
+var User = require('../models/user.model');
+var router = require('../routes/index');
 
 
-exports.userSignup = function(req, res) {
-	User.findOne({
-    	email: req.body.email
-  	}, function(err, user) {
-    	if (user) {
-      		res.json({
-        		sucess: false,
-        		message: 'user email taken'
-      		});
-    	} else {
-      		User.create(req.body, function(err, user) {
-        		if (err) {
-          			return res.json(err);
-        		}
-        		return res.json({success: true, text:'user created'});
-      		});
-    	  }
-  		});
+router.userSignup = function(req, res) {
+  User.findOne({email: req.body.email}, function(err, user) {
+    if (err) {
+      return res.json(err);
+    }
+    else if (user) {
+      res.json({
+        sucess: false,
+        message: 'user email taken'
+      });
+    } else {
+        User.create(req.body, function(err, user) {
+          if (err) {
+            return res.json(err);
+          }
+          return res.json({success: true, text:'user created'});
+        });
+      }
+  });
 }
 
-exports.getUsers = function(req, res) {
+router.getUsers = function(req, res) {
   User.find(function(err, users) {
     if (err) {
       return res.json(err);
@@ -36,11 +36,12 @@ exports.getUsers = function(req, res) {
   });
 };
 
-exports.deleteAll = function(req, res) {
+router.deleteAll = function(req, res) {
   User.remove(function(err, users) {
     if (err) {
       return res.json(err);
     }
-    exports.getUsers(req, res);
+    router.getUsers(req, res);
   });
 };
+module.exports = router;
