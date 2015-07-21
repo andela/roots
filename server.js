@@ -2,7 +2,6 @@
 var env = process.env.NODE_ENV || "development";
 var express = require('./config/express');
 var app = express();
-
 var port = process.env.PORT || 2015;
 
 var config = require('./config/database.config');
