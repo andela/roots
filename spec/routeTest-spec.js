@@ -7,7 +7,7 @@ describe('Event management app', function() {
   describe('User route',function() {
     it('should be defined', function(done) {
       request(app)
-        .get('/users')
+        .get('/api/users')
         .expect(200)
         .expect('content-type', /json/)
         .end(function(err, res) {
