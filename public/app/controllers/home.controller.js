@@ -1,44 +1,24 @@
-App.controller('homeCtrl',['$scope', function($scope) {
+'use strict';
 
-   $("a[href='#downpage']").click(function() {
+angular.module('eventApp')
+  .controller('homeCtrl',['$scope', '$mdDialog', '$mdToast', function($scope, $mdDialog, $mdToast) {
+
+    $("a[href='#downpage']").click(function() {
       $("html, body").animate({ scrollTop: $('#event_list').height() }, "slow");
       return false;
     });
 
-    $(document).scroll(function() {
-      $('#site_logo').toggle($(this).scrollTop() > 150);
-    });
+    $scope.signup = function(ev) {
+      $mdDialog.show({
+        clickOutsideToClose : true,
+        controller : UserSignup,
+        templateUrl: "app/views/signup.view.html",
+        targetEvent: ev
+      });
+    };
 
-    $(window).scroll(function() {
-      if ($(this).scrollTop() > 150) { //use `this`, not `document`
-        $('#heading_logo').fadeOut('60000');
-      }
-      if ($(this).scrollTop() < 150) { //use `this`, not `document`
-        $('#heading_logo').css({'display': 'block'});
-      }
-    });
+    function UserSignup($scope, $mdDialog) {
 
-   $(window).scroll(function() {
-    if ($(this).scrollTop() > 220) { //use `this`, not `document`
-        $('#typing_logo').fadeOut('60000');
     }
-    if ($(this).scrollTop() < 220) { //use `this`, not `document`
-        $('#typing_logo').css({'display': 'block'});
-    }
-  });
-
-   $(window).scroll(function() {
-    if ($(this).scrollTop() > 290) { //use `this`, not `document`
-        $('#btn_div').fadeOut('60000');
-    }
-    if ($(this).scrollTop() < 290) { //use `this`, not `document`
-        $('#btn_div').css({'display': 'block'});
-    }
-  });
-
-  $scope.orightml = '';
-  $scope.htmlcontent = $scope.orightml;
-  $scope.disabled = false;
-  
 }]);
 
