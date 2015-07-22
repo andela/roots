@@ -13,31 +13,34 @@
 }
 
 img.bg {
-  /* Set rules to fill background */
   min-height: 100vh;
   min-width: 1024px;
-  
-  /* Set up proportionate scaling */
   width: 100%;
   height: auto;
-  
-  /* Set up positioning */
   position: fixed;
   top: 0;
   left: 0;
 }
 
-@media screen and (max-width: 1024px) { /* Specific to this particular image */
+#parallax_div {
+  height: 100vh;
+}
+
+#nav_menu {
+  margin-right:50px;
+}
+
+@media screen and (max-width: 1024px) {
   img.bg {
     left: 50%;
-    margin-left: -512px;   /* 50% */
+    margin-left: -512px;
   }
 }
 
 #foo{
   color: white; 
   font-family: "Courier";
-  font-size: 27px;
+  font-size: 22px;
   margin: 10px 0 0 10px;
   white-space: nowrap;
   overflow: hidden;
@@ -51,13 +54,11 @@ img.bg {
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
-    #foo {
-        font-size: 20px;
-        width: 27em
-
-    }
+  #foo {
+      font-size: 20px;
+      width: 27em
+  }
 }
-
 @media (min-width: 768px) and (max-width: 1199px) {
   #foo {
     font-size: 20px;
@@ -112,11 +113,7 @@ img.bg {
     transform: translateY(-15px);
   }
 }
-/*body {
-  background: black;
 
-}
-*/
 .arrow {
   position: fixed;
   bottom: 0;
@@ -135,11 +132,15 @@ img.bg {
 }
 
 #site_logo {
-  /*margin-left: 50px;*/
-  display : none;
-  color: black;
+  /*color: black;*/
+  font-family:papyrus;
+  color:white
+}
+.nav_link {
+  color:white;
+  font-size:15px;
 }
 
-#heading_logo {
-  
+.nav_div {
+  background:rgba(0,0,0,.8) !important;
 }
