@@ -1,10 +1,10 @@
 'use strict';
 
-var userModel = require('../app/models/user.model');
-
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/mydatabase');
+var config = require('../config/database.config');
+// mongoose.connect(config[process.env.NODE_ENV]);
 
+var userModel = require('../app/models/user.model');
 var user;
 
 describe('User Model', function(done){
@@ -13,7 +13,7 @@ describe('User Model', function(done){
     done();
   });
 
-  it('should not register invalid entry', function(done){
+  /*it('should not register invalid entry', function(done){
     user.firstname = '';
     user.lastname = '';
     user.email = '';
@@ -33,7 +33,7 @@ describe('User Model', function(done){
       expect(err).toBe(null);
       done();
     });
-  });
+  });*/
 
 });
 
