@@ -3,7 +3,11 @@
 var mongoose = require('mongoose');
 
 var eventSchema = new mongoose.Schema({
-  name: {
+  title: {
+    type: String,
+    required: true
+  },
+  category: {
     type: String,
     required: true
   },
@@ -14,6 +18,11 @@ var eventSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true
+  },
+  venue: {
+    country: String,
+    name: String,
+    address: String
   },
   eventBanner: String,
   location: {
@@ -33,6 +42,11 @@ var eventSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
+  feedback: {
+    name: String,
+    email: String,
+    message: String
+  }
   task[{
     manager: String,
     description: String,
@@ -88,7 +102,6 @@ var eventSchema = new mongoose.Schema({
     }]
 
   }]
-
 
 });
 
