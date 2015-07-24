@@ -1,32 +1,5 @@
-<md-dialog aria-label="signup">
-  <md-dialog-content ng-hide="login_dialog" >
-    <div style="width:500px">
-      <md-content>
-        <div layout="row" layout-align="center center">
-          <h5 flex offset="40"><strong>Sign Up</strong></h5>
-          <span flex offset="25">
-          <md-button class="md-icon-button" ng-click="closeDialog()">
-            <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
-          </md-button>
-          </span>
-        </div>
-        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="login_dialog = true">Log In</a></span>
-        <div style="width:400px;margin:20px auto">
-          <form>
-              <input type="text" flex="60" class="signup_textbox" placeholder="First Name" />
-              <input type="text" flex="60" class="signup_textbox" placeholder="Last Name" />
-              <input type="text" flex="60" class="signup_textbox" placeholder="Email" />
-              <input type="password" flex="60" class="signup_textbox" placeholder="Password" />
-              <section layout="row" layout-sm="column" layout-align="center center">
-                <md-button flex="50" class="md-raised">Sign up</md-button>
-              </section><br>
-              <span layout="row" layout-align="center center"><em>By clicking "SIGN UP" you are agreeing to our terms.</em></span>
-          </form>
-        </div>
-      </md-content>
-    </div>
-  </md-dialog-content>
-  <md-dialog-content ng-show="login_dialog">
+<md-dialog aria-label="login">
+  <md-dialog-content ng-hide="signup_dialog">
     <div style="width:500px">
       <md-content>
         <div layout="row" layout-align="center center">
@@ -37,7 +10,7 @@
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="login_dialog = !login_dialog">Sign up</a></span>
+        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog = true">Sign up</a></span>
         <div style="width:400px;margin:20px auto">
           <form>
               <input type="text" flex="60" class="signup_textbox" placeholder="Email" />
@@ -45,6 +18,33 @@
               <section layout="row" layout-sm="column" layout-align="center center">
                 <md-button flex="50" class="md-raised">Log In</md-button>
               </section><br>
+          </form>
+        </div>
+      </md-content>
+    </div>
+  </md-dialog-content>
+  <md-dialog-content ng-show="signup_dialog" >
+    <div style="width:500px">
+      <md-content>
+        <div layout="row" layout-align="center center">
+          <h5 flex offset="40"><strong>Sign Up</strong></h5>
+          <span flex offset="25">
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
+          </md-button>
+          </span>
+        </div>
+        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog = !signup_dialog">Log In</a></span>
+        <div style="width:400px;margin:20px auto">
+          <form>
+              <input type="text" flex="60" class="signup_textbox" placeholder="First Name" />
+              <input type="text" flex="60" class="signup_textbox" placeholder="Last Name" />
+              <input type="text" flex="60" class="signup_textbox" placeholder="Email" />
+              <input type="password" flex="60" class="signup_textbox" placeholder="Password" />
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <md-button flex="50" class="md-raised">Sign up</md-button>
+              </section><br>
+              <span layout="row" layout-align="center center"><em>By clicking "SIGN UP" you are agreeing to our terms.</em></span>
           </form>
         </div>
       </md-content>
