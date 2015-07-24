@@ -137,10 +137,27 @@ img.bg {
   color:white
 }
 .nav_link {
-  color:white;
   font-size:15px;
+  cursor: pointer;
+}
+
+.nav_link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#create_event_btn:hover {
+  color: black;
 }
 
 .nav_div {
   background:rgba(0,0,0,.8) !important;
+}
+
+.signup_textbox {
+  border:2px solid black !important;
+  padding:5px !important;
+  height:30px !important;
+  font-weight:bolder !important;
+  border-radius: 5px !important; 
 }
