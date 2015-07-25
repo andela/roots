@@ -8,48 +8,26 @@ angular.module('eventApp')
       return false;
     });
 
-    $scope.signup = function(ev) {
-      $mdDialog.show({
-        clickOutsideToClose : true,
-        controller : UserSignup,
-        templateUrl: "app/views/signup.view.html",
-        targetEvent: ev
-      });
-    };
-
-    function UserSignup($scope, $mdDialog) {
-      $scope.closeDialog = function() {
-        $mdDialog.hide();
-      };
-    }
-
-    $scope.login = function(ev) {
+    $scope.login = function(str) {
       $mdDialog.show({
         clickOutsideToClose : true,
         controller : UserLogin,
-        templateUrl: "app/views/login.view.html",
-        targetEvent: ev
+        locals: {str: str},
+        templateUrl: "app/views/login.view.html"
       });
     };
 
-    function UserLogin($scope, $mdDialog) {
+    function UserLogin($scope, $mdDialog, str) {
+      if(str=='signup') {
+        $scope.signup_dialog = true;
+      }
+      
       $scope.closeDialog = function() {
         $mdDialog.hide();
       };
-    }
 
-    $scope.loginToCreate = function(ev) {
-      $mdDialog.show({
-        clickOutsideToClose : true,
-        controller : ToCreate,
-        templateUrl: "app/views/toCreate.view.html",
-        targetEvent: ev
-      });
-    };
-
-    function ToCreate($scope, $mdDialog) {
-      $scope.closeDialog = function() {
-        $mdDialog.hide();
+      $scope.login = function() {
+        console.log(str);
       };
     }
 }]);
