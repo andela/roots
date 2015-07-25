@@ -8,26 +8,26 @@ angular.module('eventApp')
       return false;
     });
 
-    $scope.login = function(str) {
+    $scope.login = function(view) {
       $mdDialog.show({
         clickOutsideToClose : true,
         controller : UserLogin,
-        locals: {str: str},
+        locals: {view: view},
         templateUrl: "app/views/login.view.html"
       });
     };
 
-    function UserLogin($scope, $mdDialog, str) {
-      if(str=='signup') {
+    function UserLogin($scope, $mdDialog, view) {
+      if(view=='signup') {
         $scope.signup_dialog = true;
       }
-      
+
       $scope.closeDialog = function() {
         $mdDialog.hide();
       };
 
       $scope.login = function() {
-        console.log(str);
+        console.log(view);
       };
     }
 }]);
