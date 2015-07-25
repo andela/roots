@@ -1,7 +1,6 @@
 'use strict';
 var env = process.env.NODE_ENV || "development";
-var express = require('./config/express');
-var app = express();
+var app = require('./config/express')();
 var port = process.env.PORT || 2015;
 var config = require('./config/database.config');
 var mongoose = require('mongoose');
