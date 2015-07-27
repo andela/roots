@@ -1,6 +1,4 @@
 'use strict';
-//var express = require('express');
-//var mongoose = require('mongoose');
 var verifyToken = require('../../config/tokenMiddleware');
 var User = require('../models/user.model');
 //var router = require('../routes/index');
@@ -69,9 +67,4 @@ module.exports = {
       
     });
   }
-
-    // apiRouter.get('/me', function(req, res) {
-    //   res.send(req.decoded);
-    // });
 }
-//module.exports = router;
