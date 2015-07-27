@@ -18,7 +18,7 @@ angular.module('eventApp')
     };
 
     function UserLogin($scope, $mdDialog, view) {
-      if(view=='signup') {
+      if(view === 'signup') {
         $scope.signup_dialog = true;
       }
 
@@ -27,7 +27,7 @@ angular.module('eventApp')
       };
 
       $scope.login = function() {
-        console.log(view);
+        
       };
     }
 }]);
