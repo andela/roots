@@ -3,16 +3,27 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('../../config/database.config');
 var User = require('../models/user.model');
-var router = require('../routes/index');
 
-router.userSignup = function(req, res) {
+var UserController = function() {
+
+};
+
+UserController.prototype.userSignup = function (req, res) {
+
+  if(!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password){
+      return res.status(422).send({ 
+        success : false, 
+        message : 'Check parameters!'
+      });
+  }
+
   User.findOne({email: req.body.email}, function(err, user) {
     if (err) {
       return res.json(err);
     }
     else if (user) {
       res.json({
-        sucess: false,
+        success: false,
         message: 'user email taken'
       });
     } else {
@@ -20,13 +31,13 @@ router.userSignup = function(req, res) {
           if (err) {
             return res.json(err);
           }
-          return res.json({success: true, text:'user created'});
+          return res.json({success: true, message:'user created'});
         });
       }
   });
 };
 
-router.getUsers = function(req, res) {
+UserController.prototype.getUsers = function(req, res) {
   User.find(function(err, users) {
     if (err) {
       return res.json(err);
@@ -35,13 +46,13 @@ router.getUsers = function(req, res) {
   });
 };
 
-router.deleteAll = function(req, res) {
+UserController.prototype.deleteAll = function(req, res) {
   User.remove(function(err, users) {
     if (err) {
       return res.json(err);
     }
-    router.getUsers(req, res);
+    UserController.prototype.getUsers(req, res);
   });
 };
 
-module.exports = router;
+module.exports = UserController;
