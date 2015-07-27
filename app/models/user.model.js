@@ -36,7 +36,7 @@ var userSchema = new mongoose.Schema({
     required: false,
   },
   gender: {
-    type: String,
+    type: Array,
     required: true,
   },
   address1: {
@@ -52,7 +52,6 @@ var userSchema = new mongoose.Schema({
 //hash password
 userSchema.pre('save', function(next) {
   var user = this;
-  
   //hash the password only if the password has been changed or user is new
   if(!user.isModified('password')) {
     return next();
@@ -63,10 +62,10 @@ userSchema.pre('save', function(next) {
     if (err) {
       return next(err);
     }
-
-	//change the password to the hashed version
-	user.password = hash;
-	next();
+  
+  	//change the password to the hashed version
+  	user.password = hash;
+  	next();
   });
 });
 
