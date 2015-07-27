@@ -19,23 +19,7 @@ require('../../app/routes/index')(router);
 
 app.use(router);
 
-describe("Server Test", function() {
-
-  describe("GET /api", function() {
-    it("returns status code 200", function(done) {
-      request(app)
-        .get("/api")
-        .expect(200)
-        .end(function(err, response) {
-
-          expect(response.body).toEqual(jasmine.objectContaining({
-            "success": true,
-            "message": "Mr API"
-          }));
-          done();
-        });
-    });
-  });
+describe("API Test", function() {
 
    describe("User signup validation", function() {
 
@@ -56,8 +40,8 @@ describe("Server Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-          	success : true,
-            message: 'user created'
+          	success : false,
+            message: 'Check parameters!'
           }));
         });
         done();
@@ -80,8 +64,8 @@ describe("Server Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : true,
-            message: 'user created'
+            success : false,
+            message: 'Check parameters!'
           }));         
         });
         done();
@@ -104,8 +88,8 @@ describe("Server Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : true,
-            message: 'user created'
+            success : false,
+            message: 'Check parameters!'
           }));  
         });
         done();
@@ -128,60 +112,14 @@ describe("Server Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : true,
-            message: 'user created'
+            success : false,
+            message: 'Check parameters!'
           }));         
         });
         done();
     });
     
-    it('should not create a new user if there is no phoneNumber1', function(done) {
-
-      request(app)
-        .post('/api/users')
-        .set('Content-Type', 'application/json')
-        .send({
-          firstname: 'yoga',
-  	      lastname: 'loga',
-          email: 'yoga@gmail.com',
-          password: '****',
-          phoneNumber1: undefined,
-          gender: 'male'
-        })
-        .expect(422)
-        .end(function(err, response) {
-
-          expect(response.body).toEqual(jasmine.objectContaining({
-            success : true,
-            message: 'user created'
-          }));          
-        });
-        done();
-    });
-
-    it('should not create a new user if there is no gender', function(done) {
-
-      request(app)
-        .post('/api/users')
-        .set('Content-Type', 'application/json')
-        .send({
-          firstname: 'yoga',
-  	      lastname: 'loga',
-          email: 'yoga@gmail.com',
-          password: '****',
-          phoneNumber1: '12345',
-          gender: undefined
-        })
-        .expect(422)
-        .end(function(err, response) {
-
-          expect(response.body).toEqual(jasmine.objectContaining({
-            success : true,
-            message: 'user created'
-          }));          
-        });
-        done();
-    });
+    
   });
 
   describe("User signup", function() {
@@ -213,7 +151,8 @@ describe("Server Test", function() {
         .expect(200)
         .end(function(err, response) {
           expect(response.body).toEqual(jasmine.objectContaining({
-            type: true
+          	success: false,
+            message: 'user email taken'
           }));
           
         });
@@ -241,7 +180,8 @@ describe("Server Test", function() {
           .expect(422)
           .end(function(err, response) {
             expect(response.body).toEqual(jasmine.objectContaining({
-              data: 'User already exists!'
+              success: false, 
+              message:'Check parameters!'
             }));
             
           });          
