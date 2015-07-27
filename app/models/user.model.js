@@ -24,28 +24,22 @@ var userSchema = new mongoose.Schema({
   	required: true
   },
   phoneNumber1: {
-    type: Number,
-    required: true,
+    type: Number
   },
   phoneNumber2: {
-    type: Number,
-    required: false,
+    type: Number
   },
   dateOfBirth: {
-    type: Date,
-    required: false,
+    type: Date
   },
   gender: {
-    type: Array,
-    required: true,
+    type: Array
   },
   address1: {
-    type: String,
-    required: false,
+    type: String
   },
   address2: {
-    type: String,
-    required: false,
+    type: String
   }
 });
 
