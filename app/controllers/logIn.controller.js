@@ -1,7 +1,6 @@
 'use strict';
 var verifyToken = require('../../config/tokenMiddleware');
 var User = require('../models/user.model');
-//var router = require('../routes/index');
 var jwt = require('jsonwebtoken');
 var secret = 'swift';
 
@@ -57,7 +56,6 @@ module.exports = {
     }); 
   },
     
-
   deleteUser: function(req, res) {
     User.remove({
       _id: req.params.user_id}, function(err, user) {
