@@ -5,7 +5,6 @@ var config = require('../../config/database.config');
 var User = require('../models/user.model');
 var router = require('../routes/index');
 
-
 router.userSignup = function(req, res) {
   User.findOne({email: req.body.email}, function(err, user) {
     if (err) {
@@ -25,7 +24,7 @@ router.userSignup = function(req, res) {
         });
       }
   });
-}
+};
 
 router.getUsers = function(req, res) {
   User.find(function(err, users) {
@@ -44,4 +43,5 @@ router.deleteAll = function(req, res) {
     router.getUsers(req, res);
   });
 };
+
 module.exports = router;
