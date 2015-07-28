@@ -33,7 +33,9 @@ var userSchema = new mongoose.Schema({
     type: Date
   },
   gender: {
-    type: String
+    type: String,
+    enum: ['NEW', 'STATUS'],
+    default: 'NEW'
   },
   address1: {
     type: String
