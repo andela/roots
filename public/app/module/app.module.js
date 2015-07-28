@@ -1,5 +1,5 @@
 'use strict';
-angular.module('eventApp',['ui.router','ngMaterial', 'ngAnimate','ngAria', 'textAngular'])
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngAnimate','ngAria', 'textAngular'])
 
 .config(function($stateProvider, $urlRouterProvider) {
 

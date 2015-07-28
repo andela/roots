@@ -4,14 +4,12 @@ var mongoose = require('mongoose');
 var config = require('../../config/database.config');
 var User = require('../models/user.model');
 
-var UserController = function() {
-
-};
+var UserController = function() {};
 
 UserController.prototype.userSignup = function (req, res) {
 
   if(!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password){
-      return res.send(422, { 
+      return res.status(422).send({ 
         success : false, 
         message : 'Check parameters!'
       });
@@ -31,7 +29,7 @@ UserController.prototype.userSignup = function (req, res) {
           if (err) {
             return res.json(err);
           }
-          return res.json({success: true, message:'user created'});
+          return res.json(user);
         });
       }
   });
