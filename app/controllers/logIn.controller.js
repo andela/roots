@@ -2,9 +2,10 @@
 var verifyToken = require('../../config/tokenMiddleware');
 var User = require('../models/user.model');
 var jwt = require('jsonwebtoken');
-var secret = 'swift';
-
+var secretSource = require('../../config/database.config');
+console.log(secretSource);
 module.exports = {
+
   auth: function(req, res){
     if(!req.body.password){
       res.json({
@@ -31,7 +32,7 @@ module.exports = {
 
             var token = jwt.sign({
               password: user.password,
-              email: user.email}, secret, {
+              email: user.email}, secretSource.secret, {
                 expiresInMinutes: 1440 //24hr expiration
             });
 

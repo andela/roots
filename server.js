@@ -1,12 +1,12 @@
 'use strict';
+require('dotenv').load();
 var env = process.env.NODE_ENV || "development";
-var app = require('./config/express')();
+var express = require('express');
 var port = process.env.PORT || 2015;
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var port = process.env.PORT || 2015;
-var secret = 'swift';
 var config = require('./config/database.config');
 var mongoose = require('mongoose');
 var router = express.Router();

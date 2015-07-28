@@ -11,28 +11,6 @@ UserController.prototype.userSignup = function (req, res) {
       return res.send(422, { 
         success : false, 
         message : 'Check parameters!'
-      });
-  }
-
-  User.findOne({email: req.body.email}, function(err, user) {
-    if (err) {
-      return res.json(err);
-    }
-    else if (user) {
-      res.json({
-        success: false,
-        message: 'user email taken'
-      });
-    } else {
-        User.create(req.body, function(err, user) {
-          if (err) {
-            return res.json(err);
-          }
-          return res.json({success: true, message:'user created'});
-        });
-      }
-  });
-};
 
 UserController.prototype.getUsers = function(req, res) {
   User.find(function(err, users) {

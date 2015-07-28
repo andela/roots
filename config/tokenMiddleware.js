@@ -1,12 +1,13 @@
 var jwt = require('jsonwebtoken');
-var secret = 'swift';
+var appInfo = require('./database.config');
 var bodyParser = require('body-parser');
+var secretSource = require('./database.config');
 
 module.exports = function(req, res, next){
   var token = req.body.token || req.param('token') || req.headers['x-access-token'];
 
   if (token) {
-    jwt.verify(token, secret, function(err, decoded) {
+    jwt.verify(token, secretSource.secret, function(err, decoded) {
       if (err) {
         return res.status(403).json({
           success: false,
@@ -26,6 +27,4 @@ module.exports = function(req, res, next){
     });
 
   }
-  console.log('Yippy, Somebody is using our API');
-  
 }

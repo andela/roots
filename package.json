@@ -21,13 +21,15 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.2",
     "cors": "^2.7.1",
-    "express": "^4.13.0",
-    "method-override": "^2.3.4",
+    "dot-env": "0.0.1",
+    "dotenv": "^1.2.0",
     "express": "^4.13.1",
     "jsonwebtoken": "^5.0.4",
+    "method-override": "^2.3.4",
     "mongoose": "^4.0.6",
     "morgan": "^1.6.0",
-    "path": "^0.11.14"
+    "path": "^0.11.14",
+    "require-env": "0.0.4"
   },
   "devDependencies": {
     "jasmine-node": "^1.14.5",
