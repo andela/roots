@@ -33,7 +33,7 @@ var userSchema = new mongoose.Schema({
     type: Date
   },
   gender: {
-    type: Array
+    type: String
   },
   address1: {
     type: String
