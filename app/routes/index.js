@@ -1,6 +1,8 @@
 'use strict';
-var userRoute = require('./users.route');
+var signUproute = require('./signup.route');
+var logInroute = require('./login.route');
 
-module.exports = function(app) {
-  userRoute(app);
+module.exports = function(router) {
+  signUproute(router);
+  logInroute(router);
 };
