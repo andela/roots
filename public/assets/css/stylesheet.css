@@ -142,7 +142,7 @@ img.bg {
 }
 
 .nav_link:hover {
-  text-decoration: underline;
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -160,4 +160,11 @@ img.bg {
   height:30px !important;
   font-weight:bolder !important;
   border-radius: 5px !important; 
+}
+
+.password_message {
+  margin-top:-10px;
+  height:20px;
+  font-size:10px;
+  color:red
 }
