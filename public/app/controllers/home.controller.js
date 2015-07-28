@@ -46,12 +46,15 @@ angular.module('eventApp')
 
       $scope.signupUser = function(newUser) {
         if(validateEmail(newUser.email)){
+          $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
             console.log(res);
             if(res.data.message){
               $scope.emailTaken = true;
+              $scope.progressLoad = false;
             }
             else {
+              $scope.progressLoad = false;
               $scope.userName = localStorage.setItem('userName', res.data.firstname);
               $rootScope.signupCheck();
               $mdDialog.hide();
