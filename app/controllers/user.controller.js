@@ -1,7 +1,4 @@
 'use strict';
-var express = require('express');
-var mongoose = require('mongoose');
-var config = require('../../config/database.config');
 var User = require('../models/user.model');
 
 var UserController = function() {
