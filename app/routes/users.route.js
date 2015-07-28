@@ -2,10 +2,9 @@ var express = require('express');
 var router = express.Router();
 var cors = require('cors');
 var config = require('../../config/cors.config');
-
 var UserController = require('../controllers/user.controller');
-
 var ctrl = new UserController();
+
 module.exports = function(app) {
  
    router.route('/users')

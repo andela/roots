@@ -1,6 +1,7 @@
 var express = require('express');
-var UserCtrl = require('../controllers/user.controller');
+var UserController = require('../controllers/user.controller');
 var verifyToken = require('../../config/tokenMiddleware');
+var UserCtrl = new UserController();
 
 module.exports = function(router) {
 	router.route('/signup')
