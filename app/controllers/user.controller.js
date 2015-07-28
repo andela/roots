@@ -4,9 +4,7 @@ var mongoose = require('mongoose');
 var config = require('../../config/database.config');
 var User = require('../models/user.model');
 
-var UserController = function() {
-
-};
+var UserController = function() {};
 
 UserController.prototype.userSignup = function (req, res) {
 
@@ -31,7 +29,7 @@ UserController.prototype.userSignup = function (req, res) {
           if (err) {
             return res.json(err);
           }
-          return res.json({success: true, message:'user created'});
+          return res.json(user);
         });
       }
   });
