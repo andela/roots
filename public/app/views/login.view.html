@@ -55,7 +55,8 @@
               </div>
               <section layout="row" layout-sm="column" layout-align="center center">
                 <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
-              </section><br>
+              </section>
+              <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
         </div>
         <hr>
