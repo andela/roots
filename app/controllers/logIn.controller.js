@@ -3,7 +3,7 @@ var verifyToken = require('../../config/tokenMiddleware');
 var User = require('../models/user.model');
 var jwt = require('jsonwebtoken');
 var secretSource = require('../../config/database.config');
-console.log(secretSource);
+
 module.exports = {
 
   auth: function(req, res){
