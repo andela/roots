@@ -3,3 +3,7 @@ deployment:
     branch: master
     heroku:
       appname: roots-event-manager
+  staging:
+    branch: staging
+    heroku:
+      appname: roots-event-manager-staging
