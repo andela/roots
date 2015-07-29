@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/andela-ioraelosi/roots.git"
+    "url": "https://github.com/andela/roots.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andela-ioraelosi/roots/issues"
+    "url": "https://github.com/andela/roots/issues"
   },
-  "homepage": "https://github.com/andela-ioraelosi/roots",
+  "homepage": "https://github.com/andela/roots",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.1",
