@@ -46,7 +46,6 @@ angular.module('eventApp')
 
       $scope.loginUser = function(userData) {
         UserService.authenticate(userData).then(function(res) {
-          console.log(res);
           $scope.progressLoad = true;
           if(res.data.message === 'Authentication failed. User not found.'){
             $scope.wrongEmail = true;
@@ -71,7 +70,6 @@ angular.module('eventApp')
         if(validateEmail(newUser.email)){
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
-            console.log(res);
             if(res.data.message){
               $scope.emailTaken = true;
               $scope.progressLoad = false;

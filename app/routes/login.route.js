@@ -12,10 +12,4 @@ module.exports = function(app) {
   router.route('/users/:user_id')
    .post(verifyToken,loginCtrl.getCurrentUser)
    .delete(verifyToken,loginCtrl.deleteCurrentUser);
-
-  app.use('/api', router);
-  app.use(function(req, res, next) {
-    res.status(404).json({error: "The path does not exists"});
-    next();
-  });
 };

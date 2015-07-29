@@ -7,12 +7,9 @@ module.exports = function(app) {
  
   router.route('/users')
    .post(ctrl.userSignup)
-   .get(verifyToken,ctrl.getUsers)
-   .delete(verifyToken,ctrl.deleteAll);
+   .get(verifyToken, ctrl.getUsers)
+   .delete(verifyToken, ctrl.deleteAll);
 
   router.route('/authenticate')
-  	.post(ctrl.authenticate)
-
-  app.use('/api', router);
-  
+  	.post(ctrl.authenticate);
 };
