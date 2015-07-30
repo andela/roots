@@ -6,7 +6,7 @@ var path = require('path');
 var appDir = path.dirname(require.main.filename);
 var cors = require('cors');
 var config = require('./cors.config');
-var passport = require('passport');
+// var passport = require('passport');
 
 module.exports = function() {
   var app = express();
@@ -20,6 +20,6 @@ module.exports = function() {
     res.sendFile(appDir + '/public/index.html');
   });
   require('./passport')();
-  require('../app/routes/')(app, passport);
+  require('../app/routes/')(app);
   return app;
 };

@@ -1,8 +1,9 @@
 'use strict';
 var userRoute = require('./users.route');
 var authRoute = require('./auth.route');
+var passport = require('passport');
 
-module.exports = function(app, passport) {
+module.exports = function(app) {
   userRoute(app);
   authRoute(app, passport);
 
