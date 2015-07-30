@@ -20,8 +20,8 @@ UserController.prototype.welcomeMail = function(req, res) {
     to: data.mail,
     subject: 'Welcome to World Tree!',
     text: 'Welcome to World Tree!',
-    html: '<b> Hello ' + data.name + ',\n Thanks for registering with World Tree. \n' + 
-    'Click <a href="http://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
+    html: '<b> Hello ' + data.name + ',\n Thanks for registering with World Tree. \n' +
+      'Click <a href="http://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
@@ -40,7 +40,9 @@ UserController.prototype.userSignup = function(req, res) {
       message: 'Check parameters!'
     });
   }
-  User.findOne({email: req.body.email}, function(err, user) {
+  User.findOne({
+    email: req.body.email
+  }, function(err, user) {
     if (err) {
       return res.json(err);
     } else if (user) {
@@ -144,7 +146,9 @@ UserController.prototype.deleteAll = function(req, res) {
 };
 
 UserController.prototype.editUser = function(req, res) {
-  User.update({_id: req.params.user_id}, req.body, function(err, user) {
+  User.update({
+    _id: req.params.user_id
+  }, req.body, function(err, user) {
     if (err) {
       return res.json(err);
     }
@@ -159,7 +163,9 @@ UserController.prototype.editUser = function(req, res) {
 
 UserController.prototype.editTwitUser = function(req, res) {
   req.body.mailChanged = true;
-  User.update({_id: req.params.user_id}, req.body, function(err, user) {
+  User.update({
+    _id: req.params.user_id
+  }, req.body, function(err, user) {
     if (err) {
       return res.json(err);
     }
@@ -170,7 +176,9 @@ UserController.prototype.editTwitUser = function(req, res) {
       var token = jwt.sign(user, config.secret, {
         expiresInMinutes: 1440 //24hr expiration
       });
-      res.json({token: token});
+      res.json({
+        token: token
+      });
     });
   });
 };
@@ -198,102 +206,107 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
 };
 
 UserController.prototype.forgotPass = function(req, res, next) {
-    async.waterfall([
-      function(done) {
-        crypto.randomBytes(20, function(err, buf) {
-          var token = buf.toString('hex');
-          done(err, token);
-        });
-      },
-      function(token, done) {
-        User.findOne({email: req.body.email}, function(err, user) {
-          if (!user) {
-            return res.json({message: 'No user found'});
-          }
-          else {
-            user.resetPasswordToken = token;
-            user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-            user.save(function(err) {
-              done(err, token, user);
-            });
-          }
-        });
-      },
-      function(token, user, done) {
-        var transporter = nodemailer.createTransport();
-        var mailOptions = {
-          to: user.email,
-          from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-          subject: 'Account Password Reset',
-          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://roots-event-manager.herokuapp.com/#/passwordreset/' + token + '\n\n' +
-            ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
-        };
-        transporter.sendMail(mailOptions, function(err, res) {
-          if(err) {
-            console.log(err);
-          }
-          done(err);
-          return res;
-        });
-      }
-    ], function(err) {
-      if (err) {
-        return next(err);
-      }
-      res.json({message: 'Message Sent!'});
-    });
-  };
-
-  UserController.prototype.resetPass =  function(req, res) {
-    async.waterfall([
-      function(done) {
-        User.findOne({
-          resetPasswordToken: req.params.token,
-          resetPasswordExpires: {
-            $gt: Date.now()
-          }
-        }, function(err, user) {
-          if (!user) {
-            return res.json({
-              'message': 'User does not exist'
-            });
-          }
-
-          user.password = req.body.password;
-          user.resetPasswordToken = undefined;
-          user.resetPasswordExpires = undefined;
-
-          user.save(function(err, result) {
-            if (err) {
-              return res.json(err);
-            }
-            res.json(result);
-          });
-        });
-      },
-      function(user, done) {
-        var transporter = nodemailer.createTransport();
-        var mailOptions = {
-          to: user.email,
-          from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-          subject: 'Your password has been changed',
-          text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-        };
-        transporter.sendMail(mailOptions, function(err) {
-          if(err) {
-            console.log(err);
-          }
-          done(err);
-        });
-      }
-    ], function(err) {
-      if (err) return err;
-      res.json({
-        message: 'Password changed!'
+  async.waterfall([
+    function(done) {
+      crypto.randomBytes(20, function(err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
       });
+    },
+    function(token, done) {
+      User.findOne({
+        email: req.body.email
+      }, function(err, user) {
+        if (!user) {
+          return res.json({
+            message: 'No user found'
+          });
+        } else {
+          user.resetPasswordToken = token;
+          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+          user.save(function(err) {
+            done(err, token, user);
+          });
+        }
+      });
+    },
+    function(token, user, done) {
+      var transporter = nodemailer.createTransport();
+      var mailOptions = {
+        to: user.email,
+        from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+        subject: 'Account Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://roots-event-manager.herokuapp.com/#/passwordreset/' + token + '\n\n' +
+          ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      transporter.sendMail(mailOptions, function(err, res) {
+        if (err) {
+          console.log(err);
+        }
+        done(err);
+        return res;
+      });
+    }
+  ], function(err) {
+    if (err) {
+      return next(err);
+    }
+    res.json({
+      message: 'Message Sent!'
     });
-  };
+  });
+};
+
+UserController.prototype.resetPass = function(req, res) {
+  async.waterfall([
+    function(done) {
+      User.findOne({
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: {
+          $gt: Date.now()
+        }
+      }, function(err, user) {
+        if (!user) {
+          return res.json({
+            'message': 'User does not exist'
+          });
+        }
+
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        user.save(function(err, result) {
+          if (err) {
+            return res.json(err);
+          }
+          res.json(result);
+        });
+      });
+    },
+    function(user, done) {
+      var transporter = nodemailer.createTransport();
+      var mailOptions = {
+        to: user.email,
+        from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      transporter.sendMail(mailOptions, function(err) {
+        if (err) {
+          console.log(err);
+        }
+        done(err);
+      });
+    }
+  ], function(err) {
+    if (err) return err;
+    res.json({
+      message: 'Password changed!'
+    });
+  });
+};
 
 module.exports = UserController;
