@@ -44,20 +44,38 @@ angular.module('eventApp')
         return re.test(email);
       }
 
+      $scope.loginUser = function(userData) {
+        UserService.authenticate(userData).then(function(res) {
+          $scope.progressLoad = true;
+          if(res.data.message === 'Authentication failed. User not found.'){
+            $scope.wrongEmail = true;
+            $scope.wrongPassword = false;
+            $scope.progressLoad = false;
+          }
+          else if (res.data.message === 'Authentication failed. Wrong password.') {
+            $scope.wrongEmail = false;
+            $scope.wrongPassword = true;
+            $scope.progressLoad = false;
+          }
+          else {
+            localStorage.setItem('userName', res.data.user.firstname);
+            localStorage.setItem('userToken', res.data.token);
+            $rootScope.signupCheck();
+            $mdDialog.hide()
+          }
+        })
+      }
+
       $scope.signupUser = function(newUser) {
         if(validateEmail(newUser.email)){
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
-            console.log(res);
             if(res.data.message){
               $scope.emailTaken = true;
               $scope.progressLoad = false;
             }
             else {
-              $scope.progressLoad = false;
-              $scope.userName = localStorage.setItem('userName', res.data.firstname);
-              $rootScope.signupCheck();
-              $mdDialog.hide();
+              $scope.loginUser({email: newUser.email, password: newUser.password});
             }
           });
         }

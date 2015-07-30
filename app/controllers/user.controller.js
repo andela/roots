@@ -3,6 +3,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('../../config/database.config');
 var User = require('../models/user.model');
+var jwt = require('jsonwebtoken');
+var secretSource = require('../../config/database.config');
 
 var UserController = function() {};
 
@@ -33,6 +35,43 @@ UserController.prototype.userSignup = function (req, res) {
         });
       }
   });
+};
+
+UserController.prototype.authenticate = function(req, res) {
+  
+    User.findOne({email: req.body.email}).exec(function(err, user){
+      if (err) throw err;
+
+      if(!user) {
+        res.json({
+          success: false,
+          message: 'Authentication failed. User not found.'
+        });
+      } else {
+        var validPassword = user.comparePassword(req.body.password);
+        if(!validPassword) {
+          res.json({
+            success: false,
+            message: 'Authentication failed. Wrong password.'
+          });
+        } else {
+
+          var token = jwt.sign({
+            password: user.password,
+            email: user.email}, secretSource.secret, {
+              expiresInMinutes: 1440 //24hr expiration
+          });
+
+          //return info including token in JSON format
+          res.json({
+            user: user,
+            success: true,
+            message: 'Enjoy your token',
+            token: token
+          });
+        }
+      }
+    });
 };
 
 UserController.prototype.getUsers = function(req, res) {
