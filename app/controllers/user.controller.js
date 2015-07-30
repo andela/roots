@@ -4,34 +4,37 @@ var mongoose = require('mongoose');
 var config = require('../../config/database.config');
 var User = require('../models/user.model');
 
-var UserController = function() {};
+var UserController = function(passport) {
+  UserController.passport = passport;
+};
 
-UserController.prototype.userSignup = function (req, res) {
+UserController.prototype.userSignup = function(req, res) {
 
-  if(!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password){
-      return res.status(422).send({ 
-        success : false, 
-        message : 'Check parameters!'
-      });
+  if (!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) {
+    return res.status(422).send({
+      success: false,
+      message: 'Check parameters!'
+    });
   }
 
-  User.findOne({email: req.body.email}, function(err, user) {
+  User.findOne({
+    email: req.body.email
+  }, function(err, user) {
     if (err) {
       return res.json(err);
-    }
-    else if (user) {
+    } else if (user) {
       res.json({
         success: false,
         message: 'user email taken'
       });
     } else {
-        User.create(req.body, function(err, user) {
-          if (err) {
-            return res.json(err);
-          }
-          return res.json(user);
-        });
-      }
+      User.create(req.body, function(err, user) {
+        if (err) {
+          return res.json(err);
+        }
+        return res.json(user);
+      });
+    }
   });
 };
 

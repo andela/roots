@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('homeCtrl',['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService',  function($scope, $rootScope,$mdDialog, $mdToast, UserService) {
+  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', function($scope, $rootScope, $mdDialog, $mdToast, UserService) {
 
     $("a[href='#downpage']").click(function() {
-      $("html, body").animate({ scrollTop: $('#event_list').offset().top}, "slow");
+      $("html, body").animate({
+        scrollTop: $('#event_list').offset().top
+      }, "slow");
       return false;
     });
 
     $rootScope.signupCheck = function() {
-      if(localStorage.getItem('userName')) {
+      if (localStorage.getItem('userName')) {
         $scope.userName = localStorage.getItem('userName');
         $scope.loggedIn = true;
       }
@@ -23,15 +25,17 @@ angular.module('eventApp')
 
     $scope.login = function(view) {
       $mdDialog.show({
-        clickOutsideToClose : true,
-        controller : UserLogin,
-        locals: {view: view},
+        clickOutsideToClose: true,
+        controller: UserLogin,
+        locals: {
+          view: view
+        },
         templateUrl: "app/views/login.view.html"
       });
     };
 
     function UserLogin($scope, $rootScope, $mdDialog, view) {
-      if(view === 'signup') {
+      if (view === 'signup') {
         $scope.signup_dialog = true;
       }
 
@@ -45,26 +49,25 @@ angular.module('eventApp')
       }
 
       $scope.signupUser = function(newUser) {
-        if(validateEmail(newUser.email)){
+        if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
             console.log(res);
-            if(res.data.message){
+            if (res.data.message) {
               $scope.emailTaken = true;
               $scope.progressLoad = false;
-            }
-            else {
+            } else {
               $scope.progressLoad = false;
               $scope.userName = localStorage.setItem('userName', res.data.firstname);
               $rootScope.signupCheck();
               $mdDialog.hide();
             }
           });
+        } else {
+          $scope.validEmail = true;
         }
-        else {
-          $scope.validEmail =true;
-        }
-      };
-    }
-}]);
+      };      
 
+    };
+
+  }]);

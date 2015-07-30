@@ -13,23 +13,24 @@
         <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog = true">Sign up</a></span>
         <div style="width:400px;margin:20px auto">
           <form>
-              <input type="text" flex="60" class="signup_textbox" placeholder="Email" />
-              <input type="password" flex="60" class="signup_textbox" placeholder="Password" />
-              <section layout="row" layout-sm="column" layout-align="center center">
-                <md-button ng-click="login()" flex="50" class="md-raised">Log In</md-button>
-              </section><br>
+            <input type="text" flex="60" class="signup_textbox" placeholder="Email" />
+            <input type="password" flex="60" class="signup_textbox" placeholder="Password" />
+            <section layout="row" layout-sm="column" layout-align="center center">
+              <md-button ng-click="login()" flex="50" class="md-raised">Log In</md-button>
+            </section>
+            <br>
           </form>
         </div>
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
           <img style="height:50px;width:230px;" src="../../assets/img/icons/google_signin_logo.png">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png">
+          <img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png" ng-click="facebookLogin()">
         </div>
       </md-content>
     </div>
   </md-dialog-content>
-  <md-dialog-content ng-show="signup_dialog" >
+  <md-dialog-content ng-show="signup_dialog">
     <div style="width:500px">
       <md-content>
         <div layout="row" layout-align="center center">
@@ -43,27 +44,27 @@
         <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog = !signup_dialog">Log In</a></span>
         <div style="width:400px;margin:20px auto">
           <form name="signupForm">
-              <input ng-model="newUser.firstname" type="text" flex="60" class="signup_textbox" placeholder="First Name" required />
-              <input ng-model="newUser.lastname" type="text" flex="60" class="signup_textbox" placeholder="Last Name" required />
-              <input ng-model="newUser.email" type="email" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
-              <div ng-show="validEmail" class="password_message">Enter Valid Email</div>
-              <div ng-show="emailTaken" class="password_message">This email is taken</div>
-              <input ng-model="newUser.password" name="password" type="password" flex="60" class="signup_textbox" placeholder="Password" ng-minlength="6" ng-maxlength="20" required />
-              <div ng-messages="signupForm.password.$error">
-                <div class="password_message" ng-message="minlength">Enter a minimun of 6 characters</div>
-                <div class="password_message" ng-message="maxlength">Can not be more than 20 characters</div>
-              </div>
-              <section layout="row" layout-sm="column" layout-align="center center">
-                <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
-              </section>
-              <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
+            <input ng-model="newUser.firstname" type="text" flex="60" class="signup_textbox" placeholder="First Name" required />
+            <input ng-model="newUser.lastname" type="text" flex="60" class="signup_textbox" placeholder="Last Name" required />
+            <input ng-model="newUser.email" type="email" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
+            <div ng-show="validEmail" class="password_message">Enter Valid Email</div>
+            <div ng-show="emailTaken" class="password_message">This email is taken</div>
+            <input ng-model="newUser.password" name="password" type="password" flex="60" class="signup_textbox" placeholder="Password" ng-minlength="6" ng-maxlength="20" required />
+            <div ng-messages="signupForm.password.$error">
+              <div class="password_message" ng-message="minlength">Enter a minimun of 6 characters</div>
+              <div class="password_message" ng-message="maxlength">Can not be more than 20 characters</div>
+            </div>
+            <section layout="row" layout-sm="column" layout-align="center center">
+              <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
+            </section>
+            <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
         </div>
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
           <img style="height:50px;width:230px;" src="../../assets/img/icons/google_signin_logo.png">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png">
+          <a href="/auth/facebook"><img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png" ng-click="facebookLogin()"></a>
         </div>
       </md-content>
     </div>
