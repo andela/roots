@@ -123,17 +123,18 @@ describe("API Test", function() {
   });
 
   describe("User signup", function() {
+     
+     beforeEach(function(done) {
 
-    beforeEach(function(done) {
+        User.remove({}, function(err) {
 
-      User.remove({}, function(err) {
-
-        if (!err) {
-          console.log('User collection removed!');
-        }
+          if (!err) {
+            console.log('User collection removed!');
+          }
+        });
+        done();
       });
-      done();
-    });
+     
 
     it('should create a new user', function(done) {
 
@@ -185,6 +186,17 @@ describe("API Test", function() {
             }));
             
           });          
+      });
+      done();
+    });
+
+    afterEach(function(done) {
+
+      User.remove({}, function(err) {
+
+        if (!err) {
+          console.log('User collection removed!');
+        }
       });
       done();
     });
