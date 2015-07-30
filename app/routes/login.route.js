@@ -1,10 +1,9 @@
 var express = require('express');
-var router = express.Router();
 var LoginController = require('../controllers/login.controller');
 var loginCtrl = new LoginController();
 var verifyToken = require('../../config/tokenMiddleware');
 
-module.exports = function(app) {
+module.exports = function(router) {
  
   router.route('/login')
    .post(loginCtrl.auth);
