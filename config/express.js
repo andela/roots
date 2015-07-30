@@ -6,6 +6,7 @@ var path = require('path');
 var appDir = path.dirname(require.main.filename);
 var cors = require('cors');
 var config = require('./cors.config');
+var routes = require('../app/routes/');
 
 module.exports = function() {
   var app = express();
@@ -18,6 +19,6 @@ module.exports = function() {
   app.get('/', function(req, res) {
     res.sendFile(appDir + '/public/index.html');
   });
-  require('../app/routes/')(app);
+  routes(app);
   return app;
 };
