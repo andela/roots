@@ -2,7 +2,7 @@
 
 module.exports = {
   db: process.env.MONGOLAB_URI,
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET,  
   corsOptions: {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

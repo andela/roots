@@ -2,7 +2,7 @@
 
 module.exports = {
   db: 'mongodb://localhost/event-db-test',
-  secret: 'supersecret',
+  secret: 'supersecret',  
   corsOptions: {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
