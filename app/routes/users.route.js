@@ -12,8 +12,4 @@ module.exports = function(app) {
    .delete(ctrl.deleteAll);
 
   app.use('/api', router);
-  app.use(function(req, res, next) {
-    res.status(404).json({error: "The path does not exists"});
-    next();
-  });
 };
