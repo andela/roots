@@ -22,6 +22,6 @@ module.exports = function() {
     res.sendFile(appDir + '/public/index.html');
   });
   require('./passport')();
-  require('../app/routes/')(app, passport);
+  require('../app/routes/')(app);
   return app;
 };
