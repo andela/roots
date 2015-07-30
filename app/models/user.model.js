@@ -5,19 +5,19 @@ var bcrypt = require('bcrypt-nodejs');
 
 var userSchema = new mongoose.Schema({
   firstname: {
-  	type: String, 
-  	required: true
+    type: String,
+    //required: true
   },
   lastname: {
-  	type: String, 
-  	required: true
-  },
+    type: String,
+    //required: true
+  },  
   email: {
-  	type: String, 
-  	required: true, 
-  	index: {
-  		unique: true
-  	}
+    type: String,
+    //required: true,
+    index: {
+      unique: true
+    }
   },
   password: {
   	type: String
@@ -46,7 +46,7 @@ var userSchema = new mongoose.Schema({
 userSchema.pre('save', function(next) {
   var user = this;
   //hash the password only if the password has been changed or user is new
-  if(!user.isModified('password')) {
+  if (!user.isModified('password')) {
     return next();
   }
 
@@ -55,10 +55,10 @@ userSchema.pre('save', function(next) {
     if (err) {
       return next(err);
     }
-  
-  	//change the password to the hashed version
-  	user.password = hash;
-  	next();
+
+    //change the password to the hashed version
+    user.password = hash;
+    next();
   });
 });
 
