@@ -3,7 +3,7 @@ var verifyToken = require('../../config/tokenMiddleware');
 var UserController = require('../controllers/user.controller');
 var ctrl = new UserController();
 
-module.exports = function(router) {
+module.exports = function(app, router) {
  
   router.route('/users')
    .post(ctrl.userSignup)
@@ -12,4 +12,7 @@ module.exports = function(router) {
 
   router.route('/authenticate')
   	.post(ctrl.authenticate);
+
+  app.use('/api', router);
+
 };
