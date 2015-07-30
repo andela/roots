@@ -48,7 +48,7 @@
           <form name="signupForm">
               <input ng-model="newUser.firstname" type="text" flex="60" class="signup_textbox" placeholder="First Name" required />
               <input ng-model="newUser.lastname" type="text" flex="60" class="signup_textbox" placeholder="Last Name" required />
-              <input ng-model="newUser.email" type="email" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
+              <input ng-model="newUser.email" type="text" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
               <div ng-show="validEmail" class="password_message">Enter Valid Email</div>
               <div ng-show="emailTaken" class="password_message">This email is taken</div>
               <input ng-model="newUser.password" name="password" type="password" flex="60" class="signup_textbox" placeholder="Password" ng-minlength="6" ng-maxlength="20" required />
@@ -65,8 +65,8 @@
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/google_signin_logo.png">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png">
+          <a ng-href="/auth/google"><img style="height:50px;width:230px;cursor:pointer" ng-click="googleAuth()" src="../../assets/img/icons/google_signin_logo.png">
+          <img style="height:50px;width:230px;cursor:pointer" src="../../assets/img/icons/signin_facebook.png">
         </div>
       </md-content>
     </div>
