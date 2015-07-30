@@ -3,6 +3,7 @@ var userRoute = require('./users.route');
 var loginRoute = require('./login.route');
 var express = require('express');
 var router = express.Router();
+
 module.exports = function(app) {
   userRoute(router);
   loginRoute(router);

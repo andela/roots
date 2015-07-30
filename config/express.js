@@ -7,9 +7,9 @@ var appDir = path.dirname(require.main.filename);
 var cors = require('cors');
 var config = require('./cors.config');
 var routes = require('../app/routes/');
+var app = express();
 
 module.exports = function() {
-  var app = express();
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
