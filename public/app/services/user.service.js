@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .factory('UserService', ['$http', 'baseUrl', function($http, baseUrl) {
+  .factory('UserService', ['$http', '$stateParams', '$location', 'baseUrl', function($http, $stateParams, $location, baseUrl) {
 
     function urlBase64Decode(str) {
       var output = str.replace('-', '+').replace('_', '/');
@@ -35,13 +35,16 @@ angular.module('eventApp')
             var encoded = token.split('.')[1];
             user = JSON.parse(urlBase64Decode(encoded));
             scope.userName = user.firstname;
-            scope.loggedIn = true;
+            scope.loggedIn = true;            
           }
+
         }
+
       },
       sendWelcomeMail: function(data) {
         return $http.post(baseUrl + "user/welcomeMail", data);
       }
+
     };
 
   }]);

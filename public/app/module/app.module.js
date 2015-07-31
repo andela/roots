@@ -5,7 +5,7 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
 
   $stateProvider
     .state('home',{
-      url: '/home',
+      url: '/home?token',
       templateUrl: '../app/views/home.view.html',
       controller: 'homeCtrl'
     });

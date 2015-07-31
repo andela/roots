@@ -4,11 +4,11 @@ var ctrl = new UserController();
 var router = express.Router();
 
 module.exports = function(app) {
-
+ 
   router.route('/users')
-    .post(ctrl.userSignup)
-    .get(ctrl.getUsers)
-    .delete(ctrl.deleteAll);
+   .post(ctrl.userSignup)
+   .get(ctrl.getUsers)
+   .delete(ctrl.deleteAll);
 
   router.route('/users/:user_id')
    .get(ctrl.getCurrentUser)
@@ -16,13 +16,10 @@ module.exports = function(app) {
    .delete(ctrl.deleteCurrentUser);
 
   router.route('/authenticate')
-  	.post(ctrl.authenticate);
+    .post(ctrl.authenticate);
 
   router.route('/user/welcomeMail')
     .post(ctrl.welcomeMail);
-
-  router.route('/decode')
-    .get(ctrl.verifyToken, ctrl.decodeUser);
 
   app.use('/api', router);
 };
