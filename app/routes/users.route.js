@@ -1,6 +1,13 @@
 var express = require('express');
 var passport = require('passport');
 
+var jwt = require("jsonwebtoken");
+
+var env = process.env.NODE_ENV || "development";
+var config = require('../../config/jwt.config');
+
+var JWT_SECRET = config[env];
+
 
 var router = express.Router();
 
@@ -23,11 +30,10 @@ module.exports = function(app) {
     '/auth/facebook',
     passport.authenticate('facebook', {
       session: false,
-      scope: []
+      scope: ["email"]
     })
   );
 
-  //I will pass all the user data as token, and parse it at the frontend
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
       session: false,
@@ -35,7 +41,15 @@ module.exports = function(app) {
     }),
     function(req, res) {
       console.log(req.user);
-      res.redirect("/?displayName=" + req.user.facebook.displayName);
+
+      var token = jwt.sign({
+        firstname: req.user.firstname,
+        lastname: req.user.lastname,
+        email: req.user.email
+
+      }, JWT_SECRET);
+
+      res.redirect("/#/home?token=" + token);
     }
   );
   app.use('/api', router);

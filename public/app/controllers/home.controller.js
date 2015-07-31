@@ -11,6 +11,9 @@ angular.module('eventApp')
     });
 
     $rootScope.signupCheck = function() {
+      
+      UserService.processFacebookToken();
+      
       if (localStorage.getItem('userName')) {
         $scope.userName = localStorage.getItem('userName');
         $scope.loggedIn = true;
