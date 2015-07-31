@@ -19,7 +19,7 @@ module.exports = function(app) {
     .post(ctrl.authenticate);
 
   router.route('/user/welcomeMail')
-    .post(ctrl.welcomeMail);  
+    .post(ctrl.welcomeMail);
 
   app.use('/api', router);
 };

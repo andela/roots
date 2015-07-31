@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .factory('UserService', ['$http', 'baseUrl', function($http, baseUrl) {
+  .factory('UserService', ['$http', '$stateParams', '$location', 'baseUrl', function($http, $stateParams, $location, baseUrl) {
 
     function urlBase64Decode(str) {
       var output = str.replace('-', '+').replace('_', '/');
