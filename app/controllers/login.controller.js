@@ -40,7 +40,7 @@ LoginController.prototype.auth = function(req, res){
         }
       }
     });
-  };
+  }
 };
 
 LoginController.prototype.getCurrentUser = function(req, res){

@@ -56,9 +56,7 @@ UserController.prototype.authenticate = function(req, res) {
           });
         } else {
 
-          var token = jwt.sign({
-            password: user.password,
-            email: user.email}, secretSource.secret, {
+          var token = jwt.sign(user, secretSource.secret, {
               expiresInMinutes: 1440 //24hr expiration
           });
 

@@ -1,21 +1,24 @@
 'use strict';
 var passport = require('passport');
+var jwt = require('jsonwebtoken');
+var secretSource = require('../../config/database.config');
 var authController = function() {};
 
 authController.prototype.authCallback = function(strategy) {
   return function(req, res, next) {
     passport.authenticate(strategy, function(err, user) {
       if(err) {
-        console.log('err', user);
         return next(err);
       }
       if(!user){
-        console.log('err, no user', user);
         res.redirect('/#/home');
       }
       else {
-        console.log('user', user);
-        res.redirect('/#/home');
+        // console.log('req.user', user);
+        var token = jwt.sign(user, secretSource.secret, {
+            expiresInMinutes: 1440 //24hr expiration
+        });
+        res.redirect('/#/home?token=' + token);
       }
     })(req, res, next);
   };
