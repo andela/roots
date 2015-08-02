@@ -133,12 +133,13 @@ img.bg {
 
 #site_logo {
   /*color: black;*/
-  font-family:papyrus;
+  font-family:"Courier";
   color:white
 }
 .nav_link {
   font-size:15px;
   cursor: pointer;
+  font-family: "Courier";
 }
 
 .nav_link:hover {
