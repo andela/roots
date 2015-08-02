@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
  passport = require('passport'),
  User = mongoose.model('User'),
  googleStrategy = require('passport-google-oauth').OAuth2Strategy,
- config = require('./auth.config');
+ config = require('./config');
 
 module.exports = function() {
   
@@ -17,9 +17,8 @@ module.exports = function() {
     passReqToCallback: true
   }, 
   function(req, accessToken, refreshToken, profile, done) {
-    console.log(profile._json);
     process.nextTick(function() {
-      User.findOne({email: profile._json.email}, function(err, user) {
+      User.findOne({email: profile._json.emails[0].value}, function(err, user) {
         if(err){
           return done(err);
         }
@@ -27,13 +26,17 @@ module.exports = function() {
           return done(null, user);
         }
         else {
-          console.log(user);
-
           var newUser = new User();
           newUser.lastname = profile._json.name.familyName;
           newUser.firstname = profile._json.name.givenName;
           newUser.email = profile._json.emails[0].value;
           newUser.gender = profile._json.gender;
+          newUser.save(function(err, user){
+            if(err){
+              return done(err);
+            }
+            return done(null, user);
+          });
         }
       });
     });

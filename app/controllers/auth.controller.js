@@ -1,7 +1,7 @@
 'use strict';
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
-var secretSource = require('../../config/database.config');
+var config = require('../../config/config');
 var authController = function() {};
 
 authController.prototype.authCallback = function(strategy) {
@@ -15,7 +15,7 @@ authController.prototype.authCallback = function(strategy) {
       }
       else {
         // console.log('req.user', user);
-        var token = jwt.sign(user, secretSource.secret, {
+        var token = jwt.sign(user, config.secret, {
             expiresInMinutes: 1440 //24hr expiration
         });
         res.redirect('/#/home?token=' + token);

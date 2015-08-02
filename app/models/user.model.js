@@ -40,7 +40,7 @@ var userSchema = new mongoose.Schema({
   address2: {
     type: String
   }
-});
+}, { versionKey: false });
 
 //hash password
 userSchema.pre('save', function(next) {
