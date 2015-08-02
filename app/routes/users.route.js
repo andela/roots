@@ -22,5 +22,4 @@ module.exports = function(app) {
     .get(ctrl.verifyToken, ctrl.decodeUser);
 
   app.use('/api', router);
-
 };

@@ -10,7 +10,6 @@ var routes = require('../app/routes/');
 var app = express();
 var passport = require('passport');
 
-
 module.exports = function() {
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
