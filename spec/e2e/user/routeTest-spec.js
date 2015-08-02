@@ -1,7 +1,7 @@
 var app = require('../../../server');
 var request = require('supertest')(app);
 
-xdescribe('Event management app', function() {
+describe('Event management app', function() {
 
   //testing testing
   describe('User route',function() {
