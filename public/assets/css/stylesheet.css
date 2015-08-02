@@ -5,6 +5,11 @@
   font-family: inherit;
   font-size: 100%;
 }
+.authButton {
+  height:50px;
+  width:230px;
+  cursor:pointer
+}
 
 #event_list {
   position: relative;
