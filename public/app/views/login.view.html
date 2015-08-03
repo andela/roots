@@ -1,10 +1,10 @@
-<md-dialog aria-label="login">
+<md-dialog aria-label="login" style="font-family:Courier">
   <md-dialog-content ng-hide="signup_dialog">
     <div style="width:500px">
       <md-content>
         <div layout="row" layout-align="center center">
           <h5 flex offset="40"><strong>Log In</strong></h5>
-          <span flex offset="30">
+          <span flex offset="20">
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
@@ -26,8 +26,8 @@
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/google_signin_logo.png">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png">
+          <a ng-href="/auth/google"><img class="authButton" src="../../assets/img/icons/google_signin_logo.png"></a>
+          <a ng-href="/auth/facebook"><img class="authButton" src="../../assets/img/icons/signin_facebook.png"></a>
         </div>
       </md-content>
     </div>
@@ -37,7 +37,7 @@
       <md-content>
         <div layout="row" layout-align="center center">
           <h5 flex offset="40"><strong>Sign Up</strong></h5>
-          <span flex offset="25">
+          <span flex offset="15">
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
@@ -48,7 +48,7 @@
           <form name="signupForm">
               <input ng-model="newUser.firstname" type="text" flex="60" class="signup_textbox" placeholder="First Name" required />
               <input ng-model="newUser.lastname" type="text" flex="60" class="signup_textbox" placeholder="Last Name" required />
-              <input ng-model="newUser.email" type="email" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
+              <input ng-model="newUser.email" type="text" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
               <div ng-show="validEmail" class="password_message">Enter Valid Email</div>
               <div ng-show="emailTaken" class="password_message">This email is taken</div>
               <input ng-model="newUser.password" name="password" type="password" flex="60" class="signup_textbox" placeholder="Password" ng-minlength="6" ng-maxlength="20" required />
@@ -65,8 +65,8 @@
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/google_signin_logo.png">
-          <img style="height:50px;width:230px;" src="../../assets/img/icons/signin_facebook.png">
+          <a ng-href="/auth/google"><img class="authButton" src="../../assets/img/icons/google_signin_logo.png"></a>
+          <a ng-href="/auth/facebook"><img class="authButton" src="../../assets/img/icons/signin_facebook.png"></a>          
         </div>
       </md-content>
     </div>
