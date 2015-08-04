@@ -4,8 +4,33 @@ var mongoose = require('mongoose');
 var config = require('../../config/config');
 var User = require('../models/user.model');
 var jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
 
 var UserController = function() {};
+
+UserController.prototype.welcomeMail = function(req, res) {
+  var transporter = nodemailer.createTransport();
+  var data = req.body;
+  var mailOptions = {
+    from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+    to: data.mail,
+    subject: 'Welcome to World Tree!',
+    text: 'Welcome to World Tree!',
+    html: '<div style="background:#00b2ee;height:400px;">'+
+    '<h1 style="margin:0 auto;color:white"> Hello ' + data.name + '</h1<br><br>' +
+    '<h3 style="margin:0 auto;color:white">Organize Events Efficiently. Better Planning. Faster Team Work :)<br> Get the best with world tree event manager</h3>' +
+    '</div>'
+  };
+
+  transporter.sendMail(mailOptions, function(error, info) {
+    if(error) {
+      console.log(error);
+    }
+    else {
+      console.log('message sent: ' + info);
+    }
+  });
+};
 
 UserController.prototype.userSignup = function (req, res) {
   if(!req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password){
@@ -35,7 +60,6 @@ UserController.prototype.userSignup = function (req, res) {
 };
 
 UserController.prototype.decodeUser = function(req, res) {
-  // console.log(req);
   return res.json(req.decoded);
 };
 
@@ -76,7 +100,8 @@ UserController.prototype.authenticate = function(req, res) {
           success: false,
           message: 'Authentication failed. User not found.'
         });
-      } else {
+      } 
+      else if (req.body.password) {
         var validPassword = user.comparePassword(req.body.password);
         if(!validPassword) {
           res.json({
@@ -95,6 +120,9 @@ UserController.prototype.authenticate = function(req, res) {
             token: token
           });
         }
+      }
+      else {
+        return;
       }
     });
 };
