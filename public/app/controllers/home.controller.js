@@ -1,22 +1,31 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('homeCtrl',['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService',  function($scope, $rootScope,$mdDialog, $mdToast, UserService) {
+  .controller('homeCtrl',['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope,$mdDialog, $mdToast, UserService, $location) {
 
     $("a[href='#downpage']").click(function() {
       $("html, body").animate({ scrollTop: $('#event_list').offset().top}, "slow");
       return false;
     });
 
+    var userToken = $location.search().token;
+    $location.search('token', null);
+    if (userToken) {
+      localStorage.setItem('userToken', userToken);
+    }
+
     $rootScope.signupCheck = function() {
-      if(localStorage.getItem('userName')) {
-        $scope.userName = localStorage.getItem('userName');
-        $scope.loggedIn = true;
+      if(localStorage.getItem('userToken')) {
+        UserService.decodeUser().then(function(res) {
+          console.log(res);
+          $scope.userName = res.data.firstname;
+          $scope.loggedIn = true;
+        });
       }
     };
 
     $scope.logout = function() {
-      localStorage.removeItem('userName');
+      localStorage.removeItem('userToken');
       $scope.loggedIn = false;
     };
 
@@ -58,13 +67,12 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           }
           else {
-            localStorage.setItem('userName', res.data.user.firstname);
             localStorage.setItem('userToken', res.data.token);
             $rootScope.signupCheck();
-            $mdDialog.hide()
+            $mdDialog.hide();
           }
-        })
-      }
+        });
+      };
 
       $scope.signupUser = function(newUser) {
         if(validateEmail(newUser.email)){
@@ -80,7 +88,7 @@ angular.module('eventApp')
           });
         }
         else {
-          $scope.validEmail =true;
+          $scope.validEmail = true;
         }
       };
     }

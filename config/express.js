@@ -5,9 +5,10 @@ var methodOverride = require("method-override");
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 var cors = require('cors');
-var config = require('./cors.config');
+var config = require('./config');
 var routes = require('../app/routes/');
 var app = express();
+var passport = require('passport');
 
 module.exports = function() {
   app.use(bodyParser.urlencoded({extended: true}));
@@ -19,6 +20,7 @@ module.exports = function() {
   app.get('/', function(req, res) {
     res.sendFile(appDir + '/public/index.html');
   });
-  routes(app);
+  require('./passport')();
+  require('../app/routes/')(app);
   return app;
 };

@@ -4,7 +4,7 @@ var request = require('supertest');
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require("body-parser");
-var User = require('../../app/models/user.model');
+var User = require('../../../app/models/user.model');
 
 var app = express();
 var router = express.Router();
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-require('../../app/routes/index')(router);
+require('../../../app/routes/index')(router);
 
 app.use(router);
 
