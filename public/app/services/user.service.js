@@ -39,6 +39,10 @@ angular.module('eventApp')
           }
 
         }
+
+      },
+      sendWelcomeMail: function(data) {
+        return $http.post(baseUrl + "user/welcomeMail", data);
       }
     };
 
