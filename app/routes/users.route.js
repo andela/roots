@@ -18,6 +18,9 @@ module.exports = function(app) {
   router.route('/authenticate')
   	.post(ctrl.authenticate);
 
+  router.route('/user/welcomeMail')
+    .post(ctrl.welcomeMail);
+
   router.route('/decode')
     .get(ctrl.verifyToken, ctrl.decodeUser);
 
