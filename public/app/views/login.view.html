@@ -12,10 +12,10 @@
         </div>
         <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog = true">Sign up</a></span>
         <div style="width:400px;margin:20px auto">
-          <form>
-              <input type="text" ng-model="userInfo.email" flex="60" class="signup_textbox" placeholder="Email" />
+          <form name="loginForm">
+              <input type="email" ng-model="userInfo.email" flex="60" class="signup_textbox" placeholder="Email" required />
               <div ng-show="wrongEmail" class="password_message">This email is not registered</div>
-              <input type="password" ng-model="userInfo.password" flex="60" class="signup_textbox" placeholder="Password" />
+              <input type="password" ng-model="userInfo.password" flex="60" class="signup_textbox" placeholder="Password" required />
               <div ng-show="wrongPassword" class="password_message">Wrong Password</div>
               <section layout="row" layout-sm="column" layout-align="center center">
                 <md-button ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
