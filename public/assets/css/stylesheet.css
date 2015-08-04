@@ -31,7 +31,7 @@ img.bg {
   height: 100vh;
 }
 
-#nav_menu {
+#nav-menu {
   margin-right:50px;
 }
 
@@ -141,13 +141,13 @@ img.bg {
   font-family:"Courier";
   color:white
 }
-.nav_link {
+.nav-link {
   font-size:15px;
   cursor: pointer;
   font-family: "Courier";
 }
 
-.nav_link:hover {
+.nav-link:hover {
   font-weight: bold;
   cursor: pointer;
 }
@@ -156,7 +156,7 @@ img.bg {
   color: black;
 }
 
-.nav_div {
+.nav-div {
   background:rgba(0,0,0,.8) !important;
 }
 
@@ -173,10 +173,6 @@ img.bg {
   height:20px;
   font-size:10px;
   color:red
-}
-
-body {
-    background:#bf5c71 url('body-bg.jpg');
 }
  
 .clearfix:after {
@@ -199,7 +195,6 @@ body {
 .menu li {
     margin:0px;
     list-style:none;
-    font-family:'Ek Mukta';
 }
  
 .menu a {
