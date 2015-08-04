@@ -2,25 +2,25 @@
 
 angular.module('eventApp')
   .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location) {
-      $("a[href='#downpage']").click(function() {
-        $("html, body").animate({
-          scrollTop: $('#event_list').offset().top
-        }, "slow");
-        return false;
-      });
+    $("a[href='#downpage']").click(function() {
+      $("html, body").animate({
+        scrollTop: $('#event_list').offset().top
+      }, "slow");
+      return false;
+    });
 
-      var userToken = $location.search().token;
-      $location.search('token', null);
-      if (userToken) {
-        localStorage.setItem('userToken', userToken);
-      }
+    var userToken = $location.search().token;
+    $location.search('token', null);
+    if (userToken) {
+      localStorage.setItem('userToken', userToken);
+    }
 
-      $rootScope.signupCheck = function() {
-        if (localStorage.getItem('userToken')) {
-          UserService.decodeUser($scope);
-        }
+    $rootScope.signupCheck = function() {
+      if (localStorage.getItem('userToken')) {
+        UserService.decodeUser($scope);
       }
-    };
+    }
+
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
