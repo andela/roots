@@ -17,7 +17,6 @@ angular.module('eventApp')
     $rootScope.signupCheck = function() {
       if(localStorage.getItem('userToken')) {
         UserService.decodeUser().then(function(res) {
-          console.log(res);
           $scope.userName = res.data.firstname;
           $scope.loggedIn = true;
         });
@@ -54,6 +53,8 @@ angular.module('eventApp')
       }
 
       $scope.loginUser = function(userData) {
+        $scope.wrongEmail = false;
+        $scope.wrongPassword = false;
         UserService.authenticate(userData).then(function(res) {
           $scope.progressLoad = true;
           if(res.data.message === 'Authentication failed. User not found.'){
@@ -81,16 +82,29 @@ angular.module('eventApp')
             if(res.data.message){
               $scope.emailTaken = true;
               $scope.progressLoad = false;
+               $scope.validEmail = false;
             }
             else {
+              $rootScope.sendWelcomeMail({email: newUser.email, firstname: newUser.firstname});
               $scope.loginUser({email: newUser.email, password: newUser.password});
             }
           });
         }
         else {
+          $scope.emailTaken = false;
           $scope.validEmail = true;
         }
       };
     }
+
+    $rootScope.sendWelcomeMail = function(recipient) {
+      var data = ({
+        mail: recipient.email,
+        name: recipient.firstname
+      });
+      UserService.sendWelcomeMail(data).success(function(data, status, headers, config) {
+
+      });
+    };
 }]);
 
