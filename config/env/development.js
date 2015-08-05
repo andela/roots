@@ -2,16 +2,16 @@
 
 module.exports = {
   db: 'mongodb://localhost/eventroot',
-  secret: 'supersecret',
-  twitter : {
+  secret: process.env.ROOTS_SESSION_SECRET,
+  twitter: {
     consumerKey: process.env.ROOTS_TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.ROOTS_TWITTER_CONSUMER_SECRET
   },
-  google : {
+  google: {
     clientID: process.env.ROOTS_GOOGLE_CLIENT_ID,
     clientSecret: process.env.ROOTS_GOOGLE_CLIENT_SECRET
   },
-  facebook : {
+  facebook: {
     clientID: process.env.ROOTS_FACEBOOK_CLIENT_ID,   
     clientSecret: process.env.ROOTS_FACEBOOK_CLIENT_SECRET
   },
