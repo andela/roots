@@ -2,17 +2,17 @@
   <img class="bg" src="../assets/img/bgimg.jpg" alt="background img">
   <div class="parallax-container" id="parallax_div">
     <div class="navbar">
-        <nav class="nav_div">
+        <nav class="nav-div">
           <div class="nav-wrapper">
               <ul ng-if="!loggedIn" class="right" id="nav_menu">
                 <li><a ng-click="login('signup')" class="nav_link" tabindex="-1">Sign up</a></li>
                 <li><a ng-click="login('login')" class="nav_link" tabindex="-1">Log in</a></li>
-                <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue" id="create_event_btn" type="submit" name="action" style="font-family:Courier">Create Event</button>
+                <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue" id="create-event-btn" type="submit" name="action">Create Event</button>
               </ul>
               <ul ng-if="loggedIn" class="right" id="nav_menu">
                 <li><a ng-click="" class="nav_link" tabindex="-1">Welcome {{userName}}</a></li>
                 <li><a ng-click="logout()" class="nav_link" tabindex="-1">Log Out</a></li>
-                <button ng-click="" class="btn waves-effect waves-light blue" id="create_event_btn" type="submit" name="action">Create Event</button>
+                <button ng-click="" class="btn waves-effect waves-light blue" id="create-event-btn" type="submit" name="action">Create Event</button>
               </ul>
           </div>
         </nav>
@@ -20,18 +20,17 @@
         <div class="section no-pad-bot">
             <div class="container">
                 <br><br>
-                  <h1 class="header center white-text text-darken-2"><strong style="font-family:Courier;font-size:80px">World Tree</strong></h1>
-                  <div class="row center" style="background:black;border:2px solid gray;border-radius:9px">
-                    <h5 class="header col s12 light"><p id="foo">Organize Events Efficiently. Better Planning. Faster Team Work :)</p></h5>
+                  <h1 class="header center white-text text-darken-2"><strong id="site-logo">World Tree</strong></h1>
+                  <div class="row center" id="motto-display-div">
+                    <h5 class="header col s12 light"><p id="motto-display">Organize Events Efficiently. Better Planning. Faster Team Work :)</p></h5>
                   </div>
                 <div id="btn_div" class="row center">
-                    <a href="#downpage" class="btn waves-effect waves-light blue" style="font-family:Courier">View Events</a>
-                    <br><br>
+                    <a href="#downpage" class="btn waves-effect waves-light blue" id="view-event-btn">View Events</a>
                     <a href="#downpage"><div class="arrow bounce"></div></a>
                 </div>
             </div>
         </div>
     </div>
-    <div id="event_list" style="background:white">
+    <div id="event-list">
     </div>
 </div>
