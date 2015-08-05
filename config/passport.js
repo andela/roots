@@ -7,6 +7,16 @@ var mongoose = require('mongoose'),
  googleStrategy = require('passport-google-oauth').OAuth2Strategy,
  config = require('./config');
 
+function makePassword() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i=0; i < 7; i++ ) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
+
 module.exports = function() {
   
   //google strategy
@@ -30,6 +40,7 @@ module.exports = function() {
           newUser.lastname = profile._json.name.familyName;
           newUser.firstname = profile._json.name.givenName;
           newUser.email = profile._json.emails[0].value;
+          newUser.password = makePassword();
           newUser.gender = profile._json.gender;
           newUser.save(function(err, user){
             if(err){

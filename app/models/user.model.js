@@ -20,7 +20,8 @@ var userSchema = new mongoose.Schema({
   	}
   },
   password: {
-  	type: String
+  	type: String,
+    required: true
   },
   phoneNumber1: {
     type: Number

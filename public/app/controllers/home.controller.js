@@ -4,7 +4,7 @@ angular.module('eventApp')
   .controller('homeCtrl',['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope,$mdDialog, $mdToast, UserService, $location) {
 
     $("a[href='#downpage']").click(function() {
-      $("html, body").animate({ scrollTop: $('#event_list').offset().top}, "slow");
+      $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
 
