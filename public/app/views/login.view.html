@@ -12,7 +12,7 @@
         </div>
         <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog = true">Sign up</a></span>
         <div class="login-form">
-          <form>
+          <form name="loginForm">
               <input type="text" ng-model="userInfo.email" flex="60" class="signup_textbox" placeholder="Email" />
               <div ng-show="wrongEmail" class="error-message">This email is not registered</div>
               <input type="password" ng-model="userInfo.password" flex="60" class="signup_textbox" placeholder="Password" />
