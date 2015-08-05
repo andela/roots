@@ -8,6 +8,18 @@ mongoose.connect(config.db)
 
 describe('User Model', function(done) {
 
+   beforeEach(function(done) {
+      User.remove({}, function(err) {
+        if(err) {
+          console.log(err)
+        }
+        else {
+          console.log('user removed')
+        }
+      })
+      done();
+    });
+
   describe('Sign up', function() {
     beforeEach(function(done){
       user = new User();
@@ -67,18 +79,6 @@ describe('User Model', function(done) {
         expect(err).toBe(null);
         done();
       });
-    });
-
-    afterEach(function(done) {
-      User.remove({email: 'matt@gmail.com'}, function(err) {
-        if(err) {
-          console.log(err)
-        }
-        else {
-          console.log('user removed')
-        }
-      })
-      done();
     });
 
   });
