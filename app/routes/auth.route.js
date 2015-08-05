@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var authController = require('../controllers/auth.controller');
-var auth = new authController();
+var AuthController = require('../controllers/auth.controller');
+var auth = new AuthController();
 module.exports = function(app, passport) {
 
   router.route('/auth/google')
