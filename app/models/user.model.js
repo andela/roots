@@ -20,7 +20,7 @@ var userSchema = new mongoose.Schema({
     }
   },
   password: {
-  	type: String
+    type: String
   },
   phoneNumber1: {
     type: Number
@@ -40,7 +40,9 @@ var userSchema = new mongoose.Schema({
   address2: {
     type: String
   }
-}, { versionKey: false });
+}, {
+  versionKey: false
+});
 
 //hash password
 userSchema.pre('save', function(next) {

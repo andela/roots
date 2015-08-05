@@ -59,10 +59,6 @@ UserController.prototype.userSignup = function(req, res) {
   });
 };
 
-UserController.prototype.decodeUser = function(req, res) {
-  return res.json(req.decoded);
-};
-
 UserController.prototype.verifyToken = function(req, res, next) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
