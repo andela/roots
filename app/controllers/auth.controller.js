@@ -2,9 +2,9 @@
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
 var config = require('../../config/config');
-var authController = function() {};
+var AuthController = function() {};
 
-authController.prototype.authCallback = function(strategy) {
+AuthController.prototype.authCallback = function(strategy) {
   return function(req, res, next) {
     passport.authenticate(strategy, function(err, user) {
       if(err) {
@@ -24,4 +24,4 @@ authController.prototype.authCallback = function(strategy) {
   };
 };
 
-module.exports = authController;
+module.exports = AuthController;
