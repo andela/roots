@@ -5,16 +5,43 @@
   font-family: inherit;
   font-size: 100%;
 }
+
 .authButton {
   height:50px;
   width:160px;
   cursor:pointer
 }
 
-#event_list {
+#motto-display-div {
+  background: #181111;
+  border: 2px solid gray;
+  border-radius: 9px;
+}
+
+.dialog-form {
+  font-family: "Courier";
+}
+
+.login-form {
+   width: 400px;
+   margin: 20px auto;
+}
+
+.modal-div {
+  width: 500px;
+}
+
+.auth-button {
+  height: 50px;
+  width: 230px;
+  cursor: pointer;
+}
+
+#event-list {
   position: relative;
   min-height: 800px;
   max-height: auto;
+  background: white;
 }
 
 img.bg {
@@ -32,7 +59,7 @@ img.bg {
 }
 
 #nav-menu {
-  margin-right:50px;
+  margin-right: 50px;
 }
 
 @media screen and (max-width: 1024px) {
@@ -42,7 +69,7 @@ img.bg {
   }
 }
 
-#foo{
+#motto-display {
   color: white; 
   font-family: "Courier";
   font-size: 22px;
@@ -136,13 +163,13 @@ img.bg {
   animation: bounce 2s infinite;
 }
 
-#site_logo {
-  /*color: black;*/
-  font-family:"Courier";
-  color:white
+#site-logo {
+   font-family: Courier;
+   font-size:80px;
 }
+
 .nav-link {
-  font-size:15px;
+  font-size: 15px;
   cursor: pointer;
   font-family: "Courier";
 }
@@ -152,27 +179,35 @@ img.bg {
   cursor: pointer;
 }
 
-#create_event_btn:hover {
-  color: black;
+#view-event-btn {
+  font-family: "Courier"
+}
+
+#view-event-btn:hover {
+  background: #00bfff !important;
+  font-family: "Courier"
+}
+
+#create-event-btn {
+  color: white;
+  font-family: "Courier"
+}
+
+#create-event-btn:hover {
+  background: #00bfff !important;
+  font-family: "Courier";
 }
 
 .nav-div {
-  background:rgba(0,0,0,.8) !important;
+  background: rgba(0,0,0,.8) !important;
 }
 
 .signup_textbox {
-  border:2px solid black !important;
-  padding:5px !important;
-  height:30px !important;
-  font-weight:bolder !important;
+  border: 2px solid #181111 !important;
+  padding: 5px !important;
+  height: 30px !important;
+  font-weight: bolder !important;
   border-radius: 5px !important; 
-}
-
-.password_message {
-  margin-top:-10px;
-  height:20px;
-  font-size:10px;
-  color:red
 }
  
 .clearfix:after {
@@ -298,4 +333,9 @@ nav {
     background:#3e3436;
 }
 
-
+.error-message {
+  margin-top: -10px;
+  height: 20px;
+  font-size: 10px;
+  color: red
+}
