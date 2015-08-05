@@ -12,8 +12,8 @@ module.exports = function() {
 
   //google strategy
   passport.use(new googleStrategy({
-      clientID: config.google.clientID,
-      clientSecret: config.google.clientSecret,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
       passReqToCallback: true
     },
@@ -46,8 +46,8 @@ module.exports = function() {
 
   passport.use(new FacebookStrategy({
 
-      clientID: config.facebook.clientID,
-      clientSecret: config.facebook.clientSecret,
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: '/auth/facebook/callback',
       profileFields: ['id', 'displayName', 'photos', 'gender', 'email', 'first_name', 'last_name'],
       enableProof: false
