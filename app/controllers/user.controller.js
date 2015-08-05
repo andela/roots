@@ -35,7 +35,6 @@ UserController.prototype.userSignup = function (req, res) {
 };
 
 UserController.prototype.decodeUser = function(req, res) {
-  // console.log(req);
   return res.json(req.decoded);
 };
 
