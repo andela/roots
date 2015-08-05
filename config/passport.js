@@ -4,14 +4,14 @@ require('../app/models/user.model');
 var mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
-  googleStrategy = require('passport-google-oauth').OAuth2Strategy,
+  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   FacebookStrategy = require('passport-facebook').Strategy,
   config = require('./config');
 
 module.exports = function() {
 
   //google strategy
-  passport.use(new googleStrategy({
+  passport.use(new GoogleStrategy({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
