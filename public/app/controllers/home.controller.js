@@ -41,6 +41,9 @@ angular.module('eventApp')
       if (view === 'signup') {
         $scope.signup_dialog = true;
       }
+      else {
+        $scope.login_dialog = true;
+      }
 
       $scope.closeDialog = function() {
         $mdDialog.hide();

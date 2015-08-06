@@ -12,6 +12,14 @@
   cursor:pointer
 }
 
+#dialog-button {
+  background: #00bfff;
+}
+
+.dialog-header {
+  color: #00bfff;
+}
+
 #motto-display-div {
   background: #181111;
   border: 2px solid gray;

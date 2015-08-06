@@ -1,16 +1,16 @@
 <md-dialog aria-label="login" class="dialog-form">
-  <md-dialog-content ng-hide="signup_dialog">
+  <md-dialog-content ng-show="login_dialog">
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
-          <h5 flex offset="40"><strong>Log In</strong></h5>
+          <h5 class="dialog-header" flex offset="40"><strong>Log In</strong></h5>
           <span flex offset="20">
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog = true">Sign up</a></span>
+        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog=true;login_dialog=false">Sign up</a></span>
         <div class="login-form">
           <form name="loginForm">
               <input type="text" ng-model="userInfo.email" flex="60" class="signup_textbox" placeholder="Email" />
@@ -18,8 +18,9 @@
               <input type="password" ng-model="userInfo.password" flex="60" class="signup_textbox" placeholder="Password" />
               <div ng-show="wrongPassword" class="error-message">Wrong Password</div>
               <section layout="row" layout-sm="column" layout-align="center center">
-                <md-button ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
+                <md-button id="dialog-button" ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
               </section>
+              <span layout="row" layout-align="center center"><a href="" ng-click="reset_dialog=true;login_dialog=false">Forgot password?</a></span>
               <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
         </div>
@@ -37,14 +38,14 @@
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
-          <h5 flex offset="40"><strong>Sign Up</strong></h5>
+          <h5 class="dialog-header" flex offset="40"><strong>Sign Up</strong></h5>
           <span flex offset="15">
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog = !signup_dialog">Log In</a></span>
+        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog=false;login_dialog=true">Log In</a></span>
         <div class="login-form">
           <form name="signupForm">
             <input ng-model="newUser.firstname" type="text" flex="60" class="signup_textbox" placeholder="First Name" required />
@@ -58,7 +59,7 @@
               <div class="error-message" ng-message="maxlength">Can not be more than 20 characters</div>
             </div>
             <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
+              <md-button id="dialog-button" ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
             </section>
             <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
@@ -72,5 +73,31 @@
         </div>
       </md-content>
     </div>
+  </md-dialog-content>
+  <md-dialog-content ng-show="reset_dialog">
+  <div class="modal-div">
+      <md-content>
+        <div layout="row" layout-align="center center">
+          <h5 class="dialog-header" flex offset="15"><strong>Forgot your password?</strong></h5>
+          <span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
+          </md-button>
+          </span>
+        </div><br>
+        <span layout="row" layout-align="center center">Enter your email address and we'll send you a link to reset your password</span>
+    <div class="login-form">
+      <form name="resetForm">
+          <input type="text" ng-model="userInfo.email" flex="60" class="signup_textbox" placeholder="Email" />
+          <div ng-show="wrongEmail" class="error-message">This email is not registered</div>
+          
+          <section layout="row" layout-sm="column"  layout-align="center center">
+            <md-button id="dialog-button" ng-click="" flex="50" class="md-raised">Send reset link</md-button>
+          </section>
+          <span layout="row" layout-align="center center"><a href="" ng-click="reset_dialog=false;login_dialog=true">cancel</a></span>
+          <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
+      </form>
+    </div>
+    </md-content>
   </md-dialog-content>
 </md-dialog>
