@@ -4,8 +4,8 @@ require('../app/models/user.model');
 var mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
-  FacebookStrategy = require('passport-facebook').Strategy,
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+  FacebookStrategy = require('passport-facebook').Strategy,
   config = require('./config');
 
 module.exports = function() {
@@ -47,22 +47,22 @@ module.exports = function() {
 
   passport.use(new FacebookStrategy({
 
-      // pull in our app id and secret from our auth.js file
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: '/auth/facebook/callback'
+      callbackURL: '/auth/facebook/callback',
+      profileFields: ['id', 'displayName', 'photos', 'gender', 'email', 'first_name', 'last_name'],
+      enableProof: false
 
     },
 
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
-
       // asynchronous
       process.nextTick(function() {
 
         // find the user in the database based on their facebook id
         User.findOne({
-          'facebook.id': profile.id
+          'email': profile.emails[0].value
         }, function(err, user) {
 
           if (err)
@@ -72,23 +72,12 @@ module.exports = function() {
           if (user) {
             return done(null, user); // user found, return that user
           } else {
-            // if there is no user found with that facebook id, create them
+
             var newUser = new User();
-            console.log(profile);
-
-            // set all of the facebook information in our user model
-            newUser.facebook.id = profile.id;
-            newUser.facebook.token = token;
-
-            if (profile.name.givenName)
-              newUser.firstname = profile.name.givenName;
-
-            if (profile.name.familyName)
-              newUser.lastname = profile.name.familyName;
-
-            newUser.facebook.displayName = profile.displayName;
-
-
+            newUser.firstname = profile.name.givenName;
+            newUser.lastname = profile.name.familyName;
+            newUser.gender = profile.gender;
+            
             if (profile.emails && profile.emails.length > 0)
               newUser.email = profile.emails[0].value;
 
@@ -97,7 +86,6 @@ module.exports = function() {
               if (err)
                 return done(err);
 
-              // if successful, return the new user
               return done(null, newUser);
             });
           }
