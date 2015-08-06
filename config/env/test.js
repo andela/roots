@@ -3,9 +3,13 @@
 module.exports = {
   db: 'mongodb://localhost/event-db-test',
   secret: 'supersecret',
+  twitter : {
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET
+  },
   google : {
-    clientID: '951983031173-vdj0a4k0q3apqtk57v873i0gj0n6o3l9.apps.googleusercontent.com',
-    clientSecret: '25cs-KXxdpMIEyWu85CTxGQF'
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
   corsOptions: {
     origin: '*',
