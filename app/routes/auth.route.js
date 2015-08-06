@@ -14,5 +14,11 @@ module.exports = function(app, passport) {
   router.route('/auth/google/callback')
    .get(auth.authCallback('google'));
 
-   app.use('', router);
+  router.route('/auth/twitter')
+  .get(passport.authenticate('twitter'));
+
+  router.route('/auth/twitter/callback') 
+  .get(auth.twitterAuthCallback('twitter'));
+
+  app.use('', router);
 };
