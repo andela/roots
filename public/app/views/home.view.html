@@ -1,13 +1,13 @@
 <div data-ng-init="signupCheck()">
   <img class="bg" src="../assets/img/bgimg.jpg" alt="background img">
-  <div class="parallax-container" id="parallax_div">
+  <div class="parallax-container" id="parallax-div">
     <div class="navbar">
       <nav class="nav-div">
         <div class="nav-wrapper">
           <ul ng-if="!loggedIn" class="right" id="nav-menu">
-            <li><a ng-click="login('signup')" class="nav-link">Sign up</a></li>
-            <li><a ng-click="login('login')" class="nav-link">Log in</a></li>
-            <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue" id="create_event_btn" type="submit" name="action">Create Event</button>
+            <li><a ng-click="login('signup')" tabindex="-1" class="nav-link">Sign up</a></li>
+            <li><a ng-click="login('login')" tabindex="-1" class="nav-link">Log in</a></li>
+            <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue" id="create-event-btn" type="submit" name="action">Create Event</button>
           </ul>
         </div>
       </nav>
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div id="event-list">
-    </div>
+  </div>
+  <div id="event-list">
   </div>
 </div>

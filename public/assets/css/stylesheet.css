@@ -41,7 +41,7 @@
 
 .auth-button {
   height: 50px;
-  width: 230px;
+  width: 170px;
   cursor: pointer;
 }
 
@@ -62,7 +62,7 @@ img.bg {
   left: 0;
 }
 
-#parallax_div {
+#parallax-div {
   height: 100vh;
 }
 
