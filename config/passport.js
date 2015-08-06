@@ -4,7 +4,7 @@ require('../app/models/user.model');
 var mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
-  googleStrategy = require('passport-google-oauth').OAuth2Strategy,
+  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   TwitterStrategy = require('passport-twitter').Strategy,
   FacebookStrategy = require('passport-facebook').Strategy,
   config = require('./config');
@@ -22,7 +22,7 @@ function makePassword() {
 module.exports = function() {
 
   //google strategy
-  passport.use(new googleStrategy({
+  passport.use(new GoogleStrategy({
     clientID: config.google.clientID,
     clientSecret: config.google.clientSecret,
     callbackURL: '/auth/google/callback',
