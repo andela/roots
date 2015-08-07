@@ -14,6 +14,7 @@ authController.prototype.authCallback = function(strategy) {
         res.redirect('/#/home');
       }
       else {
+
         var token = jwt.sign(user, config.secret, {
             expiresInMinutes: 1440 //24hr expiration
         });
