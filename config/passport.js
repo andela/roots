@@ -4,7 +4,8 @@ require('../app/models/user.model');
 var mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
-  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+  googleStrategy = require('passport-google-oauth').OAuth2Strategy,
+  TwitterStrategy = require('passport-twitter').Strategy,
   FacebookStrategy = require('passport-facebook').Strategy,
   config = require('./config');
 
@@ -43,7 +44,6 @@ module.exports = function() {
         });
       });
     }
-
   ));
 
   passport.use(new TwitterStrategy({
