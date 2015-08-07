@@ -35,7 +35,7 @@ describe('User Authentication Test', function() {
       fieldDisplayTest(passwordFld, 'input');
       fieldDisplayTest(signupButtn, 'button');
 
-      fieldAttribTest(emailFld, 'type', 'text');
+      fieldAttribTest(emailFld, 'type', 'email');
       fieldAttribTest(firstnameFld, 'type', 'text');
       fieldAttribTest(lastnameFld, 'type', 'text');
       fieldAttribTest(passwordFld, 'type', 'password');
@@ -56,16 +56,13 @@ describe('User Authentication Test', function() {
 
       signupLink.click();
 
-      emailFld.sendKeys('hfjshfj');
+      emailFld.sendKeys('hfjshfj@mail');
       firstnameFld.sendKeys('hfjshfj');
       lastnameFld.sendKeys('hfjshfj');
       passwordFld.sendKeys('hfjshfj');
 
       signupButtn.click();
-
-      messageFlds.count().then(function(value){
-        console.log(value);
-      });
+      
       fieldTextTest(messageFlds.get(2), 'Enter Valid Email')
 
 
