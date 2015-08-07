@@ -22,5 +22,11 @@ module.exports = function(app, passport) {
   router.route('/auth/facebook/callback')
     .get(auth.authCallback('facebook'));
 
+  router.route('/auth/twitter')
+  .get(passport.authenticate('twitter'));
+
+  router.route('/auth/twitter/callback') 
+  .get(auth.authCallback('twitter'));
+
   app.use('', router);
 };
