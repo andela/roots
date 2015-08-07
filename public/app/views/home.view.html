@@ -9,6 +9,20 @@
             <li><a ng-click="login('login')" tabindex="-1" class="nav-link">Log in</a></li>
             <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue" id="create-event-btn" type="submit" name="action">Create Event</button>
           </ul>
+          <ul ng-if="loggedIn" class="right" id="nav-menu">
+            <li class="user-dropdown">
+              <a href="" ng-click="">
+              <img ng-src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" class="navbar-image">
+              <span>Welcome {{userName}}</span>
+              </a>
+              <ul class="user-menu">
+                <li style="clear:both;height:40px"><a href="" ng-click="">My Profile</a></li>
+                <li style="clear:both;height:40px"><a href="" ng-click="">Browse Events</a></li>
+                <li style="clear:both;height:40px"><a href="" ng-click="logout()">Logout</a></li>
+              </ul>
+            </li>
+            <button ng-click="" class="btn waves-effect waves-light blue" id="create-event-btn" type="submit" name="action">Create Event</button>
+          </ul>
         </div>
       </nav>
     </div>

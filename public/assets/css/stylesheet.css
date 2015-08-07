@@ -6,10 +6,60 @@
   font-size: 100%;
 }
 
-.authButton {
+.auth-button {
   height:50px;
   width:160px;
   cursor:pointer
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    display: none;
+    margin: 0;
+    z-index: 1;
+
+    /****************
+     ** NEW STYLES **
+     ****************/
+
+    list-style: none; /** Remove list bullets */
+    width: 100%; /** Set the width to 100% of it's parent */
+    padding: 0;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/** Button Styles **/
+.dropdown button {
+    background: #38a152;
+    color: #FFFFFF;
+    border: none;
+    margin: 0;
+    padding: 0.4em 0.8em;
+    font-size: 1em;
+}
+
+/** List Item Styles **/
+.dropdown a {
+    display: block;
+    padding: 0.2em 0.8em;
+    text-decoration: none;
+    background: #7f7f7f;
+    color: #000000;
+}
+
+/** List Item Hover Styles **/
+.dropdown a:hover {
+    background: #38a152;
+>>>>>>> feat(frontend) restyle navbar user dropdown
 }
 
 #dialog-button {
@@ -173,7 +223,51 @@ img.bg {
 
 #site-logo {
    font-family: Courier;
-   font-size:80px;
+   font-size: 80px;
+}
+
+.user-dropdown {
+  font-size: 15px;
+  cursor: pointer;
+  font-family: "Courier";
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.user-dropdown .user-menu {
+  position: absolute;
+  top: 100%;
+  display: none;
+  margin: 0;
+  z-index: 1;
+  /****************
+   ** NEW STYLES **
+   ****************/
+
+  list-style: none; /** Remove list bullets */
+  width: 100%; /** Set the width to 100% of it's parent */
+  padding: 0;
+}
+
+.user-dropdown:hover .user-menu {
+  display: block;
+  height: 160px;
+  background: rgba(0,0,0,.8) !important;
+}
+
+.user-dropdown .user-menu a:hover {
+    text-decoration: underline;
+}
+
+.navbar-image {
+  width: 30px;
+  height: 30px;
+  margin-bottom: -10px;
 }
 
 .nav-link {
@@ -280,7 +374,7 @@ img.bg {
  
 .sub-menu {
     width:100%;
-    padding:5px 0px;
+    /*padding:5px 0px;*/
     position:absolute;
     top:100%;
     left:0px;
@@ -297,7 +391,7 @@ img.bg {
 }
  
 .sub-menu li a {
-    padding:10px 30px;
+    /*padding:10px 30px;*/
     display:block;
 }
  
@@ -333,7 +427,7 @@ nav {
 }
  
 .help-menu li a {
-    padding:10px 30px;
+    /*padding:10px 30px;*/
     display:block;
 }
  
