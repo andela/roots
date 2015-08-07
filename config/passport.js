@@ -12,9 +12,8 @@ var mongoose = require('mongoose'),
 function makePassword() {
   var text = "";
   var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
   for (var i=0; i < 7; i++ ) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 }
@@ -28,7 +27,6 @@ module.exports = function() {
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   }, 
-
     function(req, accessToken, refreshToken, profile, done) {
       process.nextTick(function() {
         User.findOne({email: profile._json.emails[0].value}, function(err, user) {
@@ -45,6 +43,8 @@ module.exports = function() {
             newUser.email = profile._json.emails[0].value;
             newUser.password = makePassword();
             newUser.gender = profile._json.gender;
+            var profilePic = profile._json.image.url;
+            newUser.profilePic = profilePic.slice(0, -6);
             newUser.save(function(err, user){
               if(err){
                 return done(err);
