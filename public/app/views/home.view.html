@@ -5,8 +5,8 @@
       <nav class="nav-div">
         <div class="nav-wrapper">
           <ul ng-if="!loggedIn" class="right" id="nav-menu">
-            <li><a ng-click="login('signup')" class="nav-link">Sign up</a></li>
-            <li><a ng-click="login('login')" class="nav-link">Log in</a></li>
+            <li><a ng-click="login('signup')" class="nav-link" id="signupLink">Sign up</a></li>
+            <li><a ng-click="login('login')" class="nav-link" id="loginLink">Log in</a></li>
             <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue" id="create_event_btn" type="submit" name="action">Create Event</button>
           </ul>
           <ul ng-if="loggedIn" class="right" id="nav-menu">
