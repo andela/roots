@@ -4,5 +4,5 @@ exports.config = {
   capabilities: {
     browserName: 'chrome'
   },
-  baseUrl: 'http://localhost:2015'
+  baseUrl: 'http://localhost:3030'
 };

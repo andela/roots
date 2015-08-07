@@ -3,7 +3,7 @@ describe('User Authentication Test', function() {
   var loginLink = element(by.id('loginLink'));
   var showSignupLink = element(by.id('showSignupLink'));
   var showLoginLink = element(by.id('showLoginLink'));
-  var signupButtn = element(by.id('showSignupButtn'));
+  var signupButtn = element(by.id('signupButtn'));
   var loginButtn = element(by.id('loginButtn'));
 
 
