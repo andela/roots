@@ -23,6 +23,9 @@ var userSchema = new mongoose.Schema({
   	type: String,
     required: true
   },
+  profilePic: {
+    type: String
+  },
   phoneNumber1: {
     type: Number
   },
