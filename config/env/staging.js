@@ -11,7 +11,10 @@ module.exports = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
->>>>>>> refactor(backend) set config variables
+  facebook : {
+    clientID: process.env.FACEBOOK_CLIENT_ID,   
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET
+  },
   corsOptions: {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
