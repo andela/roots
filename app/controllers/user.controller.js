@@ -225,7 +225,7 @@ UserController.prototype.forgotPass = function(req, res, next) {
           from: 'World tree ✔ <no-reply@worldtreeinc.com>',
           subject: 'Account Password Reset',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://localhost:3030/#/passwordreset/' + token + '\n\n' +
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://roots-event-manager.herokuapp.com/#/passwordreset/' + token + '\n\n' +
             ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         transporter.sendMail(mailOptions, function(err, res) {
