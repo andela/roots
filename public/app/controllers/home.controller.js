@@ -3,9 +3,7 @@
 angular.module('eventApp')
   .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location) {
     $("a[href='#downpage']").click(function() {
-      $("html, body").animate({
-        scrollTop: $('#event_list').offset().top
-      }, "slow");
+      $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
 
@@ -16,17 +14,19 @@ angular.module('eventApp')
     }
 
     $rootScope.signupCheck = function() {
-      if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
+      if(localStorage.getItem('userToken')) {
+        UserService.decodeUser().then(function(res) {
+          $scope.userName = res.data.firstname;
+          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
+          $scope.loggedIn = true;
+        });
       }
-    }
-
+    };
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
       $scope.loggedIn = false;
     };
-
 
     $scope.login = function(view) {
       $mdDialog.show({
@@ -42,6 +42,9 @@ angular.module('eventApp')
     function UserLogin($scope, $rootScope, $mdDialog, view) {
       if (view === 'signup') {
         $scope.signup_dialog = true;
+      }
+      else {
+        $scope.login_dialog = true;
       }
 
       $scope.closeDialog = function() {
@@ -97,6 +100,22 @@ angular.module('eventApp')
           $scope.emailTaken = false;
           $scope.validEmail = true;
         }
+      };
+
+      $scope.resetLink = function(userEmail) {
+        UserService.sendLink(userEmail).then(function(res) {
+          $scope.errorEmail = false;
+          $scope.progressBar = true;
+          if((res.data.message === 'No user found') && userEmail) {
+            $scope.errorEmail = true;
+            $scope.progressBar = false;
+          }
+          else if (res.data.message === 'Message Sent!') {
+            $scope.emailSent = true;
+          }
+          console.log(res);
+          $scope.progressBar = false;
+        });
       };
     }
 

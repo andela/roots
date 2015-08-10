@@ -1,64 +1,65 @@
-<md-dialog aria-label="login" style="font-family:Courier">
-  <md-dialog-content ng-hide="signup_dialog">
-    <div style="width:500px">
+<md-dialog aria-label="login" class="dialog-form">
+  <md-dialog-content ng-show="login_dialog">
+    <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
-          <h5 flex offset="40"><strong>Log In</strong></h5>
+          <h5 class="dialog-header" flex offset="40"><strong>Log In</strong></h5>
           <span flex offset="20">
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog = true">Sign up</a></span>
-        <div style="width:400px;margin:20px auto">
+        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog=true;login_dialog=false">Sign up</a></span>
+        <div class="login-form">
           <form name="loginForm">
-            <input type="email" ng-model="userInfo.email" flex="60" class="signup_textbox" placeholder="Email" required />
-            <div ng-show="wrongEmail" class="password_message">This email is not registered</div>
-            <input type="password" ng-model="userInfo.password" flex="60" class="signup_textbox" placeholder="Password" required />
-            <div ng-show="wrongPassword" class="password_message">Wrong Password</div>
-            <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
-            </section>
-            <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
+              <input type="text" ng-model="userInfo.email" flex="60" class="input-textbox" placeholder="Email" required />
+              <div ng-show="wrongEmail" class="error-message">Invalid email</div>
+              <input type="password" ng-model="userInfo.password" flex="60" class="input-textbox" placeholder="Password" />
+              <div ng-show="wrongPassword" class="error-message">Wrong Password</div>
+              <section layout="row" layout-sm="column" layout-align="center center">
+                <md-button id="dialog-button" ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
+              </section>
+              <span layout="row" layout-align="center center"><a href="" ng-click="reset_dialog=true;login_dialog=false">Forgot password?</a></span>
+              <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
         </div>
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <a ng-href="/auth/google"><img class="authButton" src="../../assets/img/icons/google_signin_logo.png"></a>
-          <a href="/auth/facebook"><img class="authButton" src="../../assets/img/icons/signin_facebook.png" ng-click="facebookLogin()"></a>
-          <a ng-href="/auth/twitter"><img class="authButton" src="../../assets/img/icons/signin_twitter.png"></a>
+          <a ng-href="/auth/google"><img class="auth-button" src="../../assets/img/icons/google_signin_logo.png"></a>
+          <a ng-href="/auth/facebook"><img class="auth-button" src="../../assets/img/icons/signin_facebook.png"></a>
+          <a ng-href="/auth/twitter"><img class="auth-button" src="../../assets/img/icons/twitter_signin_logo.png"></a>
         </div>
       </md-content>
     </div>
   </md-dialog-content>
-  <md-dialog-content ng-show="signup_dialog">
-    <div style="width:500px">
+  <md-dialog-content ng-show="signup_dialog" >
+    <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
-          <h5 flex offset="40"><strong>Sign Up</strong></h5>
+          <h5 class="dialog-header" flex offset="40"><strong>Sign Up</strong></h5>
           <span flex offset="15">
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog = !signup_dialog">Log In</a></span>
-        <div style="width:400px;margin:20px auto">
+        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog=false;login_dialog=true">Log In</a></span>
+        <div class="login-form">
           <form name="signupForm">
-            <input ng-model="newUser.firstname" type="text" flex="60" class="signup_textbox" placeholder="First Name" required />
-            <input ng-model="newUser.lastname" type="text" flex="60" class="signup_textbox" placeholder="Last Name" required />
-            <input ng-model="newUser.email" type="email" name="myEmail" flex="60" class="signup_textbox" placeholder="Email" required />
-            <div ng-show="validEmail" class="password_message">Enter Valid Email</div>
-            <div ng-show="emailTaken" class="password_message">This email is taken</div>
-            <input ng-model="newUser.password" name="password" type="password" flex="60" class="signup_textbox" placeholder="Password" ng-minlength="6" ng-maxlength="20" required />
-            <div ng-messages="signupForm.password.$error">
-              <div class="password_message" ng-message="minlength">Enter a minimun of 6 characters</div>
-              <div class="password_message" ng-message="maxlength">Can not be more than 20 characters</div>
+            <input ng-model="newUser.firstname" type="text" flex="60" class="input-textbox" placeholder="First Name" required />
+            <input ng-model="newUser.lastname" type="text" flex="60" class="input-textbox" placeholder="Last Name" required />
+            <input ng-model="newUser.email" type="text" name="myEmail" flex="60" class="input-textbox" placeholder="Email" required />
+            <div ng-show="validEmail" class="error-message">Enter Valid Email</div>
+            <div ng-show="emailTaken" class="error-message">This email is taken</div>
+            <input ng-model="newUser.password" name="password" type="password" flex="60" class="input-textbox" placeholder="Password" ng-minlength="6" ng-maxlength="20" required />
+            <div class="error-div" ng-messages="signupForm.password.$error">
+              <div class="error-message" ng-message="minlength">Enter a minimun of 6 characters</div>
+              <div class="error-message" ng-message="maxlength">Can not be more than 20 characters</div>
             </div>
             <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
+              <md-button id="dialog-button" ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
             </section>
             <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
@@ -66,11 +67,49 @@
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <a ng-href="/auth/google"><img class="authButton" src="../../assets/img/icons/google_signin_logo.png"></a>
-          <a href="/auth/facebook"><img class="authButton" src="../../assets/img/icons/signin_facebook.png" ng-click="facebookLogin()"></a>
-          <a ng-href="/auth/twitter"><img class="authButton" src="../../assets/img/icons/signin_twitter.png"></a>
+          <a ng-href="/auth/google"><img class="auth-button" src="../../assets/img/icons/google_signin_logo.png"></a>
+          <a ng-href="/auth/facebook"><img class="auth-button" src="../../assets/img/icons/signin_facebook.png"></a>
+          <a ng-href="/auth/twitter"><img class="auth-button" src="../../assets/img/icons/twitter_signin_logo.png"></a>
         </div>
       </md-content>
     </div>
+  </md-dialog-content>
+  <md-dialog-content ng-show="reset_dialog">
+  <div class="modal-div">
+      <md-content ng-hide="emailSent">
+        <div layout="row" layout-align="center center">
+          <h5 class="dialog-header" flex offset="15"><strong>Forgot your password?</strong></h5>
+          <span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
+          </md-button>
+          </span>
+        </div><br>
+        <span layout="row" layout-align="center center" style="margin:0 45px">Enter your email address and we'll send you a link to reset your password</span>
+      <div class="login-form">
+        <form name="resetForm">
+          <input type="text" ng-model="oldUser.email" flex="60" class="input-textbox" placeholder="Email" required />
+          <div ng-show="errorEmail" class="error-message">This email is not registered</div>
+          <section layout="row" layout-sm="column"  layout-align="center center">
+            <md-button id="dialog-button" ng-click="resetLink(oldUser)" flex="50" class="md-raised">Send reset link</md-button>
+          </section>
+          <span layout="row" layout-align="center center"><a href="" ng-click="reset_dialog=false;login_dialog=true">cancel</a></span>
+          <md-progress-linear md-mode="indeterminate" ng-show="progressBar"></md-progress-linear>
+        </form>
+      </div>
+    </md-content>
+    <md-content ng-show="emailSent">
+      <div layout="row" layout-align="center center">
+        <h5 class="dialog-header" flex offset="15"><strong>Reset your password</strong></h5>
+          <span>
+          <md-button class="md-icon-button" ng-click="closeDialog()">
+            <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
+          </md-button>
+          </span>
+      </div><br>
+      To sign into World Tree, please follow these steps in the <b>next 24 hours:</b><br>
+      1). Open the e-mail we just sent to <b>{{oldUser.email}}</b><br>
+      2). Click on the link in the e-mail to reset your password
+    </md-content>
   </md-dialog-content>
 </md-dialog>
