@@ -20,7 +20,8 @@ UserController.prototype.welcomeMail = function(req, res) {
     to: data.mail,
     subject: 'Welcome to World Tree!',
     text: 'Welcome to World Tree!',
-    html: '<b> Hello ' + data.name + ', Thanks for registering with World Tree. Click <a href="http://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
+    html: '<b> Hello ' + data.name + ',\n Thanks for registering with World Tree. \n' + 
+    'Click <a href="http://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
