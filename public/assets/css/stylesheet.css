@@ -18,10 +18,13 @@
   height: 8px;
 }
 
-.auth-button {
-  height:50px;
-  width:160px;
-  cursor:pointer
+.info-span {
+  margin: 0 45px;
+}
+
+.menu-list {
+  clear: both;
+  height: 40px;
 }
 
 #dialog-button {
@@ -53,7 +56,7 @@
 
 .auth-button {
   height: 50px;
-  width: 170px;
+  width: 165px;
   cursor: pointer;
 }
 
@@ -93,7 +96,7 @@ img.bg {
   color: white; 
   font-family: "Courier";
   font-size: 22px;
-  margin: 10px 0 0 10px;
+  margin: 5px;
   white-space: nowrap;
   overflow: hidden;
   width: 39em;
@@ -106,17 +109,18 @@ img.bg {
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
-  #foo {
+  #motto-display {
       font-size: 20px;
-      width: 27em
+      width: 17em
   }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
-  #foo {
+  #motto-display {
     font-size: 20px;
-    width: 35em
+    width: 27em
   }
 }
+
 @-moz-keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     -moz-transform: translateY(0);
@@ -131,6 +135,7 @@ img.bg {
     transform: translateY(-15px);
   }
 }
+
 @-webkit-keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     -webkit-transform: translateY(0);
@@ -215,7 +220,7 @@ img.bg {
 .user-dropdown:hover .user-menu {
   display: block;
   height: 160px;
-  background: rgba(0,0,0,.9) !important;
+  background: rgba(0,0,0,.9);
 }
 
 .user-dropdown .user-menu a:hover {
@@ -241,27 +246,16 @@ img.bg {
   cursor: pointer;
 }
 
-#view-event-btn {
+.event-btn {
   font-family: "Courier"
 }
 
-#view-event-btn:hover {
-  background: #00bfff !important;
-  font-family: "Courier"
-}
-
-#create-event-btn {
-  color: white;
-  font-family: "Courier"
-}
-
-#create-event-btn:hover {
-  background: #00bfff !important;
-  font-family: "Courier";
+.event-btn:hover {
+  color: #181111;
 }
 
 .nav-div {
-  background: rgba(0,0,0,.8) !important;
+  background: rgba(0,0,0,.8);
 }
 
 .input-textbox {
