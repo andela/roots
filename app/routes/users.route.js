@@ -15,11 +15,23 @@ module.exports = function(app) {
    .put(ctrl.editUser)
    .delete(ctrl.deleteCurrentUser);
 
+  router.route('/twitterUser/:user_id')
+    .put(ctrl.editTwitUser);
+
   router.route('/authenticate')
     .post(ctrl.authenticate);
 
   router.route('/user/welcomeMail')
     .post(ctrl.welcomeMail);
+
+  router.route('/decode')
+    .get(ctrl.verifyToken, ctrl.decodeUser);
+    
+  router.route('/forgotPass')
+    .post(ctrl.forgotPass);
+
+  router.route('/reset/:token')
+    .post(ctrl.resetPass);
 
   app.use('/api', router);
 };
