@@ -4,5 +4,9 @@ exports.config = {
   capabilities: {
     browserName: 'chrome'
   },
+  jasmineNodeOpts: {
+    showColors: true,
+    defaultTimeoutInterval: 5000
+  },
   baseUrl: 'http://localhost:2015'
 };
