@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/andela/roots",
   "dependencies": {
+    "async": "^1.4.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.1",
     "cors": "^2.7.1",
+    "crypto": "0.0.3",
     "express": "^4.13.0",
     "express-session": "^1.11.3",
     "jsonwebtoken": "^5.0.4",
