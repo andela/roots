@@ -1,0 +1,36 @@
+<div data-ng-init="completeUserCheck()">
+  <div class="navbar">
+    <nav class="nav-div">
+      <div class="nav-wrapper">
+      <span ui-sref="home" class="brand-logo left"><strong id="navbar-logo">World Tree</strong></span>
+      </div>
+    </nav>
+  </div>
+  <div>
+    <md-content ng-hide="twitter">
+      <div layout="row" layout-align="center center">
+        <h5 class="dialog-header"><strong>Registration</strong></h5>
+      </div>
+      <span layout="row" layout-align="center center" style="margin:0 45px">Please provide your email to complete registration</span>
+      <div class="login-form">
+        <form name="userForm">
+            <input ng-model="userInfo.email" type="email" flex="60" class="input-textbox" placeholder="Email" required />
+            <div class="error-message" ng-show="emailTaken">This email is already taken</div>
+
+            <section layout="row" layout-sm="column" layout-align="center center">
+              <md-button id="dialog-button" ng-click="changeMail(userInfo)" flex="50" class="md-raised">Submit</md-button>
+            </section>
+            <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
+        </form>
+      </div>
+    </md-content>
+    <md-content ng-show="twitter">
+       <div layout="row" layout-align="center center">
+        <h5 class="dialog-header"><strong>Password successfully changed!</strong></h5>
+      </div><br>
+      <div layout="row" layout-align="center center">
+        <em>redirecting to home in <strong>3 seconds</strong>, or click <a ui-sref="home">here</a></em>
+      </div>
+    </md-content>
+  </div>
+</div>
