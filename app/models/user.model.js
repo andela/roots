@@ -19,6 +19,13 @@ var userSchema = new mongoose.Schema({
       unique: true
     }
   },
+  twitEmail: {
+    type: String
+  },
+  mailChanged: {
+    type: Boolean,
+    default: false
+  },
   password: {
   	type: String,
     required: true
@@ -43,7 +50,9 @@ var userSchema = new mongoose.Schema({
   },
   address2: {
     type: String
-  }
+  },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 }, {
   versionKey: false
 });
