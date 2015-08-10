@@ -123,18 +123,13 @@ describe("API Test", function() {
   });
 
   describe("User signup", function() {
-     
-     beforeEach(function(done) {
 
-        User.remove({}, function(err) {
+    User.remove({}, function(err) {
 
-          if (!err) {
-            console.log('User collection removed!');
-          }
-        });
-        done();
-      });
-     
+      if (!err) {
+        console.log('User collection removed!');
+      }
+    });
 
     it('should create a new user', function(done) {
 
@@ -151,11 +146,7 @@ describe("API Test", function() {
         })
         .expect(200)
         .end(function(err, response) {
-          expect(response.body).toEqual(jasmine.objectContaining({
-          	success: false,
-            message: 'user email taken'
-          }));
-          
+          expect(err).toBe(null);
         });
         done();
     });
@@ -181,10 +172,9 @@ describe("API Test", function() {
           .expect(422)
           .end(function(err, response) {
             expect(response.body).toEqual(jasmine.objectContaining({
-              success: false, 
-              message:'Check parameters!'
+              success: false,
+              message: 'user email taken'
             }));
-            
           });          
       });
       done();
