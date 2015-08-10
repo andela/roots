@@ -41,14 +41,19 @@ angular.module('eventApp')
 
     function UserLogin($scope, $rootScope, $mdDialog, view) {
       if (view === 'signup') {
-        $scope.signup_dialog = true;
+        $scope.signupDialog = true;
       }
       else {
-        $scope.login_dialog = true;
+        $scope.loginDialog = true;
       }
 
       $scope.closeDialog = function() {
         $mdDialog.hide();
+      };
+
+      $scope.toggleDialog = function() {
+        $scope.signupDialog = !$scope.signupDialog;
+        $scope.loginDialog = !$scope.loginDialog;
       };
 
       function validateEmail(email) {
