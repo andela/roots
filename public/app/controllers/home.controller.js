@@ -23,12 +23,10 @@ angular.module('eventApp')
       }
     };
 
-
     $scope.logout = function() {
       localStorage.removeItem('userToken');
       $scope.loggedIn = false;
     };
-
 
     $scope.login = function(view) {
       $mdDialog.show({
@@ -102,6 +100,22 @@ angular.module('eventApp')
           $scope.emailTaken = false;
           $scope.validEmail = true;
         }
+      };
+
+      $scope.resetLink = function(userEmail) {
+        UserService.sendLink(userEmail).then(function(res) {
+          $scope.errorEmail = false;
+          $scope.progressBar = true;
+          if((res.data.message === 'No user found') && userEmail) {
+            $scope.errorEmail = true;
+            $scope.progressBar = false;
+          }
+          else if (res.data.message === 'Message Sent!') {
+            $scope.emailSent = true;
+          }
+          console.log(res);
+          $scope.progressBar = false;
+        });
       };
     }
 
