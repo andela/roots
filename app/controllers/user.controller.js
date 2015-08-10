@@ -23,11 +23,11 @@ UserController.prototype.welcomeMail = function(req, res) {
   var data = req.body;
   var mailOptions = {
     from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-    to: data.mail,
+    to: data.email,
     subject: 'Welcome to World Tree!',
     text: 'Welcome to World Tree!',
-    html: '<b> Hello ' + data.name + ',\n Thanks for registering with World Tree. \n' +
-      'Click <a href="https://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
+    html: '<b> Hello ' + data.firstname + ',\n Thanks for registering with World Tree. \n' +
+      'Click <a href="http://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
@@ -61,6 +61,7 @@ UserController.prototype.userSignup = function(req, res) {
         if (err) {
           return res.json(err);
         }
+        UserController.prototype.welcomeMail(req, res);
         return res.json(user);
       });
     }
