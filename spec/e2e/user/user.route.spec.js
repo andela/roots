@@ -125,14 +125,12 @@ describe("API Test", function() {
   describe("User signup", function() {
 
     User.remove({}, function(err) {
-
       if (!err) {
         console.log('User collection removed!');
       }
     });
 
     it('should create a new user', function(done) {
-
       request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
@@ -152,35 +150,25 @@ describe("API Test", function() {
     });
 
     it('should not create duplicate user', function(done) {
-
-      var user = new User();
-      user.firstname = 'yoga';
-      user.lastname = 'loga';
-      user.email = 'yoga@gmail.com';
-      user.password = '****';
-      user.phoneNumber1 = '12345';
-      user.gender = 'male';
-
-      user.save(function() {
-        request(app)
-          .post('/api/users')
-          .set('Content-Type', 'application/json')
-          .send({
-            email: 'yoga@gmail.com',
-            password: '7777'
-          })
-          .expect(422)
-          .end(function(err, response) {
-            expect(response.body).toEqual(jasmine.objectContaining({
-              success: false,
-              message: 'user email taken'
-            }));
-          });          
-      });
+      request(app)
+        .post('/api/users')
+        .set('Content-Type', 'application/json')
+        .send({
+          firstname: 'yoga',
+          lastname: 'loga',
+          email: 'yoga@gmail.com',
+          password: '1234',
+          phoneNumber1: '12345',
+          gender: 'male'
+        })
+        .expect(422)
+        .end(function(err, response) {
+          expect(err).not.toBe(null);
+        });          
       done();
     });
-  });
 
+  });
 });
 
 
