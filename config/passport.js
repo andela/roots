@@ -65,24 +65,27 @@ module.exports = function() {
   },
     function(req, token, tokenSecret, profile, done) {
       process.nextTick(function() {
-        User.findOne({ firstname : profile._json.screen_name}, function (err, user) {
+        User.findOne({ twitEmail: profile._json.screen_name + '@mail.com'}, function (err, user) {
           if(err){
             return done(err);
           }
           if(user) {
-
             return done(null, user);
           }
           else {
             var newUser = new User();
             newUser.firstname = profile._json.screen_name;
             newUser.lastname = profile._json.name;
+            newUser.password = makePassword();
+            var profilePic = profile.photos[0].value;
+            newUser.profilePic = profilePic.replace('_normal', '');
             newUser.email = profile._json.screen_name + '@mail.com';
+            newUser.twitEmail = profile._json.screen_name + '@mail.com';
             newUser.save(function(err, user) {
                 if (err) {
                   throw err;
                 }
-                return done(null, user);  
+                return done(null, user);
             });
           }
         });
@@ -91,22 +94,18 @@ module.exports = function() {
   ));
 
   passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_CLIENT_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    clientID: config.facebook.clientID,
+    clientSecret: config.facebook.clientSecret,
     callbackURL: '/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'photos', 'gender', 'email', 'first_name', 'last_name'],
+    profileFields: ['id', 'displayName', 'picture.type(large)', 'gender', 'email', 'first_name', 'last_name'],
     enableProof: false
   },
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
       // asynchronous
       process.nextTick(function() {
-
         // find the user in the database based on their facebook id
-        User.findOne({
-          'email': profile.emails[0].value
-        }, function(err, user) {
-
+        User.findOne({email: profile._json.email}, function(err, user) {
           if (err) {
             return done(err);
           }
@@ -116,20 +115,17 @@ module.exports = function() {
           } 
           else {
             var newUser = new User();
-            newUser.firstname = profile.name.givenName;
-            newUser.lastname = profile.name.familyName;
-            newUser.gender = profile.gender;
-            
-            if (profile.emails && profile.emails.length > 0) {
-              newUser.email = profile.emails[0].value;
-            }
-
+            newUser.firstname = profile._json.first_name;
+            newUser.lastname = profile._json.last_name;
+            newUser.gender = profile._json.gender;
+            newUser.email = profile._json.email;
+            newUser.profilePic = profile._json.picture.data.url;
+            newUser.password = makePassword();
             // save our user to the database
             newUser.save(function(err) {
               if (err) {
                 return done(err);
               }
-
               return done(null, newUser);
             });
           }
