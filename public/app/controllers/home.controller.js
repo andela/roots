@@ -90,11 +90,7 @@ angular.module('eventApp')
               $scope.emailTaken = true;
               $scope.progressLoad = false;
               $scope.validEmail = false;
-            } else {
-              $rootScope.sendWelcomeMail({
-                email: newUser.email,
-                firstname: newUser.firstname
-              });
+            } else {              
               $scope.loginUser({
                 email: newUser.email,
                 password: newUser.password
