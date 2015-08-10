@@ -6,60 +6,22 @@
   font-size: 100%;
 }
 
+#navbar-logo {
+  font-family: papyrus;
+  color: white;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+.error-div {
+  border: 1px solid transparent;
+  height: 8px;
+}
+
 .auth-button {
   height:50px;
   width:160px;
   cursor:pointer
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    display: none;
-    margin: 0;
-    z-index: 1;
-
-    /****************
-     ** NEW STYLES **
-     ****************/
-
-    list-style: none; /** Remove list bullets */
-    width: 100%; /** Set the width to 100% of it's parent */
-    padding: 0;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
-/** Button Styles **/
-.dropdown button {
-    background: #38a152;
-    color: #FFFFFF;
-    border: none;
-    margin: 0;
-    padding: 0.4em 0.8em;
-    font-size: 1em;
-}
-
-/** List Item Styles **/
-.dropdown a {
-    display: block;
-    padding: 0.2em 0.8em;
-    text-decoration: none;
-    background: #7f7f7f;
-    color: #000000;
-}
-
-/** List Item Hover Styles **/
-.dropdown a:hover {
-    background: #38a152;
->>>>>>> feat(frontend) restyle navbar user dropdown
 }
 
 #dialog-button {
@@ -245,29 +207,27 @@ img.bg {
   display: none;
   margin: 0;
   z-index: 1;
-  /****************
-   ** NEW STYLES **
-   ****************/
-
-  list-style: none; /** Remove list bullets */
-  width: 100%; /** Set the width to 100% of it's parent */
+  list-style: none;
+  width: 100%;
   padding: 0;
 }
 
 .user-dropdown:hover .user-menu {
   display: block;
   height: 160px;
-  background: rgba(0,0,0,.8) !important;
+  background: rgba(0,0,0,.9) !important;
 }
 
 .user-dropdown .user-menu a:hover {
-    text-decoration: underline;
+    color: #00bfff;
 }
 
 .navbar-image {
   width: 30px;
   height: 30px;
   margin-bottom: -10px;
+  border: 1px solid white;
+  border-radius: 2px;
 }
 
 .nav-link {
@@ -304,140 +264,31 @@ img.bg {
   background: rgba(0,0,0,.8) !important;
 }
 
-.signup_textbox {
+.input-textbox {
   border: 2px solid #181111 !important;
   padding: 5px !important;
   height: 30px !important;
-  font-weight: bolder !important;
   border-radius: 5px !important; 
-}
- 
-.clearfix:after {
-    display:block;
-    clear:both;
-}
- 
-/*----- Menu Outline -----*/
-.menu-wrap {
-    width:100%;
-    box-shadow:0px 1px 3px rgba(0,0,0,0.2);
-    background:#3e3436;
-}
- 
-.menu {
-    width:100%;
-    margin:0px auto;
-}
- 
-.menu li {
-    margin:0px;
-    list-style:none;
-}
- 
-.menu a {
-    transition:all linear 0.15s;
-    color:#919191;
-}
- 
-.menu li:hover > a, .menu .current-item > a {
-    text-decoration:none;
-    color:#be5b70;
-}
- 
-.menu .arrow {
-    font-size:11px;
-    line-height:0%;
-}
- 
-/*----- Top Level -----*/
-.menu > ul > li {
-    float:left;
-    display:inline-block;
-    position:relative;
-    font-size:19px;
-}
- 
-.menu > ul > li > a {
-    display:inline-block;
-    text-shadow:0px 1px 0px rgba(0,0,0,0.4);
-}
- 
-.menu > ul > li:hover > a, .menu > ul > .current-item > a {
-    background:#2e2728;
-}
- 
-/*----- Bottom Level -----*/
-.menu li:hover .sub-menu {
-    z-index:1;
-    opacity:1;
-}
- 
-.sub-menu {
-    width:100%;
-    /*padding:5px 0px;*/
-    position:absolute;
-    top:100%;
-    left:0px;
-    z-index:-1;
-    opacity:0;
-    transition:opacity linear 0.15s;
-    box-shadow:0px 2px 3px rgba(0,0,0,0.2);
-    background:#2e2728;
-}
- 
-.sub-menu li {
-    display:block;
-    font-size:16px;
-}
- 
-.sub-menu li a {
-    /*padding:10px 30px;*/
-    display:block;
-}
- 
-.sub-menu li a:hover, .sub-menu .current-item a {
-    background:#3e3436;
-}
-
-nav {
-  background: black;
-}
-
-/*----- Bottom Level -----*/
-.menu li:hover .help-menu {
-    z-index:1;
-    opacity:1;
-}
- 
-.help-menu {
-    width:250%;
-    position:absolute;
-    top:100%;
-    left:0px;
-    z-index:-1;
-    opacity:0;
-    transition:opacity linear 0.15s;
-    box-shadow:0px 2px 3px rgba(0,0,0,0.2);
-    background:#2e2728;
-}
- 
-.help-menu li {
-    display:block;
-    font-size:16px;
-}
- 
-.help-menu li a {
-    /*padding:10px 30px;*/
-    display:block;
-}
- 
-.help-menu li a:hover, .sub-menu .current-item a {
-    background:#3e3436;
 }
 
 .error-message {
   margin-top: -10px;
   height: 20px;
   font-size: 10px;
-  color: red
+  color: red;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #000;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #000;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #000;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    #000;
 }
