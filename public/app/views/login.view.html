@@ -1,5 +1,5 @@
 <md-dialog aria-label="login" class="dialog-form">
-  <md-dialog-content ng-show="login_dialog">
+  <md-dialog-content ng-show="loginDialog">
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
@@ -10,7 +10,7 @@
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="signup_dialog=true;login_dialog=false">Sign up</a></span>
+        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="toggleDialog()">Sign up</a></span>
         <div class="login-form">
           <form name="loginForm">
               <input type="text" ng-model="userInfo.email" flex="60" class="input-textbox" placeholder="Email" required />
@@ -20,21 +20,21 @@
               <section layout="row" layout-sm="column" layout-align="center center">
                 <md-button id="dialog-button" ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
               </section>
-              <span layout="row" layout-align="center center"><a href="" ng-click="reset_dialog=true;login_dialog=false">Forgot password?</a></span>
+              <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">Forgot password?</a></span>
               <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
         </div>
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <a ng-href="/auth/google"><img class="auth-button" src="../../assets/img/icons/google_signin_logo.png"></a>
-          <a ng-href="/auth/facebook"><img class="auth-button" src="../../assets/img/icons/signin_facebook.png"></a>
-          <a ng-href="/auth/twitter"><img class="auth-button" src="../../assets/img/icons/twitter_signin_logo.png"></a>
+          <a ng-href="/auth/google"><img class="auth-button" src="../../assets/img/icons/google-signin-logo.png"></a>
+          <a ng-href="/auth/facebook"><img class="auth-button" src="../../assets/img/icons/signin-facebook.png"></a>
+          <a ng-href="/auth/twitter"><img class="auth-button" src="../../assets/img/icons/twitter-signin-logo.png"></a>
         </div>
       </md-content>
     </div>
   </md-dialog-content>
-  <md-dialog-content ng-show="signup_dialog" >
+  <md-dialog-content ng-show="signupDialog" >
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
@@ -45,7 +45,7 @@
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="signup_dialog=false;login_dialog=true">Log In</a></span>
+        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="toggleDialog()">Log In</a></span>
         <div class="login-form">
           <form name="signupForm">
             <input ng-model="newUser.firstname" type="text" flex="60" class="input-textbox" placeholder="First Name" required />
@@ -67,9 +67,9 @@
         <hr>
         <span layout="row" layout-align="center center"><em><strong>Or</strong></em></span>
         <div layout="row" layout-align="center center">
-          <a ng-href="/auth/google"><img class="auth-button" src="../../assets/img/icons/google_signin_logo.png"></a>
-          <a ng-href="/auth/facebook"><img class="auth-button" src="../../assets/img/icons/signin_facebook.png"></a>
-          <a ng-href="/auth/twitter"><img class="auth-button" src="../../assets/img/icons/twitter_signin_logo.png"></a>
+          <a ng-href="/auth/google"><img class="auth-button" src="../../assets/img/icons/google-signin-logo.png"></a>
+          <a ng-href="/auth/facebook"><img class="auth-button" src="../../assets/img/icons/signin-facebook.png"></a>
+          <a ng-href="/auth/twitter"><img class="auth-button" src="../../assets/img/icons/twitter-signin-logo.png"></a>
         </div>
       </md-content>
     </div>
@@ -85,7 +85,7 @@
           </md-button>
           </span>
         </div><br>
-        <span layout="row" layout-align="center center" style="margin:0 45px">Enter your email address and we'll send you a link to reset your password</span>
+        <span layout="row" layout-align="center center" class="info-span">Enter your email address and we'll send you a link to reset your password</span>
       <div class="login-form">
         <form name="resetForm">
           <input type="text" ng-model="oldUser.email" flex="60" class="input-textbox" placeholder="Email" required />
@@ -93,7 +93,7 @@
           <section layout="row" layout-sm="column"  layout-align="center center">
             <md-button id="dialog-button" ng-click="resetLink(oldUser)" flex="50" class="md-raised">Send reset link</md-button>
           </section>
-          <span layout="row" layout-align="center center"><a href="" ng-click="reset_dialog=false;login_dialog=true">cancel</a></span>
+          <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">cancel</a></span>
           <md-progress-linear md-mode="indeterminate" ng-show="progressBar"></md-progress-linear>
         </form>
       </div>
