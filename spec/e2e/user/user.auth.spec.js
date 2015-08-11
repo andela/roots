@@ -19,7 +19,7 @@ describe('User Authentication Test', function() {
 
   var messageFlds = element.all(by.css('.password_message'));
   var welcomeLink = element(by.id('welcome'));
-  
+
   describe('Sign up Test', function() {
 
     beforeEach(function() {
@@ -73,10 +73,7 @@ describe('User Authentication Test', function() {
         signupButtn.click();
 
         fieldTextTest(messageFlds.get(2), 'Enter Valid Email');
-
-
       });
-
     });
 
     describe('Sign up process Test', function() {
@@ -105,7 +102,7 @@ describe('User Authentication Test', function() {
         newPasswordFld.sendKeys('hfjshfj');
 
         signupButtn.click();
-        fieldTextTest(welcomeLink, 'Welcome hfjshfj');        
+        fieldTextTest(welcomeLink, 'Welcome hfjshfj');
       });
 
       it('expects to notify of duplicate user registration attempt', function() {
@@ -147,8 +144,6 @@ describe('User Authentication Test', function() {
         done();
       });
     });
-
-
   });
 
 
@@ -198,11 +193,7 @@ describe('User Authentication Test', function() {
         loginButtn.click();
 
         fieldTextTest(messageFlds.get(0), 'This email is not registered');
-
-
       });
-
-
     });
 
     describe('Log in process Test', function() {
