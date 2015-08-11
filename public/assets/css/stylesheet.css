@@ -32,6 +32,7 @@
   background: #00bfff;
 }
 
+
 .dialog-header {
   color: #00bfff;
 }
@@ -61,7 +62,15 @@
   cursor: pointer;
 }
 
-#event-list {
+#worldTreeInc {
+  margin-left: 200px;
+  text-align: left;
+  position: absolute;
+    right: 800px;
+    width: 300px;
+}
+
+#event_list {
   position: relative;
   min-height: 800px;
   max-height: auto;
