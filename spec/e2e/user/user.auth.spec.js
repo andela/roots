@@ -17,7 +17,7 @@ describe('User Authentication Test', function() {
   var emailFld = element(by.model('userInfo.email'));
   var passwordFld = element(by.model('userInfo.password'));
 
-  var messageFlds = element.all(by.css('.password_message'));
+  var messageFlds = element.all(by.css('.error-message'));
   var welcomeLink = element(by.id('welcome'));
 
   describe('Sign up Test', function() {
@@ -30,6 +30,7 @@ describe('User Authentication Test', function() {
     describe('Sign up page and signup validation Test', function() {
 
       it('expects Sign up link to be present and as link', function() {
+        signupLink.click();
         fieldRenderTest(signupLink, 'a');
         fieldTextTest(signupLink, 'Sign up');
       });
@@ -44,7 +45,7 @@ describe('User Authentication Test', function() {
         fieldRenderTest(newPasswordFld, 'input');
         fieldRenderTest(signupButtn, 'button');
 
-        fieldAttribTest(newEmailFld, 'type', 'email');
+        fieldAttribTest(newEmailFld, 'type', 'text');
         fieldAttribTest(newFirstnameFld, 'type', 'text');
         fieldAttribTest(newLastnameFld, 'type', 'text');
         fieldAttribTest(newPasswordFld, 'type', 'password');
@@ -103,6 +104,11 @@ describe('User Authentication Test', function() {
 
         signupButtn.click();
         fieldTextTest(welcomeLink, 'Welcome hfjshfj');
+
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
       });
 
       it('expects to notify of duplicate user registration attempt', function() {
@@ -170,7 +176,7 @@ describe('User Authentication Test', function() {
         fieldRenderTest(passwordFld, 'input');
         fieldRenderTest(loginButtn, 'button');
 
-        fieldAttribTest(emailFld, 'type', 'email');
+        fieldAttribTest(emailFld, 'type', 'text');
         fieldAttribTest(passwordFld, 'type', 'password');
 
       });
@@ -183,17 +189,18 @@ describe('User Authentication Test', function() {
       });
 
 
-      it('should not allow user to log in with wrong email', function() {
+      it('should not alow user sign in with wrong email', function() {
 
         loginLink.click();
 
-        emailFld.sendKeys('hfjshfj1@mail');
+        emailFld.sendKeys('hfjshfj1@mail.com');
         passwordFld.sendKeys('hfjshfj');
 
         loginButtn.click();
 
-        fieldTextTest(messageFlds.get(0), 'This email is not registered');
+        fieldTextTest(messageFlds.get(0), 'Invalid email');
       });
+
     });
 
     describe('Log in process Test', function() {
@@ -258,6 +265,11 @@ describe('User Authentication Test', function() {
 
         loginButtn.click();
         fieldTextTest(welcomeLink, 'Welcome hfjshfj');
+
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
 
       });
 
