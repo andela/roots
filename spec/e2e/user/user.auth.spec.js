@@ -18,6 +18,7 @@ describe('User Authentication Test', function() {
   var passwordFld = element(by.model('userInfo.password'));
 
 
+
   var messageFlds = element.all(by.css('.error-message'));
   var welcomeLink = element(by.id('welcome'));
 
@@ -45,6 +46,8 @@ describe('User Authentication Test', function() {
         fieldRenderTest(newLastnameFld, 'input');
         fieldRenderTest(newPasswordFld, 'input');
         fieldRenderTest(signupButtn, 'button');
+
+
 
 
         fieldAttribTest(newEmailFld, 'type', 'text');
