@@ -18,7 +18,7 @@
             <input type="password" ng-model="userInfo.password" flex="60" class="input-textbox" placeholder="Password" />
             <div ng-show="wrongPassword" class="error-message">Wrong Password</div>
             <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button id="dialog-button" ng-click="loginUser(userInfo)" flex="50" class="md-raised" id="loginButtn">Log In</md-button>
+              <md-button ng-click="loginUser(userInfo)" flex="50" class="md-raised" id="loginButtn">Log In</md-button>
             </section>
             <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">Forgot password?</a></span>
             <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
@@ -59,7 +59,7 @@
               <div class="error-message" ng-message="maxlength">Can not be more than 20 characters</div>
             </div>
             <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button id="dialog-button" ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised" id="signupButtn">Sign up</md-button>
+              <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised" id="signupButtn">Sign up</md-button>
             </section>
             <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
@@ -92,7 +92,7 @@
             <input type="text" ng-model="oldUser.email" flex="60" class="input-textbox" placeholder="Email" required />
             <div ng-show="errorEmail" class="error-message">This email is not registered</div>
             <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button id="dialog-button" ng-click="resetLink(oldUser)" flex="50" class="md-raised">Send reset link</md-button>
+              <md-button id="resetPassButtn" ng-click="resetLink(oldUser)" flex="50" class="md-raised">Send reset link</md-button>
             </section>
             <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">cancel</a></span>
             <md-progress-linear md-mode="indeterminate" ng-show="progressBar"></md-progress-linear>
