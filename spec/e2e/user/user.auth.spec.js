@@ -82,9 +82,7 @@ describe('User Authentication Test', function() {
       beforeEach(function(done) {
         console.log(config.db);
         mongoose.connect(config.db);
-        User.remove({
-          email: 'hfjshfj@mail.com'
-        }, function(err) {
+        User.remove({}, function(err) {
           if (!err) {
             console.log('User collection removed!');
           }
@@ -139,9 +137,7 @@ describe('User Authentication Test', function() {
 
       afterEach(function(done) {
 
-        User.remove({
-          email: 'hfjshfj@mail.com'
-        }, function(err) {
+        User.remove({}, function(err) {
           if (!err) {
             console.log('User collection removed!');
           }
@@ -269,8 +265,6 @@ describe('User Authentication Test', function() {
         welcomeLink.click();
         waits(1000);
         logoutLink.click();
-        waits(1000);
-
       });
 
 
