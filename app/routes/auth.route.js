@@ -26,7 +26,7 @@ module.exports = function(app, passport) {
   .get(passport.authenticate('twitter'));
 
   router.route('/auth/twitter/callback') 
-  .get(auth.authCallback('twitter'));
+  .get(auth.twitterAuthCallback('twitter'));
 
   app.use('', router);
 };
