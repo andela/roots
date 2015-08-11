@@ -16,16 +16,9 @@ describe('User Authentication Test', function() {
   var newPasswordFld = element(by.model('newUser.password'));
   var emailFld = element(by.model('userInfo.email'));
   var passwordFld = element(by.model('userInfo.password'));
-
-<<<<<<< HEAD
   var messageFlds = element.all(by.css('.error-message'));
   var welcomeLink = element(by.id('welcome'));
 
-=======
-  var messageFlds = element.all(by.css('.password_message'));
-  var welcomeLink = element(by.id('welcome'));
-  
->>>>>>> More e2e tests for auth features
   describe('Sign up Test', function() {
 
     beforeEach(function() {
@@ -36,10 +29,7 @@ describe('User Authentication Test', function() {
     describe('Sign up page and signup validation Test', function() {
 
       it('expects Sign up link to be present and as link', function() {
-<<<<<<< HEAD
         signupLink.click();
-=======
->>>>>>> More e2e tests for auth features
         fieldRenderTest(signupLink, 'a');
         fieldTextTest(signupLink, 'Sign up');
       });
@@ -53,12 +43,8 @@ describe('User Authentication Test', function() {
         fieldRenderTest(newLastnameFld, 'input');
         fieldRenderTest(newPasswordFld, 'input');
         fieldRenderTest(signupButtn, 'button');
-
-<<<<<<< HEAD
         fieldAttribTest(newEmailFld, 'type', 'text');
-=======
         fieldAttribTest(newEmailFld, 'type', 'email');
->>>>>>> More e2e tests for auth features
         fieldAttribTest(newFirstnameFld, 'type', 'text');
         fieldAttribTest(newLastnameFld, 'type', 'text');
         fieldAttribTest(newPasswordFld, 'type', 'password');
@@ -87,7 +73,6 @@ describe('User Authentication Test', function() {
         signupButtn.click();
 
         fieldTextTest(messageFlds.get(2), 'Enter Valid Email');
-<<<<<<< HEAD
       });
     });
 
@@ -153,7 +138,6 @@ describe('User Authentication Test', function() {
         mongoose.disconnect();
         done();
       });
-=======
 
 
       });
@@ -186,7 +170,13 @@ describe('User Authentication Test', function() {
         newPasswordFld.sendKeys('hfjshfj');
 
         signupButtn.click();
-        fieldTextTest(welcomeLink, 'Welcome hfjshfj');        
+
+        fieldTextTest(welcomeLink, 'Welcome hfjshfj');
+
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
       });
 
       it('expects to notify of duplicate user registration attempt', function() {
@@ -232,18 +222,6 @@ describe('User Authentication Test', function() {
 
   });
 
-
-
-  describe('Login Test', function() {
-
-    beforeEach(function() {
-      browser.get('/');
-      browser.driver.manage().window().maximize();﻿
->>>>>>> More e2e tests for auth features
-    });
-  });
-
-<<<<<<< HEAD
 
 
   describe('Login Test', function() {
@@ -363,7 +341,7 @@ describe('User Authentication Test', function() {
       afterEach(function(done) {
 
         User.remove({}, function(err) {
-=======
+
     describe('Login page and login validation Test', function() {
 
       it('expects Login link to be present and as link', function() {
@@ -392,11 +370,11 @@ describe('User Authentication Test', function() {
       });
 
 
-      it('should not allow user to log in with wrong email', function() {
+      it('should not alow user sign in with wrong email', function() {
 
         loginLink.click();
 
-        emailFld.sendKeys('hfjshfj1@mail');
+        emailFld.sendKeys('hfjshfj1@mail.com');
         passwordFld.sendKeys('hfjshfj');
 
         loginButtn.click();
@@ -405,8 +383,6 @@ describe('User Authentication Test', function() {
 
 
       });
-
-
     });
 
     describe('Log in process Test', function() {
@@ -472,6 +448,11 @@ describe('User Authentication Test', function() {
         loginButtn.click();
         fieldTextTest(welcomeLink, 'Welcome hfjshfj');
 
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
+
       });
 
 
@@ -482,7 +463,7 @@ describe('User Authentication Test', function() {
           if (!err) {
             console.log('User collection removed!');
           }
->>>>>>> More e2e tests for auth features
+
         });
 
         mongoose.disconnect();
