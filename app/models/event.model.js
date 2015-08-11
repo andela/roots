@@ -39,7 +39,7 @@ var eventSchema = new mongoose.Schema({
   endDate: {
     type: Date
   },
-  feedback: {
+  feedback: [{
     name: {
       type: String
     },
@@ -49,7 +49,7 @@ var eventSchema = new mongoose.Schema({
     message: {
       type: String
     }
-  }
+  }],
   task[{
     managerId: {
       type: String
