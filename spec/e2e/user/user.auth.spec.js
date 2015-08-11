@@ -17,15 +17,10 @@ describe('User Authentication Test', function() {
   var emailFld = element(by.model('userInfo.email'));
   var passwordFld = element(by.model('userInfo.password'));
 
-<<<<<<< HEAD
+
   var messageFlds = element.all(by.css('.error-message'));
   var welcomeLink = element(by.id('welcome'));
 
-=======
-  var messageFlds = element.all(by.css('.password_message'));
-  var welcomeLink = element(by.id('welcome'));
-  
->>>>>>> More e2e tests for auth features
   describe('Sign up Test', function() {
 
     beforeEach(function() {
@@ -36,10 +31,9 @@ describe('User Authentication Test', function() {
     describe('Sign up page and signup validation Test', function() {
 
       it('expects Sign up link to be present and as link', function() {
-<<<<<<< HEAD
+
         signupLink.click();
-=======
->>>>>>> More e2e tests for auth features
+
         fieldRenderTest(signupLink, 'a');
         fieldTextTest(signupLink, 'Sign up');
       });
@@ -54,11 +48,7 @@ describe('User Authentication Test', function() {
         fieldRenderTest(newPasswordFld, 'input');
         fieldRenderTest(signupButtn, 'button');
 
-<<<<<<< HEAD
-        fieldAttribTest(newEmailFld, 'type', 'text');
-=======
         fieldAttribTest(newEmailFld, 'type', 'email');
->>>>>>> More e2e tests for auth features
         fieldAttribTest(newFirstnameFld, 'type', 'text');
         fieldAttribTest(newLastnameFld, 'type', 'text');
         fieldAttribTest(newPasswordFld, 'type', 'password');
@@ -87,7 +77,6 @@ describe('User Authentication Test', function() {
         signupButtn.click();
 
         fieldTextTest(messageFlds.get(2), 'Enter Valid Email');
-<<<<<<< HEAD
       });
     });
 
@@ -95,7 +84,7 @@ describe('User Authentication Test', function() {
 
       beforeEach(function(done) {
         mongoose.connect(config.db);
-        User.remove({}, function(err) {          
+        User.remove({}, function(err) {
         });
         done();
       });
@@ -148,15 +137,12 @@ describe('User Authentication Test', function() {
       afterEach(function(done) {
 
         User.remove({}, function(err) {
-          
+
         });
         mongoose.disconnect();
         done();
       });
     });
-=======
-
-
       });
 
     });
@@ -187,7 +173,13 @@ describe('User Authentication Test', function() {
         newPasswordFld.sendKeys('hfjshfj');
 
         signupButtn.click();
-        fieldTextTest(welcomeLink, 'Welcome hfjshfj');        
+
+        fieldTextTest(welcomeLink, 'Welcome hfjshfj');
+
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
       });
 
       it('expects to notify of duplicate user registration attempt', function() {
@@ -230,8 +222,6 @@ describe('User Authentication Test', function() {
       });
     });
 
-
->>>>>>> More e2e tests for auth features
   });
 
 
@@ -258,11 +248,7 @@ describe('User Authentication Test', function() {
         fieldRenderTest(passwordFld, 'input');
         fieldRenderTest(loginButtn, 'button');
 
-<<<<<<< HEAD
         fieldAttribTest(emailFld, 'type', 'text');
-=======
-        fieldAttribTest(emailFld, 'type', 'email');
->>>>>>> More e2e tests for auth features
         fieldAttribTest(passwordFld, 'type', 'password');
 
       });
@@ -274,34 +260,18 @@ describe('User Authentication Test', function() {
         expect(signupButtn.isDisplayed()).toBe(true);
       });
 
-
-<<<<<<< HEAD
       it('should not alow user sign in with wrong email', function() {
 
         loginLink.click();
 
         emailFld.sendKeys('hfjshfj1@mail.com');
-=======
-      it('should not allow user to log in with wrong email', function() {
-
-        loginLink.click();
-
-        emailFld.sendKeys('hfjshfj1@mail');
->>>>>>> More e2e tests for auth features
         passwordFld.sendKeys('hfjshfj');
 
         loginButtn.click();
 
-<<<<<<< HEAD
         fieldTextTest(messageFlds.get(0), 'Invalid email');
       });
-=======
-        fieldTextTest(messageFlds.get(0), 'This email is not registered');
 
-
-      });
-
->>>>>>> More e2e tests for auth features
 
     });
 
@@ -310,37 +280,7 @@ describe('User Authentication Test', function() {
       beforeEach(function(done) {
 
         mongoose.connect(config.db);
-<<<<<<< HEAD
-        User.remove({}, function(err) {         
-        });
-        done();
-      });
 
-
-      it('should not allow user sign in with wrong password', function() {
-
-        var user = new User();
-        user.firstname = 'hfjshfj';
-        user.lastname = 'hfjshfj';
-        user.email = 'hfjshfj@mail.com';
-        user.password = '****';
-        user.phoneNumber1 = '12345';
-        user.gender = 'male';
-
-        user.save(function() {});
-
-        waits(1000);
-
-        loginLink.click();
-
-        emailFld.sendKeys('hfjshfj@mail.com');
-        passwordFld.sendKeys('hfjshfj2');
-
-        loginButtn.click();
-
-        fieldTextTest(messageFlds.get(1), 'Wrong Password');
-
-=======
         User.remove({}, function(err) {
 
           if (!err) {
@@ -377,30 +317,6 @@ describe('User Authentication Test', function() {
 
       });
 
-      it('should allow user to login with correct credentials', function() {
-
-        var user = new User();
-        user.firstname = 'hfjshfj';
-        user.lastname = 'hfjshfj';
-        user.email = 'hfjshfj@mail.com';
-        user.password = 'hfjshfj';
-        user.phoneNumber1 = '12345';
-        user.gender = 'male';
-
-        user.save(function() {});
-
-        waits(1000);
-
-        loginLink.click();
-
-        emailFld.sendKeys('hfjshfj@mail.com');
-        passwordFld.sendKeys('hfjshfj');
-
-        loginButtn.click();
-        fieldTextTest(welcomeLink, 'Welcome hfjshfj');
->>>>>>> More e2e tests for auth features
-
-      });
 
       it('should allow user to login with correct credentials', function() {
 
@@ -416,7 +332,6 @@ describe('User Authentication Test', function() {
 
         waits(1000);
 
-<<<<<<< HEAD
         loginLink.click();
 
         emailFld.sendKeys('hfjshfj@mail.com');
@@ -428,13 +343,9 @@ describe('User Authentication Test', function() {
         welcomeLink.click();
         waits(1000);
         logoutLink.click();
+
       });
 
-
-      afterEach(function(done) {
-
-        User.remove({}, function(err) {
-=======
       afterEach(function(done) {
 
         User.remove({}, function(err) {
@@ -442,7 +353,7 @@ describe('User Authentication Test', function() {
           if (!err) {
             console.log('User collection removed!');
           }
->>>>>>> More e2e tests for auth features
+
         });
 
         mongoose.disconnect();
