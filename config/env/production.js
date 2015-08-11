@@ -3,15 +3,15 @@
 module.exports = {
   db: process.env.MONGOLAB_URI,
   secret: process.env.SESSION_SECRET,
-  twitter : {
+  twitter: {
     consumerKey: process.env.TWITTER_CONSUMER_KEY,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET
   },
-  google : {
+  google: {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
-  facebook : {
+  facebook: {
     clientID: process.env.FACEBOOK_CLIENT_ID,   
     clientSecret: process.env.FACEBOOK_CLIENT_SECRET
   },

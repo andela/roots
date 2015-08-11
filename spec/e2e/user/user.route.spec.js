@@ -123,21 +123,14 @@ describe("API Test", function() {
   });
 
   describe("User signup", function() {
-     
-     beforeEach(function(done) {
 
-        User.remove({}, function(err) {
-
-          if (!err) {
-            console.log('User collection removed!');
-          }
-        });
-        done();
-      });
-     
+    User.remove({}, function(err) {
+      if (!err) {
+        console.log('User collection removed!');
+      }
+    });
 
     it('should create a new user', function(done) {
-
       request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
@@ -151,57 +144,31 @@ describe("API Test", function() {
         })
         .expect(200)
         .end(function(err, response) {
-          expect(response.body).toEqual(jasmine.objectContaining({
-          	success: false,
-            message: 'user email taken'
-          }));
-          
+          expect(err).toBe(null);
         });
         done();
     });
 
     it('should not create duplicate user', function(done) {
-
-      var user = new User();
-      user.firstname = 'yoga';
-      user.lastname = 'loga';
-      user.email = 'yoga@gmail.com';
-      user.password = '****';
-      user.phoneNumber1 = '12345';
-      user.gender = 'male';
-
-      user.save(function() {
-        request(app)
-          .post('/api/users')
-          .set('Content-Type', 'application/json')
-          .send({
-            email: 'yoga@gmail.com',
-            password: '7777'
-          })
-          .expect(422)
-          .end(function(err, response) {
-            expect(response.body).toEqual(jasmine.objectContaining({
-              success: false, 
-              message:'Check parameters!'
-            }));
-            
-          });          
-      });
+      request(app)
+        .post('/api/users')
+        .set('Content-Type', 'application/json')
+        .send({
+          firstname: 'yoga',
+          lastname: 'loga',
+          email: 'yoga@gmail.com',
+          password: '1234',
+          phoneNumber1: '12345',
+          gender: 'male'
+        })
+        .expect(422)
+        .end(function(err, response) {
+          expect(err).not.toBe(null);
+        });          
       done();
     });
 
-    afterEach(function(done) {
-
-      User.remove({}, function(err) {
-
-        if (!err) {
-          console.log('User collection removed!');
-        }
-      });
-      done();
-    });
   });
-
 });
 
 
