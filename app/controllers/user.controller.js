@@ -220,7 +220,13 @@ UserController.prototype.forgotPass = function(req, res, next) {
         });
       },
       function(token, user, done) {
-        var transporter = nodemailer.createTransport();
+        var transporter = nodemailer.createTransport({
+          service: 'Yahoo',
+          auth: {
+            user: 'worldtree_noreply@yahoo.com',
+            pass: 'rootsdevelopers'
+          }
+        });
         var mailOptions = {
           to: user.email,
           from: 'World tree ✔ <no-reply@worldtreeinc.com>',
