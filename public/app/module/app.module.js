@@ -21,7 +21,6 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
     .state('user.cevent', {
       url: '/cevent',
       templateUrl: '../app/views/event.view.html',
-      controller: 'eventCtrl'
     })
     .state('user', {
       url: '/user',
