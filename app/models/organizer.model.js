@@ -32,8 +32,12 @@ var organizerSchema = new mongoose.Schema({
         unique: true
       }
     },
-    role: {
-      type: String
+    department: {
+      type: String,
+      required: true,
+      index: {
+        unique: true
+      }
     }
 
   }]

@@ -52,7 +52,10 @@ var eventSchema = new mongoose.Schema({
   }],
   task[{
     managerId: {
-      type: String
+      type: String,
+      index: {
+        unique: true
+      }
     },
     description: {
       type: String
@@ -67,13 +70,12 @@ var eventSchema = new mongoose.Schema({
       type: Boolean,
       default: false
     },
-    assignees: [{
-      assigneeId: {
-        type: String
-      },
-      staff: {
-        type: Boolean,
-        default: false
+    volunteers: [{
+      volunteerId: {
+        type: String,
+        index: {
+          unique: true
+        }
       },
       schedules: [{
         description: {
@@ -89,53 +91,8 @@ var eventSchema = new mongoose.Schema({
           type: Boolean,
           default: false
         }
-
-      }]
-    }],
-    subtasks: [{
-      managerId: {
-        type: String
-      },
-      description: {
-        type: String
-      },
-      startAt: {
-        type: Date
-      },
-      endAt: {
-        type: Date
-      },
-      completed: {
-        type: Boolean,
-        default: false
-      },
-      assignees: [{
-        assigneeId: {
-          type: String
-        },
-        staff: {
-          type: Boolean,
-          default: false
-        },
-        schedules: [{
-          description: {
-            type: String
-          },
-          startAt: {
-            type: Date
-          },
-          endAt: {
-            type: Date
-          },
-          completed: {
-            type: Boolean,
-            default: false
-          }
-
-        }]
       }]
     }]
-
   }]
 
 }, {
