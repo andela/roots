@@ -13,7 +13,13 @@ var UserController = function(passport) {
 };
 
 UserController.prototype.welcomeMail = function(req, res) {
-  var transporter = nodemailer.createTransport();
+  var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'worldtree.noreply@gmail.com',
+      pass: 'rootsdevelopers'
+    }
+  });
   var data = req.body;
   var mailOptions = {
     from: 'World tree ✔ <no-reply@worldtreeinc.com>',
@@ -21,7 +27,7 @@ UserController.prototype.welcomeMail = function(req, res) {
     subject: 'Welcome to World Tree!',
     text: 'Welcome to World Tree!',
     html: '<b> Hello ' + data.name + ',\n Thanks for registering with World Tree. \n' + 
-    'Click <a href="http://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
+    'Click <a href="https://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
@@ -221,9 +227,9 @@ UserController.prototype.forgotPass = function(req, res, next) {
       },
       function(token, user, done) {
         var transporter = nodemailer.createTransport({
-          service: 'Yahoo',
+          service: 'Gmail',
           auth: {
-            user: 'worldtree_noreply@yahoo.com',
+            user: 'worldtree.noreply@gmail.com',
             pass: 'rootsdevelopers'
           }
         });
@@ -232,7 +238,7 @@ UserController.prototype.forgotPass = function(req, res, next) {
           from: 'World tree ✔ <no-reply@worldtreeinc.com>',
           subject: 'Account Password Reset',
           text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'http://roots-event-manager.herokuapp.com/#/passwordreset/' + token + '\n\n' +
+            'Please click on the following link, or paste this into your browser to complete the process:\n\n' + '\n\n' + 'https://roots-event-manager.herokuapp.com/#/passwordreset/' + token + '\n\n' +
             ' If you did not request this, please ignore this email and your password will remain unchanged.\n'
         };
         transporter.sendMail(mailOptions, function(err, res) {
@@ -279,7 +285,13 @@ UserController.prototype.forgotPass = function(req, res, next) {
         });
       },
       function(user, done) {
-        var transporter = nodemailer.createTransport();
+        var transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+            user: 'worldtree.noreply@gmail.com',
+            pass: 'rootsdevelopers'
+          }
+        });
         var mailOptions = {
           to: user.email,
           from: 'World tree ✔ <no-reply@worldtreeinc.com>',
