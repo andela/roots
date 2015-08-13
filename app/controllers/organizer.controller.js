@@ -16,16 +16,12 @@ OrganizerController.prototype.createProfile = function(req, res) {
     });
   } else {
 
-
-
     User.findOne({
       email: req.body.email
     }, function(err, user) {
       if (err) {
         return res.json(err);
       } else if (user) {
-
-
 
         Organizer newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
@@ -167,7 +163,6 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
       }
     });
   });
-
 
   //Add validated users as staff
   orgProfile.staff = validatedStaff;
