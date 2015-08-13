@@ -4,8 +4,9 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
 var organizerSchema = new mongoose.Schema({
-  userId: {
+  user_ref: {
     type: String,
+    ref: 'User',
     required: true,
     index: {
       unique: true
@@ -25,21 +26,13 @@ var organizerSchema = new mongoose.Schema({
     type: String
   },
   staff: [{
-    userId: {
+    manager_ref: {
       type: String,
-      required: true,
-      index: {
-        unique: true
-      }
+      ref: 'User'      
     },
-    department: {
-      type: String,
-      required: true,
-      index: {
-        unique: true
-      }
+    role: {
+      type: String      
     }
-
   }]
 
 }, {
