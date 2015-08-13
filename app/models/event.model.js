@@ -51,11 +51,9 @@ var eventSchema = new mongoose.Schema({
     }
   }],
   task[{
-    managerId: {
+    manager_ref: {
       type: String,
-      index: {
-        unique: true
-      }
+      ref: 'User'      
     },
     description: {
       type: String
@@ -71,11 +69,9 @@ var eventSchema = new mongoose.Schema({
       default: false
     },
     volunteers: [{
-      volunteerId: {
+      volunteer_ref: {
         type: String,
-        index: {
-          unique: true
-        }
+        ref: 'User'       
       },
       schedules: [{
         description: {

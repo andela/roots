@@ -27,7 +27,7 @@ var userSchema = new mongoose.Schema({
     default: false
   },
   password: {
-  	type: String,
+    type: String,
     required: true
   },
   profilePic: {
@@ -50,6 +50,13 @@ var userSchema = new mongoose.Schema({
   },
   address2: {
     type: String
+  },
+  organizer_ref: {
+    type: String,
+    ref: 'Organizer',
+    index: {
+      unique: true
+    }
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date
