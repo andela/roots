@@ -2,6 +2,7 @@
 
 var User = require('../models/user.model');
 var async = require('async');
+var Organizer = require('../models/organizer.model');
 var Utils = require('../middleware/utils');
 var mongoose = require('mongoose');
 require('../models/organizer.model');
@@ -142,8 +143,72 @@ OrganizerController.prototype.editProfile = function(req, res) {
         }
       });
     }
+
+  async.waterfall([
+
+    function(done) {
+
+      Organizer.findOne({
+        _id: req.params.organizer_id
+      }, function(err, org) {
+
+        if (err) {
+          return res.send(err);
+        } else if (!org) {
+          return res.status(422).send({
+            success: false,
+            message: 'Invalid organizer id'
+          });
+        } else if (org.user_ref) {
+
+          Organizer.populate(org, {
+            path: 'user_ref'
+          }, function(err1, org1) {
+
+            if (err) {
+              done(null, org);
+            } else {
+              done(null, org1);
+            }
+          });
+
+
+
+        } else {
+          done(null, org);
+        }
+
+      });
+    },
+    function(org, done) {
+
+      if (org.staff.length) {
+
+        Organizer.populate(org, {
+          path: 'manager_ref'
+        }, function(err1, org1) {
+
+          if (err) {
+            done(null, org);
+          } else {
+            done(null, org1);
+          }
+
+        });
+      } else {
+        done(null, org);
+      }
+    }
+
+  ], function(err, org) {
+
+    if (err)
+      return res.send(err);
+
+    res.json(org);
   });
-}
+});
+};
 
 OrganizerController.prototype.addTeamMember = function(req, res) {
 
@@ -165,6 +230,15 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     } else if (!orgProfile) {
+      return res.status(422).send({
+        success: false,
+        message: 'Profile not found'
+      });
+    }
+
+    var updatedProfile = OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff);
+
+    if (!updatedProfile) {
       return res.status(422).send({
         success: false,
         message: 'Profile not found'
@@ -254,7 +328,7 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
       }
     }
   });
-}
+};
 
 
 OrganizerController.prototype.editRole = function(req, res) {
@@ -297,7 +371,7 @@ OrganizerController.prototype.editRole = function(req, res) {
       }
     });
   }
-}
+};
 
 OrganizerController.prototype.deleteStaff = function(req, res) {
 
@@ -329,57 +403,7 @@ OrganizerController.prototype.deleteStaff = function(req, res) {
       });
     }
   });
-}
+};
 
-OrganizerController.prototype.getProfile = function(req, res) {
-
-  var orgId = req.params.organizer_id;
-
-  Organizer.findById(orgId, function(err, org) {
-
-    if (err) {
-      return res.status(500).send(err);
-    } else if (!org) {
-
-      return res.status(422).send({
-        success: false,
-        message: 'Invalid organizer id'
-      });
-    } else {
-
-      User.populate(org, {
-        path: 'user_ref staff.manager_ref'
-      }, function(err1, org1) {
-
-        if (err) {
-          return res.status(500).send(err);
-        } else {
-          res.json(org1);
-        }
-      });
-    }
-  });
-}
-
-OrganizerController.prototype.getAllProfiles = function(req, res) {
-
-  Organizer.find(function(err, organizers) {
-    if (err) {
-      return res.json(err);
-    }
-    User.populate(organizers, {
-      path: 'user_ref staff.manager_ref'
-    }, function(err, populatedProfiles) {
-
-      if (err) {
-        return res.json(err);
-      }
-
-      res.json(populatedProfiles);
-
-    });
-  });
-
-}
 
 module.exports = OrganizerController;
