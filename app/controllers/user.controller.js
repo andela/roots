@@ -6,7 +6,7 @@ var User = require('../models/user.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
-var async = require('async');
+
 
 var UserController = function(passport) {
   UserController.passport = passport;
