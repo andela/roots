@@ -13,7 +13,7 @@ var eventSchema = new mongoose.Schema({
   },
   user_ref: {
     type: String,
-    required: true
+    ref: 'User'
   },
   description: {
     type: String,

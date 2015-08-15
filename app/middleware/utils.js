@@ -2,6 +2,7 @@ var nodemailer = require('nodemailer');
 
 var Utils = function() {};
 
+
 Utils.prototype.sendMail = function(mailOptions, done) {
 
   var transporter = nodemailer.createTransport({

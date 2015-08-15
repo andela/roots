@@ -8,6 +8,7 @@ require('../models/organizer.model');
 
 var Organizer = mongoose.model('Organizer');
 
+
 var utils = new Utils();
 
 var OrganizerController = function() {};
@@ -40,6 +41,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
+
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -178,6 +180,69 @@ OrganizerController.prototype.editProfile = function(req, res) {
         });
       });
     }
+  async.waterfall([
+
+    function(done) {
+
+      Organizer.findOne({
+        _id: req.params.organizer_id
+      }, function(err, org) {
+
+        if (err) {
+          return res.send(err);
+        } else if (!org) {
+          return res.status(422).send({
+            success: false,
+            message: 'Invalid organizer id'
+          });
+        } else if (org.user_ref) {
+
+          Organizer.populate(org, {
+            path: 'user_ref'
+          }, function(err1, org1) {
+
+            if (err) {
+              done(null, org);
+            } else {
+              done(null, org1);
+            }
+          });
+
+
+
+        } else {
+          done(null, org);
+        }
+
+      });
+    },
+    function(org, done) {
+
+      if (org.staff.length) {
+
+        Organizer.populate(org, {
+          path: 'manager_ref'
+        }, function(err1, org1) {
+
+          if (err) {
+            done(null, org);
+          } else {
+            done(null, org1);
+          }
+
+        });
+      } else {
+        done(null, org);
+      }
+    }
+
+  ], function(err, org) {
+
+    if (err)
+      return res.send(err);
+
+    res.json(org);
+
   });
 }
 
@@ -203,6 +268,7 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
     if (err) {
       return res.send(err);
     } else if (!orgProfile) {
+
       return res.status(422).send({
         success: false,
         message: 'Profile not found'
@@ -497,6 +563,7 @@ OrganizerController.prototype.getProfileStub = function(orgId, res) {
     }
 
   });
+
 }
 
 module.exports = OrganizerController;
