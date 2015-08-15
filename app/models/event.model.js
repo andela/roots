@@ -11,9 +11,9 @@ var eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  organizer: {
+  user_ref: {
     type: String,
-    required: true
+    ref: 'User'
   },
   description: {
     type: String,

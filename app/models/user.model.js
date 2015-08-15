@@ -53,10 +53,7 @@ var userSchema = new mongoose.Schema({
   },
   organizer_ref: {
     type: String,
-    ref: 'Organizer',
-    index: {
-      unique: true
-    }
+    ref: 'Organizer'   
   },
   resetPasswordToken: String,
   resetPasswordExpires: Date
