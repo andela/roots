@@ -3,6 +3,7 @@ var CronJob = require('cron').CronJob;
 
 var Utils = function() {};
 
+
 Utils.prototype.sendMail = function(mailOptions, done) {
 
   var transporter = nodemailer.createTransport({
