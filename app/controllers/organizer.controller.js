@@ -1,12 +1,8 @@
 'use strict';
 
 var User = require('../models/user.model');
-var async = require('async');
+var Organizer = require('../models/organizer.model');
 var Utils = require('../middleware/utils');
-var mongoose = require('mongoose');
-require('../models/organizer.model');
-
-var Organizer = mongoose.model('Organizer');
 
 var utils = new Utils();
 
