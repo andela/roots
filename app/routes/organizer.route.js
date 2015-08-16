@@ -8,14 +8,15 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/organizer')
-    .post(userCtrl.verifyToken, orgCtrl.createProfile)
-    .put(userCtrl.verifyToken, orgCtrl.editProfile);    
+    .post(userCtrl.verifyToken, orgCtrl.createProfile);
+       
 
   router.route('/organizer-members')
     .put(userCtrl.verifyToken, orgCtrl.addTeamMembers);
 
   router.route('/organizer/:organizer_id')
-   .get(userCtrl.verifyToken, orgCtrl.getProfile);
+   .get(userCtrl.verifyToken, orgCtrl.getProfile)
+   .put(userCtrl.verifyToken, orgCtrl.editProfile);
 
   app.use('/api', router);
 }

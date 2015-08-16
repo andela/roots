@@ -11,6 +11,7 @@ var utils = new Utils();
 var OrganizerController = function() {};
 
 OrganizerController.prototype.createProfile = function(req, res) {
+
   if (!req.body.email || !req.body.organName) {
     return res.status(422).send({
       success: false,
@@ -47,16 +48,10 @@ OrganizerController.prototype.createProfile = function(req, res) {
             if (err.code == 11000)
               return res.status(422).send({
                 success: false,
-                message: 'User already registered as Organizer!'
+                message: 'Organizer name taken!'
               });
             return res.json(err);
           }
-
-          if (newStaff) {
-
-            OrganizerController.prototype.addTeamMembersStub(orgProfile, newStaff);
-
-          };
 
           //Link user profile to the newly created organizer profile
           user.organizer_ref = orgProfile._id;
@@ -69,102 +64,81 @@ OrganizerController.prototype.createProfile = function(req, res) {
               });
             }
 
-            return res.json(orgProfile);
+            OrganizerController.prototype.addTeamMembersStub(orgProfile, newStaff, {
+              sendMail: true,
+              exclude: []
+            }, res, function(err, updatedProfile, res) {
+
+              if (err)
+                res.send(err);
+
+              OrganizerController.prototype.getProfileStub(updatedProfile._id, res);
+
+            });
 
           });
-
         });
-
-      } else {
-        return res.status(422).send({
-          success: false,
-          message: 'User not in db!'
-        });
-      };
+      }
     });
   }
-};
+}
 
 OrganizerController.prototype.editProfile = function(req, res) {
 
-  Organizer.update({
-    _id: req.params.organizer_ref
-  }, req.body, function(err, organizer) {
+  var newStaff = req.body.staff;
+
+  var newProfile = req.body;
+  newProfile.staff = [];
+  var oldProfile;
+  var oldStaff;
+
+  Organizer.findById(req.params.organizer_id, function(err, profile) {
+
     if (err) {
-      return res.json(err);
+      return res.send(err);
+    } else if (!profile) {
+
+      return res.status(422).send({
+        success: false,
+        message: 'Invalid organizer id'
+      });
+
+    } else {      
+      oldProfile = profile;
+      oldStaff = oldProfile.staff;      
+
+      Organizer.findByIdAndUpdate(req.params.organizer_id, newProfile, {
+        'new': true
+      }, function(err, organizer) {
+        if (err) {
+          return res.json(err);
+        }
+
+        OrganizerController.prototype.addTeamMembersStub(organizer, newStaff, {
+          sendMail: true,
+          exclude: oldStaff
+        }, res, function(err, updatedProfile, res) {
+
+          if (err) {
+            Organizer.findByIdAndUpdate(orgProfile._id, {
+              $set: {
+                staff: oldStaff
+              }
+            }, function(err, rolledBackProfile) {
+              OrganizerController.prototype.getProfileStub(oldProfile._id, res);
+            });
+          };
+
+          OrganizerController.prototype.getProfileStub(updatedProfile._id, res);
+        });
+      });
     }
-    return res.json({
-      success: true,
-      message: 'Organizer profile updated'
-    });
   });
-};
+}
 
 OrganizerController.prototype.getProfile = function(req, res) {
 
-  async.waterfall([
-
-    function(done) {
-
-      Organizer.findOne({
-        _id: req.params.organizer_id
-      }, function(err, org) {
-
-        if (err) {
-          return res.send(err);
-        } else if (!org) {
-          return res.status(422).send({
-            success: false,
-            message: 'Invalid organizer id'
-          });
-        } else if (org.user_ref) {
-
-          Organizer.populate(org, {
-            path: 'user_ref'
-          }, function(err1, org1) {
-
-            if (err) {
-              done(null, org);
-            } else {
-              done(null, org1);
-            }
-          });
-
-
-
-        } else {
-          done(null, org);
-        }
-
-      });
-    },
-    function(org, done) {
-
-      if (org.staff.length) {
-
-        Organizer.populate(org, {
-          path: 'manager_ref'
-        }, function(err1, org1) {
-
-          if (err) {
-            done(null, org);
-          } else {
-            done(null, org1);
-          }
-
-        });
-      } else {
-        done(null, org);
-      }
-    }
-
-  ], function(err, org) {
-
-    if (err)
-      return res.send(err);
-
-    res.json(org);
-  });
+  OrganizerController.prototype.getProfileStub(req.params.organizer_id, res);
 }
 
 OrganizerController.prototype.addTeamMembers = function(req, res) {
@@ -189,20 +163,23 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
         message: 'Profile not found'
       });
     }
+    var excludeStaff = JSON.parse(JSON.stringify(orgProfile.staff));
+    
+    OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff, {
+      sendMail: true,
+      exclude: excludeStaff
+    }, res, function(err, updatedProfile, res) {
+      if (err)
+        res.send(err);
 
-    var updatedProfile = OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff);
+      OrganizerController.prototype.getProfileStub(updatedProfile._id, res);
 
-    if (!updatedProfile)
-      return res.status(422).send({
-        success: false,
-        message: 'Unable to add members'
-      });
+    });
 
-    res.json(updatedProfile);
   });
 }
 
-OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff) {
+OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff, sendMail, res, callback) {
 
   async.waterfall([
 
@@ -210,12 +187,11 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
 
       var validatedStaff = [];
 
-      newStaff.forEach(function(person) {
 
-        User.findOne({
-          email: person.email
-        }, function(err, personData) {
-          console.log('personData', personData);
+      utils.syncLoop(newStaff.length, function(loop, processedStaff) {
+
+        User.findById(newStaff[loop.iteration()].manager_ref, function(err, personData) {
+
           if (personData) {
 
             Organizer.findOne({
@@ -224,150 +200,202 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
             }, function(err, duplicate) {
 
               if (!err && !duplicate) {
-                validatedStaff.push({
+                processedStaff.push({
                   manager_ref: personData._id,
-                  role: person.role
+                  role: newStaff[loop.iteration()].role
                 });
-                console.log(0, validatedStaff);
-              }
 
+              }
+              loop.next();
             });
+          } else {
+            loop.next();
           }
         });
-      });
-      done(null, validatedStaff);
+
+      }, function(processedStaff) {
+        
+        done(null, processedStaff)
+      }, validatedStaff);
 
     },
-
-    function(validatedStaff, done) {
-
-      var returnedProfile;
-      console.log(2, validatedStaff);
-
-      if(!validatedStaff || !validatedStaff.length){
-        return null;
-      }
+    function(addedStaff, done) {
       
+      if (!addedStaff.length) {        
+        done(null, orgProfile);
+      }else{
+
       //Add validated users as staff
-      
-      validatedStaff.forEach(function(eachStaff){
+
+      addedStaff.forEach(function(eachStaff) {
 
         orgProfile.staff.push(eachStaff);
 
-      });      
-     
-      orgProfile.save(function(err, saved) {
-        if (err)
-          return null;
-
-        //Send notification mail to all added staff
-        Organizer.findOne({
-          _id: orgProfile._id
-        }).populate('manager_ref').exec(function(err, populatedProfile) {
-
-          if (err)
-            return null;
-
-          var mailOptions = {
-            to: '',
-            from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-            subject: populatedProfile.name + ' added you',
-            text: populatedProfile.name + ' added you',
-            html: 'Hello,\n\n' +
-              'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
-          };
-
-          populatedProfile.staff.forEach(function(addedStaff) {
-
-            mailOptions.to = addedStaff.manager_ref.email;
-            utils.sendMail(mailOptions);
-
-          });
-          returnedProfile = populatedProfile;
-
-        });
-
       });
 
-      done(null, returnedProfile);
+      orgProfile.save(function(err, saved) {
+        if (err || !sendMail) {
+          done(null, orgProfile);
+        } else if (!sendMail) {
+
+          done(null, saved);
+        } else {
+
+          //Send notification mail to all added staff
+          Organizer.findOne({
+            _id: orgProfile._id
+          }).populate('staff.manager_ref').exec(function(err, populatedProfile) {
+
+            if (err)
+              return null;
+
+            var mailOptions = {
+              to: '',
+              from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+              subject: populatedProfile.name + ' added you',
+              text: populatedProfile.name + ' added you',
+              html: 'Hello,\n\n' +
+                'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
+            };
+
+
+            utils.syncLoop(populatedProfile.staff.length, function(loop, returnedProfile) {
+              
+              if (sendMail.exclude && sendMail.exclude.length) {
+                
+                var sendMailTo = sendMail.exclude.every(function(everyOldStaff) {
+                  
+                  if (everyOldStaff.manager_ref == populatedProfile.staff[loop.iteration()].manager_ref._id) {
+                    return false;
+                  }
+
+                  return true;
+                });
+
+                if (sendMailTo) {
+                  mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
+
+                  utils.sendMail(mailOptions);
+                  loop.next();
+                } else {
+                  loop.next();
+                }
+
+              } else {
+
+                mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
+
+                utils.sendMail(mailOptions);
+                loop.next();
+
+              }
+
+            }, function(returnedProfile) {
+              done(null, returnedProfile)
+            }, populatedProfile);
+
+          });
+        }
+
+      });
+}
     }
-
-
 
   ], function(err, returnedProfile) {
 
-    if (err)
-      return null;
+    if (callback) {
+      callback(err, returnedProfile, res);
+    } else {
+      if (err)
+        return orgProfile;
 
-    return returnedProfile;
+      return returnedProfile;
+    }
   });
 
+}
 
-  // var validatedStaff = [];
+OrganizerController.prototype.getProfileStub = function(orgId, res) {
 
-  // newStaff.forEach(function(person) {
 
-  //   User.findOne({
-  //     email: person.email
-  //   }, function(err, personData) {
-  //     console.log('personData', personData);
-  //     if (personData) {
+  async.waterfall([
 
-  //       Organizer.findOne({
-  //         _id: orgProfile._id,
-  //         'staff.manager_ref': personData._id
-  //       }, function(err, duplicate) {
+    function(done) {
 
-  //         if (!err && !duplicate) {
-  //           validatedStaff.push({
-  //             manager_ref: personData._id,
-  //             role: person.role
-  //           });
-  //           console.log(0, validatedStaff);
-  //         }
+      Organizer.findById(orgId, function(err, org) {
 
-  //       });
-  //     }
-  //   });
-  // });
+        if (err) {
+          if (res) {
+            return res.send(err);
+          } else {
+            return null;
+          }
 
-  // console.log(2, validatedStaff);
-  // //Add validated users as staff
-  // orgProfile.staff = validatedStaff;
+        } else if (!org) {
 
-  // orgProfile.save(function(err, saved) {
-  //   if (err)
-  //     return false;
+          if (res) {
+            return res.status(422).send({
+              success: false,
+              message: 'Invalid organizer id'
+            });
+          } else {
+            return null;
+          }
+        } else if (org.user_ref) {
 
-  //   //Send notification mail to all added staff
-  //   Organizer.findOne({
-  //     _id: orgProfile._id
-  //   }).populate('manager_ref').exec(function(err, populatedProfile) {
+          Organizer.populate(org, {
+            path: 'user_ref'
+          }, function(err1, org1) {
 
-  //     if (err)
-  //       return false;
+            if (err) {
+              done(null, org);
+            } else {
+              done(null, org1);
+            }
+          });
+        } else {
+          done(null, org);
+        }
 
-  //     var mailOptions = {
-  //       to: '',
-  //       from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-  //       subject: populatedProfile.name + ' added you',
-  //       text: populatedProfile.name + ' added you',
-  //       html: 'Hello,\n\n' +
-  //         'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
-  //     };
+      });
+    },
+    function(org, done) {
 
-  //     populatedProfile.staff.forEach(function(addedStaff) {
+      if (org.staff.length) {
 
-  //       mailOptions.to = addedStaff.manager_ref.email;
-  //       utils.sendMail(mailOptions);
+        Organizer.populate(org, {
+          path: 'staff.manager_ref'
+        }, function(err1, org1) {
 
-  //     });
-  //     return populatedProfile;
+          if (err1) {
+            done(null, org);
+          } else {
+            done(null, org1);
+          }
 
-  //   });
+        });
+      } else {
+        done(null, org);
+      }
+    }
 
-  // });
+  ], function(err, org) {
 
+    if (err) {
+      if (res) {
+        return res.send(err);
+      } else {
+        return null;
+      }
+    }
+
+    if (res) {
+      res.json(org);
+    } else {
+      return org;
+    }
+
+  });
 }
 
 module.exports = OrganizerController;
