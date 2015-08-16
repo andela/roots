@@ -155,16 +155,13 @@ UserController.prototype.deleteAll = function(req, res) {
 UserController.prototype.editUser = function(req, res) {
   User.update({
     _id: req.params.user_id
-  }, req.body, function(err, user) {
+  }, req.body, {
+    new: true
+  }, function(err, user) {
     if (err) {
       return res.json(err);
     }
-    User.findById(req.params.user_id, function(err, user) {
-      if (err) {
-        res.json(err);
-      }
-      res.json(user);
-    });
+    res.json(user);
   });
 };
 
