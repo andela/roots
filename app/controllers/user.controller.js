@@ -3,6 +3,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('../../config/config');
 var User = require('../models/user.model');
+var Organizer = require('../models/organizer.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
@@ -197,17 +198,83 @@ UserController.prototype.getCurrentUser = function(req, res) {
 };
 
 UserController.prototype.deleteCurrentUser = function(req, res) {
-  User.remove({
-    _id: req.params.user_id
-  }, function(err, user) {
-    if (err) return res.send(err);
 
-    res.json({
-      message: 'Succesfully deleted'
-    });
+  var userId = req.params.user_id;
+  User.findById(userId, function(err, user) {
 
+    if (err) {
+      return res.send(err);
+    } else if (user) {
+
+      if (user.organizer_ref) {
+
+        Organizer.remove({
+          user_ref: userId
+        }, function(err) {
+          if (err) {
+
+            return res.status(422).send({
+              success: false,
+              message: 'Unable to delete user organizer profile.'
+            });
+          }
+        });
+
+      }
+
+      Organizer.update({
+        'staff.manager_ref': userId
+      }, {
+        $pull: {
+          'staff': {
+            manager_ref: userId
+          }
+        }
+      }, function(err) {
+        if (err) {
+
+          return res.status(422).send({
+            success: false,
+            message: 'Unable to delete user from other organizer profile.'
+          });
+        }
+
+        User.remove({
+          _id: userId
+        }, function(err, user) {
+          if (err) return res.send(err);
+
+          res.json({
+            message: 'Succesfully deleted'
+          });
+
+        });
+
+      });
+
+    } else {
+
+      return res.status(422).send({
+        success: false,
+        message: 'User not found in db'
+      });
+    }
   });
 };
+
+
+// UserController.prototype.deleteCurrentUser = function(req, res) {
+//   User.remove({
+//     _id: req.params.user_id
+//   }, function(err, user) {
+//     if (err) return res.send(err);
+
+//     res.json({
+//       message: 'Succesfully deleted'
+//     });
+
+//   });
+// };
 
 UserController.prototype.forgotPass = function(req, res, next) {
   async.waterfall([
