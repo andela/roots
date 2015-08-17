@@ -69,11 +69,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
               exclude: []
             }, res, function(err, updatedProfile, res) {
 
-              if (err)
-                res.send(err);
-
-              OrganizerController.prototype.getProfileStub(updatedProfile._id, res);
-
+              OrganizerController.prototype.getProfileStub(orgProfile._id, res);
             });
 
           });
@@ -103,9 +99,9 @@ OrganizerController.prototype.editProfile = function(req, res) {
         message: 'Invalid organizer id'
       });
 
-    } else {      
+    } else {
       oldProfile = profile;
-      oldStaff = oldProfile.staff;      
+      oldStaff = oldProfile.staff;
 
       Organizer.findByIdAndUpdate(req.params.organizer_id, newProfile, {
         'new': true
@@ -164,7 +160,7 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
       });
     }
     var excludeStaff = JSON.parse(JSON.stringify(orgProfile.staff));
-    
+
     OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff, {
       sendMail: true,
       exclude: excludeStaff
@@ -177,6 +173,28 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
     });
 
   });
+}
+
+
+OrganizerController.prototype.getAllProfiles = function(req, res) {
+
+  Organizer.find(function(err, organizers) {
+    if (err) {
+      return res.json(err);
+    }
+    Organizer.populate(organizers, {
+      path: 'user_ref staff.manager_ref'
+    }, function(err, populatedProfile) {
+
+      if (err) {
+        return res.json(err);
+      }
+
+      res.json(populatedProfile);
+
+    });
+  });
+
 }
 
 OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff, sendMail, res, callback) {
@@ -214,91 +232,91 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
         });
 
       }, function(processedStaff) {
-        
-        done(null, processedStaff)
+
+        done(null, processedStaff);
       }, validatedStaff);
 
     },
     function(addedStaff, done) {
-      
-      if (!addedStaff.length) {        
+
+      if (!addedStaff.length) {
         done(null, orgProfile);
-      }else{
+      } else {
 
-      //Add validated users as staff
+        //Add validated users as staff
 
-      addedStaff.forEach(function(eachStaff) {
+        addedStaff.forEach(function(eachStaff) {
 
-        orgProfile.staff.push(eachStaff);
+          orgProfile.staff.push(eachStaff);
 
-      });
+        });
 
-      orgProfile.save(function(err, saved) {
-        if (err || !sendMail) {
-          done(null, orgProfile);
-        } else if (!sendMail) {
+        orgProfile.save(function(err, saved) {
+          if (err) {
+            done(null, orgProfile);
+          } else if (!sendMail) {
 
-          done(null, saved);
-        } else {
+            done(null, saved);
+          } else {
 
-          //Send notification mail to all added staff
-          Organizer.findOne({
-            _id: orgProfile._id
-          }).populate('staff.manager_ref').exec(function(err, populatedProfile) {
+            //Send notification mail to all added staff
+            Organizer.findOne({
+              _id: orgProfile._id
+            }).populate('staff.manager_ref').exec(function(err, populatedProfile) {
 
-            if (err)
-              return null;
+              if (err)
+                return null;
 
-            var mailOptions = {
-              to: '',
-              from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-              subject: populatedProfile.name + ' added you',
-              text: populatedProfile.name + ' added you',
-              html: 'Hello,\n\n' +
-                'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
-            };
+              var mailOptions = {
+                to: '',
+                from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                subject: populatedProfile.name + ' added you',
+                text: populatedProfile.name + ' added you',
+                html: 'Hello,\n\n' +
+                  'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
+              };
 
 
-            utils.syncLoop(populatedProfile.staff.length, function(loop, returnedProfile) {
-              
-              if (sendMail.exclude && sendMail.exclude.length) {
-                
-                var sendMailTo = sendMail.exclude.every(function(everyOldStaff) {
-                  
-                  if (everyOldStaff.manager_ref == populatedProfile.staff[loop.iteration()].manager_ref._id) {
-                    return false;
+              utils.syncLoop(populatedProfile.staff.length, function(loop, returnedProfile) {
+
+                if (sendMail.exclude && sendMail.exclude.length) {
+
+                  var sendMailTo = sendMail.exclude.every(function(everyOldStaff) {
+
+                    if (everyOldStaff.manager_ref == populatedProfile.staff[loop.iteration()].manager_ref._id) {
+                      return false;
+                    }
+
+                    return true;
+                  });
+
+                  if (sendMailTo) {
+                    mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
+
+                    utils.sendMail(mailOptions);
+                    loop.next();
+                  } else {
+                    loop.next();
                   }
 
-                  return true;
-                });
+                } else {
 
-                if (sendMailTo) {
                   mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
 
                   utils.sendMail(mailOptions);
                   loop.next();
-                } else {
-                  loop.next();
+
                 }
 
-              } else {
+              }, function(returnedProfile) {
+                done(null, returnedProfile)
+              }, populatedProfile);
 
-                mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
+            });
+          }
 
-                utils.sendMail(mailOptions);
-                loop.next();
-
-              }
-
-            }, function(returnedProfile) {
-              done(null, returnedProfile)
-            }, populatedProfile);
-
-          });
-        }
-
-      });
-}
+        });
+      }
     }
 
   ], function(err, returnedProfile) {
