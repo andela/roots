@@ -80,12 +80,8 @@ describe('User Authentication Test', function() {
     describe('Sign up process Test', function() {
 
       beforeEach(function(done) {
-        console.log(config.db);
         mongoose.connect(config.db);
-        User.remove({}, function(err) {
-          if (!err) {
-            console.log('User collection removed!');
-          }
+        User.remove({}, function(err) {          
         });
         done();
       });
@@ -138,9 +134,7 @@ describe('User Authentication Test', function() {
       afterEach(function(done) {
 
         User.remove({}, function(err) {
-          if (!err) {
-            console.log('User collection removed!');
-          }
+          
         });
         mongoose.disconnect();
         done();
@@ -204,11 +198,7 @@ describe('User Authentication Test', function() {
       beforeEach(function(done) {
 
         mongoose.connect(config.db);
-        User.remove({}, function(err) {
-
-          if (!err) {
-            console.log('User collection removed!');
-          }
+        User.remove({}, function(err) {         
         });
         done();
       });
@@ -271,10 +261,6 @@ describe('User Authentication Test', function() {
       afterEach(function(done) {
 
         User.remove({}, function(err) {
-
-          if (!err) {
-            console.log('User collection removed!');
-          }
         });
 
         mongoose.disconnect();
