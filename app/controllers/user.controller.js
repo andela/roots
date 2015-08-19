@@ -3,10 +3,11 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('../../config/config');
 var User = require('../models/user.model');
+var Organizer = require('../models/organizer.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
-var async = require('async');
+
 
 var UserController = function(passport) {
   UserController.passport = passport;
@@ -155,16 +156,13 @@ UserController.prototype.deleteAll = function(req, res) {
 UserController.prototype.editUser = function(req, res) {
   User.update({
     _id: req.params.user_id
-  }, req.body, function(err, user) {
+  }, req.body, {
+    new: true
+  }, function(err, user) {
     if (err) {
       return res.json(err);
     }
-    User.findById(req.params.user_id, function(err, user) {
-      if (err) {
-        res.json(err);
-      }
-      res.json(user);
-    });
+    res.json(user);
   });
 };
 
@@ -200,15 +198,67 @@ UserController.prototype.getCurrentUser = function(req, res) {
 };
 
 UserController.prototype.deleteCurrentUser = function(req, res) {
-  User.remove({
-    _id: req.params.user_id
-  }, function(err, user) {
-    if (err) return res.send(err);
 
-    res.json({
-      message: 'Succesfully deleted'
-    });
+  var userId = req.params.user_id;
+  User.findById(userId, function(err, user) {
 
+    if (err) {
+      return res.send(err);
+    } else if (user) {
+
+      if (user.organizer_ref) {
+
+        Organizer.remove({
+          user_ref: userId
+        }, function(err) {
+          if (err) {
+
+            return res.status(422).send({
+              success: false,
+              message: 'Unable to delete user organizer profile.'
+            });
+          }
+        });
+
+      }
+
+      Organizer.update({
+        'staff.manager_ref': userId
+      }, {
+        $pull: {
+          'staff': {
+            manager_ref: userId
+          }
+        }
+      }, function(err) {
+        if (err) {
+
+          return res.status(422).send({
+            success: false,
+            message: 'Unable to delete user from other organizer profile.'
+          });
+        }
+
+        User.remove({
+          _id: userId
+        }, function(err, user) {
+          if (err) return res.send(err);
+
+          res.json({
+            message: 'Succesfully deleted'
+          });
+
+        });
+
+      });
+
+    } else {
+
+      return res.status(422).send({
+        success: false,
+        message: 'User not found in db'
+      });
+    }
   });
 };
 
