@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 
 var eventSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true
   },
@@ -13,7 +13,8 @@ var eventSchema = new mongoose.Schema({
   },
   user_ref: {
     type: String,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   description: {
     type: String,
@@ -22,7 +23,10 @@ var eventSchema = new mongoose.Schema({
   venue: {
     country: String,
     name: String,
-    address: String
+    address: {
+      type: String,
+      required: true
+    }
   },
   eventBanner: String,
   location: {
@@ -32,7 +36,7 @@ var eventSchema = new mongoose.Schema({
   eventTheme: {
     type: String,
     default: 'white'
-  }
+  },
   startDate: {
     type: Date
   },
@@ -50,10 +54,10 @@ var eventSchema = new mongoose.Schema({
       type: String
     }
   }],
-  task[{
+  tasks: [{
     manager_ref: {
       type: String,
-      ref: 'User'      
+      ref: 'User'
     },
     description: {
       type: String
@@ -71,7 +75,7 @@ var eventSchema = new mongoose.Schema({
     volunteers: [{
       volunteer_ref: {
         type: String,
-        ref: 'User'       
+        ref: 'User'
       },
       schedules: [{
         description: {

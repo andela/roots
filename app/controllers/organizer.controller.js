@@ -81,9 +81,16 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
 OrganizerController.prototype.editProfile = function(req, res) {
 
-  var newStaff = req.body.staff;
+  if (!req.body.newProfile) {
+    return res.status(422).send({
+      success: false,
+      message: 'Please check parameters!'
+    });
+  }
 
-  var newProfile = req.body;
+  var newStaff = req.body.newProfile.staff;
+
+  var newProfile = req.body.newProfile;
   newProfile.staff = [];
   var oldProfile;
   var oldStaff;
@@ -199,6 +206,26 @@ OrganizerController.prototype.getAllProfiles = function(req, res) {
 
 OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff, sendMail, res, callback) {
 
+  var uniqueStaff = [];
+
+  newStaff.forEach(function(eachStaff) {
+
+    var notAdded = uniqueStaff.every(function(staff) {
+
+      if (eachStaff.manager_ref == staff.manager_ref) {
+        return false;
+      }
+
+      return true;
+    });
+
+    if (notAdded) {
+      uniqueStaff.push(eachStaff);
+    }
+  });
+
+  newStaff = uniqueStaff;
+
   async.waterfall([
 
     function(done) {
@@ -223,8 +250,22 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
                   role: newStaff[loop.iteration()].role
                 });
 
+                loop.next();
+
+              } else {
+
+                Organizer.update({
+                  'staff.manager_ref': personData._id
+                }, {
+                  $set: {
+                    'staff.role': newStaff[loop.iteration()].role
+                  }
+                }, function(err) {
+
+                  loop.next();
+                });
               }
-              loop.next();
+
             });
           } else {
             loop.next();
@@ -264,53 +305,56 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
               _id: orgProfile._id
             }).populate('staff.manager_ref').exec(function(err, populatedProfile) {
 
-              if (err)
+              if (err) {
                 return null;
+              } else {
 
-              var mailOptions = {
-                to: '',
-                from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                subject: populatedProfile.name + ' added you',
-                text: populatedProfile.name + ' added you',
-                html: 'Hello,\n\n' +
-                  'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
-              };
+                var mailOptions = {
+                  to: '',
+                  from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                  subject: populatedProfile.name + ' added you',
+                  text: populatedProfile.name + ' added you',
+                  html: 'Hello,\n\n' +
+                    'You have been added as staff to <b>' + populatedProfile.name + '</b> event manager.\n'
+                };
 
 
-              utils.syncLoop(populatedProfile.staff.length, function(loop, returnedProfile) {
+                utils.syncLoop(populatedProfile.staff.length, function(loop, returnedProfile) {
 
-                if (sendMail.exclude && sendMail.exclude.length) {
+                  if (sendMail.exclude && sendMail.exclude.length) {
 
-                  var sendMailTo = sendMail.exclude.every(function(everyOldStaff) {
+                    var sendMailTo = sendMail.exclude.every(function(everyOldStaff) {
 
-                    if (everyOldStaff.manager_ref == populatedProfile.staff[loop.iteration()].manager_ref._id) {
-                      return false;
+                      if (everyOldStaff.manager_ref == populatedProfile.staff[loop.iteration()].manager_ref._id) {
+                        return false;
+                      }
+
+                      return true;
+                    });
+
+                    if (sendMailTo) {
+                      mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
+
+                      utils.sendMail(mailOptions);
+                      loop.next();
+                    } else {
+                      loop.next();
                     }
 
-                    return true;
-                  });
+                  } else {
 
-                  if (sendMailTo) {
                     mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
 
                     utils.sendMail(mailOptions);
                     loop.next();
-                  } else {
-                    loop.next();
+
                   }
 
-                } else {
+                }, function(returnedProfile) {
+                  done(null, returnedProfile)
+                }, populatedProfile);
 
-                  mailOptions.to = populatedProfile.staff[loop.iteration()].manager_ref.email;
-
-                  utils.sendMail(mailOptions);
-                  loop.next();
-
-                }
-
-              }, function(returnedProfile) {
-                done(null, returnedProfile)
-              }, populatedProfile);
+              }
 
             });
           }
