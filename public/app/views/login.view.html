@@ -5,23 +5,23 @@
         <div layout="row" layout-align="center center">
           <h5 class="dialog-header" flex offset="40"><strong>Log In</strong></h5>
           <span flex offset="20">
-          <md-button class="md-icon-button" ng-click="closeDialog()">
+          <md-button class="md-icon-button" ng-click="closeDialog()" id="closeDialog">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="toggleDialog()">Sign up</a></span>
+        <span layout="row" layout-align="center center">Don't have an account?&nbsp;<a href="" ng-click="toggleDialog()" id="showSignupLink">Sign up</a></span>
         <div class="login-form">
           <form name="loginForm">
-              <input type="text" ng-model="userInfo.email" flex="60" class="input-textbox" placeholder="Email" required />
-              <div ng-show="wrongEmail" class="error-message">Invalid email</div>
-              <input type="password" ng-model="userInfo.password" flex="60" class="input-textbox" placeholder="Password" />
-              <div ng-show="wrongPassword" class="error-message">Wrong Password</div>
-              <section layout="row" layout-sm="column" layout-align="center center">
-                <md-button id="dialog-button" ng-click="loginUser(userInfo)" flex="50" class="md-raised">Log In</md-button>
-              </section>
-              <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">Forgot password?</a></span>
-              <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
+            <input type="text" ng-model="userInfo.email" flex="60" class="input-textbox" placeholder="Email" required />
+            <div ng-show="wrongEmail" class="error-message">Invalid email</div>
+            <input type="password" ng-model="userInfo.password" flex="60" class="input-textbox" placeholder="Password" />
+            <div ng-show="wrongPassword" class="error-message">Wrong Password</div>
+            <section layout="row" layout-sm="column" layout-align="center center">
+              <md-button ng-click="loginUser(userInfo)" flex="50" class="md-raised" id="loginButtn">Log In</md-button>
+            </section>
+            <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">Forgot password?</a></span>
+            <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
         </div>
         <hr>
@@ -34,18 +34,18 @@
       </md-content>
     </div>
   </md-dialog-content>
-  <md-dialog-content ng-show="signupDialog" >
+  <md-dialog-content ng-show="signupDialog">
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
           <h5 class="dialog-header" flex offset="40"><strong>Sign Up</strong></h5>
           <span flex offset="15">
-          <md-button class="md-icon-button" ng-click="closeDialog()">
+          <md-button class="md-icon-button" ng-click="closeDialog()"  id="closeDialog">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
         </div>
-        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="toggleDialog()">Log In</a></span>
+        <span layout="row" layout-align="center center">Already have an account?&nbsp;<a href="" ng-click="toggleDialog()" id="showLoginLink">Log In</a></span>
         <div class="login-form">
           <form name="signupForm">
             <input ng-model="newUser.firstname" type="text" flex="60" class="input-textbox" placeholder="First Name" required />
@@ -59,7 +59,7 @@
               <div class="error-message" ng-message="maxlength">Can not be more than 20 characters</div>
             </div>
             <section layout="row" layout-sm="column" layout-align="center center">
-              <md-button id="dialog-button" ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised">Sign up</md-button>
+              <md-button ng-click="signupUser(newUser)" ng-disabled="signupForm.$invalid" flex="50" class="md-raised" id="signupButtn">Sign up</md-button>
             </section>
             <md-progress-linear md-mode="indeterminate" ng-show="progressLoad"></md-progress-linear>
           </form>
@@ -84,32 +84,33 @@
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
-        </div><br>
+        </div>
+        <br>
         <span layout="row" layout-align="center center" class="info-span">Enter your email address and we'll send you a link to reset your password</span>
-      <div class="login-form">
-        <form name="resetForm">
-          <input type="text" ng-model="oldUser.email" flex="60" class="input-textbox" placeholder="Email" required />
-          <div ng-show="errorEmail" class="error-message">This email is not registered</div>
-          <section layout="row" layout-sm="column"  layout-align="center center">
-            <md-button id="dialog-button" ng-click="resetLink(oldUser)" flex="50" class="md-raised">Send reset link</md-button>
-          </section>
-          <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">cancel</a></span>
-          <md-progress-linear md-mode="indeterminate" ng-show="progressBar"></md-progress-linear>
-        </form>
-      </div>
-    </md-content>
-    <md-content ng-show="emailSent">
-      <div layout="row" layout-align="center center">
-        <h5 class="dialog-header" flex offset="15"><strong>Reset your password</strong></h5>
+        <div class="login-form">
+          <form name="resetForm">
+            <input type="text" ng-model="oldUser.email" flex="60" class="input-textbox" placeholder="Email" required />
+            <div ng-show="errorEmail" class="error-message">This email is not registered</div>
+            <section layout="row" layout-sm="column" layout-align="center center">
+              <md-button id="resetPassButtn" ng-click="resetLink(oldUser)" flex="50" class="md-raised">Send reset link</md-button>
+            </section>
+            <span layout="row" layout-align="center center"><a href="" ng-click="toggleView()">cancel</a></span>
+            <md-progress-linear md-mode="indeterminate" ng-show="progressBar"></md-progress-linear>
+          </form>
+        </div>
+      </md-content>
+      <md-content ng-show="emailSent">
+        <div layout="row" layout-align="center center">
+          <h5 class="dialog-header" flex offset="15"><strong>Reset your password</strong></h5>
           <span>
           <md-button class="md-icon-button" ng-click="closeDialog()">
             <md-icon md-svg-src="../../assets/img/icons/close_dialog.svg" aria-label="Close dialog"></md-icon>
           </md-button>
           </span>
-      </div><br>
-      To sign into World Tree, please follow these steps in the <b>next 24 hours:</b><br>
-      1). Open the e-mail we just sent to <b>{{oldUser.email}}</b><br>
-      2). Click on the link in the e-mail to reset your password
-    </md-content>
+        </div>
+        <br> To sign into World Tree, please follow these steps in the <b>next 24 hours:</b>
+        <br> 1). Open the e-mail we just sent to <b>{{oldUser.email}}</b>
+        <br> 2). Click on the link in the e-mail to reset your password
+      </md-content>
   </md-dialog-content>
 </md-dialog>
