@@ -32,7 +32,7 @@ angular.module('eventApp')
           var token = localStorage.getItem('userToken');
 
           var user = {};
-          if (typeof token !== 'undefined') {
+          if (token) {
             var encoded = token.split('.')[1];
             user = JSON.parse(urlBase64Decode(encoded));
             scope.userName = user.firstname;
