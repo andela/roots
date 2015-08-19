@@ -23,14 +23,14 @@ describe("API Test", function() {
 
    describe("User signup validation", function() {
 
-  	it('should not create a new user if there is no firstname', function(done) {
+    it('should not create a new user if there is no firstname', function(done) {
 
       request(app)
         .post('/api/users')
         .set('Content-Type', 'application/json')
         .send({
           firstname: undefined,
-  	      lastname: 'loga',
+          lastname: 'loga',
           email: 'yoga@gmail.com',
           password: '1234',
           phoneNumber1: '12345',
@@ -40,7 +40,7 @@ describe("API Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-          	success : false,
+            success : false,
             message: 'Check parameters!'
           }));
         });
@@ -54,7 +54,7 @@ describe("API Test", function() {
         .set('Content-Type', 'application/json')
         .send({
           firstname: 'yoga',
-  	      lastname: undefined,
+          lastname: undefined,
           email: 'yoga@gmail.com',
           password: '1234',
           phoneNumber1: '12345',
@@ -78,7 +78,7 @@ describe("API Test", function() {
         .set('Content-Type', 'application/json')
         .send({
           firstname: 'yoga',
-  	      lastname : 'loga',
+          lastname : 'loga',
           email: undefined,
           password: '1234',
           phoneNumber1: '12345',
@@ -102,7 +102,7 @@ describe("API Test", function() {
         .set('Content-Type', 'application/json')
         .send({
           firstname: 'yoga',
-  	      lastname: 'loga',
+          lastname: 'loga',
           email: 'yoga@gmail.com',
           password: undefined,
           phoneNumber1: '12345',

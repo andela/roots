@@ -10,14 +10,9 @@ describe('User Model', function(done) {
 
    beforeEach(function(done) {
       User.remove({}, function(err) {
-        if(err) {
-          console.log(err)
-        }
-        else {
-          console.log('user removed')
-        }
+        done();      
       })
-      done();
+      
     });
 
   describe('Sign up', function() {

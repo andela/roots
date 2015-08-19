@@ -11,17 +11,13 @@ angular.module('eventApp')
     $location.search('token', null);
     if (userToken) {
       localStorage.setItem('userToken', userToken);
-    }
+    }    
 
     $rootScope.signupCheck = function() {
-      if(localStorage.getItem('userToken')) {
-        UserService.decodeUser().then(function(res) {
-          $scope.userName = res.data.firstname;
-          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-          $scope.loggedIn = true;
-        });
+      if (localStorage.getItem('userToken')) {
+        UserService.decodeUser($scope);
       }
-    };
+    }
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
@@ -95,11 +91,7 @@ angular.module('eventApp')
               $scope.emailTaken = true;
               $scope.progressLoad = false;
               $scope.validEmail = false;
-            } else {
-              $rootScope.sendWelcomeMail({
-                email: newUser.email,
-                firstname: newUser.firstname
-              });
+            } else {              
               $scope.loginUser({
                 email: newUser.email,
                 password: newUser.password
