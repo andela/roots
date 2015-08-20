@@ -43,27 +43,31 @@ EventController.prototype.createEvent = function(req, res) {
 
     utils.sendMail(mailOptions);
 
-    EventController.prototype.addTasksStub(newEvent, eventTasks, {
-      sendMail: true,
-      excludeManagers: [],
-      excludeVolunteers: []
-    }, res, function(err, updatedEvent, res) {
+    async.waterfall([function(done) {
 
-      EventController.prototype.getEventStub(newEvent._id, res);
+      EventController.prototype.addTasksStub(newEvent, eventTasks, {
+        sendMail: true,
+        excludeManagers: [],
+        excludeVolunteers: []
+      }, done);
 
+    }], function(err, updatedEvent) {
+
+      if (err || !updatedEvent)
+        updatedEvent = newEvent;
+      EventController.prototype.getEventStub(updatedEvent._id, res);
     });
-
   });
 }
 
-EventController.prototype.addTasksStub = function(eventObj, newTasks, sendMail, res, callback) {
+EventController.prototype.addTasksStub = function(eventObj, newTasks, sendMail, exit) {
 
   var filteredTasks = EventController.prototype.filterTasks(newTasks);
 
   if (!filteredTasks || !filteredTasks.length) {
 
-    if (callback) {
-      callback(null, eventObj, res);
+    if (exit) {
+      exit(null, eventObj);
     } else {
 
       return eventObj;
@@ -323,12 +327,11 @@ EventController.prototype.addTasksStub = function(eventObj, newTasks, sendMail, 
       ],
       function(err, returnedTasks) {
 
-        if (callback) {
-          callback(err, returnedTasks, res);
+        if (err)
+          returnedTasks = eventObj;
+        if (exit) {
+          exit(null, returnedTasks);
         } else {
-          if (err)
-            return eventObj;
-
           return returnedTasks;
         }
       });
@@ -376,7 +379,6 @@ EventController.prototype.getEvent = function(req, res) {
 }
 
 EventController.prototype.getEventStub = function(eventId, res) {
-
 
   async.waterfall([
 
@@ -483,7 +485,7 @@ EventController.prototype.getEventStub = function(eventId, res) {
 EventController.prototype.filterTasks = function(newTasks) {
 
   if (!newTasks || !newTasks.length) {
-    return null;
+    return [];
   }
 
   var uniqueTasks = [];

@@ -27,7 +27,6 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
-
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -64,15 +63,25 @@ OrganizerController.prototype.createProfile = function(req, res) {
               });
             }
 
-            OrganizerController.prototype.addTeamMembersStub(orgProfile, newStaff, {
-              sendMail: true,
-              exclude: []
-            }, res, function(err, updatedProfile, res) {
+            async.waterfall([function(done) {
 
-              OrganizerController.prototype.getProfileStub(orgProfile._id, res);
-            });
+              OrganizerController.prototype.addTeamMembersStub(orgProfile, newStaff, {
+                sendMail: true,
+                exclude: []
+              }, done);
 
+            }], function(err, returnedProfile) {
+
+              if (err || !returnedProfile)
+                returnedProfile = orgProfile;
+              OrganizerController.prototype.getProfileStub(returnedProfile._id, res);
+            });           
           });
+        });
+      } else {
+        return res.status(422).send({
+          success: false,
+          message: 'User not found!'
         });
       }
     });
@@ -80,7 +89,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
 }
 
 OrganizerController.prototype.editProfile = function(req, res) {
-
+  
   if (!req.body.newProfile) {
     return res.status(422).send({
       success: false,
@@ -115,24 +124,37 @@ OrganizerController.prototype.editProfile = function(req, res) {
       }, function(err, organizer) {
         if (err) {
           return res.json(err);
-        }
+        }      
 
-        OrganizerController.prototype.addTeamMembersStub(organizer, newStaff, {
-          sendMail: true,
-          exclude: oldStaff
-        }, res, function(err, updatedProfile, res) {
+        async.waterfall([function(done) {
 
-          if (err) {
-            Organizer.findByIdAndUpdate(orgProfile._id, {
-              $set: {
-                staff: oldStaff
-              }
-            }, function(err, rolledBackProfile) {
-              OrganizerController.prototype.getProfileStub(oldProfile._id, res);
-            });
-          };
+            OrganizerController.prototype.addTeamMembersStub(organizer, newStaff, {
+              sendMail: true,
+              exclude: []
+            }, done);
 
-          OrganizerController.prototype.getProfileStub(updatedProfile._id, res);
+          },
+          function(returnedProfile, done) {
+
+            if (!returnedProfile) {
+              Organizer.findByIdAndUpdate(oldProfile._id, {
+                $set: {
+                  staff: oldStaff
+                }
+              }, function(err, rolledBackProfile) {
+                done(oldProfile);
+              });
+
+            } else {
+              done(null, returnedProfile);
+            }
+
+          }
+        ], function(err, returnedProfile) {
+
+          if (err || !returnedProfile)
+            returnedProfile = oldProfile;
+          OrganizerController.prototype.getProfileStub(returnedProfile._id, res);
         });
       });
     }
@@ -141,7 +163,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
 
 OrganizerController.prototype.getProfile = function(req, res) {
 
-  OrganizerController.prototype.getProfileStub(req.params.organizer_id, res);
+  this.getProfileStub(req.params.organizer_id, res);
 }
 
 OrganizerController.prototype.addTeamMembers = function(req, res) {
@@ -168,15 +190,18 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
     }
     var excludeStaff = JSON.parse(JSON.stringify(orgProfile.staff));
 
-    OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff, {
-      sendMail: true,
-      exclude: excludeStaff
-    }, res, function(err, updatedProfile, res) {
-      if (err)
-        res.send(err);
+    async.waterfall([function(done) {
 
-      OrganizerController.prototype.getProfileStub(updatedProfile._id, res);
+      OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff, {
+        sendMail: true,
+        exclude: excludeStaff
+      }, done);
 
+    }], function(err, returnedProfile) {
+      
+      if (err || !returnedProfile)
+        returnedProfile = orgProfile;
+      OrganizerController.prototype.getProfileStub(returnedProfile._id, res);
     });
 
   });
@@ -191,20 +216,20 @@ OrganizerController.prototype.getAllProfiles = function(req, res) {
     }
     Organizer.populate(organizers, {
       path: 'user_ref staff.manager_ref'
-    }, function(err, populatedProfile) {
+    }, function(err, populatedProfiles) {
 
       if (err) {
         return res.json(err);
       }
 
-      res.json(populatedProfile);
+      res.json(populatedProfiles);
 
     });
   });
 
 }
 
-OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff, sendMail, res, callback) {
+OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff, sendMail, exit) {
 
   var uniqueStaff = [];
 
@@ -353,32 +378,26 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
                 }, function(returnedProfile) {
                   done(null, returnedProfile)
                 }, populatedProfile);
-
               }
-
             });
           }
-
         });
       }
     }
 
   ], function(err, returnedProfile) {
 
-    if (callback) {
-      callback(err, returnedProfile, res);
+    if (err)
+      returnedProfile = null;
+    if (exit) {      
+      exit(null, returnedProfile);
     } else {
-      if (err)
-        return orgProfile;
-
       return returnedProfile;
     }
   });
-
 }
 
 OrganizerController.prototype.getProfileStub = function(orgId, res) {
-
 
   async.waterfall([
 
