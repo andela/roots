@@ -21,12 +21,16 @@ var eventSchema = new mongoose.Schema({
     required: true
   },
   venue: {
-    country: String,
     name: String,
+    country: String,
+    state: String,
+    town: String,    
     address: {
       type: String,
       required: true
-    }
+    },
+    latitude: Number,
+    longitude: Number
   },
   eventBanner: String,
   location: {
