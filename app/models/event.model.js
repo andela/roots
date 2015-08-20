@@ -24,7 +24,7 @@ var eventSchema = new mongoose.Schema({
     name: String,
     country: String,
     state: String,
-    town: String,    
+    town: String,
     address: {
       type: String,
       required: true
@@ -59,46 +59,11 @@ var eventSchema = new mongoose.Schema({
     }
   }],
   tasks: [{
-    manager_ref: {
+    task_ref: {
       type: String,
-      ref: 'User'
-    },
-    description: {
-      type: String
-    },
-    startAt: {
-      type: Date
-    },
-    endAt: {
-      type: Date
-    },
-    completed: {
-      type: Boolean,
-      default: false
-    },
-    volunteers: [{
-      volunteer_ref: {
-        type: String,
-        ref: 'User'
-      },
-      schedules: [{
-        description: {
-          type: String
-        },
-        startAt: {
-          type: Date
-        },
-        endAt: {
-          type: Date
-        },
-        completed: {
-          type: Boolean,
-          default: false
-        }
-      }]
-    }]
+      ref: 'Task'
+    }
   }]
-
 }, {
   versionKey: false
 });
