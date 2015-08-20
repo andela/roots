@@ -28,6 +28,8 @@ Utils.prototype.sendMail = function(mailOptions, done) {
 
 }
 
+//for executing asynchronous calls that involve iteration
+
 Utils.prototype.syncLoop = function(iterationNum, process, exit, returnedData) {
 
   var index = 0,
