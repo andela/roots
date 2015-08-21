@@ -3,6 +3,16 @@
 angular.module('eventApp')
   .controller('twitterCtrl', ['$scope', 'UserService', '$stateParams', '$location', '$timeout', function($scope, UserService, $stateParams, $location, $timeout) {
 
+    $scope.sendWelcomeMail = function(recipient) {
+      var data = ({
+        mail: recipient.email,
+        name: ''
+      });
+      UserService.sendWelcomeMail(data).success(function(data, status, headers, config) {
+
+      });
+    };
+
     var userToken = $location.search().twitToken;
     $location.search('twitToken', null);
     if (userToken) {
@@ -24,6 +34,9 @@ angular.module('eventApp')
             $scope.emailTaken = true;
           }
           else {
+            $scope.sendWelcomeMail({
+                email: userInfo.email
+              });
             localStorage.removeItem('twitToken');
             $location.url('/home?token=' + res.data.token);
           }
