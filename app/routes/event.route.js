@@ -10,12 +10,12 @@ module.exports = function(app) {
   router.route('/event')
     .post(userCtrl.verifyToken, evtCtrl.createEvent);
   router.route('/events')
-    .get(userCtrl.verifyToken, evtCtrl.getAllEvents);
+    .get(evtCtrl.getAllEvents);
 
 
   router.route('/event/:event_id')
-    .get(userCtrl.verifyToken, evtCtrl.getEvent)
-    .delete(evtCtrl.deleteEvent);
+    .get(evtCtrl.getEvent)
+    .delete(userCtrl.verifyToken, evtCtrl.deleteEvent);
 
   app.use('/api', router);
 }

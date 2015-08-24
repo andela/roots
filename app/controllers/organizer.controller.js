@@ -75,7 +75,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
               if (err || !returnedProfile)
                 returnedProfile = orgProfile;
               OrganizerController.prototype.getProfileStub(returnedProfile._id, res);
-            });           
+            });
           });
         });
       } else {
@@ -89,7 +89,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
 }
 
 OrganizerController.prototype.editProfile = function(req, res) {
-  
+
   if (!req.body.newProfile) {
     return res.status(422).send({
       success: false,
@@ -115,6 +115,13 @@ OrganizerController.prototype.editProfile = function(req, res) {
         message: 'Invalid organizer id'
       });
 
+    } else if (profile.user_ref != req.decoded._id) {
+
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized!'
+      });
+
     } else {
       oldProfile = profile;
       oldStaff = oldProfile.staff;
@@ -124,7 +131,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
       }, function(err, organizer) {
         if (err) {
           return res.json(err);
-        }      
+        }
 
         async.waterfall([function(done) {
 
@@ -198,7 +205,7 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
       }, done);
 
     }], function(err, returnedProfile) {
-      
+
       if (err || !returnedProfile)
         returnedProfile = orgProfile;
       OrganizerController.prototype.getProfileStub(returnedProfile._id, res);
@@ -389,7 +396,7 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
 
     if (err)
       returnedProfile = null;
-    if (exit) {      
+    if (exit) {
       exit(null, returnedProfile);
     } else {
       return returnedProfile;
