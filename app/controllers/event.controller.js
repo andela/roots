@@ -2,11 +2,13 @@
 
 var async = require('async');
 var User = require('../models/user.model');
-var Organizer = require('../models/organizer.model');
 var Event = require('../models/event.model');
+var Task = require('../models/task.model');
 var Utils = require('../middleware/utils');
+var TaskController = require('./task.controller');
 
 var utils = new Utils();
+var taskController = new TaskController();
 
 var EventController = function() {};
 
@@ -24,7 +26,7 @@ EventController.prototype.createEvent = function(req, res) {
   var eventTasks = req.body.eventObj.tasks;
   var eventObj = req.body.eventObj;
   eventObj.user_ref = userId;
-  eventObj.task = [];
+  eventObj.tasks = [];
 
   Event.create(eventObj, function(err, newEvent) {
 
@@ -45,297 +47,174 @@ EventController.prototype.createEvent = function(req, res) {
 
     async.waterfall([function(done) {
 
-      EventController.prototype.addTasksStub(newEvent, eventTasks, {
-        sendMail: true,
-        excludeManagers: [],
-        excludeVolunteers: []
-      }, done);
+        if (eventTasks && eventTasks.length) {
 
-    }], function(err, updatedEvent) {
+          utils.syncLoop(eventTasks.length, function(loop, tasksToAdd) {
 
-      if (err || !updatedEvent)
-        updatedEvent = newEvent;
-      EventController.prototype.getEventStub(updatedEvent._id, res);
-    });
-  });
-}
-
-EventController.prototype.addTasksStub = function(eventObj, newTasks, sendMail, exit) {
-
-  var filteredTasks = EventController.prototype.filterTasks(newTasks);
-
-  if (!filteredTasks || !filteredTasks.length) {
-
-    if (exit) {
-      exit(null, eventObj);
-    } else {
-
-      return eventObj;
-    }
-  } else {
-
-    async.waterfall([
-
-        function(done) {
-
-          var validatedTasks = [];
-
-
-          utils.syncLoop(filteredTasks.length, function(loop, processedTasks) {
-
-              User.findById(filteredTasks[loop.iteration()].manager_ref, function(err, person) {
-
-                if (person) {
-
-                  Event.findOne({
-                    _id: eventObj._id,
-                    'tasks.manager_ref': person._id
-                  }, function(err, duplicate) {
-
-                    if (!err && !duplicate) {
-                      processedTasks.push({
-                        manager_ref: filteredTasks[loop.iteration()].manager_ref,
-                        description: filteredTasks[loop.iteration()].description,
-                        volunteers: []
-                      });
-
-
-                      //Filter volunteers
-                      utils.syncLoop(filteredTasks[loop.iteration()].volunteers.length, function(innerLoop, processedVolunteers) {
-
-                          User.findById(processedVolunteers[innerLoop.iteration()].volunteer_ref, function(err, person) {
-
-                            if (person) {
-
-                              Event.findOne({
-                                _id: eventObj._id,
-                                'tasks.volunteers.volunteer_ref': person._id
-                              }, function(err, duplicate) {
-
-                                if (!err & !duplicate) {
-
-                                  processedVolunteers.push({
-                                    volunteer_ref: person._id,
-                                    schedules: processedVolunteers[innerLoop.iteration()].schedules
-                                  });
-                                  innerLoop.next();
-                                } else {
-                                  innerLoop.next();
-                                }
-
-                              });
-
-                            } else {
-                              innerLoop.next();
-                            }
-
-                          });
-                        },
-                        function() {
-                          loop.next();
-                        },
-                        processedTasks[processedTasks.length].volunteers
-                      );
-                    }
-                  });
-                } else {
-                  loop.next();
-                }
-              });
-
+              taskController.addOrEditTaskStub(newEvent._id, tasksToAdd[loop.iteration()], null, loop);
             },
             function(processedTasks) {
 
               done(null, processedTasks);
-            },
-            validatedTasks
-          );
+            }, eventTasks);
 
-        },
-        function(addedTasks, done) {
-
-          if (!addedTasks.length) {
-            done(null, null);
-          } else {
-
-            //Add validated users as Tasks
-
-            addedTasks.forEach(function(eachTask) {
-
-              eventObj.tasks.push(eachTask);
-
-            });
-
-            eventObj.save(function(err, saved) {
-
-              if (err) {
-                done(null, null);
-              } else if (!sendMail) {
-
-                done(null, saved);
-              } else {
-
-                //Send notification mail to all added Tasks
-                Event.findOne({
-                  _id: eventObj._id
-                }).populate('tasks.manager_ref').exec(function(err, populatedEvent) {
-
-                  if (err) {
-                    done(null, null);
-                  } else {
-
-                    var mailOptions = {
-                      to: '',
-                      from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                      subject: 'You have been added to ' + populatedEvent.name + ' event.',
-                      text: 'You have been added to ' + populatedEvent.name + ' event.',
-                      html: 'Hello,\n\n' +
-                        'You have been added as Task manager to <b>' + populatedEvent.name + '</b> event.\n'
-                    };
-
-
-                    utils.syncLoop(populatedEvent.tasks.length, function(loop, returnedEvent) {
-
-                      if (sendMail.excludeStaff && sendMail.excludeStaff.length) {
-
-                        var sendMailTo = sendMail.excludeStaff.every(function(everyOldTask) {
-
-                          if (everyOldTask.manager_ref == populatedEvent.Tasks[loop.iteration()].manager_ref._id) {
-                            return false;
-                          }
-
-                          return true;
-                        });
-
-                        if (sendMailTo) {
-                          mailOptions.to = populatedEvent.tasks[loop.iteration()].manager_ref.email;
-
-                          utils.sendMail(mailOptions);
-                          loop.next();
-                        } else {
-                          loop.next();
-                        }
-
-                      } else {
-
-                        mailOptions.to = populatedEvent.tasks[loop.iteration()].manager_ref.email;
-
-                        utils.sendMail(mailOptions);
-                        loop.next();
-
-                      }
-
-                    }, function(returnedEvent) {
-                      done(null, returnedEvent)
-                    }, populatedEvent);
-
-                  }
-                });
-              }
-            });
-          }
-        },
-        function(done, eventData) {
-
-          if (!eventData) {
-            done(null, eventObj)
-          } else if (!sendMail) {
-
-            done(null, eventData);
-          } else {
-
-            //Send notification mail to all added volunteers
-            Event.findOne({
-              _id: eventObj._id
-            }).populate('tasks.volunteers.volunteer_ref').exec(function(err, populatedEvent) {
-
-              if (err) {
-                done(null, eventData);
-              } else {
-
-                if (populatedEvent && populatedEvent.tasks && populatedEvent.tasks.length) {
-
-                  var mailOptions = {
-                    to: '',
-                    from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                    subject: 'You have been added to ' + populatedEvent.name + ' event.',
-                    text: 'You have been added to ' + populatedEvent.name + ' event.',
-                    html: 'Hello,\n\n' +
-                      'You have been added as volunteer to <b>' + populatedEvent.name + '</b> event.\n'
-                  };
-
-
-                  utils.syncLoop(populatedEvent.tasks.length, function(loop, returnedEvent) {
-
-                    if (sendMail.excludeStaff && sendMail.excludeStaff.length) {
-
-                      utils.syncLoop(populatedEvent.tasks[loop.iteration()].volunteers.length, function(innerLoop, processedVolunteers) {
-
-                          var sendMailTo = sendMail.excludeVolunteers.every(function(everyVolunteer) {
-
-                            if (everyVolunteer.volunteer_ref == processedVolunteers[innerLoop.iteration()].volunteer_ref._id) {
-                              return false;
-                            }
-
-                            return true;
-                          });
-
-                          if (sendMailTo) {
-
-                            mailOptions.to = processedVolunteers[innerLoop.iteration()].volunteer_ref.email;
-
-                            utils.sendMail(mailOptions);
-                            innerLoop.next();
-                          } else {
-                            innerLoop.next();
-                          }
-                        },
-                        function() {
-                          loop.next();
-                        },
-                        populatedEvent.tasks[loop.iteration()].volunteers);
-
-                    } else {
-
-
-                      utils.syncLoop(populatedEvent.tasks[loop.iteration()].volunteers.length, function(innerLoop, processedVolunteers) {
-
-                          mailOptions.to = processedVolunteers[innerLoop.iteration()].volunteer_ref.email;
-
-                          utils.sendMail(mailOptions);
-                          innerLoop.next();
-                        },
-                        function() {
-                          loop.next();
-                        },
-                        populatedEvent.tasks[loop.iteration()].volunteers);
-                    }
-
-                  }, function(returnedEvent) {
-                    done(null, returnedEvent)
-                  }, populatedEvent);
-
-                } else {
-                  done(null, eventData);
-                }
-
-              }
-            });
-
-          }
-        }
-      ],
-      function(err, returnedTasks) {
-
-        if (err)
-          returnedTasks = eventObj;
-        if (exit) {
-          exit(null, returnedTasks);
         } else {
-          return returnedTasks;
+          done(null, []);
+        }
+      }],
+      function(err) {
+        EventController.prototype.getEventStub(newEvent._id, res);
+      });
+  });
+}
+
+EventController.prototype.editEventDetails = function(req, res) {
+
+  if (!req.body.eventObj || !req.body.eventObj._id) {
+
+    return res.status(422).send({
+      success: false,
+      message: 'Check parameters!'
+    });
+  }
+
+
+  Event.findById(req.body.eventObj._id, function(err, evt) {
+
+    if (err) {
+      return res.send(err);
+    } else if (!evt) {
+      return res.status(422).send({
+        success: false,
+        message: 'Event not found!'
+      });
+    } else if (evt.user_ref != req.decoded._id) {
+
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized!'
+      });
+    } else {
+
+      var eventObj = req.body.eventObj;
+
+      Event.findByIdAndUpdate(eventObj._id, {
+        $set: {
+          name: eventObj.name,
+          description: eventObj.description,
+          category: eventObj.category,
+          venue: eventObj.venue,
+          eventUrl: eventObj.eventUrl,
+          startDate: eventObj.startDate,
+          endDate: eventObj.endDate
+        }
+      }, function(err, evt) {
+
+        if (err) {
+          return res.send(err);
+        } else if (!evt) {
+          return res.status(422).send({
+            success: false,
+            message: 'Event not found!'
+          });
+        } else {
+          EventController.prototype.getEventStub(evt._id, res);
         }
       });
+
+    }
+  });
+}
+
+EventController.prototype.editEventTasks = function(req, res) {
+
+  if (!req.body.eventTasks) {
+
+    return res.status(422).send({
+      success: false,
+      message: 'Check parameters!'
+    });
   }
+
+  var eventTasks = req.body.eventTasks;
+  var eventId = req.params.event_id;
+
+  Event.findById(eventId, function(err, evt) {
+
+    if (err) {
+      return res.send(err);
+    } else if (!evt) {
+      return res.status(422).send({
+        success: false,
+        message: 'Event not found!'
+      });
+    } else if (evt.user_ref != req.decoded._id) {
+
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized!'
+      });
+    } else {
+
+      var oldTasks = evt.tasks;
+      var tasksToRemove = [];
+      var filteredTasks = EventController.prototype.filterTasks(eventTasks);
+
+      oldTasks.forEach(function(oldTask) {
+
+        var remove = filteredTasks.every(function(filteredTask) {
+
+          if (oldTask.task_ref == filteredTask.task_ref) {
+            return false;
+          }
+          return true;
+        });
+
+        if (remove) {
+          tasksToRemove.push(oldTask);
+        }
+      });
+
+
+      async.waterfall([
+
+          function(done) {
+
+            utils.syncLoop(tasksToRemove.length, function(loop, tasks) {
+
+              taskController.deleteTaskStub(eventId, tasks[loop.iteration()].task_ref, null, loop);
+
+            }, function(tasks) {
+
+              done(null, tasks);
+            }, tasksToRemove)
+
+          },
+          function(evt, done) {
+
+            utils.syncLoop(filteredTasks.length, function(loop, tasks) {
+
+              taskController.addOrEditTaskStub(eventId, tasks[loop.iteration()], null, loop);
+
+            }, function(tasks) {
+
+              done(null, tasks);
+            }, filteredTasks)
+          }
+        ],
+        function(err, evt) {
+
+          if (err) {
+            return res.send(err);
+          } else {
+
+            EventController.prototype.getEventStub(eventId, res);
+          }
+
+        });
+    }
+
+  });
 }
 
 EventController.prototype.getAllEvents = function(req, res) {
@@ -345,7 +224,7 @@ EventController.prototype.getAllEvents = function(req, res) {
       return res.json(err);
     }
     Event.populate(events, {
-      path: 'user_ref task.manager_ref task.volunteers.volunteer_ref'
+      path: 'user_ref tasks.task_ref'
     }, function(err, populatedEvents) {
 
       if (err) {
@@ -362,14 +241,43 @@ EventController.prototype.deleteEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
-  Event.remove({
-    _id: eventId
-  }, function(err, evt) {
-    if (err) return res.send(err);
 
-    res.json({
-      message: 'Succesfully deleted'
-    });
+  Event.findById(eventId, function(err, evt) {
+
+    if (err) {
+      return res.send(err);
+    } else if (!evt) {
+      return res.status(422).send({
+        success: false,
+        message: 'Event not found!'
+      });
+    } else if (evt.user_ref != req.decoded._id) {
+
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized!'
+      });
+    } else {
+
+      Task.remove({
+        event_ref: eventId
+      }, function(err) {
+
+        if (err)
+          return res.send(err);
+
+        Event.remove({
+          _id: eventId
+        }, function(err, evt) {
+          if (err)
+            return res.send(err);
+
+          res.json({
+            message: 'Succesfully deleted'
+          });
+        });
+      });
+    }
   });
 }
 
@@ -426,7 +334,7 @@ EventController.prototype.getEventStub = function(eventId, res) {
       if (evt.tasks.length) {
 
         Event.populate(evt, {
-          path: 'tasks.manager_ref'
+          path: 'tasks.task_ref'
         }, function(err1, evt1) {
 
           if (err1) {
@@ -445,7 +353,7 @@ EventController.prototype.getEventStub = function(eventId, res) {
       if (evt.tasks.length) {
 
         Event.populate(evt, {
-          path: 'tasks.volunteers.volunteer_ref'
+          path: 'tasks.task_ref.manager_ref tasks.task_ref.volunteers.volunteer_ref'
         }, function(err1, evt1) {
 
           if (err1) {
@@ -484,79 +392,40 @@ EventController.prototype.getEventStub = function(eventId, res) {
 
 EventController.prototype.filterTasks = function(newTasks) {
 
-  if (!newTasks || !newTasks.length) {
-    return [];
-  }
+  var filteredTasks = [];
 
-  var uniqueTasks = [];
+  newTasks.forEach(function(task) {
 
-  newTasks.forEach(function(eachTask) {
+    var taskToReplace;
+    var notDuplicate = filteredTasks.every(function(addedTask) {
 
-    var notAdded = uniqueTasks.every(function(task) {
+      if (addedTask.manager_ref == task.manager_ref || addedTask.description.toLowerCase() == task.description.toLowerCase()) {
 
-      if (eachTask.manager_ref == task.manager_ref || eachTask.description.toLowerCase() == task.description.toLowerCase()) {
+        if (task._id && !addedTask._id) {
+          taskToReplace = addedTask;
+        }
         return false;
       }
 
       return true;
     });
 
-    if (notAdded) {
-      uniqueTasks.push(eachTask);
+    if (taskToReplace) {
+      var index = filteredTasks.indexOf(taskToReplace);
+      filteredTasks.splice(index, 1);
+
+      notDuplicate = true;
     }
+
+    if (notDuplicate) {
+
+      filteredTasks.push(task);
+    }
+
   });
 
-  var uniqueVolunteerTasks = JSON.parse(JSON.stringify(uniqueTasks));
-  uniqueVolunteerTasks.forEach(function(eachTask) {
-    eachTask.volunteers = [];
-  });
+  return filteredTasks;
 
-  for (var x in uniqueTasks) {
-
-    for (var y in uniqueTasks[x].volunteers) {
-      var notAdded = uniqueVolunteerTasks[x].volunteers.every(function(volunteer) {
-
-        if (volunteer.volunteer_ref == uniqueTasks[x].volunteers[y].volunteer_ref) {
-          return false;
-        }
-
-        return true;
-      });
-
-      if (notAdded) {
-        uniqueVolunteerTasks[x].volunteers.push(uniqueTasks[x].volunteers[y]);
-      }
-    }
-  }
-
-  console.log(uniqueVolunteerTasks);
-  uniqueTasks = JSON.parse(JSON.stringify(uniqueVolunteerTasks));
-  var duplicatedVolunteer;
-
-  for (var x = 0; x < uniqueVolunteerTasks.length - 1; x++) {
-
-    uniqueVolunteerTasks[i].volunteers.forEach(function(volunteer) {
-
-      for (var y = x + 1; y < uniqueVolunteerTasks.length; y++) {
-
-        var unique = uniqueTasks[x].volunteers.every(function(volunt) {
-
-          if (volunt.volunteer_ref == uniqueVolunteerTasks[x].volunteers[y].volunteer_ref) {
-            duplicatedVolunteer = volunt;
-            return false;
-          }
-          return true;
-        });
-
-        if (!unique) {
-          var index = uniqueTasks[x].indexOf(duplicatedVolunteer);
-          uniqueTasks[x].splice(index, 1);
-        }
-      }
-    });
-  }
-
-  return uniqueTasks;
 }
 
 module.exports = EventController;

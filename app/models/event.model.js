@@ -32,20 +32,23 @@ var eventSchema = new mongoose.Schema({
     latitude: Number,
     longitude: Number
   },
-  eventBanner: String,
-  location: {
+  eventBanner: {
     type: String
   },
-  eventUrl: String,
+  eventUrl: {
+    type: String
+  },
   eventTheme: {
     type: String,
     default: 'white'
   },
   startDate: {
-    type: Date
+    type: Date,
+    required: true
   },
   endDate: {
-    type: Date
+    type: Date,
+    required: true
   },
   feedback: [{
     name: {
