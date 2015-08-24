@@ -1,5 +1,5 @@
 'use strict';
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria'])
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria', 'ngWYSIWYG'])
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -18,7 +18,12 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       url: '/registration',
       templateUrl: '../app/views/twitter.user.html',
       controller: 'twitterCtrl'
-    });
+    })
+    .state('createevent', {
+    	url: '/createevent',
+    	templateUrl: '../app/views/createEvent.view.html',
+      controller: 'createeventCtrl'
+    })
 
   $urlRouterProvider.otherwise('/home');
 });

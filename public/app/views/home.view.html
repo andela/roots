@@ -9,7 +9,7 @@
             <li><a ng-click="login('login')" tabindex="-1" class="nav-link" id="loginLink">Log in</a></li>
             <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue event-btn" id="create_event_btn" type="submit" name="action">Create Event</button>
           </ul>
-          <ul ng-if="loggedIn" class="right" id="nav-menu">
+          <ul ng-if="loggedIn" class="right" id="nav-menu" ng-controller="createeventCtrl">
             <li class="user-dropdown">
               <a href="" ng-click="" id="welcome">
                 <img ng-src="{{profilePic}}" class="navbar-image">
@@ -21,7 +21,7 @@
                 <li class="menu-list"><a href="" ng-click="logout()" id="logoutLink">Logout</a></li>
               </ul>
             </li>
-            <button ng-click="" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
+            <button ng-click="createEventPage()" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
           </ul>
         </div>
       </nav>

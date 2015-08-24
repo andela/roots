@@ -295,3 +295,140 @@ img.bg {
 :-ms-input-placeholder { /* Internet Explorer 10+ */
    color:    #000;
 }
+
+#default {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: grey;
+}
+
+#theme1 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: red;
+}
+
+#theme2 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: blue;
+}
+
+#theme3 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: orange;
+}
+
+#theme4 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: green;
+}
+
+#theme5 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: #00BCD4;
+}
+
+#bar {
+  padding: 5px;
+  height: 5px;
+  width : 60;
+  background-color: white;
+}
+
+#headerDiv {
+  font-size: 20px;
+  border-radius: 8px 8px 0px 0px;
+  height: 50px;
+  width: 50%;
+  background-color: grey;
+}
+p {
+  padding-left: 10px; 
+}
+
+#sideHeaderDiv {
+  margin-left: 10%;
+  font-size: 20px;
+  border-radius: 8px 8px 0px 0px;
+  height: 50px;
+  width: 30%;
+  background-color: grey;
+}
+
+#contentMainDiv {
+  height: 50px;
+  width: 50%;
+  font-size: 20px;
+  
+  background-color: #C0C0C0;
+}
+
+#contentSideDiv {
+  height: 50px;
+  width: 30%;
+  margin-left: 10%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
+#eventDetails {
+  margin-top: 20px;
+  font-size: 20px;
+  border-radius: 8px 8px 0px 0px;
+  height: 50px;
+  width: 50%;
+  background-color: grey;
+}
+
+#organizers {
+  margin-top: 20px;
+  margin-left: 10%;
+  font-size: 20px;
+  border-radius: 8px 8px 0px 0px;
+  height: 50px;
+  width: 30%;
+  background-color: grey;
+}
+
+#eventContent {
+  height: 400px;
+  width: 50%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
+#organizersContent {
+  height: 400px;
+  width: 30%;
+  margin-left: 10%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
+#padding {
+  padding: 20px;
+}
+
+#image-holder {
+  width :20%;
+  height:30;
+  border-style: solid;
+  border-radius: 2px;
+}
+
