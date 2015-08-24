@@ -1,5 +1,9 @@
 /**
+<<<<<<< HEAD
  * @license AngularJS v1.4.5
+=======
+ * @license AngularJS v1.4.4
+>>>>>>> modify stylesheet.css
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -57,7 +61,11 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
+<<<<<<< HEAD
     message += '\nhttp://errors.angularjs.org/1.4.5/' +
+=======
+    message += '\nhttp://errors.angularjs.org/1.4.4/' +
+>>>>>>> modify stylesheet.css
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2374,11 +2382,19 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
+<<<<<<< HEAD
   full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
   dot: 5,
   codeName: 'permanent-internship'
+=======
+  full: '1.4.4',    // all of these placeholder strings will be replaced by grunt's
+  major: 1,    // package task
+  minor: 4,
+  dot: 4,
+  codeName: 'pylon-requirement'
+>>>>>>> modify stylesheet.css
 };
 
 
@@ -5392,10 +5408,17 @@ var $CoreAnimateCssProvider = function() {
         return this.getPromise().then(f1,f2);
       },
       'catch': function(f1) {
+<<<<<<< HEAD
         return this.getPromise()['catch'](f1);
       },
       'finally': function(f1) {
         return this.getPromise()['finally'](f1);
+=======
+        return this.getPromise().catch(f1);
+      },
+      'finally': function(f1) {
+        return this.getPromise().finally(f1);
+>>>>>>> modify stylesheet.css
       }
     };
 

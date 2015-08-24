@@ -1,9 +1,17 @@
 {
   "name": "angular-sanitize",
+<<<<<<< HEAD
   "version": "1.4.5",
   "main": "./angular-sanitize.js",
   "ignore": [],
   "dependencies": {
     "angular": "1.4.5"
+=======
+  "version": "1.4.4",
+  "main": "./angular-sanitize.js",
+  "ignore": [],
+  "dependencies": {
+    "angular": "1.4.4"
+>>>>>>> modify stylesheet.css
   }
 }

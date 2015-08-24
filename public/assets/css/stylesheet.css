@@ -303,6 +303,7 @@ img.bg {
   height:100px;
   width: 100px;
 }
+
 #default {
   background-color: grey;
 }
@@ -367,6 +368,7 @@ p {
   border-style: solid;
   border-width: 1px;
 }
+
 #sideHeaderDiv {
   margin-left: 10%;
   font-size: 20px;
@@ -451,7 +453,6 @@ p {
   border-radius: 0px 0px 8px 8px;
 }
 
-
 #padding {
   padding: 20px;
 }
@@ -467,17 +468,7 @@ p {
   border-width: 2px;
   border-radius: 2px;
 }
-<<<<<<< HEAD
 
-#bannerImg {
-  border-style: dashed;
-  width: 250px;
-  height: 200px;
-  border-width: 2px;
-  border-radius: 2px;
-
-=======
->>>>>>> - add editEvent view and controller
 #width {
   width: 50%;
 }
@@ -490,12 +481,6 @@ p {
   width: 80%;
   padding-left: 5%;
 }
-
-#image-holder {
-  width :20%;
-  height:30;
-  border-style: solid;
-  border-radius: 2px;
 
 label {
   font-size: 10px;

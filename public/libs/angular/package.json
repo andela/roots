@@ -1,6 +1,10 @@
 {
   "name": "angular",
+<<<<<<< HEAD
   "version": "1.4.5",
+=======
+  "version": "1.4.4",
+>>>>>>> modify stylesheet.css
   "description": "HTML enhanced for web apps",
   "main": "index.js",
   "scripts": {
