@@ -1,8 +1,8 @@
 'use strict';
 
 var async = require('async');
-var User = require('../models/user.model');
 var Task = require('../models/task.model');
+var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Utils = require('../middleware/utils');
 
@@ -131,19 +131,22 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
     } else {
 
       var oldVlnteers;
+      var update;
 
       async.waterfall([function(done) {
+
+            var managerId = newTask.manager_ref._id || newTask.manager_ref;
 
             Task.findOne({
               $and: [{
                 event_ref: eventId
               }, {
                 _id: {
-                  '$ne': newTask._id
+                  $ne: newTask._id
                 }
               }, {
                 $or: [{
-                  manager_ref: newTask.manager_ref
+                  manager_ref: managerId
                 }, {
                   description: {
                     $regex: new RegExp(newTask.description, "i")
@@ -170,18 +173,17 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
             Task.findById(newTask._id, function(err, task) {
 
               if (err) {
-                done({
-                  success: false,
-                  message: ''
-                });
+                done(err);
               } else if (!task || (task && !newTask._id)) {
 
-                newTask._id = undefined;
-                newTask.save(function(err, savedTask) {
+                newTask.event_ref = eventId;
+
+                Task.create(newTask, function(err, savedTask) {
 
                   if (err) {
                     done(err)
                   } else {
+
                     done(null, savedTask);
                   }
 
@@ -190,9 +192,11 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
               } else {
 
                 oldVlnteers = task.volunteers;
-
+                newTask.event_ref = eventId;
+                update = true;
                 Task.findByIdAndUpdate(newTask._id, newTask, {
-                  'new': true
+                  'new': true,
+                  'upsert': true
                 }, function(err, updatedTask) {
 
                   if (err) {
@@ -206,23 +210,27 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
             });
 
           },
-          function(done, savedTask) {
-
+          function(savedTask, done) {
             Task.findById(savedTask._id).populate('manager_ref event_ref volunteers.volunteer_ref').exec(function(err, populatedTask) {
 
               if (err) {
                 done(savedTask)
               } else {
-                var mailOptions = {
-                  to: populatedTask.manager_ref.email,
-                  from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                  subject: 'You have been added to ' + populatedTask.event_ref.name + ' event.',
-                  text: 'You have been added to ' + populatedTask.event_ref.name + ' event.',
-                  html: 'Hello,\n\n' +
-                    'You have been added as Task manager to <b>' + populatedTask.event_ref.name + '</b> event.\n'
-                };
+                var mailOptions = {};
 
-                utils.sendMail(mailOptions);
+                if (!update) {
+
+                  mailOptions = {
+                    to: populatedTask.manager_ref.email,
+                    from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                    subject: 'You have been added to ' + populatedTask.event_ref.name + ' event.',
+                    text: 'You have been added to ' + populatedTask.event_ref.name + ' event.',
+                    html: 'Hello,\n\n' +
+                      'You have been added as Task manager to <b>' + populatedTask.event_ref.name + '</b> event.\n'
+                  };
+
+                  utils.sendMail(mailOptions);
+                }
 
                 mailOptions = {
                   to: '',
@@ -281,7 +289,7 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
           if (err) {
 
             if (loop) {
-              loop.next
+              loop.next();
             } else if (exit) {
               exit(err, null);
             } else {
@@ -293,7 +301,7 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
 
               Task.update({
                 _id: {
-                  '$ne': loopTask._id
+                  $ne: loopTask._id
                 },
                 event_ref: loopTask.event_ref._id,
                 'volunteers.volunteer_ref': loopTask.volunteers[outerLoop.iteration()].volunteer_ref._id
@@ -309,14 +317,38 @@ TaskController.prototype.addOrEditTaskStub = function(eventId, newTask, exit, lo
 
             }, function(task) {
 
-              if (loop) {
-                loop.next();
-              } else if (exit) {
-                exit(null, returnedTask);
+              if (!update) {
+
+                Event.findByIdAndUpdate(eventId, {
+                  $push: {
+                    'tasks': {
+                      task_ref: returnedTask._id
+                    }
+                  }
+                }, function(err, evt) {
+
+                  if (loop) {
+                    loop.next();
+                  } else if (exit) {
+                    exit(null, returnedTask);
+                  } else {
+                    return returnedTask;
+                  }
+
+                });
+
               } else {
-                return returnedTask;
+
+                if (loop) {
+                  loop.next();
+                } else if (exit) {
+                  exit(null, returnedTask);
+                } else {
+                  return returnedTask;
+                }
               }
             }, returnedTask);
+
           }
 
         });
@@ -353,13 +385,21 @@ TaskController.prototype.getTaskStub = function(taskId, res) {
         } else {
 
           Task.populate(task, {
-            path: 'event_ref volunteers.volunteer_ref'
+            path: 'event_ref'
           }, function(err1, task1) {
 
             if (err) {
               done(err);
             } else {
-              done(null, task1);
+              utils.syncLoop(task1.volunteers.length, function(loop, task) {
+
+                User.populate(task.volunteers[loop.iteration()], {
+                  'path': 'volunteer_ref'
+                });
+
+              }, function(task) {
+                done(null, task);
+              }, task1);
             }
           });
         }
@@ -499,6 +539,7 @@ TaskController.prototype.filterVolunteers = function(volunteers, done) {
 
   }, function(returnedVlnteers) {
     if (done) {
+
       done(null, returnedVlnteers);
     } else {
       return returnedVlnteers;

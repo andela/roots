@@ -70,7 +70,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body.eventObj || !req.body.eventObj._id) {
+  if (!req.body.eventObj) {
 
     return res.status(422).send({
       success: false,
@@ -78,8 +78,10 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
+  var eventObj = req.body.eventObj;
+  var eventId = req.params.event_id;
 
-  Event.findById(req.body.eventObj._id, function(err, evt) {
+  Event.findById(eventId, function(err, evt) {
 
     if (err) {
       return res.send(err);
@@ -96,9 +98,7 @@ EventController.prototype.editEventDetails = function(req, res) {
       });
     } else {
 
-      var eventObj = req.body.eventObj;
-
-      Event.findByIdAndUpdate(eventObj._id, {
+      Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
           description: eventObj.description,
@@ -164,7 +164,7 @@ EventController.prototype.editEventTasks = function(req, res) {
 
         var remove = filteredTasks.every(function(filteredTask) {
 
-          if (oldTask.task_ref == filteredTask.task_ref) {
+          if (oldTask.task_ref == filteredTask._id) {
             return false;
           }
           return true;
@@ -350,25 +350,33 @@ EventController.prototype.getEventStub = function(eventId, res) {
     },
     function(evt, done) {
 
-      if (evt.tasks.length) {
+      utils.syncLoop(evt.tasks.length, function(loop) {
 
-        Event.populate(evt, {
-          path: 'tasks.task_ref.manager_ref tasks.task_ref.volunteers.volunteer_ref'
-        }, function(err1, evt1) {
+        User.populate(evt.tasks[loop.iteration()], {
+          'path': 'task_ref.manager_ref'
+        }, function(err, task) {
 
-          if (err1) {
-            done(null, evt);
+          if (err, task) {
+
+            loop.next()
           } else {
-            if (evt1 == [])
-              evt1 = evt;
 
-            done(null, evt1);
+            utils.syncLoop(task[loop.iteration()].volunteers.length, function(innerLoop, evtTask) {
+
+              User.populate(task[loop.iteration()].volunteers[innerLoop.iteration()], {
+                'path': 'volunteer_ref'
+              })
+
+            }, function(evtTask) {
+              loop.next();
+            }, task);
+
           }
-
         });
-      } else {
-        done(null, evt);
-      }
+
+      }, function(loopEvent) {
+        done(null, loopEvent)
+      }, evt);
     }
 
   ], function(err, evt) {
