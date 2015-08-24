@@ -15,7 +15,11 @@ module.exports = function(app) {
 
   router.route('/event/:event_id')
     .get(evtCtrl.getEvent)
+    .put(userCtrl.verifyToken, evtCtrl.editEventDetails)
     .delete(userCtrl.verifyToken, evtCtrl.deleteEvent);
+
+    router.route('/event/:event_id/tasks')
+    .put(userCtrl.verifyToken, evtCtrl.editEventTasks);
 
   app.use('/api', router);
 }
