@@ -49,7 +49,7 @@ angular.module('eventApp')
 
     $scope.toEvent= function() {
         if($scope.loggedIn = true)
-        $location.path("/cevent");
+          $location.path("/cevent");
     };
 
     function UserLogin($scope, $rootScope, $mdDialog, view) {
