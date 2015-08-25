@@ -425,10 +425,32 @@ p {
   padding: 20px;
 }
 
-#image-holder {
-  width :20%;
-  height:30;
-  border-style: solid;
-  border-radius: 2px;
+#wrapper {
+  padding-top: 20px;
 }
 
+#logoImg {
+  border-style: dashed;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px; 
+}
+
+#bannerImg {
+  border-style: dashed;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px; 
+}
+
+#createEventTab {
+  width: 50%;
+  margin-left: 100px;
+}
+
+#organizerTab {
+  width: 50%;
+  margin-left: 100px;
+}
