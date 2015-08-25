@@ -36,6 +36,11 @@ angular.module('eventApp')
       });
     };
 
+    $scope.toEvent= function() {
+        if($scope.loggedIn = true)
+        $location.path("/event");
+    };
+
     function UserLogin($scope, $rootScope, $mdDialog, view) {
       if (view === 'signup') {
         $scope.signupDialog = true;
