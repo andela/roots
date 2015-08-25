@@ -19,7 +19,6 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       templateUrl: '../app/views/twitter.user.html',
       controller: 'twitterCtrl'
     })
-
     .state('user.cevent', {
       url: '/cevent',
       templateUrl: '../app/views/event.view.html',
