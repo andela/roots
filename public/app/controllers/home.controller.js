@@ -22,6 +22,7 @@ angular.module('eventApp')
     $scope.logout = function() {
       localStorage.removeItem('userToken');
       $scope.loggedIn = false;
+      $location.url('/home');
     };
 
     $scope.login = function(view) {

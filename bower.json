@@ -14,6 +14,8 @@
     "angular-material": "~0.10.0",
     "angular-messages": "~1.4.3",
     "angular-resource": "~1.4.3",
-    "textAngular": "~1.4.3"
+    "textAngular": "~1.4.3",
+    "ngWYSIWYG": "*",
+    "angular-sanitize": "~1.4.4"
   }
 }

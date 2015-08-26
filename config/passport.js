@@ -4,6 +4,7 @@ require('../app/models/user.model');
 var mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
+  nodemailer = require('nodemailer'),
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   TwitterStrategy = require('passport-twitter').Strategy,
   FacebookStrategy = require('passport-facebook').Strategy,
@@ -16,6 +17,33 @@ function makePassword() {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
+}
+
+function sendWelcomeMail(user) {
+  var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'worldtree.noreply@gmail.com',
+        pass: 'rootsdevelopers'
+      }
+    });
+    // var data = req.body;
+    var mailOptions = {
+      from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+      to: user.email,
+      subject: 'Welcome to World Tree!',
+      text: 'Welcome to World Tree!',
+      html: '<b> Hello ' + user.firstname + ',\n Thanks for registering with World Tree. \n' + 
+      'Click <a href="https://roots-event-manager.herokuapp.com"> here</a> to create or view events</b>'
+    };
+
+    transporter.sendMail(mailOptions, function(error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('message sent: ' + info);
+      }
+    });
 }
 
 module.exports = function() {
@@ -49,6 +77,7 @@ module.exports = function() {
               if(err){
                 return done(err);
               }
+              sendWelcomeMail(user);
               return done(null, user);
             });
           }
@@ -126,6 +155,7 @@ module.exports = function() {
               if (err) {
                 return done(err);
               }
+              sendWelcomeMail(newUser);
               return done(null, newUser);
             });
           }
