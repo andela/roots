@@ -37,8 +37,8 @@ angular.module('eventApp')
 	};
 
     $scope.changeColor = function(elem,elem2) {
-		$('md-toolbar.bars').css("background-color", elem);
-		$('md-toolbar.bars1').css("background-color", elem2);
+      $('md-toolbar.bars').css("background-color", elem);
+      $('md-toolbar.bars1').css("background-color", elem2);
 	};
 
 
