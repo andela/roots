@@ -1,6 +1,6 @@
 'use strict';
 
-var async = require('async');
+var asyncModule = require('async');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
@@ -45,26 +45,7 @@ EventController.prototype.createEvent = function(req, res) {
 
     utils.sendMail(mailOptions);
 
-    async.waterfall([function(done) {
-
-        if (eventTasks && eventTasks.length) {
-
-          utils.syncLoop(eventTasks.length, function(loop, tasksToAdd) {
-
-              taskController.addOrEditTaskStub(newEvent._id, tasksToAdd[loop.iteration()], null, loop);
-            },
-            function(processedTasks) {
-
-              done(null, processedTasks);
-            }, eventTasks);
-
-        } else {
-          done(null, []);
-        }
-      }],
-      function(err) {
-        EventController.prototype.getEventStub(newEvent._id, res);
-      });
+    res.json(newEvent);
   });
 }
 
@@ -90,7 +71,7 @@ EventController.prototype.editEventDetails = function(req, res) {
         success: false,
         message: 'Event not found!'
       });
-    } else if (evt.user_ref != req.decoded._id) {
+    } else if (evt.user_ref.toString() !== req.decoded._id) {
 
       return res.status(401).send({
         success: false,
@@ -108,6 +89,8 @@ EventController.prototype.editEventDetails = function(req, res) {
           startDate: eventObj.startDate,
           endDate: eventObj.endDate
         }
+      }, {
+        new: true
       }, function(err, evt) {
 
         if (err) {
@@ -118,102 +101,10 @@ EventController.prototype.editEventDetails = function(req, res) {
             message: 'Event not found!'
           });
         } else {
-          EventController.prototype.getEventStub(evt._id, res);
+          res.json(evt);
         }
       });
-
     }
-  });
-}
-
-EventController.prototype.editEventTasks = function(req, res) {
-
-  if (!req.body.eventTasks) {
-
-    return res.status(422).send({
-      success: false,
-      message: 'Check parameters!'
-    });
-  }
-
-  var eventTasks = req.body.eventTasks;
-  var eventId = req.params.event_id;
-
-  Event.findById(eventId, function(err, evt) {
-
-    if (err) {
-      return res.send(err);
-    } else if (!evt) {
-      return res.status(422).send({
-        success: false,
-        message: 'Event not found!'
-      });
-    } else if (evt.user_ref != req.decoded._id) {
-
-      return res.status(401).send({
-        success: false,
-        message: 'Unauthorized!'
-      });
-    } else {
-
-      var oldTasks = evt.tasks;
-      var tasksToRemove = [];
-      var filteredTasks = EventController.prototype.filterTasks(eventTasks);
-
-      oldTasks.forEach(function(oldTask) {
-
-        var remove = filteredTasks.every(function(filteredTask) {
-
-          if (oldTask.task_ref == filteredTask._id) {
-            return false;
-          }
-          return true;
-        });
-
-        if (remove) {
-          tasksToRemove.push(oldTask);
-        }
-      });
-
-
-      async.waterfall([
-
-          function(done) {
-
-            utils.syncLoop(tasksToRemove.length, function(loop, tasks) {
-
-              taskController.deleteTaskStub(eventId, tasks[loop.iteration()].task_ref, null, loop);
-
-            }, function(tasks) {
-
-              done(null, tasks);
-            }, tasksToRemove)
-
-          },
-          function(evt, done) {
-
-            utils.syncLoop(filteredTasks.length, function(loop, tasks) {
-
-              taskController.addOrEditTaskStub(eventId, tasks[loop.iteration()], null, loop);
-
-            }, function(tasks) {
-
-              done(null, tasks);
-            }, filteredTasks)
-          }
-        ],
-        function(err, evt) {
-
-          if (err) {
-            return res.send(err);
-          } else {
-
-            EventController.prototype.getEventStub(eventId, res);
-          }
-
-        });
-    }
-
   });
 }
 
@@ -223,8 +114,8 @@ EventController.prototype.getAllEvents = function(req, res) {
     if (err) {
       return res.json(err);
     }
-    Event.populate(events, {
-      path: 'user_ref tasks.task_ref'
+    User.populate(events, {
+      path: 'user_ref manager_ref'
     }, function(err, populatedEvents) {
 
       if (err) {
@@ -251,7 +142,7 @@ EventController.prototype.deleteEvent = function(req, res) {
         success: false,
         message: 'Event not found!'
       });
-    } else if (evt.user_ref != req.decoded._id) {
+    } else if (evt.user_ref.toString() !== req.decoded._id) {
 
       return res.status(401).send({
         success: false,
@@ -283,157 +174,34 @@ EventController.prototype.deleteEvent = function(req, res) {
 
 EventController.prototype.getEvent = function(req, res) {
 
-  EventController.prototype.getEventStub(req.params.event_id, res);
-}
+  var eventId = req.params.event_id;
 
-EventController.prototype.getEventStub = function(eventId, res) {
+  Event.findById(eventId, function(err, evt) {
 
-  async.waterfall([
+    if (err) {
 
-    function(done) {
+      return res.send(err);
+    } else if (!evt) {
 
-      Event.findById(eventId, function(err, evt) {
+      return res.status(422).send({
+        success: false,
+        message: 'Invalid event id'
+      });
+    } else {
+
+      User.populate(evt, {
+        path: 'user_ref'
+      }, function(err1, evt1) {
 
         if (err) {
-          if (res) {
-            return res.send(err);
-          } else {
-            return null;
-          }
-
-        } else if (!evt) {
-
-          if (res) {
-            return res.status(422).send({
-              success: false,
-              message: 'Invalid event id'
-            });
-          } else {
-            return null;
-          }
-        } else if (evt.user_ref) {
-
-          Event.populate(evt, {
-            path: 'user_ref'
-          }, function(err1, evt1) {
-
-            if (err) {
-              done(null, evt);
-            } else {
-              done(null, evt1);
-            }
-          });
+          res.send(err);
         } else {
-          done(null, evt);
+          res.json(evt1);
         }
 
       });
-    },
-    function(evt, done) {
-
-      if (evt.tasks.length) {
-
-        Event.populate(evt, {
-          path: 'tasks.task_ref'
-        }, function(err1, evt1) {
-
-          if (err1) {
-            done(null, evt);
-          } else {
-            done(null, evt1);
-          }
-
-        });
-      } else {
-        done(null, evt);
-      }
-    },
-    function(evt, done) {
-
-      utils.syncLoop(evt.tasks.length, function(loop) {
-
-        User.populate(evt.tasks[loop.iteration()], {
-          'path': 'task_ref.manager_ref'
-        }, function(err, task) {
-
-          if (err, task) {
-
-            loop.next()
-          } else {
-
-            utils.syncLoop(task[loop.iteration()].volunteers.length, function(innerLoop, evtTask) {
-
-              User.populate(task[loop.iteration()].volunteers[innerLoop.iteration()], {
-                'path': 'volunteer_ref'
-              })
-
-            }, function(evtTask) {
-              loop.next();
-            }, task);
-
-          }
-        });
-
-      }, function(loopEvent) {
-        done(null, loopEvent)
-      }, evt);
     }
-
-  ], function(err, evt) {
-
-    if (err) {
-      if (res) {
-        return res.send(err);
-      } else {
-        return null;
-      }
-    }
-
-    if (res) {
-      res.json(evt);
-    } else {
-      return evt;
-    }
-
   });
-}
-
-EventController.prototype.filterTasks = function(newTasks) {
-
-  var filteredTasks = [];
-
-  newTasks.forEach(function(task) {
-
-    var taskToReplace;
-    var notDuplicate = filteredTasks.every(function(addedTask) {
-
-      if (addedTask.manager_ref == task.manager_ref || addedTask.description.toLowerCase() == task.description.toLowerCase()) {
-
-        if (task._id && !addedTask._id) {
-          taskToReplace = addedTask;
-        }
-        return false;
-      }
-
-      return true;
-    });
-
-    if (taskToReplace) {
-      var index = filteredTasks.indexOf(taskToReplace);
-      filteredTasks.splice(index, 1);
-
-      notDuplicate = true;
-    }
-
-    if (notDuplicate) {
-
-      filteredTasks.push(task);
-    }
-
-  });
-
-  return filteredTasks;
-
 }
 
 module.exports = EventController;

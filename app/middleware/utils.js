@@ -36,6 +36,8 @@ Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData) {
     done = false,
     shouldExit = false;
   var loop = {
+    //next function executes the process param(function to be iterated) recursively for iterationNum of times
+    //except break function is called to terminate the process
     next: function() {
       if (done) {
         if (shouldExit && exit) {
@@ -52,9 +54,12 @@ Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData) {
         if (exit) exit(syncData);
       }
     },
+    //this returns the nth iteration in sync with
+    //zero based array index
     iteration: function() {
       return index - 1;
     },
+    //this terminates the iteration process
     break: function(end) {
       done = true;
       shouldExit = end;

@@ -1,7 +1,7 @@
 'use strict';
 
 var User = require('../models/user.model');
-var async = require('async');
+var asyncModule = require('async');
 var Organizer = require('../models/organizer.model');
 var Utils = require('../middleware/utils');
 
@@ -63,7 +63,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
               });
             }
 
-            async.waterfall([function(done) {
+            asyncModule.waterfall([function(done) {
 
               OrganizerController.prototype.addTeamMembersStub(orgProfile, newStaff, {
                 sendMail: true,
@@ -115,7 +115,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
         message: 'Invalid organizer id'
       });
 
-    } else if (profile.user_ref != req.decoded._id) {
+    } else if (profile.user_ref.toString() !== req.decoded._id) {
 
       return res.status(401).send({
         success: false,
@@ -133,7 +133,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
           return res.json(err);
         }
 
-        async.waterfall([function(done) {
+        asyncModule.waterfall([function(done) {
 
             OrganizerController.prototype.addTeamMembersStub(organizer, newStaff, {
               sendMail: true,
@@ -197,7 +197,7 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
     }
     var excludeStaff = JSON.parse(JSON.stringify(orgProfile.staff));
 
-    async.waterfall([function(done) {
+    asyncModule.waterfall([function(done) {
 
       OrganizerController.prototype.addTeamMembersStub(orgProfile, req.body.newStaff, {
         sendMail: true,
@@ -258,7 +258,7 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
 
   newStaff = uniqueStaff;
 
-  async.waterfall([
+  asyncModule.waterfall([
 
     function(done) {
 
@@ -406,7 +406,7 @@ OrganizerController.prototype.addTeamMembersStub = function(orgProfile, newStaff
 
 OrganizerController.prototype.getProfileStub = function(orgId, res) {
 
-  async.waterfall([
+  asyncModule.waterfall([
 
     function(done) {
 
