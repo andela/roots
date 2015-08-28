@@ -1,0 +1,77 @@
+<div ng-controller="eventCtrl">
+  <div class="navbar">
+    <nav class="nav-div">
+      <div class="nav-wrapper">
+        <span ui-sref="home" class="brand-logo left"><strong id="navbar-logo">World Tree</strong></span>
+        <ul ng-if="loggedIn" class="right" id="nav-menu">
+          <li class="user-dropdown">
+            <a href="" ng-click="">
+            <img ng-src="{{profilePic}}" class="navbar-image">
+            <span>Welcome {{userName}}</span>
+            </a>
+            <ul class="user-menu">
+              <li class="menu-list"><a href="" ng-click="">My Profile</a></li>
+              <li class="menu-list"><a href="" ng-click="">Browse Events</a></li>
+              <li class="menu-list"><a href="" ng-click="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div><br>
+  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
+
+
+  <div layout="column" class="md-padding">
+    <md-content class="md-padding">
+    <form ng-submit="">
+      <!-- <label>Event Title</label> -->
+      <input type="text" required name="e-title" placeholder="Event title"></input>
+      <label>Event Category</label>
+      <select placeholder="Select Category" ng-value="category" ng-model="event.category" ng-options="c.name for c in categories" style="display: block;">           
+      </select>
+      <label>Event Description</label>
+      <summernote height="300"></summernote>
+      <br>
+      <fieldset>
+        <legend>Venue</legend>
+        <select placeholder="Select Country" ng-value="category" ng-model="event.category" ng-options="c.name for c in countries" style="display: block;">           
+        </select>
+        <input type="text" ng-model="event.venue" placeholder="Enter Venue Name"></input>
+        <input type="text" ng-model="event.address1" placeholder="Address 1"></input>  
+      </fieldset><br>
+      <div layout-sm="column">
+        <label>Event Starts</label><br>
+          <input ng-model="event.startDate" type="date" placeholder="Date">
+          <input ng-model="event.startTime" type="time" placeholder="Time">  
+      </div>
+      <div layout-sm="column">
+        <label>Event Ends</label><br>
+        <input ng-model="event.endDate" type="date" placeholder="Date">
+        <input ng-model="event.endTime" type="time" placeholder="Time">  
+      </div>
+      <div id="image-wrapper">
+        <img id="image-preview" src="" alt="preview pane" style="height: 250px; width:300px; border: double 2px #aaa; border-radius: 20px; background: url('../../assets/img/preview-icon.jpg') no-repeat center;"><br>
+        <input ng-click="previewImg('#image-upload','#image-preview')" id="image-upload" type="file"><br>
+      </div><br><br>
+      <ng-form>
+        <label>Organizer's Name</label>
+        <input type="text" required name="e-title"></input>
+        <label>About the Organizer's</label>
+        <summernote height="300"></summernote>
+        <br>
+        <div id="image-wrapper">
+          <img id="orgImg-preview" src="" alt="preview pane" style="height: 250px; width:300px; border: double 2px #aaa; border-radius: 20px; background: url('../../assets/img/preview-icon.jpg') no-repeat center;"><br>
+          <input ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" ng-model="event.img" type="file"><br>
+        </div><br>
+        <label>Team Member's</label>
+        <div layout-sm="row">
+          <input ng-model="org.TMname" type="text" placeholder="Name">
+          <input ng-model="org.TMemail" type="email" placeholder="Email" required>
+          <select ng-model="org.TMrole" placeholder="Role" style="display: block;"></select> 
+        </div>
+      </ng-form><br>
+    </form>
+    </md-content>
+  </div>
+</div>
