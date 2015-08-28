@@ -108,6 +108,7 @@ angular.module('eventApp')
     about: '',
   };
 
+
   $scope.countries = [
   {name: 'Afghanistan', code: 'AF'},
   {name: 'Åland Islands', code: 'AX'},
