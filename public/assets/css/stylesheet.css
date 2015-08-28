@@ -350,7 +350,6 @@ label {
   font-size: 10px;
 }
 
-
 .md-warn {
   font-size: 20px;
   border-radius: 8px 8px 0px 0px;
@@ -369,6 +368,13 @@ p {
   border-width: 1px;
 }
 
+#eventTitleDiv {
+  color: #424242;
+  background-color: grey;
+  border-style: solid;
+  border-width: 1px;
+  color: #424242
+}
 #sideHeaderDiv {
   margin-left: 10%;
   font-size: 20px;
@@ -452,6 +458,7 @@ p {
   color: #424242;
   border-radius: 0px 0px 8px 8px;
 }
+
 
 #padding {
   padding: 20px;
