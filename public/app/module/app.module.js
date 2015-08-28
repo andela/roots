@@ -1,5 +1,9 @@
 'use strict';
+<<<<<<< HEAD
 angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete'])
+=======
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote'])
+>>>>>>> refactor (frontend): install summernote
 
 .config(function($stateProvider, $urlRouterProvider) {
 
