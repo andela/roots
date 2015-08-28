@@ -14,8 +14,10 @@
     "angular-material": "~0.10.0",
     "angular-messages": "~1.4.3",
     "angular-resource": "~1.4.3",
-    "textAngular": "~1.4.3",
     "ngWYSIWYG": "*",
-    "angular-sanitize": "~1.4.4"
+    "angular-sanitize": "~1.4.4",
+    "summernote": "~0.6.16",
+    "angular-summernote": "~0.5.0",
+    "angular-bootstrap": "~0.13.3"
   }
 }
