@@ -8,7 +8,7 @@ angular.module('eventApp')
       if (localStorage.getItem('userToken')) {
         UserService.decodeUser($scope);
       }
-    }
+    };
 
     $scope.previewFile = function(input, img) {
       $(input).on('change', function(){
@@ -28,9 +28,8 @@ angular.module('eventApp')
 	  });
 	};
  
-    $scope.changeColor = function(elem,elem2) {
-      $('md-toolbar.bars').css("background-color", elem);
-      $('md-toolbar.bars1').css("background-color", elem2);
+    $scope.changeColor = function(elem) {
+      $('md-toolbar.md-warn').css("background-color", elem);
 	};
     
 	$scope.event = {
@@ -44,6 +43,8 @@ angular.module('eventApp')
       startTime: '',
       endTime: '',
       bannerImg: '',
+      country: '',
+      category:'',
       organizerName : '',
       organizerInfo : '',
       organizerPhonenumber1 : '',
@@ -65,66 +66,72 @@ angular.module('eventApp')
 		  email : '',
 		  role : ''
 	    }
-      },
+      },      
+    };
+
+    $scope.category = {
       categories : [
         "Business",
         "Entertainment",
         "Art",
         "Social",
         "Technology"
-      ],
+      ]
+    }
+
+    $scope.country = {
       countries : [
         "Albania",
-	      "Andorra",
-	      "Armenia",
-	      "Austria",
-	      "Azerbaijan",
-	      "Belarus",
-	      "Belgium",
-	      "Bosnia & Herzegovina",
-	      "Bulgaria",
-	      "Croatia",
-	      "Cyprus",
-	      "Czech Republic",
-	      "Denmark",
-	      "Estonia",
-	      "Finland",
-	      "France",
-	      "Georgia",
-	      "Germany",
-	      "Greece",
-	      "Hungary",
-	      "Iceland",
-	      "Ireland",
-	      "Italy",
-	      "Kosovo",
-	      "Latvia",
-	      "Liechtenstein",
-	      "Lithuania",
-	      "Luxembourg",
-	      "Macedonia",
-	      "Malta",
-	      "Moldova",
-	      "Monaco",
-	      "Montenegro",
-	      "Netherlands",
-	      "Nigeria",
-	      "Norway",
-	      "Poland",
-	      "Portugal",
-	      "Romania",
-	      "Russia",
-	      "San Marino",
-	      "Serbia",
-	      "Slovakia",
-	      "Slovenia",
-	      "Spain",
-	      "Sweden",
-	      "Switzerland",
-	      "Turkey",
-	      "Ukraine",
-	      "United Kingdom",
-	      "Vatican City"
-    ],
-  };
+	    "Andorra",
+	    "Armenia",
+	    "Austria",
+	    "Azerbaijan",
+	    "Belarus",
+	    "Belgium",
+	    "Bosnia & Herzegovina",
+	    "Bulgaria",
+	    "Croatia",
+	    "Cyprus",
+	    "Czech Republic",
+	    "Denmark",
+	    "Estonia",
+	    "Finland",
+	    "France",
+	    "Georgia",
+	    "Germany",
+	    "Greece",
+	    "Hungary",
+	    "Iceland",
+	    "Ireland",
+	    "Italy",
+	    "Kosovo",
+	    "Latvia",
+	    "Liechtenstein",
+	    "Lithuania",
+	    "Luxembourg",
+	    "Macedonia",
+	    "Malta",
+	    "Moldova",
+	    "Monaco",
+	    "Montenegro",
+	    "Netherlands",
+	    "Nigeria",
+	    "Norway",
+	    "Poland",
+	    "Portugal",
+	    "Romania",
+	    "Russia",
+	    "San Marino",
+	    "Serbia",
+	    "Slovakia",
+        "Slovenia",
+	    "Spain",
+	    "Sweden",
+	    "Switzerland",
+        "Turkey",
+	    "Ukraine",
+	    "United Kingdom",
+	    "Vatican City"
+      ],
+    }
 })
