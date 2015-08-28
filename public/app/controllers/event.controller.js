@@ -63,7 +63,7 @@ angular.module('eventApp')
       country: $scope.getCountryCode()
     };
     $scope.details = '';
-  }; 
+  };
 
   $scope.previewImg = function (inElement,prevElement){
     $(inElement).on('change', function () {
@@ -87,19 +87,19 @@ angular.module('eventApp')
   };
 
 
-  $scope.$watch("organizer.about", 
+  $scope.$watch("organizer.about",
     function(oldVal, newVal){
       if(oldVal !== newVal){
         $scope.orgInfo = $sce.trustAsHtml($scope.organizer.about)
     }
   });
-  $scope.$watch("event.description", 
+  $scope.$watch("event.description",
     function(oldVal, newVal){
       if(oldVal !== newVal){
         $scope.eventInfo = $sce.trustAsHtml($scope.event.description)
     }
   });
-  
+
   $scope.event = {
     eventTheme : {
       headerColor:'',
@@ -356,6 +356,12 @@ angular.module('eventApp')
   {name: 'Western Sahara', code: 'EH'},
   {name: 'Yemen', code: 'YE'},
   {name: 'Zambia', code: 'ZM'},
+<<<<<<< HEAD
   {name: 'Zimbabwe', code: 'ZW'}];
 }]);
 
+=======
+  {name: 'Zimbabwe', code: 'ZW'}
+];
+}]);
+>>>>>>> refactor(main app): event view / modules

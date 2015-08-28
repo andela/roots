@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
 <div ng-controller="eventCtrl">
   <md-toolbar layout="row" class"md-padding md-raised">
-    <div class="md-toolbar-tools"> 
+    <div class="md-toolbar-tools">
       <md-button ng-click="currDisplay('create')">CREATE</md-button>
       <md-button ng-click="currDisplay('preview')">PREVIEW</md-button>
     </div>
@@ -11,7 +11,7 @@
       <md-content class="md-padding">
         <form ng-submit="submitEventDetails(event, organizer)">
           <input type="text" required name="e-title" class="input-textbox" placeholder="Event title" ng-model="event.name">
-          <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">  
+          <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
             <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
           </md-select>
           <md-textarea-container flex>
@@ -19,21 +19,21 @@
             <summernote height="300" ng-model="event.description"></summernote>
           </md-textarea-container><br>
           <label>Venue</label><br>
-          <div layout-sm="row">  
+          <div layout-sm="row">
             <label>Country</label>
-            <select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">  
-              <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>         
+            <select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">
+              <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>
             </select>
             <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
           </div><br>
-          <div layout layout-sm="column">  
+          <div layout layout-sm="column">
             <label>Event Starts</label>
             <md-input-container flex class="md-padding">
               <input ng-model="event.startDate" type="date" placeholder="Date">
             </md-input-container>
             <md-input-container flex class="md-padding">
               <input ng-model="event.startTime" type="time" placeholder="Time">
-            </md-input-container>          
+            </md-input-container>
           </div>
           <div layout layout-sm="column">
             <label>Event End</label>
@@ -42,7 +42,7 @@
             </md-input-container>
             <md-input-container flex class="md-padding">
               <input ng-model="event.endTime" type="time" placeholder="Time">
-            </md-input-container>   
+            </md-input-container>
           </div>
           <div id="image-wrapper">
             <img id="image-preview" src="" alt="" style="height: 250px; width:300px; border: double 2px #aaa; border-radius: 20px; background: url('../../assets/img/preview-icon.jpg') no-repeat center;"><br>
@@ -81,11 +81,11 @@
               </md-input-container>
               <md-container class="md-padding" flex>
                 <label>Role</label>
-                <select placeholder="Role" style="display: block;"></select> 
+                <select placeholder="Role" style="display: block;"></select>
               </md-container>
             </div>
           </ng-form><br>
-          <input type="submit" value="Submit">  
+          <input type="submit" value="Submit">
         </form>
       </md-content>
     </div>
@@ -111,7 +111,7 @@
                 <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.headerColor"></color-picker>
               </md-whiteframe>
               <md-whiteframe flex="35"class="md-whiteframe-z2">
-                <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.borderColor"></color-picker>               
+                <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.borderColor"></color-picker>
               </md-whiteframe>
               <md-whiteframe flex="35"class="md-whiteframe-z2">
                 <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.fontColor"></color-picker>
@@ -148,7 +148,7 @@
                 <md-toolbar id="eventDetails" class="md-warn" ng-style="{'background-color' : event.eventTheme.headerColor,'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor}">
                   <div class="md-toolbar-tools">
                     <h2 class="md-flex">Event Details</h2>
-                  </div>                  
+                  </div>
                 </md-toolbar>
                 <md-toolbar id="organizers" class="md-warn" ng-style="{'background-color' : event.eventTheme.headerColor ,'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor}">
                   <div class="md-toolbar-tools">
@@ -176,7 +176,7 @@
             </div>
           </div>
         </div>
-        <div class="md-toolbar-tools centre" layout-align="center"> 
+        <div class="md-toolbar-tools centre" layout-align="center">
            <md-button class="md-raised" ng-click="currDisplay('create')">CREATE</md-button>
            <md-button class="md-raised" ng-click="currDisplay('preview')">PREVIEW</md-button>
         </div>

@@ -14,21 +14,15 @@
     "angular-material": "~0.10.0",
     "angular-messages": "~1.4.3",
     "angular-resource": "~1.4.3",
-<<<<<<< HEAD
-    "angular-summernote": "~0.5.0",
-    "ng-file-upload": "~7.0.15"
-=======
-    "ngWYSIWYG": "*",
+    "ng-file-upload": "~7.0.15",
     "angular-sanitize": "~1.4.4",
     "summernote": "~0.6.16",
     "angular-summernote": "~0.5.0",
     "angular-bootstrap": "~0.13.3"
-<<<<<<< HEAD
->>>>>>> refactor (frontend) uninstall unnecessary packages
-=======
+
   },
   "devDependencies": {
-    "angularjs-color-picker": "~0.6.5"
->>>>>>> refactor(frontend): make changes to preview
+    "angularjs-color-picker": "~0.6.5",
+    "angular-summernote": "~0.5.0"
   }
 }
