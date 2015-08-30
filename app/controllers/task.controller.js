@@ -1,6 +1,5 @@
 'use strict';
 
-var asyncModule = require('async');
 var Task = require('../models/task.model');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
@@ -22,6 +21,7 @@ TaskController.prototype.addTask = function(req, res) {
   var newTask = req.body.newTask;
   var eventId = req.params.event_id;
   var eventName;
+  var managerEmail;
 
   Task.findOne({
     event_ref: eventId,
@@ -30,7 +30,7 @@ TaskController.prototype.addTask = function(req, res) {
     }
   }, function(err, task) {
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (task) {
       return res.status(422).send({
         success: false,
@@ -41,7 +41,7 @@ TaskController.prototype.addTask = function(req, res) {
       Event.findById(eventId, function(err, evt) {
 
         if (err) {
-          return res.send(err);
+          return res.status(500).send(err);
         } else if (!evt) {
           return res.status(422).send({
             success: false,
@@ -68,90 +68,54 @@ TaskController.prototype.addTask = function(req, res) {
             User.findById(newTask.manager_ref, function(err, user) {
 
               if (err) {
-                return res.send(err);
+                return res.status(500).send(err);
               } else if (!user) {
                 return res.status(422).send({
                   success: false,
                   message: 'Invalid manager id!'
                 });
               } else {
+                managerEmail = user.email;
+                newTask.volunteers = [];
+                newTask.event_ref = eventId;
 
-                asyncModule.waterfall([function(done) {
+                Task.create(newTask, function(err, createdTask) {
 
-                    TaskController.prototype.filterVolunteers(newTask.volunteers, done);
-
-                  }, function(volunteers, done) {
-
-                    newTask.volunteers = volunteers;
-
-                    newTask.event_ref = eventId;
-
-                    Task.create(newTask, function(err, savedTask) {
-
-                      if (err) {
-                        done(err)
-                      } else {
-
-                        done(null, savedTask);
-                      }
-
+                  if (err) {
+                    return res.status(422).send(err);
+                  } else if (!createdTask) {
+                    return res.status(422).send({
+                      success: false,
+                      message: 'Error creating task!'
                     });
-                  }, function(savedTask, done) {
-                    User.populate(savedTask, {
-                      'path': 'manager_ref volunteers.volunteer_ref'
+                  } else {
+
+                    var mailOptions = {
+                      to: managerEmail,
+                      from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                      subject: 'You have been added to ' + eventName + ' event.',
+                      text: 'You have been added to ' + eventName + ' event.',
+                      html: 'Hello,\n\n' +
+                        'You have been added as <b>' + createdTask.description + '</b> task manager of <b>' + eventName + '</b> event.\n'
+                    };
+
+                    utils.sendMail(mailOptions);
+                    User.populate(createdTask, {
+                      'path': 'manager_ref'
                     }, function(err, populatedTask) {
 
                       if (err) {
-                        done({
+                        res.status(500).send({
                           success: false,
-                          message: 'Error populating task details!'
+                          message: 'Task created, but error occured fetching it from db'
                         });
                       } else {
-                        var mailOptions = {};
 
-                        mailOptions = {
-                          to: populatedTask.manager_ref.email,
-                          from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                          subject: 'You have been added to ' + eventName + ' event.',
-                          text: 'You have been added to ' + eventName + ' event.',
-                          html: 'Hello,\n\n' +
-                            'You have been added as Task manager to <b>' + eventName + '</b> event.\n'
-                        };
-
-                        utils.sendMail(mailOptions);
-
-                        mailOptions.to = '';
-                        mailOptions.html = 'Hello,\n\n' +
-                          'You have been added as volunteer to <b>' + eventName + '</b> event.\n'
-
-                        utils.syncLoop(populatedTask.volunteers.length, function(loop, taskToMail) {
-
-                          mailOptions.to = taskToMail.volunteers[loop.iteration()].volunteer_ref.email;
-
-                          utils.sendMail(mailOptions);
-                          loop.next();
-
-                        }, function(returnedTask) {
-                          done(null, returnedTask)
-                        }, populatedTask);
+                        res.json(populatedTask);
                       }
-
                     });
-                  }],
-                  function(err, createdTask) {
-                    if (err) {
-                      return res.status(422).send(err);
-                    } else {
-                      if (!createdTask) {
-                        return res.status(422).send({
-                          success: false,
-                          message: 'Error creating task!'
-                        });
-                      }
-
-                      res.json(createdTask);
-                    }
-                  });
+                  }
+                });
               }
             });
           }
@@ -175,20 +139,20 @@ TaskController.prototype.editTask = function(req, res) {
   var taskId = req.params.task_id;
   var newTask = req.body.newTask;
   var eventName;
-  var oldVlnteers;
-
+  var newManagerEmail;
+  var prevManagerId;
 
   Task.findOne({
     event_ref: eventId,
     _id: {
-      $ne: taskId
+      '$ne': taskId
     },
     description: {
       $regex: new RegExp(newTask.description, "i")
     }
   }, function(err, task) {
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (task) {
       return res.status(422).send({
         success: false,
@@ -199,7 +163,7 @@ TaskController.prototype.editTask = function(req, res) {
       Event.findById(eventId, function(err, evt) {
 
         if (err) {
-          return res.send(err);
+          return res.status(500).send(err);
         } else if (!evt) {
           return res.status(422).send({
             success: false,
@@ -226,18 +190,19 @@ TaskController.prototype.editTask = function(req, res) {
             User.findById(newTask.manager_ref, function(err, user) {
 
               if (err) {
-                return res.send(err);
+                return res.status(500).send(err);
               } else if (!user) {
                 return res.status(422).send({
                   success: false,
                   message: 'Invalid manager id!'
                 });
               } else {
+                newManagerEmail = user.email;
 
                 Task.findById(taskId, function(err, task) {
-
+                  prevManagerId = task.manager_ref;
                   if (err) {
-                    return res.send(err);
+                    return res.status(500).send(err);
                   } else if (!task) {
                     return res.status(422).send({
                       success: false,
@@ -245,112 +210,57 @@ TaskController.prototype.editTask = function(req, res) {
                     });
                   } else {
 
+                    Task.findByIdAndUpdate(taskId, {
+                      $set: {
+                        event_ref: eventId,
+                        manager_ref: newTask.manager_ref,
+                        description: newTask.description,
+                        startDate: newTask.startDate,
+                        endDate: newTask.endDate
+                      }
+                    }, {
+                      'new': true
+                    }, function(err, updatedTask) {
 
-                    oldVlnteers = task.volunteers;
-                    newTask.event_ref = eventId;
-
-                    asyncModule.waterfall([function(done) {
-
-                        TaskController.prototype.filterVolunteers(newTask.volunteers, done);
-
-                      }, function(volunteers, done) {
-
-                        newTask.volunteers = volunteers;
-                        newTask.event_ref = eventId;
-
-                        Task.findByIdAndUpdate(newTask._id, newTask, {
-                          'new': true
-                        }, function(err, updatedTask) {
-
-                          if (err) {
-                            done(err)
-                          } else if (!updatedTask) {
-                            done({
-                              success: false,
-                              message: 'Could not update!'
-                            });
-                          } else {
-                            done(null, updatedTask);
-                          }
+                      if (err) {
+                        return res.status(500).send(err);
+                      } else if (!updatedTask) {
+                        return res.status(422).send({
+                          success: false,
+                          message: 'Error editing task!'
                         });
-                      }, function(savedTask, done) {
-                        User.populate(savedTask, {
-                          'path': 'volunteers.volunteer_ref'
+                      } else {
+
+                        if (prevManagerId.toString() !== updatedTask.manager_ref.toString()) {
+
+                          var mailOptions = {
+                            to: newManagerEmail,
+                            from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                            subject: 'You have been added to ' + eventName + ' event.',
+                            text: 'You have been added to ' + eventName + ' event.',
+                            html: 'Hello,\n\n' +
+                              'You have been added as <b>' + updatedTask.description + '</b> task manager of <b>' + eventName + '</b> event.\n'
+                          };
+
+                          utils.sendMail(mailOptions);
+                        }
+
+                        User.populate(updatedTask, {
+                          'path': 'manager_ref'
                         }, function(err, populatedTask) {
 
                           if (err) {
-                            done({
+                            res.status(500).send({
                               success: false,
-                              message: 'Error populating task details!'
+                              message: 'Task edited, but error occured fetching it from db'
                             });
                           } else {
-                            var mailOptions = {};
 
-                            mailOptions = {
-                              to: '',
-                              from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                              subject: 'You have been added to ' + populatedTask.event_ref.name + ' event.',
-                              text: 'You have been added to ' + populatedTask.event_ref.name + ' event.',
-                              html: 'Hello,\n\n' +
-                                'You have been added as volunteer to <b>' + populatedTask.event_ref.name + '</b> event.\n'
-                            };
-
-                            utils.syncLoop(populatedTask.length, function(loop, taskToMail) {
-
-                              if (oldVlnteers && oldVlnteers.length) {
-
-                                var oldVlnteerIndex;
-
-                                var sendMailTo = oldVlnteers.every(function(vlnteer) {
-
-                                  if (vlnteer._id == taskToMail[loop.iteration()].volunteers.volunteer_ref) {
-                                    oldVlnteerIndex = taskToMail[loop.iteration()].volunteers.indexOf(vlnteer);
-                                    return false;
-                                  }
-
-                                  return true;
-                                });
-
-                                if (sendMailTo) {
-
-                                  mailOptions.to = taskToMail.volunteers[loop.iteration()].volunteer_ref.email;
-
-                                  utils.sendMail(mailOptions);
-                                  oldVlnteers.splice(oldVlnteerIndex, 1);
-                                  loop.next();
-                                } else {
-                                  loop.next();
-                                }
-
-                              } else {
-
-                                mailOptions.to = taskToMail.volunteers[loop.iteration()].volunteer_ref.email;
-
-                                utils.sendMail(mailOptions);
-                                loop.next();
-                              }
-                            }, function(returnedTask) {
-                              done(null, returnedTask)
-                            }, populatedTask);
+                            res.json(populatedTask);
                           }
-
                         });
-                      }],
-                      function(err, editedTask) {
-
-                        if (err) {
-                          return res.status(422).send(err);
-                        } else {
-                          if (!editedTask) {
-                            return res.status(422).send({
-                              success: false,
-                              message: 'Error editing task!'
-                            });
-                          }
-
-                          res.json(editedTask);
-                        }
-                      });
+                      }
+                    });
                   }
                 });
               }
@@ -365,23 +275,27 @@ TaskController.prototype.editTask = function(req, res) {
 TaskController.prototype.getTask = function(req, res) {
 
   var taskId = req.params.task_id;
+  var eventId = req.params.event_id;
 
-  Task.findById(taskId, function(err, task) {
+  Task.findOne({
+    _id: taskId,
+    event_ref: eventId
+  }, function(err, task) {
 
     if (err) {
 
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!task) {
 
       return res.status(422).send({
         success: false,
-        message: 'Invalid Task id'
+        message: 'Invalid Task or Event id'
       });
     } else {
 
       User.populate(task, {
-        'path': 'volunteers.volunteer_ref'
-      },function(err, populatedTask) {
+        'path': 'manager_ref volunteers.volunteer_ref'
+      }, function(err, populatedTask) {
 
         if (err || !populatedTask) {
           done({
@@ -405,7 +319,7 @@ TaskController.prototype.deleteTask = function(req, res) {
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!evt) {
       return res.status(422).send({
         success: false,
@@ -429,12 +343,13 @@ TaskController.prototype.deleteTask = function(req, res) {
 
         if (err) {
 
-          res.send(err);
+          res.status(500).send(err);
 
         } else {
 
           Task.remove({
-            _id: taskId
+            _id: taskId,
+            event_ref: eventId
           }, function(err) {
 
             if (err) {
@@ -466,7 +381,7 @@ TaskController.prototype.getEventTasks = function(req, res) {
 
     if (err) {
 
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!tasks) {
 
       return res.status(422).send({
@@ -480,7 +395,7 @@ TaskController.prototype.getEventTasks = function(req, res) {
       }, function(err1, tasks1) {
 
         if (err) {
-          res.send(err);
+          res.status(500).send(err);
         } else {
           res.json(tasks1);
         }
@@ -489,51 +404,369 @@ TaskController.prototype.getEventTasks = function(req, res) {
   });
 }
 
-TaskController.prototype.filterVolunteers = function(volunteers, done) {
+TaskController.prototype.addVolunteer = function(req, res) {
 
-  volunteers = volunteers || [];
+  var taskId = req.params.task_id;
+  var volunteerId = req.body.volunteerId;
+  var volunteerEmail;
+  var eventName;
 
-  var uniqueVolunteers = [];
+  if (!volunteerId) {
 
-  volunteers.forEach(function(volunteer) {
-
-    var notAdded = uniqueVolunteers.every(function(addedVlnteer) {
-
-      if (volunteer.volunteer_ref === addedVlnteer.volunteer_ref) {
-        return false;
-      }
-
-      return true;
+    return res.status(422).send({
+      success: false,
+      message: 'Check parameters!'
     });
+  }
 
-    if (notAdded) {
-      uniqueVolunteers.push(volunteer);
+  User.findById(volunteerId, function(err, user) {
+
+    if (err) {
+      return res.send(err)
+    } else {
+
+      if (!user) {
+        return res.status(422).send({
+          success: false,
+          message: 'Invalid volunteer id!'
+        });
+      } else {
+
+        volunteerEmail = user.email;
+        Task.findById(taskId, function(err, task) {
+
+          if (err) {
+            return res.send(err)
+          } else {
+
+            if (!task) {
+              return res.status(422).send({
+                success: false,
+                message: 'Invalid task id!'
+              });
+            } else {
+
+              Event.findById(task.event_ref, function(err, evt) {
+
+                if (err || !evt) {
+                  return res.status(422).send({
+                    success: false,
+                    message: 'Error retrieving task event!'
+                  });
+                } else {
+
+                  eventName = evt.name;
+
+
+                  var volunteers = task.volunteers;
+
+                  var notAdded = volunteers.every(function(volunteer) {
+
+                    if (volunteer.volunteer_ref.toString() === volunteerId) {
+                      return false;
+                    }
+
+                    return true;
+                  });
+
+                  if (!notAdded) {
+
+                    return res.status(422).send({
+                      success: false,
+                      message: 'User has been added before!'
+                    });
+                  } else {
+
+                    Task.findByIdAndUpdate(taskId, {
+                      $push: {
+                        'volunteers': {
+                          'volunteer_ref': volunteerId
+                        }
+                      }
+                    }, function(err, updatedTask) {
+
+                      if (err) {
+                        return res.send(err)
+                      } else {
+
+                        if (!updatedTask) {
+                          return res.status(422).send({
+                            success: false,
+                            message: 'Could not add volunteer!'
+                          });
+                        } else {
+
+                          var mailOptions = {
+                            to: volunteerEmail,
+                            from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                            subject: 'You have been added to ' + eventName + ' event.',
+                            text: 'You have been added to ' + eventName + ' event.',
+                            html: 'Hello,\n\n' +
+                              'You have been added as volunteer to <b>' + eventName + '</b> event.\n'
+                          };
+
+                          utils.sendMail(mailOptions);
+
+                          Task.findById(taskId, {
+                            volunteers: {
+                              $elemMatch: {
+                                volunteer_ref: volunteerId
+                              }
+                            }
+                          }, function(err, volunteer) {
+                            if (err || !volunteer) {
+                              return res.status(422).send({
+                                success: false,
+                                message: 'Volunteer added, but unable to retrieve record!'
+                              });
+                            } else {
+
+                              res.json(volunteer.volunteers[0]);
+                            }
+
+                          });
+                        }
+                      }
+                    });
+
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
     }
   });
+}
 
-  var validatedVlnteers = [];
+TaskController.prototype.removeVolunteer = function(req, res) {
 
-  utils.syncLoop(uniqueVolunteers.length, function(loop, vlnteers) {
+  var taskId = req.params.task_id;
+  var volunteerId = req.params.volunteer_id;
 
-    User.findById(uniqueVolunteers[loop.iteration()].volunteer_ref, function(err, user) {
+  Task.findById(taskId, function(err, task) {
 
-      if (err || !user) {
-        loop.next();
+    if (err) {
+      return res.send(err)
+    } else {
+
+      if (!task) {
+        return res.status(422).send({
+          success: false,
+          message: 'Invalid task id!'
+        });
       } else {
-        validatedVlnteers.push(uniqueVolunteers[loop.iteration()]);
-        loop.next();
+
+        Task.findByIdAndUpdate(taskId, {
+          $pull: {
+            'volunteers': {
+              'volunteer_ref': volunteerId
+            }
+          }
+        }, function(err, updatedTask) {
+
+          if (err) {
+            return res.status(500).send(err);
+          } else {
+
+            if (!updatedTask) {
+              return res.status(422).send({
+                success: false,
+                message: 'Could not remove volunteer!'
+              });
+            } else {
+              res.json({
+                success: true,
+                message: 'Volunteer removed!'
+              });
+            }
+          }
+        });
+      }
+    }
+  });
+}
+
+TaskController.prototype.addSchedule = function(req, res) {
+
+  var taskId = req.params.task_id;
+  var schedulesId = req.params.schds_id;
+  var newSchedule = req.body.newSchedule;
+
+  if (!newSchedule) {
+
+    return res.status(422).send({
+      success: false,
+      message: 'Check parameters!'
+    });
+  } else {
+
+    Task.findById(taskId, {
+      volunteers: {
+        $elemMatch: {
+          _id: schedulesId
+        }
+      }
+    }, function(err, volunteer) {
+
+      if (err || !volunteer || !volunteer.volunteers.length) {
+        return res.status(422).send({
+          success: false,
+          message: 'Unable to retrieve volunteer schedule record!'
+        });
+      } else {
+
+        var prevVolunteerSchedules = volunteer.volunteers[0].schedules;
+
+        Task.findOneAndUpdate({
+          'volunteers._id': schedulesId
+        }, {
+          '$push': {
+            'volunteers.$.schedules': newSchedule
+          }
+        }, function(err, task) {
+
+          if (err) {
+            return res.status(500).send(err);
+          } else if (!task) {
+
+            return res.status(422).send({
+              success: false,
+              message: 'Could not add schedule!'
+            });
+          } else {
+
+
+            Task.findById(taskId, {
+              volunteers: {
+                $elemMatch: {
+                  _id: schedulesId
+                }
+              }
+            }, function(err, volunteer) {
+              if (err || !volunteer) {
+                return res.status(422).send({
+                  success: false,
+                  message: 'Schedule added, but unable to retrieve record!'
+                });
+              } else {
+
+                var newVolunteerSchedules = volunteer.volunteers[0].schedules;
+
+                prevVolunteerSchedules.forEach(function(prevSchedule) {
+
+                  var prevSchdl;
+
+                  var notNewSchedule = newVolunteerSchedules.every(function(schedule) {
+
+                    if (prevSchedule._id === schedule._id) {
+
+                      prevSchdl = schedule._id;
+                      return false;
+                    }
+
+                    return true;
+                  });
+
+                  if (!notNewSchedule) {
+                    var index = newVolunteerSchedules.indexOf(prevSchdl);
+                    newVolunteerSchedules.splice(index, 1);
+                  }
+
+                });
+
+                res.json(newVolunteerSchedules[0]);
+              }
+
+            });
+          }
+
+        });
+      }
+
+    });
+  }
+}
+
+TaskController.prototype.editSchedule = function(req, res) {
+
+  var taskId = req.params.task_id;
+  var scheduleId = req.params.schd_id;
+  var newSchedule = req.body.newSchedule;
+
+  if (!newSchedule) {
+
+    return res.status(422).send({
+      success: false,
+      message: 'Check parameters!'
+    });
+  } else {
+
+    Task.findOneAndUpdate({
+      _id: taskId,
+      'volunteers.schedules._id': scheduleId
+    }, {
+      '$set': {
+        'volunteers.0.schedules.$.description': newSchedule.description,
+        'volunteers.0.schedules.$.startDate': newSchedule.startDate,
+        'volunteers.0.schedules.$.endDate': newSchedule.endDate,
+        'volunteers.0.schedules.$.completed': newSchedule.completed
+      }
+    }, function(err, task) {
+
+      if (err) {
+        return res.status(500).send(err);
+      } else if (!task) {
+
+        return res.status(422).send({
+          success: false,
+          message: 'Could not edit schedule!'
+        });
+      } else {
+
+        res.json({
+          success: true,
+          message: 'Schedule edited succesfully!'
+        });
       }
     });
+  }
+}
 
-  }, function(returnedVlnteers) {
-    if (done) {
+TaskController.prototype.getTaskVolunteers = function(req, res) {
 
-      done(null, returnedVlnteers);
+  var taskId = req.params.task_id;
+
+  Task.findById(taskId, function(err, task) {
+
+    if (err) {
+      return res.status(500).send(err);
+    } else if (!task) {
+
+      return res.status(422).send({
+        success: false,
+        message: 'No task found!'
+      });
     } else {
-      return returnedVlnteers;
-    }
-  }, validatedVlnteers);
 
+      if (!task.length) {
+        User.populate(task, {
+          path: 'volunteers.volunteer_ref'
+        }, function(err1, tasks1) {
+
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.json(tasks1.volunteers);
+          }
+        });
+      } else {
+        res.json([]);
+      }
+
+    }
+  });
 }
 
 module.exports = TaskController;
