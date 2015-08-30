@@ -1,6 +1,5 @@
 'use strict';
 
-var asyncModule = require('async');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
@@ -86,6 +85,8 @@ EventController.prototype.editEventDetails = function(req, res) {
           category: eventObj.category,
           venue: eventObj.venue,
           eventUrl: eventObj.eventUrl,
+          eventTheme: eventObj.eventTheme,
+          eventFontColor: eventObj.eventFontColor,
           startDate: eventObj.startDate,
           endDate: eventObj.endDate
         }

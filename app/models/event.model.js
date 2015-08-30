@@ -42,6 +42,10 @@ var eventSchema = new mongoose.Schema({
     type: String,
     default: 'white'
   },
+  eventFontColor: {
+    type: String,
+    default: 'white'
+  },
   startDate: {
     type: Date,
     required: true
