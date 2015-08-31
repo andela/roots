@@ -13,7 +13,7 @@ var EventController = function() {};
 
 EventController.prototype.createEvent = function(req, res) {
 
-  if (!req.body.userId || !req.body.eventObj) {
+  if (!req.body.eventObj) {
 
     return res.status(422).send({
       success: false,
@@ -21,7 +21,7 @@ EventController.prototype.createEvent = function(req, res) {
     });
   }
 
-  var userId = req.body.userId;
+  var userId = req.decoded._id;
   var eventTasks = req.body.eventObj.tasks;
   var eventObj = req.body.eventObj;
   eventObj.user_ref = userId;
@@ -30,7 +30,7 @@ EventController.prototype.createEvent = function(req, res) {
   Event.create(eventObj, function(err, newEvent) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     }
 
     var mailOptions = {
@@ -64,7 +64,7 @@ EventController.prototype.editEventDetails = function(req, res) {
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!evt) {
       return res.status(422).send({
         success: false,
@@ -95,7 +95,7 @@ EventController.prototype.editEventDetails = function(req, res) {
       }, function(err, evt) {
 
         if (err) {
-          return res.send(err);
+          return res.status(500).send(err);
         } else if (!evt) {
           return res.status(422).send({
             success: false,
@@ -137,7 +137,7 @@ EventController.prototype.deleteEvent = function(req, res) {
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!evt) {
       return res.status(422).send({
         success: false,
@@ -156,13 +156,13 @@ EventController.prototype.deleteEvent = function(req, res) {
       }, function(err) {
 
         if (err)
-          return res.send(err);
+          return res.status(500).send(err);
 
         Event.remove({
           _id: eventId
         }, function(err, evt) {
           if (err)
-            return res.send(err);
+            return res.status(500).send(err);
 
           res.json({
             message: 'Succesfully deleted'
@@ -181,7 +181,7 @@ EventController.prototype.getEvent = function(req, res) {
 
     if (err) {
 
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!evt) {
 
       return res.status(422).send({
@@ -195,7 +195,7 @@ EventController.prototype.getEvent = function(req, res) {
       }, function(err1, evt1) {
 
         if (err) {
-          res.send(err);
+          res.status(500).send(err);
         } else {
           res.json(evt1);
         }

@@ -107,7 +107,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
   Organizer.findById(req.params.organizer_id, function(err, profile) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!profile) {
 
       return res.status(422).send({
@@ -188,7 +188,7 @@ OrganizerController.prototype.addTeamMembers = function(req, res) {
   }, function(err, orgProfile) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (!orgProfile) {
       return res.status(422).send({
         success: false,
@@ -414,7 +414,7 @@ OrganizerController.prototype.getProfileStub = function(orgId, res) {
 
         if (err) {
           if (res) {
-            return res.send(err);
+            return res.status(500).send(err);
           } else {
             return null;
           }
@@ -471,7 +471,7 @@ OrganizerController.prototype.getProfileStub = function(orgId, res) {
 
     if (err) {
       if (res) {
-        return res.send(err);
+        return res.status(500).send(err);
       } else {
         return null;
       }
