@@ -1,16 +1,54 @@
 'use strict';
 
 var async = require('async');
-var User = require('../models/user.model');
-var Event = require('../models/event.model');
-var Task = require('../models/task.model');
+var configCloud = require('../../config/config');
 var Utils = require('../middleware/utils');
 var TaskController = require('./task.controller');
+var cloudinary = require('cloudinary');
+var formidable = require('formidable');
+var mongoose = require('mongoose');
 
+require('../models/user.model');
+require('../models/event.model');
+require('../models/task.model');
+
+var Event = mongoose.model('Event');
 var utils = new Utils();
 var taskController = new TaskController();
-
 var EventController = function() {};
+
+cloudinary.config({
+  cloud_name: configCloud.cloudinary.cloud_name,
+  api_key: configCloud.cloudinary.api_key,
+  api_secret: configCloud.cloudinary.api_secret
+});
+
+EventController.prototype.registerEvent = function(req, res) {
+  var eventDetails = new Event(req.body);
+
+  eventDetails.save(req.body, function(err, eventDetails){
+    if(err) {
+      return res.json(err);
+    }
+    return res.json(eventDetails);
+  });
+};
+  
+
+EventController.prototype.imageProcessing = function(req, res, next) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, file) {
+    req.body = fields;
+    cloudinary.uploader.upload(file.file.path, function(result){
+      req.body.imageUrl = result.secure_url;
+      next();
+    }, {
+      width: 800,
+      height: 800  
+    });
+  });
+};
+
 
 EventController.prototype.createEvent = function(req, res) {
 

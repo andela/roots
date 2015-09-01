@@ -12,9 +12,68 @@ angular.module('eventApp')
       else {
         $location.url('/home');
       }
+   
+    $scope.submitEventDetails = function (eventDetails, organizer){
+      var token = localStorage.getItem('userToken');
+      eventDetails.user_ref = $rootScope.userId;
+      organizer.user_ref = $rootScope.userId;
+      Upload.upload({
+        method: "POST",
+        url: '/api/event?token='+ token,
+        file: eventDetails.imageUrl,
+        fields: eventDetails
+      })
+      .success(function(data) {
+          console.log(data);
+          $scope.submitOrgProfile(organizer,token);
+      })
+   };
+
+   $scope.submitOrgProfile = function(organizer,token){
+    Upload.upload({
+      method: "POST",
+      url: '/api/organizer?token='+ token,
+      file: organizer.imageUrl,
+      fields: organizer
+    }).success(function(data){
+        // $location.url('/home');
+        console.log(data);
+    });
+
+   };
+
+    $scope.view = 'create';
+    $scope.currDisplay = function(view){
+      $scope.view = view;
     };
 
-    $scope.categories = [{name:'Technology'}, {name:'Sport'}, {name:'Health & Fitness'}, {name:'Music'}];
+    $scope.logout = function() {
+      localStorage.removeItem('userToken');
+      $scope.loggedIn = false;
+      $location.path("/home");
+>>>>>>> feat(main app): frontend
+    };
+
+    $scope.categories = ('Technology,Sport,Health & Fitness,Music').split(',').map(function(category){
+      return {
+        name: category
+      };
+    });
+
+    $scope.getCountryCode = function() {
+      var e = document.getElementById("ddlViewBy");
+      $scope.countryCode = e.options[e.selectedIndex].value;
+      console.log($scope.countryCode);
+      return $scope.countryCode;
+    };
+
+    $scope.getCountry = function() {
+      $scope.result = '';
+      $scope.options1 = {
+        country: $scope.getCountryCode()
+      };
+      $scope.details = '';
+    }; 
 
     $scope.previewImg = function (inElement,prevElement){
       $(inElement).on('change', function () {
@@ -281,7 +340,6 @@ angular.module('eventApp')
   {name: 'Western Sahara', code: 'EH'},
   {name: 'Yemen', code: 'YE'},
   {name: 'Zambia', code: 'ZM'},
-  {name: 'Zimbabwe', code: 'ZW'}
-];
+  {name: 'Zimbabwe', code: 'ZW'}];
 }]);
 

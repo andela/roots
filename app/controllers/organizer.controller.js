@@ -2,13 +2,26 @@
 
 var User = require('../models/user.model');
 var async = require('async');
-var Organizer = require('../models/organizer.model');
 var Utils = require('../middleware/utils');
+var mongoose = require('mongoose');
+require('../models/organizer.model');
 
+var Organizer = mongoose.model('Organizer');
 
 var utils = new Utils();
 
 var OrganizerController = function() {};
+
+OrganizerController.prototype.registerProfile = function(req, res) {
+  var organizer = new Organizer(req.body);
+  console.log(req.body);
+  organizer.save(req.body, function(err, organizer){
+    if(err) {
+      return res.json(err);
+    }
+    return res.json(organizer);
+  });
+};
 
 OrganizerController.prototype.createProfile = function(req, res) {
 

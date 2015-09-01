@@ -38,7 +38,7 @@ angular.module('eventApp')
 
     $scope.toEvent= function() {
         if($scope.loggedIn = true)
-        $location.path("/event");
+        $location.path("/cevent");
     };
 
     function UserLogin($scope, $rootScope, $mdDialog, view) {
@@ -90,6 +90,7 @@ angular.module('eventApp')
       };
 
       $scope.signupUser = function(newUser) {
+        console.log(newUser);
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {

@@ -13,16 +13,13 @@ var taskSchema = new mongoose.Schema({
     ref: 'User'
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   startDate: {
-    type: Date,
-    required: true
+    type: Date
   },
   endDate: {
-    type: Date,
-    required: true
+    type: Date
   },
   completed: {
     type: Boolean,

@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose');
-
+var Schema = mongoose.Schema;
 var eventSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -13,63 +13,38 @@ var eventSchema = new mongoose.Schema({
   },
   user_ref: {
     type: String,
-    ref: 'User',
     required: true
   },
   description: {
     type: String,
     required: true
   },
+  country: {
+    type: String  
+  },
   venue: {
-    name: String,
-    country: String,
-    state: String,
-    town: String,
-    address: {
-      type: String,
-      required: true
-    },
-    latitude: Number,
-    longitude: Number
+    type: String
   },
   eventBanner: {
     type: String
   },
-  eventUrl: {
+  imageUrl: {
     type: String
   },
   eventTheme: {
     type: String,
     default: 'white'
   },
-  startDate: {
-    type: Date,
-    required: true
-  },
-  endDate: {
-    type: Date,
-    required: true
-  },
-  feedback: [{
-    name: {
-      type: String
-    },
-    email: {
-      type: String
-    },
-    message: {
-      type: String
-    }
-  }],
-  tasks: [{
-    task_ref: {
-      type: String,
-      ref: 'Task'
-    }
-  }]
-}, {
+  // startDate: {
+  //   type: Date,
+  //   required: true
+  // },
+  // endDate: {
+  //   type: Date,
+  //   required: true
+  // },
+
   versionKey: false
 });
 
-var Event = mongoose.model('Event', eventSchema);
-module.exports = Event;
+mongoose.model('Event', eventSchema);

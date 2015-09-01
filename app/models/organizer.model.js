@@ -2,43 +2,34 @@
 
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var Schema = mongoose.Schema;
 
 var organizerSchema = new mongoose.Schema({
   user_ref: {
-    type: String,
-    ref: 'User',
-    required: true,
-    index: {
-      unique: true
-    }
+    type: String
   },
   name: {
     type: String,
-    required: true,
-    index: {
-      unique: true
-    }
+    required: true
   },
   about: {
     type: String
   },
-  logo: {
+  imageUrl: {
     type: String
-  },
-  staff: [{
-    manager_ref: {
-      type: String,
-      ref: 'User'      
-    },
-    role: {
-      type: String      
-    }
-  }]
+  }
+  // staff: [{
+  //   manager_ref: {
+  //     type: String,
+  //     ref: 'User'      
+  //   },
+  //   role: {
+  //     type: String      
+  //   }
+  // }]
 
 }, {
   versionKey: false
 });
 
-var Organizer = mongoose.model('Organizer', organizerSchema);
-
-module.exports = Organizer;
+mongoose.model('Organizer', organizerSchema);

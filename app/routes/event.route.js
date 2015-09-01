@@ -8,7 +8,7 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/event')
-    .post(userCtrl.verifyToken, evtCtrl.createEvent);
+    .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.registerEvent);
   router.route('/events')
     .get(evtCtrl.getAllEvents);
 

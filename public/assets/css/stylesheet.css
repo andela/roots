@@ -239,7 +239,7 @@ img.bg {
   top: 100%;
   display: none;
   margin: 0;
-  z-index: 1;
+  z-index: 5;
   list-style: none;
   width: 100%;
   padding: 0;
@@ -287,7 +287,7 @@ img.bg {
 }
 
 .input-textbox {
-  border: 2px solid #181111 !important;
+  border: 2px solid #bebebe !important;
   padding: 5px !important;
   height: 30px !important;
   border-radius: 5px !important; 
