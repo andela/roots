@@ -23,6 +23,12 @@
     "summernote": "~0.6.16",
     "angular-summernote": "~0.5.0",
     "angular-bootstrap": "~0.13.3"
+<<<<<<< HEAD
 >>>>>>> refactor (frontend) uninstall unnecessary packages
+=======
+  },
+  "devDependencies": {
+    "angularjs-color-picker": "~0.6.5"
+>>>>>>> refactor(frontend): make changes to preview
   }
 }

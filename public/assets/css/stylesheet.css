@@ -480,3 +480,22 @@ p {
 label {
   font-size: 14px;
 }
+<<<<<<< HEAD
+=======
+
+.custom {
+  margin-left: 200px;
+}
+
+#hc {
+  color: grey;
+  padding-top: 50px;
+  margin-left: 520px;
+}
+
+.colors {
+  color: grey;
+  padding-top: 50px;
+  margin-left: 30px;
+}
+>>>>>>> refactor(frontend): make changes to preview
