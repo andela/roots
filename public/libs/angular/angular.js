@@ -1,9 +1,13 @@
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @license AngularJS v1.4.5
 =======
  * @license AngularJS v1.4.4
 >>>>>>> modify stylesheet.css
+=======
+ * @license AngularJS v1.4.5
+>>>>>>> refactor(frontend): make changes to preview
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -62,10 +66,14 @@ function minErr(module, ErrorConstructor) {
     });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     message += '\nhttp://errors.angularjs.org/1.4.5/' +
 =======
     message += '\nhttp://errors.angularjs.org/1.4.4/' +
 >>>>>>> modify stylesheet.css
+=======
+    message += '\nhttp://errors.angularjs.org/1.4.5/' +
+>>>>>>> refactor(frontend): make changes to preview
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2383,6 +2391,7 @@ function toDebugString(obj) {
  */
 var version = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
@@ -2395,6 +2404,13 @@ var version = {
   dot: 4,
   codeName: 'pylon-requirement'
 >>>>>>> modify stylesheet.css
+=======
+  full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
+  major: 1,    // package task
+  minor: 4,
+  dot: 5,
+  codeName: 'permanent-internship'
+>>>>>>> refactor(frontend): make changes to preview
 };
 
 
@@ -5409,6 +5425,7 @@ var $CoreAnimateCssProvider = function() {
       },
       'catch': function(f1) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return this.getPromise()['catch'](f1);
       },
       'finally': function(f1) {
@@ -5419,6 +5436,12 @@ var $CoreAnimateCssProvider = function() {
       'finally': function(f1) {
         return this.getPromise().finally(f1);
 >>>>>>> modify stylesheet.css
+=======
+        return this.getPromise()['catch'](f1);
+      },
+      'finally': function(f1) {
+        return this.getPromise()['finally'](f1);
+>>>>>>> refactor(frontend): make changes to preview
       }
     };
 
@@ -28134,6 +28157,7 @@ var SelectController =
  * to the model identified by the `ngModel` directive. With static or repeated options, this is
  * the content of the `value` attribute or the textContent of the `<option>`, if the value attribute is missing.
  * If you want dynamic value attributes, you can use interpolation inside the value attribute.
+<<<<<<< HEAD
  *
  * <div class="alert alert-warning">
  * Note that the value of a `select` directive used without `ngOptions` is always a string.
@@ -28142,6 +28166,16 @@ var SelectController =
  * This is because an option element can only be bound to string values at present.
  * </div>
  *
+=======
+ *
+ * <div class="alert alert-warning">
+ * Note that the value of a `select` directive used without `ngOptions` is always a string.
+ * When the model needs to be bound to a non-string value, you must either explictly convert it
+ * using a directive (see example below) or use `ngOptions` to specify the set of options.
+ * This is because an option element can only be bound to string values at present.
+ * </div>
+ *
+>>>>>>> refactor(frontend): make changes to preview
  * If the viewValue of `ngModel` does not match any of the options, then the control
  * will automatically add an "unknown" option, which it then removes when the mismatch is resolved.
  *

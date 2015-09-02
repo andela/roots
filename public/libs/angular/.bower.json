@@ -1,14 +1,19 @@
 {
   "name": "angular",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "1.4.5",
 =======
   "version": "1.4.4",
 >>>>>>> modify stylesheet.css
+=======
+  "version": "1.4.5",
+>>>>>>> refactor(frontend): make changes to preview
   "main": "./angular.js",
   "ignore": [],
   "dependencies": {},
   "homepage": "https://github.com/angular/bower-angular",
+<<<<<<< HEAD
 <<<<<<< HEAD
   "_release": "1.4.5",
   "_resolution": {
@@ -22,6 +27,13 @@
     "tag": "v1.4.4",
     "commit": "f00cff5525db7c853f42854079a31936d400f99b"
 >>>>>>> modify stylesheet.css
+=======
+  "_release": "1.4.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.4.5",
+    "commit": "3809d44e5279e94a0596d5bc216d921f34f8ab2a"
+>>>>>>> refactor(frontend): make changes to preview
   },
   "_source": "git://github.com/angular/bower-angular.git",
   "_target": "1.4.5",

@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .controller('createeventCtrl', function($scope, $rootScope, UserService, $location) {
+  .controller('createeventCtrl', function($scope, $rootScope, UserService, $location, $sce) {
     $scope.createEventPage = function (){
       $location.url('/createevent');
     };
@@ -9,7 +9,7 @@ angular.module('eventApp')
         UserService.decodeUser($scope);
       }
     };
-
+    
     $scope.previewFile = function(input, img) {
       $(input).on('change', function(){
 		var preview = document.querySelector(img);
@@ -50,6 +50,10 @@ angular.module('eventApp')
       organizerPhonenumber1 : '',
       organizerPhonenumber2 : '',
       logoImg:'',
+      headerColor:'',
+      borderColor: '',
+      fontColor:'',
+      contentColor:'',
       organizerTeamMembers : {
         one : {
     	  name : '',
@@ -68,6 +72,23 @@ angular.module('eventApp')
 	    }
       },      
     };
+  
+   //  $scope.editor = function() {
+   //    var $editor = $("#editor"),
+   //    str = $scope.event.organizerInfo,
+	  // html = $.parseHTML(str);
+	  // $editor.html(html);
+	  // console.log(html);
+	  
+   //  };
+
+    $scope.$watch("event.organizerInfo", 
+      function(oldVal, newVal){
+        if(oldVal !== newVal){
+          $scope.orgInfo = $sce.trustAsHtml($scope.event.organizerInfo)
+        }
+      });
+    
 
     $scope.category = {
       categories : [
