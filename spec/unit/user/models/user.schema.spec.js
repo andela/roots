@@ -1,10 +1,10 @@
 'use strict';
 var mongoose = require('mongoose');
-require('../../../app/models/user.model');
+require('../../../../app/models/user.model');
 var User = mongoose.model('User');
 var user;
-var config = require('../../../config/config');
-mongoose.connect(config.db)
+var config = require('../../../../config/config');
+mongoose.connect(config.db);
 
 describe('User Model', function(done) {
 

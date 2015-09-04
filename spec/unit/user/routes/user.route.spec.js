@@ -4,7 +4,7 @@ var request = require('supertest');
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require("body-parser");
-var User = require('../../../app/models/user.model');
+var User = require('../../../../app/models/user.model');
 
 var app = express();
 var router = express.Router();
@@ -15,13 +15,13 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
-require('../../../app/routes/index')(router);
+require('../../../../app/routes/index')(router);
 
 app.use(router);
 
 describe("API Test", function() {
 
-   describe("User signup validation", function() {
+  describe("User signup validation", function() {
 
     it('should not create a new user if there is no firstname', function(done) {
 
@@ -40,11 +40,11 @@ describe("API Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : false,
+            success: false,
             message: 'Check parameters!'
           }));
+          done();
         });
-        done();
     });
 
     it('should not create a new user if there is no lastname', function(done) {
@@ -64,13 +64,13 @@ describe("API Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : false,
+            success: false,
             message: 'Check parameters!'
-          }));         
+          }));
+          done();
         });
-        done();
     });
-    
+
     it('should not create a new user if there is no email', function(done) {
 
       request(app)
@@ -78,7 +78,7 @@ describe("API Test", function() {
         .set('Content-Type', 'application/json')
         .send({
           firstname: 'yoga',
-          lastname : 'loga',
+          lastname: 'loga',
           email: undefined,
           password: '1234',
           phoneNumber1: '12345',
@@ -88,11 +88,11 @@ describe("API Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : false,
+            success: false,
             message: 'Check parameters!'
-          }));  
+          }));
+          done();
         });
-        done();
     });
 
     it('should not create a new user if there is no password', function(done) {
@@ -112,14 +112,14 @@ describe("API Test", function() {
         .end(function(err, response) {
 
           expect(response.body).toEqual(jasmine.objectContaining({
-            success : false,
+            success: false,
             message: 'Check parameters!'
-          }));         
+          }));
+          done();
         });
-        done();
     });
-    
-    
+
+
   });
 
   describe("User signup", function() {
@@ -145,8 +145,9 @@ describe("API Test", function() {
         .expect(200)
         .end(function(err, response) {
           expect(err).toBe(null);
+          done();
         });
-        done();
+
     });
 
     it('should not create duplicate user', function(done) {
@@ -164,12 +165,9 @@ describe("API Test", function() {
         .expect(422)
         .end(function(err, response) {
           expect(err).not.toBe(null);
-        });          
-      done();
+          done();
+        });
     });
 
   });
 });
-
-
-
