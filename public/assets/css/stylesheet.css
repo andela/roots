@@ -361,7 +361,6 @@ p {
   background-color: grey;
   border-style: solid;
   border-width: 1px;
-  color: #424242
 }
 #sideHeaderDiv {
   margin-left: 10%;
@@ -373,7 +372,6 @@ p {
   background-color: grey;
   border-style: solid;
   border-width: 1px;
-  color: #424242
 }
 
 #contentMainDiv {
@@ -480,8 +478,6 @@ p {
 label {
   font-size: 14px;
 }
-<<<<<<< HEAD
-=======
 
 .custom {
   margin-left: 200px;
@@ -498,4 +494,4 @@ label {
   padding-top: 50px;
   margin-left: 30px;
 }
->>>>>>> refactor(frontend): make changes to preview
+

@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -33,16 +33,19 @@ var eventSchema = new mongoose.Schema({
   },
   eventTheme: {
     type: String,
-    default: 'white'
+    headerColor: String,
+    fontColor: String,
+    borderColor: String,
+    contentColor: String
   },
-  // startDate: {
-  //   type: Date,
-  //   required: true
-  // },
-  // endDate: {
-  //   type: Date,
-  //   required: true
-  // },
+   startDate: {
+     type: Date,
+     required: true
+   },
+   endDate: {
+     type: Date,
+     required: true
+   },
 
   versionKey: false
 });

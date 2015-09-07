@@ -1,100 +1,116 @@
 angular.module('eventApp')
-  .controller('eventCtrl', ['$scope', '$mdDialog', '$mdToast', '$location', 'UserService', function ($scope, $mdDialog, $mdToast, $location, UserService) {
-
-    $scope.signupCheck = function() {
-      if(localStorage.getItem('userToken')) {
-        UserService.decodeUser().then(function(res) {
-          $scope.userName = res.data.firstname;
-          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-          $scope.loggedIn = true;
-        });
-      }
-      else {
-        $location.url('/home');
-      }
-   
-    $scope.submitEventDetails = function (eventDetails, organizer){
-      var token = localStorage.getItem('userToken');
-      eventDetails.user_ref = $rootScope.userId;
-      organizer.user_ref = $rootScope.userId;
-      Upload.upload({
-        method: "POST",
-        url: '/api/event?token='+ token,
-        file: eventDetails.imageUrl,
-        fields: eventDetails
-      })
-      .success(function(data) {
-          console.log(data);
-          $scope.submitOrgProfile(organizer,token);
-      })
-   };
-
-   $scope.submitOrgProfile = function(organizer,token){
-    Upload.upload({
-      method: "POST",
-      url: '/api/organizer?token='+ token,
-      file: organizer.imageUrl,
-      fields: organizer
-    }).success(function(data){
-        // $location.url('/home');
-        console.log(data);
-    });
-
-   };
-
-    $scope.view = 'create';
-    $scope.currDisplay = function(view){
-      $scope.view = view;
-    };
-
-    $scope.logout = function() {
-      localStorage.removeItem('userToken');
-      $scope.loggedIn = false;
-      $location.path("/home");
->>>>>>> feat(main app): frontend
-    };
-
-    $scope.categories = ('Technology,Sport,Health & Fitness,Music').split(',').map(function(category){
-      return {
-        name: category
-      };
-    });
-
-    $scope.getCountryCode = function() {
-      var e = document.getElementById("ddlViewBy");
-      $scope.countryCode = e.options[e.selectedIndex].value;
-      console.log($scope.countryCode);
-      return $scope.countryCode;
-    };
-
-    $scope.getCountry = function() {
-      $scope.result = '';
-      $scope.options1 = {
-        country: $scope.getCountryCode()
-      };
-      $scope.details = '';
-    }; 
-
-    $scope.previewImg = function (inElement,prevElement){
-      $(inElement).on('change', function () {
-        var preview = document.querySelector(prevElement);
-        var file    = document.querySelector(inElement).files[0];
-        var reader  = new FileReader();
-        reader.onloadend = function () {
-          preview.src = reader.result;
-        }
-
-        if (file) {
-          reader.readAsDataURL(file);
-        } else {
-          preview.src = "";
-        }
-      })
+  .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
+  if (localStorage.getItem('userToken')) {
+      UserService.decodeUser($scope);
   };
 
-  $scope.changeColor = function(elem,elem2) {
-    $('md-toolbar.bars').css("background-color", elem);
-    $('md-toolbar.bars1').css("background-color", elem2);
+  $scope.submitEventDetails = function (eventDetails, organizer){
+    var token = localStorage.getItem('userToken');
+    eventDetails.user_ref = $rootScope.userId;
+    organizer.user_ref = $rootScope.userId;
+    Upload.upload({
+      method: "POST",
+      url: '/api/event?token='+ token,
+      file: eventDetails.imageUrl,
+      fields: eventDetails
+    })
+    .success(function(data) {
+        console.log(data);
+        $scope.submitOrgProfile(organizer,token);
+    })
+  };
+
+  $scope.submitOrgProfile = function(organizer,token){
+   Upload.upload({
+     method: "POST",
+     url: '/api/organizer?token='+ token,
+     file: organizer.imageUrl,
+     fields: organizer
+   }).success(function(data){
+       // $location.url('/home');
+       console.log(data);
+     });
+
+  };
+
+  $scope.view = 'create';
+
+  $scope.currDisplay = function(view){
+    $scope.view = view;
+  };
+
+  $scope.logout = function() {
+    localStorage.removeItem('userToken');
+    $scope.loggedIn = false;
+    $location.path("/home");
+  };
+
+  $scope.categories = ('Technology,Sport,Health & Fitness,Music').split(',').map(function(category){
+    return {
+      name: category
+    };
+  });
+
+  $scope.getCountryCode = function() {
+    var e = document.getElementById("ddlViewBy");
+    $scope.countryCode = e.options[e.selectedIndex].value;
+    return $scope.countryCode;
+  };
+
+  $scope.getCountry = function() {
+    $scope.result = '';
+    $scope.options1 = {
+      country: $scope.getCountryCode()
+    };
+    $scope.details = '';
+  }; 
+
+  $scope.previewImg = function (inElement,prevElement){
+    $(inElement).on('change', function () {
+      var preview = document.querySelector(prevElement);
+      var file    = document.querySelector(inElement).files[0];
+      var reader  = new FileReader();
+      reader.onloadend = function () {
+        preview.src = reader.result;
+      }
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "";
+      }
+    })
+  };
+
+  $scope.changeColor = function(elem) {
+      $('md-toolbar.md-warn').css("background-color", elem);
+  };
+
+
+  $scope.$watch("organizer.about", 
+    function(oldVal, newVal){
+      if(oldVal !== newVal){
+        $scope.orgInfo = $sce.trustAsHtml($scope.organizer.about)
+    }
+  });
+  $scope.$watch("event.description", 
+    function(oldVal, newVal){
+      if(oldVal !== newVal){
+        $scope.eventInfo = $sce.trustAsHtml($scope.event.description)
+    }
+  });
+  
+  $scope.event = {
+    eventTheme : {
+      headerColor:'',
+      borderColor:'',
+      fontColor:'',
+      contentColor:''
+    }
+  };
+
+  $scope.organizer = {
+    about: '',
   };
 
   $scope.countries = [

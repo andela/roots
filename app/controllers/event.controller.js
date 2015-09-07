@@ -18,9 +18,9 @@ var taskController = new TaskController();
 var EventController = function() {};
 
 cloudinary.config({
-  cloud_name: configCloud.cloudinary.cloud_name,
-  api_key: configCloud.cloudinary.api_key,
-  api_secret: configCloud.cloudinary.api_secret
+  cloud_name: 'dev8nation',
+  api_key: 687213232223225,
+  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
 });
 
 EventController.prototype.registerEvent = function(req, res) {
