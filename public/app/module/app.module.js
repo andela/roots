@@ -4,36 +4,37 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
 .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('home',{
+    .state('user.home',{
       url: '/home',
       templateUrl: '../app/views/home.view.html',
       controller: 'homeCtrl'
     })
-    .state('passwordreset', {
+    .state('user.passwordreset', {
       url: '/passwordreset/:token',
       templateUrl: '../app/views/password.reset.html',
       controller: 'resetPasswordCtrl'
     })
-    .state('registration', {
+    .state('user.registration', {
       url: '/registration',
       templateUrl: '../app/views/twitter.user.html',
       controller: 'twitterCtrl'
     })
-    .state('create', {
+    .state('user.create', {
       url: '/create',
       templateUrl: '../app/views/create.event.html',
       controller: 'eventCtrl'
     })
     .state('user', {
       url: '/user',
-      templateUrl: '../app/views/user.view.html'
+      templateUrl: '../app/views/user.view.html',
+      controller: 'homeCtrl'
     }).
     state('user.profile', {
       url: '/profile',
       templateUrl: '../app/views/user.profile.html'
     });
 
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('user/home');
 });
 
 angular.module('eventApp')
