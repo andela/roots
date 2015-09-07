@@ -86,6 +86,10 @@ img.bg {
   margin-right: 5px;
 }
 
+#icon-menu {
+  display: none;
+}
+
 @media screen and (max-width: 1024px) {
   img.bg {
     left: 50%;
@@ -115,6 +119,13 @@ img.bg {
     width: 17em
   }
   #display-name {
+    display: none;
+  }
+  #icon-menu {
+    margin-right:50px;
+    display: block;
+  }
+  #nav-menu {
     display: none;
   }
 }
