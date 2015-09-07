@@ -1,4 +1,4 @@
-<div class="navbar-fixed">
+<div class="navbar-fixed" data-ng-init="signupCheck()">
   <nav class="nav-div">
     <div class="nav-wrapper">
     <span ui-sref="user.home" id="navbar-logo"><strong style="font-family:papyrus;color:white">World Tree</strong></span>
@@ -16,7 +16,7 @@
           </ul>
         </li>
       </ul>
-      <ul ng-if="loggedIn" class="right">
+      <ul ng-if="loggedIn" class="right" id="nav-menu">
         <li class="user-dropdown">
           <a href="" ng-click="">
           <img ng-src="{{profilePic}}" class="navbar-image">
