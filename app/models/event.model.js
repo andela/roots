@@ -13,27 +13,18 @@ var eventSchema = new mongoose.Schema({
   },
   user_ref: {
     type: String,
-<<<<<<< HEAD
     ref: 'User'
-=======
-    required: true
->>>>>>> feat(main app): frontend
   },
   description: {
     type: String,
     required: true
   },
-<<<<<<< HEAD
   online: {
     type: Boolean,
     default: false
   },
   country: {
     type: String
-=======
-  country: {
-    type: String  
->>>>>>> feat(main app): frontend
   },
   venue: {
     type: String
@@ -65,7 +56,6 @@ var eventSchema = new mongoose.Schema({
       default: 'Courier'
     }
   },
-<<<<<<< HEAD
   startDate: {
     type: Date,
     required: true
@@ -92,17 +82,6 @@ var eventSchema = new mongoose.Schema({
     }
   }]
 },{
-=======
-  // startDate: {
-  //   type: Date,
-  //   required: true
-  // },
-  // endDate: {
-  //   type: Date,
-  //   required: true
-  // },
-
->>>>>>> feat(main app): frontend
   versionKey: false
 });
 

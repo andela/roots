@@ -1,14 +1,9 @@
 'use strict';
 
-<<<<<<< HEAD
 var Promise = require('promise');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
-=======
-var async = require('async');
-var configCloud = require('../../config/config');
->>>>>>> feat(main app): frontend
 var Utils = require('../middleware/utils');
 var async = require('async');
 var configCloud = require('../../config/config');
@@ -18,10 +13,7 @@ var cloudinary = require('cloudinary');
 var formidable = require('formidable');
 var mongoose = require('mongoose');
 
-<<<<<<< HEAD
 
-=======
->>>>>>> feat(main app): frontend
 require('../models/user.model');
 require('../models/event.model');
 require('../models/task.model');
@@ -29,18 +21,13 @@ require('../models/task.model');
 var Event = mongoose.model('Event');
 var utils = new Utils();
 var taskController = new TaskController();
+
 var EventController = function() {};
 
 cloudinary.config({
-<<<<<<< HEAD
   cloud_name: 'dev8nation',
   api_key: 687213232223225,
   api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
-=======
-  cloud_name: configCloud.cloudinary.cloud_name,
-  api_key: configCloud.cloudinary.api_key,
-  api_secret: configCloud.cloudinary.api_secret
->>>>>>> feat(main app): frontend
 });
 
 EventController.prototype.registerEvent = function(req, res) {
@@ -53,17 +40,12 @@ EventController.prototype.registerEvent = function(req, res) {
     return res.json(eventDetails);
   });
 };
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> feat(main app): frontend
 
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
     req.body = fields;
-<<<<<<< HEAD
       if(Object.keys(file) != 0){
       cloudinary.uploader.upload(file.file.path, function(result){
         req.body.imageUrl = result.secure_url;
@@ -74,16 +56,6 @@ EventController.prototype.imageProcessing = function(req, res, next) {
       });
     } else {next();}
     });
-=======
-    cloudinary.uploader.upload(file.file.path, function(result){
-      req.body.imageUrl = result.secure_url;
-      next();
-    }, {
-      width: 800,
-      height: 800  
-    });
-  });
->>>>>>> feat(main app): frontend
 };
 
 

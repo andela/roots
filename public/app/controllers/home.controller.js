@@ -6,6 +6,9 @@ angular.module('eventApp')
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
+    if (localStorage.getItem('userToken')) {
+      UserService.decodeUser($scope);
+    };
 
     var userToken = $location.search().token;
     $location.search('token', null);
@@ -13,11 +16,17 @@ angular.module('eventApp')
       localStorage.setItem('userToken', userToken);
     }    
 
-    $rootScope.signupCheck = function() {
+    var signupCheck = function() {
       if (localStorage.getItem('userToken')) {
         UserService.decodeUser($scope);
       }
     }
+
+    var getEvents = function() {
+      EventService.getAllEvents().then(function(data) {
+        $scope.eventList = data.data;
+      })
+    };
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');

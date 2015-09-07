@@ -15,7 +15,7 @@ angular.module('eventApp')
       fields: eventDetails
     })
     .success(function(data) {
-        $scope.submitOrgProfile(organizer,token);
+      $scope.submitOrgProfile(organizer,token);
     })
   };
 
