@@ -9,8 +9,9 @@
 #navbar-logo {
   font-family: papyrus;
   color: white;
-  margin-left: 50px;
+  margin-left: 5px;
   cursor: pointer;
+  font-size: 25px;
 }
 
 .error-div {
@@ -82,7 +83,7 @@ img.bg {
 }
 
 #nav-menu {
-  margin-right: 50px;
+  margin-right: 5px;
 }
 
 @media screen and (max-width: 1024px) {
@@ -110,14 +111,22 @@ img.bg {
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) { 
   #motto-display {
-      font-size: 20px;
-      width: 17em
+    font-size: 20px;
+    width: 17em
+  }
+  #display-name {
+    display: none;
   }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   #motto-display {
     font-size: 20px;
     width: 27em
+  }
+}
+@media (min-width: 768px) {
+  .user-dropdown {
+    position: relative;
   }
 }
 
@@ -189,15 +198,14 @@ img.bg {
 }
 
 #site-logo {
-   font-family: Courier;
-   font-size: 80px;
+  font-family: Courier;
+  font-size: 80px;
 }
 
 .user-dropdown {
   font-size: 15px;
   cursor: pointer;
   font-family: "Courier";
-  position: relative;
   display: inline-block;
 }
 
