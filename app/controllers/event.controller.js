@@ -86,7 +86,7 @@ EventController.prototype.editEventDetails = function(req, res) {
           venue: eventObj.venue,
           eventUrl: eventObj.eventUrl,
           eventTheme: eventObj.eventTheme,
-          eventFontColor: eventObj.eventFontColor,
+          eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
           endDate: eventObj.endDate
         }
