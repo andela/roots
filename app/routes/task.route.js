@@ -16,18 +16,5 @@ module.exports = function(app) {
     .put(userCtrl.verifyToken, taskCtrl.editTask)
     .delete(userCtrl.verifyToken, taskCtrl.deleteTask);
 
-  router.route('/task/:task_id/volunteers')
-    .post(userCtrl.verifyToken, taskCtrl.addVolunteer)
-    .get(userCtrl.verifyToken, taskCtrl.getTaskVolunteers);
-
-  router.route('/task/:task_id/volunteers/:volunteer_id')
-    .delete(userCtrl.verifyToken, taskCtrl.removeVolunteer);
-
-  router.route('/task/:task_id/volunteers/schedules/:schds_id')
-    .post(userCtrl.verifyToken, taskCtrl.addSchedule);
-
-  router.route('/task/:task_id/volunteers/schedules/:schd_id')
-    .put(userCtrl.verifyToken, taskCtrl.editSchedule)
-   
   app.use('/api', router);
 }

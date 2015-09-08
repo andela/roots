@@ -6,11 +6,13 @@ var taskSchema = new mongoose.Schema({
 
   event_ref: {
     type: String,
-    ref: 'Event'
+    ref: 'Event',
+    required: true
   },
   manager_ref: {
     type: String,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   description: {
     type: String,
@@ -31,23 +33,8 @@ var taskSchema = new mongoose.Schema({
   volunteers: [{
     volunteer_ref: {
       type: String,
-      ref: 'User'
-    },
-    schedules: [{
-      description: {
-        type: String
-      },
-      startDate: {
-        type: Date
-      },
-      endDate: {
-        type: Date
-      },
-      completed: {
-        type: Boolean,
-        default: false
-      }
-    }]
+      ref: 'Volunteer'
+    }    
   }]
 
 }, {
