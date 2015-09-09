@@ -18,11 +18,8 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       templateUrl: '../app/views/twitter.user.html',
       controller: 'twitterCtrl'
     })
-    .state('user.create', {
-      url: '/create',
-      templateUrl: '../app/views/create.event.html',
 
-    .state('cevent', {
+    .state('user.cevent', {
       url: '/cevent',
       templateUrl: '../app/views/event.view.html',
       controller: 'eventCtrl'
