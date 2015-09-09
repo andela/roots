@@ -1,25 +1,5 @@
+<link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
 <div ng-controller="eventCtrl">
-  <div class="navbar" style="margin: -1px"> 
-    <nav class="nav-div">
-      <div class="nav-wrapper">
-        <span ui-sref="home" class="brand-logo left"><strong id="navbar-logo">World Tree</strong></span>
-        <ul ng-if="loggedIn" class="right" id="nav-menu">
-          <li class="user-dropdown">
-            <a href="" ng-click="">
-            <img ng-src="{{profilePic}}" class="navbar-image">
-            <span>Welcome {{userName}}</span>
-            </a>
-            <ul class="user-menu">
-              <li class="menu-list"><a href="" ng-click="">My Profile</a></li>
-              <li class="menu-list"><a href="" ng-click="">Browse Events</a></li>
-              <li class="menu-list"><a href="" ng-click="logout()">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
   <md-toolbar layout="row" class"md-padding md-raised">
     <div class="md-toolbar-tools"> 
       <md-button ng-click="currDisplay('create')">CREATE</md-button>
@@ -127,13 +107,13 @@
             <md-button type="button" class="md-raised" id="theme4" id="themes" ng-click="changeColor('#4CAF50')">green</md-button>
             <md-button type="button" class="md-raised" id="theme5" id="themes" ng-click="changeColor('#00BCD4')">cyan</md-button>
             <div class="custom" layout="row" layout-align="end center">
-              <md-whiteframe flex="33"class="md-whiteframe-z2">
+              <md-whiteframe flex="35"class="md-whiteframe-z2">
                 <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.headerColor"></color-picker>
               </md-whiteframe>
               <md-whiteframe flex="35"class="md-whiteframe-z2">
                 <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.borderColor"></color-picker>               
               </md-whiteframe>
-              <md-whiteframe flex="30"class="md-whiteframe-z2">
+              <md-whiteframe flex="35"class="md-whiteframe-z2">
                 <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.fontColor"></color-picker>
               </md-whiteframe>
               <md-whiteframe flex="35" class="md-whiteframe-z2">
@@ -166,10 +146,14 @@
               </div>
               <div layout="row">
                 <md-toolbar id="eventDetails" class="md-warn" ng-style="{'background-color' : event.eventTheme.headerColor,'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor}">
-                  <p>Event Details</p>                    
+                  <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Event Details</h2>
+                  </div>                  
                 </md-toolbar>
                 <md-toolbar id="organizers" class="md-warn" ng-style="{'background-color' : event.eventTheme.headerColor ,'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor}">
-                  <p>Organizers</p>
+                  <div class="md-toolbar-tools">
+                    <h2 class="md-flex">Organizer Details</h2>
+                  </div>
                 </md-toolbar>
               </div>
               <div layout="row">
@@ -177,13 +161,13 @@
                   <p>{{event.name}}</p> <br>
                   <p>{{event.venue}}</p><br>
                   <p>{{event.category}}</p><br>
-                  <p><div ng-bind-html="eventInfo"></div></p>
+                  <p ng-bind-html="eventInfo"></p>
                 </md-toolbar>
                 <md-toolbar md-scroll-shrink id="organizersContent" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor, 'background-color' : event.eventTheme.contentColor}">
                   <p>{{organizer.name}}</p><br/>
-                  <p><div ng-bind-html="orgInfo"></div></p><br>
-                  <p>{{organizer.Phonenumber1}}</p><br>
-                  <p>{{organizer.Phonenumber2}}</p>
+                  <p ng-bind-html="orgInfo"></p><br>
+                  <p>{{organizer.phonenumber1}}</p><br>
+                  <p>{{organizer.phonenumber2}}</p>
                 </md-toolbar>
               </div><br/>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
