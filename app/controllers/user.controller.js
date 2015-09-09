@@ -262,6 +262,20 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
   });
 };
 
+
+// UserController.prototype.deleteCurrentUser = function(req, res) {
+//   User.remove({
+//     _id: req.params.user_id
+//   }, function(err, user) {
+//     if (err) return res.send(err);
+
+//     res.json({
+//       message: 'Succesfully deleted'
+//     });
+
+//   });
+// };
+
 UserController.prototype.forgotPass = function(req, res, next) {
   async.waterfall([
     function(done) {
