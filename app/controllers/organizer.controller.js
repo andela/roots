@@ -15,7 +15,6 @@ var OrganizerController = function() {};
 
 OrganizerController.prototype.registerProfile = function(req, res) {
   var organizer = new Organizer(req.body);
-  console.log(req.body);
   organizer.save(req.body, function(err, organizer){
     if(err) {
       return res.json(err);

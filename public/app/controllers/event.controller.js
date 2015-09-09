@@ -1,35 +1,49 @@
 angular.module('eventApp')
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
-  if (localStorage.getItem('userToken')) {
-      UserService.decodeUser($scope);
-  };
+   if (localStorage.getItem('userToken')) {
+        UserService.decodeUser($scope);
+    };
 
-  $scope.submitEventDetails = function (eventDetails, organizer){
-    var token = localStorage.getItem('userToken');
-    eventDetails.user_ref = $rootScope.userId;
-    organizer.user_ref = $rootScope.userId;
-    Upload.upload({
-      method: "POST",
-      url: '/api/event?token='+ token,
-      file: eventDetails.imageUrl,
-      fields: eventDetails
-    })
-    .success(function(data) {
-        console.log(data);
-        $scope.submitOrgProfile(organizer,token);
-    })
-  };
+    $scope.submitOrgProfile = function(organizer,token){
+      Upload.upload({
+        method: "POST",
+        url: '/api/organizer?token='+ token,
+        file: organizer.imageUrl,
+        fields: organizer
+      }).success(function(data){
+          $location.url('home');
+      });
+    };
 
-  $scope.submitOrgProfile = function(organizer,token){
-   Upload.upload({
-     method: "POST",
-     url: '/api/organizer?token='+ token,
-     file: organizer.imageUrl,
-     fields: organizer
-   }).success(function(data){
-       // $location.url('/home');
-       console.log(data);
-     });
+    $scope.submitEventDetails = function (eventDetails, organizer){
+      var token = localStorage.getItem('userToken');
+      eventDetails.user_ref = $rootScope.userId;
+      organizer.user_ref = $rootScope.userId;
+      Upload.upload({
+        method: "POST",
+        url: '/api/event?token='+ token,
+        file: eventDetails.imageUrl,
+        fields: eventDetails
+      })
+      .success(function(data) {
+          $scope.submitOrgProfile(organizer,token);
+      })
+    };
+
+    // $scope.editEventDetails = function (eventDetails, organizer){
+    //   var token = localStorage.getItem('userToken');
+    //   eventDetails.user_ref = $rootScope.userId;
+    //   organizer.user_ref = $rootScope.userId;
+    //   Upload.upload({
+    //     method: "PUT",
+    //     url: '/api/event/:event_id?token='+ token,
+    //     // file: eventDetails.imageUrl,
+    //     fields: eventDetails
+    //   })
+    //   .success(function(data) {
+    //       $scope.submitOrgProfile(organizer,token);
+    //   })
+    // };
 
   };
 
@@ -85,7 +99,6 @@ angular.module('eventApp')
   $scope.changeColor = function(elem) {
       $('md-toolbar.md-warn').css("background-color", elem);
   };
-
 
   $scope.$watch("organizer.about",
     function(oldVal, newVal){
@@ -356,12 +369,5 @@ angular.module('eventApp')
   {name: 'Western Sahara', code: 'EH'},
   {name: 'Yemen', code: 'YE'},
   {name: 'Zambia', code: 'ZM'},
-<<<<<<< HEAD
   {name: 'Zimbabwe', code: 'ZW'}];
 }]);
-
-=======
-  {name: 'Zimbabwe', code: 'ZW'}
-];
-}]);
->>>>>>> refactor(main app): event view / modules

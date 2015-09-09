@@ -6,9 +6,9 @@ angular.module('eventApp')
           console.log('userId',$rootScope.userId, 'evtObj',evtObj);
           return $http.post(baseUrl + "event?token=" + token, {userId: $rootScope.userId, eventObj: evtObj});
       },
-      editEventDetails: function(data, param) {
+      editEventDetails: function(data) {
           var token = localStorage.getItem('userToken');
-          return $http.put(baseUrl + "event/:event_id" + token, data, param);
+          return $http.put(baseUrl + "event/:event_id?token=" + token, data);
       },
       deleteEvent: function(param) {
           var token = localStorage.getItem('userToken');
