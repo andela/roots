@@ -59,11 +59,11 @@ angular.module('eventApp')
     $location.path("/home");
   };
 
-  $scope.categories = ('Technology,Sport,Health & Fitness,Music').split(',').map(function(category){
-    return {
-      name: category
-    };
-  });
+    $scope.categories = ('Technology,Sport,Health & Fitness,Music,Food & Drink,Arts,Parties,Business').split(',').map(function(category){
+      return {
+        name: category
+      };
+    });
 
   $scope.getCountryCode = function() {
     var e = document.getElementById("ddlViewBy");
