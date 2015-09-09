@@ -368,12 +368,6 @@ p {
   border-width: 1px;
 }
 
-#eventTitleDiv {
-  color: #424242;
-  background-color: grey;
-  border-style: solid;
-  border-width: 1px;
-}
 #sideHeaderDiv {
   margin-left: 10%;
   font-size: 20px;
@@ -478,12 +472,19 @@ p {
 #width {
   width: 50%;
 }
+
+#bannerImg {
+  border-style: dashed;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px;
+}
 .createEventTab {
   width: 50%;
   margin-left: 100px;
 }
 
-<<<<<<< HEAD
 .fieldset {
   width: 80%;
   padding-left: 5%;
@@ -507,11 +508,11 @@ label {
   color: grey;
   padding-top: 50px;
   margin-left: 30px;
-=======
+}
+
 #organizerTab {
   width: 50%;
   margin-left: 100px;
->>>>>>> refactor(main app): event view / modules
 }
 
 .editImage-box {
@@ -519,4 +520,30 @@ label {
   width:300px;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+#event-container {
+  background-color: #eee;
+}
+
+.switch-container {
+  background-color: #eee;
+  padding: 2%;
+}
+
+.form-container {
+  margin:0 auto;
+  width:75%;
+  padding: 4%;
+  margin-top: 5%;
+}
+
+.image-box {
+  height: 250px;
+  width:300px;
+  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+}
+
+label {
+  font-size: 10px;
 }
