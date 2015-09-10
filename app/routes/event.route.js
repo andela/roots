@@ -8,7 +8,9 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/event')
-    .post(userCtrl.verifyToken, evtCtrl.createEvent);
+    .post(userCtrl.verifyToken, evtCtrl.createEvent)
+    .get(userCtrl.verifyToken, evtCtrl.getMyEvents);
+
   router.route('/events')
     .get(evtCtrl.getAllEvents);
 
@@ -16,6 +18,18 @@ module.exports = function(app) {
     .get(evtCtrl.getEvent)
     .put(userCtrl.verifyToken, evtCtrl.editEventDetails)
     .delete(userCtrl.verifyToken, evtCtrl.deleteEvent);
+
+  router.route('/event/:event_id/launch')
+    .put(userCtrl.verifyToken, evtCtrl.launchEvent);
+
+  router.route('/event/:event_id/save')
+    .post(userCtrl.verifyToken, evtCtrl.saveEventDetails);
+
+  router.route('/events/saved')
+    .get(userCtrl.verifyToken, evtCtrl.getMySavedEvents);
+
+  router.route('/event/:event_id/reuse')
+    .post(userCtrl.verifyToken, evtCtrl.reuseEvent);
 
   app.use('/api', router);
 }

@@ -30,7 +30,7 @@ Utils.prototype.sendMail = function(mailOptions, done) {
 
 //for executing asynchronous calls that involve iteration
 
-Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData) {
+Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData, syncData2) {
 
   var index = 0,
     done = false,
@@ -41,17 +41,17 @@ Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData) {
     next: function() {
       if (done) {
         if (shouldExit && exit) {
-          return exit(syncData);
+          return exit(syncData, syncData2);
         } else {
           return;
         }
       }
       if (index < iterationNum) {
         index++;
-        process(loop, syncData);
+        process(loop, syncData, syncData2);
       } else {
         done = true;
-        if (exit) exit(syncData);
+        if (exit) exit(syncData, syncData2);
       }
     },
     //this returns the nth iteration in sync with
