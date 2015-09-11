@@ -383,22 +383,33 @@ TaskController.prototype.deleteTask = function(req, res) {
 
             } else {
 
-              Task.remove({
-                _id: taskId,
-                event_ref: eventId
+              Volunteer.remove({
+                task_ref: taskId
               }, function(err) {
 
                 if (err) {
-                  return res.status(422).send({
-                    success: false,
-                    message: 'Error deleting task!'
-                  });
+                  return res.status(500).send(err);
                 } else {
 
-                  return res.json({
-                    success: true,
-                    message: 'Succesfully deleted'
+                  Task.remove({
+                    _id: taskId,
+                    event_ref: eventId
+                  }, function(err) {
+
+                    if (err) {
+                      return res.status(422).send({
+                        success: false,
+                        message: 'Error deleting task!'
+                      });
+                    } else {
+
+                      return res.json({
+                        success: true,
+                        message: 'Succesfully deleted'
+                      });
+                    }
                   });
+
                 }
               });
             }
