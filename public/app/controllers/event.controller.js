@@ -45,7 +45,7 @@ angular.module('eventApp')
     //   })
     // };
 
-  };
+  // };
 
   $scope.view = 'create';
 
