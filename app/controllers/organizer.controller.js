@@ -147,7 +147,6 @@ OrganizerController.prototype.editProfile = function(req, res) {
 OrganizerController.prototype.addTeamMember = function(req, res) {
 
   var orgId = req.params.organizer_id;
-
   var manager = req.body.manager;
   var managerEmail;
 
