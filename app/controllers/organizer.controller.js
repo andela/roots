@@ -142,69 +142,6 @@ OrganizerController.prototype.editProfile = function(req, res) {
         }
       });
     }
-  async.waterfall([
-
-    function(done) {
-
-      Organizer.findOne({
-        _id: req.params.organizer_id
-      }, function(err, org) {
-
-        if (err) {
-          return res.send(err);
-        } else if (!org) {
-          return res.status(422).send({
-            success: false,
-            message: 'Invalid organizer id'
-          });
-        } else if (org.user_ref) {
-
-          Organizer.populate(org, {
-            path: 'user_ref'
-          }, function(err1, org1) {
-
-            if (err) {
-              done(null, org);
-            } else {
-              done(null, org1);
-            }
-          });
-
-
-
-        } else {
-          done(null, org);
-        }
-
-      });
-    },
-    function(org, done) {
-
-      if (org.staff.length) {
-
-        Organizer.populate(org, {
-          path: 'manager_ref'
-        }, function(err1, org1) {
-
-          if (err) {
-            done(null, org);
-          } else {
-            done(null, org1);
-          }
-
-        });
-      } else {
-        done(null, org);
-      }
-    }
-
-  ], function(err, org) {
-
-    if (err)
-      return res.send(err);
-
-    res.json(org);
-
   });
 }
 
@@ -228,12 +165,12 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     } else if (!orgProfile) {
-
       return res.status(422).send({
         success: false,
         message: 'Profile not found'
       });
     } else {
+
       if (orgProfile.user_ref.toString() !== req.decoded._id) {
 
         return res.status(403).send({
@@ -318,6 +255,7 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
     }
   });
 }
+
 
 OrganizerController.prototype.editRole = function(req, res) {
 
