@@ -42,11 +42,11 @@ angular.module('eventApp')
     $location.path("/home");
   };
 
-    $scope.categories = ('Technology,Sport,Health & Fitness,Music,Food & Drink,Arts,Parties,Business').split(',').map(function(category){
-      return {
-        name: category
-      };
-    });
+  $scope.categories = ('Technology,Sport,Health & Fitness,Music, Art, Science, Spirituality, Media, Family, Education').split(',').map(function(category){
+    return {
+      name: category
+    };
+  });
 
   $scope.getCountryCode = function() {
     var e = document.getElementById("ddlViewBy");
@@ -82,12 +82,14 @@ angular.module('eventApp')
       $('md-toolbar.md-warn').css("background-color", elem);
   };
 
-  $scope.$watch("organizer.about",
+
+  $scope.$watch("organizer.about", 
     function(oldVal, newVal){
       if(oldVal !== newVal){
         $scope.orgInfo = $sce.trustAsHtml($scope.organizer.about)
     }
   });
+
   $scope.$watch("event.description",
     function(oldVal, newVal){
       if(oldVal !== newVal){

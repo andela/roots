@@ -237,10 +237,14 @@ img.bg {
     color: #00bfff;
 }
 
+#display-name {
+  font-size: 15px !important;
+}
+
 .navbar-image {
   width: 30px;
   height: 30px;
-  margin-bottom: -10px;
+  vertical-align: middle;
   border: 1px solid white;
   border-radius: 2px;
 }
@@ -537,4 +541,41 @@ label {
 
 label {
   font-size: 10px;
+}
+
+#browseImg {
+  height: 250px;
+  width: 400px;
+  
+}
+
+#whiteFrame {
+  margin-bottom: 20px;
+  height: 250px;
+}
+
+.md-whiteframe-z3{
+  padding : 5%;
+
+}
+
+#event-container {
+  background-color: #eee;
+}
+
+#moreEveLeft {
+  width: 40%;
+}
+
+#filter {
+  margin-top: 20%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+#sideTags {
+  padding-top: 10%;
+}
+
+#dateBtn {
+  margin-left: 600px;
 }

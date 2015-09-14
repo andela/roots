@@ -57,6 +57,13 @@ angular.module('eventApp')
       });
     };
 
+    $scope.fetchEvents = function() {
+      EventService.getAllEvents().then(function(data){
+        $scope.eventList = data.data;
+      });
+
+    };
+
     function UserLogin($scope, $rootScope, $mdDialog, view) {
       if (view === 'signup') {
         $scope.signupDialog = true;
