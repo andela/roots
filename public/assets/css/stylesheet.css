@@ -468,17 +468,8 @@ p {
   border-width: 2px;
   border-radius: 2px;
 }
-
 #width {
   width: 50%;
-}
-
-#bannerImg {
-  border-style: dashed;
-  width: 250px;
-  height: 200px;
-  border-width: 2px;
-  border-radius: 2px;
 }
 .createEventTab {
   width: 50%;

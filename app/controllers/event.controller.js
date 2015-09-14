@@ -46,6 +46,7 @@ EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
     req.body = fields;
+<<<<<<< HEAD
       if(Object.keys(file) != 0){
       cloudinary.uploader.upload(file.file.path, function(result){
         req.body.imageUrl = result.secure_url;
@@ -55,6 +56,14 @@ EventController.prototype.imageProcessing = function(req, res, next) {
         height: 800
       });
     } else {next();}
+=======
+    cloudinary.uploader.upload(file.file.path, function(result){
+      req.body.imageUrl = result.secure_url;
+      next();
+    }, {
+      width: 800,
+      height: 800
+>>>>>>> - add editEvent view and controller
     });
 };
 
@@ -363,7 +372,10 @@ EventController.prototype.deleteEvent = function(req, res) {
 EventController.prototype.getEvent = function(req, res) {
 
   var eventId = req.params.event_id;
+<<<<<<< HEAD
 
+=======
+>>>>>>> - add editEvent view and controller
   eventId = eventId.substr(1, eventId.length)
 
   Event.findById(eventId).populate('user_ref').exec(function(err, evt) {
