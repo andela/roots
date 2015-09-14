@@ -13,8 +13,12 @@ module.exports = function(app) {
   router.route('/organizers')
     .get(userCtrl.verifyToken, orgCtrl.getAllProfiles);
 
-  router.route('/organizer/team')
-    .post(userCtrl.verifyToken, orgCtrl.addTeamMembers);
+  router.route('/organizer/:organizer_id/team')
+    .post(userCtrl.verifyToken, orgCtrl.addTeamMember);
+
+  router.route('/organizer/:organizer_id/team/:member_id')
+    .put(userCtrl.verifyToken, orgCtrl.editRole)
+    .delete(userCtrl.verifyToken, orgCtrl.deleteStaff);
 
   router.route('/organizer/:organizer_id')
     .get(userCtrl.verifyToken, orgCtrl.getProfile)

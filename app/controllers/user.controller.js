@@ -191,7 +191,7 @@ UserController.prototype.editTwitUser = function(req, res) {
 UserController.prototype.getCurrentUser = function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
     if (err) {
-      res.send(err);
+      res.status(500).send(err);
     }
     res.json(user);
   });
@@ -203,7 +203,7 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
   User.findById(userId, function(err, user) {
 
     if (err) {
-      return res.send(err);
+      return res.status(500).send(err);
     } else if (user) {
 
       if (user.organizer_ref) {
@@ -242,7 +242,7 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
         User.remove({
           _id: userId
         }, function(err, user) {
-          if (err) return res.send(err);
+          if (err) return res.status(500).send(err);
 
           res.json({
             message: 'Succesfully deleted'
