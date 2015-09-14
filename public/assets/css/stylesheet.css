@@ -9,9 +9,8 @@
 #navbar-logo {
   font-family: papyrus;
   color: white;
-  margin-left: 5px;
+  margin-left: 50px;
   cursor: pointer;
-  font-size: 25px;
 }
 
 .error-div {
@@ -93,11 +92,7 @@ img.bg {
 }
 
 #nav-menu {
-  margin-right: 5px;
-}
-
-#icon-menu {
-  display: none;
+  margin-right: 50px;
 }
 
 @media screen and (max-width: 1024px) {
@@ -125,29 +120,14 @@ img.bg {
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
   #motto-display {
-    font-size: 20px;
-    width: 17em
-  }
-  #display-name {
-    display: none;
-  }
-  #icon-menu {
-    margin-right:50px;
-    display: block;
-  }
-  #nav-menu {
-    display: none;
+      font-size: 20px;
+      width: 17em
   }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   #motto-display {
     font-size: 20px;
     width: 27em
-  }
-}
-@media (min-width: 768px) {
-  .user-dropdown {
-    position: relative;
   }
 }
 
@@ -219,14 +199,15 @@ img.bg {
 }
 
 #site-logo {
-  font-family: Courier;
-  font-size: 80px;
+   font-family: Courier;
+   font-size: 80px;
 }
 
 .user-dropdown {
   font-size: 15px;
   cursor: pointer;
   font-family: "Courier";
+  position: relative;
   display: inline-block;
 }
 
@@ -346,6 +327,29 @@ img.bg {
   background-color: #00BCD4;
 }
 
+.switch-container {
+  background-color: #eee;
+  padding: 2%;
+}
+
+.form-container {
+  margin:0 auto;
+  width:75%;
+  padding: 4%;
+  margin-top: 5%;
+}
+
+.image-box {
+  height: 250px;
+  width:300px;
+  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+}
+
+label {
+  font-size: 10px;
+}
+
+
 .md-warn {
   font-size: 20px;
   border-radius: 8px 8px 0px 0px;
@@ -463,17 +467,8 @@ p {
   border-width: 2px;
   border-radius: 2px;
 }
-
 #width {
   width: 50%;
-}
-
-#bannerImg {
-  border-style: dashed;
-  width: 250px;
-  height: 200px;
-  border-width: 2px;
-  border-radius: 2px;
 }
 .createEventTab {
   width: 50%;
@@ -486,7 +481,7 @@ p {
 }
 
 label {
-  font-size: 14px;
+  font-size: 10px;
 }
 
 .custom {
@@ -503,30 +498,4 @@ label {
   color: grey;
   padding-top: 50px;
   margin-left: 30px;
-
-#organizerTab {
-  width: 50%;
-  margin-left: 100px;
-}
-
-#event-container {
-  background-color: #eee;
-}
-
-.switch-container {
-  background-color: #eee;
-  padding: 2%;
-}
-
-.form-container {
-  margin:0 auto;
-  width:50%;
-  padding: 4%;
-  margin-top: 5%;
-}
-
-.image-box {
-  height: 250px;
-  width:300px;
-  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
 }

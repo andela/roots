@@ -33,7 +33,7 @@ EventController.prototype.registerEvent = function(req, res) {
     return res.json(eventDetails);
   });
 };
-  
+
 
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
@@ -44,7 +44,7 @@ EventController.prototype.imageProcessing = function(req, res, next) {
       next();
     }, {
       width: 800,
-      height: 800  
+      height: 800
     });
   });
 };
@@ -321,7 +321,34 @@ EventController.prototype.deleteEvent = function(req, res) {
 
 EventController.prototype.getEvent = function(req, res) {
 
-  EventController.prototype.getEventStub(req.params.event_id, res);
+  var eventId = req.params.event_id;
+  eventId = eventId.substr(1, eventId.length)
+
+  Event.findById(eventId).populate('user_ref').exec(function(err, evt) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!evt) {
+
+      return res.status(422).send({
+        success: false,
+        message: 'Invalid event id'
+      });
+    } else {
+      // User.populate(evt, {
+      //   path: 'user_ref'
+      // }, function(err1, evt1) {
+      //
+      //   if (err) {
+          // res.status(200).send(err);
+      //   } else {
+          res.json(evt);
+      //   }
+      //
+      // });
+    }
+  });
 }
 
 EventController.prototype.getEventStub = function(eventId, res) {

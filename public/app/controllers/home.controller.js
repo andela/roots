@@ -16,6 +16,7 @@ angular.module('eventApp')
     var signupCheck = function() {
       if(localStorage.getItem('userToken')) {
         UserService.decodeUser().then(function(res) {
+          $rootScope.userId = res.data._id;
           $scope.userName = res.data.firstname;
           $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
           $scope.loggedIn = true;

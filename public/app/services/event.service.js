@@ -21,8 +21,8 @@ angular.module('eventApp')
       getAllEvents: function() {
           return $http.get(baseUrl + "events");
       },
-      getEvent: function() {
-          return $http.get(baseUrl + "event/:event_id");
+      getEvent: function(eventId) {
+          return $http.get(baseUrl + "event/:" + eventId);
       }
     };
   }]);

@@ -8,7 +8,7 @@ angular.module('eventApp')
       authenticate: function(param) {
         return $http.post(baseUrl + "authenticate", param);
       },
-      decodeUser: function(scope) {
+      decodeUser: function() {
         var token = localStorage.getItem('userToken');
         return $http.get(baseUrl + "decode?token=" + token);
       },

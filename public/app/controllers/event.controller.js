@@ -1,7 +1,7 @@
 angular.module('eventApp')
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
    if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
+        UserService.decodeUser();
     };
 
     $scope.submitOrgProfile = function(organizer,token){
