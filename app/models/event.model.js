@@ -20,6 +20,10 @@ var eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  online: {    
+    type: Boolean,
+    default: false
+  },
   venue: {
     name: String,
     country: String,
@@ -41,6 +45,20 @@ var eventSchema = new mongoose.Schema({
   eventTheme: {
     type: String,
     default: 'white'
+  },
+  eventFont: {
+    color: {
+      type: String,
+      default: 'black'
+    },
+    size: {
+      type: Number,
+      default: 14
+    },
+    style: {
+      type: String,
+      default: 'Courier'
+    }
   },
   startDate: {
     type: Date,
