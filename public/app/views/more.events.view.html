@@ -1,4 +1,4 @@
-<div layout= "row" id= "event-container">
+<div layout= "row" id="event-container">
 	<div layout="column" style="height:800px;">
   <section layout="row" flex>
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
@@ -6,6 +6,9 @@
         <h1 class="md-toolbar-tools">Filter by...</h1>
       </md-toolbar>
       <md-content layout-padding>
+        <div class="col-md-2">
+		      Event Name <input type="text" ng-model="query">
+		    </div>
         <md-select aria-label="sel" id="sideTags" ng-model="event.category" placeholder="Category" style="display: block;">  
           <md-option placeholder="Category" ng-repeat="category in categories" value="{{category.name}}">{{category.name}}
           </md-option>
@@ -25,7 +28,7 @@
 				</div>
         <div class="md-whiteframe-z3" class="column" layout layout-align="center center">
 					<div id="event-list" ng-controller="homeCtrl" data-ng-init="fetchEvents()" class="column">
-					  <div ng-repeat="event in eventList" class="col s4" id="event-container">
+					  <div ng-repeat="event in eventList | filter:query | orderBy: event.country" class="col s4" id="event-container">
 					    <div class="card small" class="row" layout layout-align="center left" id="whiteFrame">
 					      <div>
 					        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="browseImg">
@@ -33,6 +36,7 @@
 					      <div>
 					        <p>{{event.startDate | date:'medium'}}</p>
 					        <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
+					        <p>{{event.country}}
 					        <p>{{event.venue | uppercase}}</p>
 					        <p>{{event.description}}</p>
 					      </div>
@@ -46,43 +50,3 @@
   </section>
 </div>
 </div>
-
-
-
-
-
-
-
-<!-- <div layout="column" id = "moreEveLeft">
-	  <p><h4 id="filter">Filter by...</h4></p>
-		<md-select aria-label="sel" id="sideTags" ng-model="event.category" placeholder="Select Category" style="display: block;">  
-      <md-option placeholder="Select Category" ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
-    </md-select> 
-      <label id="sideTags">Country</label>
-      <select id="filter" placeholder="Select Country" ng-model="event.country" style="display: block;">  
-        <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>         
-      </select>
-      <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
-	</div>
-	<div layout="column">
-		<div class="md-toolbar-tools" > 
-			<span><strong>Events for you...</strong>
-		</div>
-		<div class="md-whiteframe-z3" class="column" layout layout-align="center center">
-			<div id="event-list" ng-controller="homeCtrl" data-ng-init="fetchEvents()" class="column">
-			  <div ng-repeat="event in eventList" class="col s4" id="event-container">
-			    <div class="card small" class="row" layout layout-align="center left" id="whiteFrame">
-			      <div>
-			        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="browseImg">
-			      </div>
-			      <div>
-			        <p>{{event.startDate | date:'medium'}}</p>
-			        <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
-			        <p>{{event.venue | uppercase}}</p>
-			        <p>{{event.description}}</p>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		</div>
-	</div> -->
