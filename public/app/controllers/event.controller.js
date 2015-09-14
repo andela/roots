@@ -30,23 +30,6 @@ angular.module('eventApp')
       })
     };
 
-    // $scope.editEventDetails = function (eventDetails, organizer){
-    //   var token = localStorage.getItem('userToken');
-    //   eventDetails.user_ref = $rootScope.userId;
-    //   organizer.user_ref = $rootScope.userId;
-    //   Upload.upload({
-    //     method: "PUT",
-    //     url: '/api/event/:event_id?token='+ token,
-    //     // file: eventDetails.imageUrl,
-    //     fields: eventDetails
-    //   })
-    //   .success(function(data) {
-    //       $scope.submitOrgProfile(organizer,token);
-    //   })
-    // };
-
-  // };
-
   $scope.view = 'create';
 
   $scope.currDisplay = function(view){
