@@ -32,6 +32,8 @@ Utils.prototype.sendMail = function(mailOptions, done) {
 
 Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData, syncData2) {
 
+  //syncData and syncData2 are parameters passed to this function that are meant to be processed by the process and/or exit callbacks. syncData2 is not mandatory
+
   var index = 0,
     done = false,
     shouldExit = false;
@@ -67,6 +69,17 @@ Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData, syncD
   };
   loop.next();
   return loop;
+}
+
+Utils.prototype.convertToObject = function(objectToConvert) {
+
+  try {
+    
+    var convertedObject = JSON.parse(JSON.stringify(objectToConvert));
+    return convertedObject;
+  } catch (err) {
+    return null;
+  }
 }
 
 module.exports = Utils;

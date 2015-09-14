@@ -24,6 +24,7 @@ TaskController.prototype.addTask = function(req, res) {
   var eventName;
   var managerEmail;
 
+  //Check if there isn't any event task with same description
   Task.findOne({
     event_ref: eventId,
     description: {
@@ -39,6 +40,7 @@ TaskController.prototype.addTask = function(req, res) {
       });
     } else {
 
+      //Retrieve event details
       Event.findById(eventId, function(err, evt) {
 
         if (err) {
@@ -48,6 +50,8 @@ TaskController.prototype.addTask = function(req, res) {
             success: false,
             message: 'Event not found!'
           });
+
+          //Check if task is being added by the user that created the event
         } else if (evt.user_ref.toString() !== req.decoded._id) {
 
           return res.status(401).send({
@@ -66,6 +70,7 @@ TaskController.prototype.addTask = function(req, res) {
 
           } else {
 
+            //Fetch event manager details
             User.findById(newTask.manager_ref, function(err, user) {
 
               if (err) {
@@ -80,6 +85,7 @@ TaskController.prototype.addTask = function(req, res) {
                 newTask.volunteers = [];
                 newTask.event_ref = eventId;
 
+                //Create new task with the newTask object
                 Task.create(newTask, function(err, createdTask) {
 
                   if (err) {
@@ -91,6 +97,7 @@ TaskController.prototype.addTask = function(req, res) {
                     });
                   } else {
 
+                    //Send notification to event manager
                     var mailOptions = {
                       to: managerEmail,
                       from: 'World tree ✔ <no-reply@worldtreeinc.com>',
@@ -143,6 +150,7 @@ TaskController.prototype.editTask = function(req, res) {
   var newManagerEmail;
   var prevManagerId;
 
+  //Check if there is no other event task with the same description
   Task.findOne({
     event_ref: eventId,
     _id: {
@@ -161,6 +169,7 @@ TaskController.prototype.editTask = function(req, res) {
       });
     } else {
 
+      //Fetch event details
       Event.findById(eventId, function(err, evt) {
 
         if (err) {
@@ -170,6 +179,7 @@ TaskController.prototype.editTask = function(req, res) {
             success: false,
             message: 'Event not found!'
           });
+          //Check if task is being added by the user that created the event
         } else if (evt.user_ref.toString() !== req.decoded._id) {
 
           return res.status(401).send({
@@ -188,6 +198,7 @@ TaskController.prototype.editTask = function(req, res) {
           } else {
 
             eventName = evt.name;
+            //Fetch event manager details
             User.findById(newTask.manager_ref, function(err, user) {
 
               if (err) {
@@ -211,6 +222,7 @@ TaskController.prototype.editTask = function(req, res) {
                     });
                   } else {
 
+                    //Update task with the newTask object
                     Task.findByIdAndUpdate(taskId, {
                       $set: {
                         event_ref: eventId,
@@ -232,6 +244,8 @@ TaskController.prototype.editTask = function(req, res) {
                         });
                       } else {
 
+                        //If there is a change in task manager
+                        //sen notification to new task manager
                         if (prevManagerId.toString() !== updatedTask.manager_ref.toString()) {
 
                           var mailOptions = {
@@ -245,7 +259,8 @@ TaskController.prototype.editTask = function(req, res) {
 
                           utils.sendMail(mailOptions);
                         }
-
+                        //Populate manager_ref property of task object
+                        //with matching details from user profile
                         User.populate(updatedTask, {
                           'path': 'manager_ref'
                         }, function(err, populatedTask) {
@@ -293,7 +308,8 @@ TaskController.prototype.getTask = function(req, res) {
         message: 'Invalid Task or Event id'
       });
     } else {
-
+      //Populate manager_ref property of task object
+      //with matching details from user profile
       User.populate(task, {
         'path': 'manager_ref'
       }, function(err, userPopulatedTask) {
@@ -304,7 +320,8 @@ TaskController.prototype.getTask = function(req, res) {
             message: 'Error populating task details!'
           });
         } else {
-
+          //Populate volunteer_ref property of task object
+          //with matching details from volunteer profile
           Volunteer.populate(userPopulatedTask, {
             'path': 'volunteers.volunteer_ref'
           }, function(err, populatedTask) {
@@ -315,7 +332,8 @@ TaskController.prototype.getTask = function(req, res) {
                 message: 'Error populating task details!'
               });
             } else {
-
+              //Populate manager_ref property of task object
+              //with matching details from user profile
               User.populate(populatedTask, {
                 'path': 'volunteers.volunteer_ref.user_ref'
               }, function(err, taskDetailed) {
@@ -342,6 +360,7 @@ TaskController.prototype.deleteTask = function(req, res) {
   var taskId = req.params.task_id;
   var eventId = req.params.event_id;
 
+  //Fetch event details
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
@@ -351,6 +370,8 @@ TaskController.prototype.deleteTask = function(req, res) {
         success: false,
         message: 'Attached Event not found!'
       });
+      //Check if the user deleting the event 
+      //created the event
     } else if (evt.user_ref != req.decoded._id) {
 
       return res.status(401).send({
@@ -358,7 +379,7 @@ TaskController.prototype.deleteTask = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-
+      //Validate task id
       Task.findById(taskId, function(err, task) {
         if (err) {
           return res.status(500).send(err);
@@ -368,7 +389,7 @@ TaskController.prototype.deleteTask = function(req, res) {
             message: 'Task not found!'
           });
         } else {
-
+          //Remove task_ref from event object
           Event.findByIdAndUpdate(eventId, {
             $pull: {
               tasks: {
@@ -390,7 +411,7 @@ TaskController.prototype.deleteTask = function(req, res) {
                 if (err) {
                   return res.status(500).send(err);
                 } else {
-
+                  //Delete task
                   Task.remove({
                     _id: taskId,
                     event_ref: eventId
@@ -421,6 +442,7 @@ TaskController.prototype.deleteTask = function(req, res) {
   });
 }
 
+//Get tasks that are created for an event
 TaskController.prototype.getEventTasks = function(req, res) {
 
   var eventId = req.params.event_id;

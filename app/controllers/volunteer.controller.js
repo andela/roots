@@ -28,7 +28,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
   var eventName;
   var volunteerName;
 
-
+  //Check if user has already volunteered for same task
   Volunteer.findOne({
     user_ref: volunteerId,
     task_ref: taskId
@@ -56,6 +56,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
 
           eventId = task.event_ref;
 
+          //Validate if event specified for the task is valid
           Event.findById(eventId, function(err, evt) {
 
             if (err) {
@@ -69,6 +70,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
 
               eventName = evt.name;
 
+              //Validate event manager specified
               User.findById(evt.user_ref, function(err, user) {
 
                 if (err) {
@@ -100,12 +102,14 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
                       volunteer.task_ref = taskId;
                       volunteer.user_ref = volunteerId;
 
+                      //Create a volunteer object, which is linked to a task
                       volunteer.save(function(err) {
 
                         if (err) {
                           return res.status(500).send(err);
                         } else {
 
+                          //Send mail to the volunteer
                           var mailOptions = {
                             to: eventMail,
                             from: 'World tree ✔ <no-reply@worldtreeinc.com>',
@@ -145,7 +149,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
   var taskDescription;
   var volunteerEmail;
 
-
+  //Check if volunteer has already volunteered for same task
   Task.findOne({
     _id: taskId,
     'volunteers.volunteer_ref': volunteerId
@@ -160,6 +164,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
       });
     } else {
 
+      //Validate volunteer id
       Volunteer.findById(volunteerId, function(err, volunteer) {
 
         if (err) {
@@ -170,7 +175,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
             message: 'Invalid volunteer id!'
           });
         } else {
-
+          //Fecth volunteer user details
           User.findById(volunteer.user_ref, function(err, user) {
 
             if (err) {
@@ -184,6 +189,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
 
               volunteerEmail = user.email;
 
+              //Validate task id
               Task.findById(taskId, function(err, task) {
 
                 if (err) {
@@ -197,6 +203,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
 
                   taskDescription = task.description;
 
+                  //Validate task event id
                   Event.findById(task.event_ref, function(err, evt) {
 
                     if (err) {
@@ -210,6 +217,8 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
 
                       eventName = evt.name;
 
+                      //Update task model to indicate that volunteer
+                      //has been added to the task
                       Task.findByIdAndUpdate(taskId, {
                         $push: {
                           volunteers: {
@@ -229,6 +238,8 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                           });
                         } else {
 
+                          //Indicate that volunteer has been added to the task
+                          //in the volunteer model
                           Volunteer.findByIdAndUpdate(volunteerId, {
                             $set: {
                               added: true
@@ -244,6 +255,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                               });
                             } else {
 
+                              //Send mail to volunteer
                               var mailOptions = {
                                 to: volunteerEmail,
                                 from: 'World tree ✔ <no-reply@worldtreeinc.com>',
@@ -294,6 +306,7 @@ VolunteerController.prototype.removeVolunteerFromTask = function(req, res) {
       });
     } else {
 
+      //Remove volunteer ref from the task model
       Task.findByIdAndUpdate(volunteer.task_ref, {
         $pull: {
           volunteers: {
@@ -305,7 +318,7 @@ VolunteerController.prototype.removeVolunteerFromTask = function(req, res) {
         if (err) {
           return res.status(500).send(err);
         } else {
-
+          //Delete volunteer object
           Volunteer.remove({
             _id: volunteerId
           }, function(err) {
@@ -346,6 +359,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
   var eventName;
   var prevSchedules;
 
+  //Validate volunteer id
   Volunteer.findById(volunteerId, function(err, volunteer) {
 
     if (err) {
@@ -357,7 +371,11 @@ VolunteerController.prototype.addSchedule = function(req, res) {
       });
     } else {
 
+      //Retrieve all previous schedules assigned to volunteer
       prevSchedules = volunteer.schedules;
+
+      //Populate volunteer object with matching volunteer user details
+      //from user model
       User.populate(volunteer, {
         'path': 'user_ref'
       }, function(err, user) {
@@ -373,6 +391,8 @@ VolunteerController.prototype.addSchedule = function(req, res) {
 
           volunteerEmail = user.email;
 
+          //Check if volunteer has been added to the specified task
+          //before assigning any task to volunteer
           Task.findOne({
             _id: taskId,
             'volunteers.volunteer_ref': volunteerId
@@ -389,6 +409,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
 
               taskDescription = task.description;
 
+              //Retrieve task event
               Event.findById(task.event_ref, function(err, evt) {
 
                 if (err) {
@@ -402,6 +423,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
 
                   eventName = evt.name;
 
+                  //Add schedule to volunteer
                   Volunteer.findByIdAndUpdate(volunteerId, {
                     $push: {
                       schedules: schedule
@@ -435,6 +457,8 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                           });
                         } else {
 
+                          //After retrieving the volunteer's complete new schedule list
+                          //compare it with the prev schedule list to get newly added schedule
                           var newSchedules = volunteer.schedules;
                           var index;
 
@@ -470,6 +494,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                             }
                           }
 
+                          //Send notification to volunteer
                           var mailOptions = {
                             to: volunteerEmail,
                             from: 'World tree ✔ <no-reply@worldtreeinc.com>',
@@ -510,6 +535,7 @@ VolunteerController.prototype.editSchedule = function(req, res) {
     });
   }
 
+  //Update volunteer schedule by id
   Volunteer.findOneAndUpdate({
     _id: volunteerId,
     'schedules._id': scheduleId
@@ -544,6 +570,7 @@ VolunteerController.prototype.deleteSchedule = function(req, res) {
   var scheduleId = req.params.schedule_id;
   var volunteerId = req.params.volunteer_id; //id of the volunteer object stored in db
 
+  //Delete schedule by id
   Volunteer.findOneAndUpdate({
     _id: volunteerId
   }, {
@@ -571,6 +598,7 @@ VolunteerController.prototype.deleteSchedule = function(req, res) {
   });
 }
 
+//Get list of users who volunteered for a task
 VolunteerController.prototype.getTaskVolunteers = function(req, res) {
 
   var taskId = req.params.task_id;
@@ -589,6 +617,8 @@ VolunteerController.prototype.getTaskVolunteers = function(req, res) {
       });
     } else {
 
+      //Populate the volunteers list with their matching
+      //user details from user model
       User.populate(volunteers, {
         'path': 'user_ref'
       }, function(err, populatedVolunteers) {
@@ -606,6 +636,7 @@ VolunteerController.prototype.getTaskVolunteers = function(req, res) {
   });
 }
 
+//Get list of users who were added to an event
 VolunteerController.prototype.getEventVolunteers = function(req, res) {
 
   var eventId = req.params.event_id;
@@ -625,6 +656,9 @@ VolunteerController.prototype.getEventVolunteers = function(req, res) {
       });
     } else {
 
+      
+      //Populate the volunteers list with their matching
+      //user details from user model
       User.populate(volunteers, {
         'path': 'user_ref'
       }, function(err, populatedVolunteers) {

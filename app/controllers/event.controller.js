@@ -30,7 +30,7 @@ EventController.prototype.createEvent = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     }
-
+    //Send mail to event manager
     var mailOptions = {
       to: req.decoded.email,
       from: 'World tree ✔ <no-reply@worldtreeinc.com>',
@@ -107,7 +107,7 @@ EventController.prototype.editEventDetails = function(req, res) {
   });
 }
 
-//Set event in saved state to online state
+//Set event in draft state to published state
 EventController.prototype.launchEvent = function(req, res) {
 
   var eventId = req.params.event_id;
@@ -129,6 +129,7 @@ EventController.prototype.launchEvent = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
+      //Publish event
       Event.findByIdAndUpdate(eventId, {
         $set: {
           online: true
@@ -150,6 +151,8 @@ EventController.prototype.launchEvent = function(req, res) {
             if (err) {
               return res.status(500).send(err);
             } else {
+              //Populate the user_ref property of the events' model
+              //with the matching user details from the user model
               User.populate(evt, {
                 path: 'user_ref'
               }, function(err1, evt) {
@@ -169,7 +172,7 @@ EventController.prototype.launchEvent = function(req, res) {
   });
 }
 
-//Add an event to your saved events
+//Add an event to your event drafts
 EventController.prototype.saveEventDetails = function(req, res) {
 
   var eventId = req.params.event_id;
@@ -204,6 +207,8 @@ EventController.prototype.saveEventDetails = function(req, res) {
         if (err) {
           return res.status(500).send(err);
         } else {
+          //Populate the user_ref property of the events' model
+          //with the matching user details from the user model
           User.populate(newEvent, {
             path: 'user_ref'
           }, function(err1, newEvt) {
@@ -221,7 +226,7 @@ EventController.prototype.saveEventDetails = function(req, res) {
   });
 }
 
-//Get all events that are online
+//Get all events that are published
 EventController.prototype.getAllEvents = function(req, res) {
 
   Event.find({
@@ -230,6 +235,9 @@ EventController.prototype.getAllEvents = function(req, res) {
     if (err) {
       return res.json(err);
     }
+
+    //Populate the user_ref and manager_ref properties of the events' model
+    //with the matching user details from the user model
     User.populate(events, {
       path: 'user_ref manager_ref'
     }, function(err, populatedEvents) {
@@ -244,6 +252,7 @@ EventController.prototype.getAllEvents = function(req, res) {
   });
 }
 
+//Delete an event by id
 EventController.prototype.deleteEvent = function(req, res) {
 
   var eventId = req.params.event_id;
@@ -288,6 +297,7 @@ EventController.prototype.deleteEvent = function(req, res) {
   });
 }
 
+//Get an event by id
 EventController.prototype.getEvent = function(req, res) {
 
   var eventId = req.params.event_id;
@@ -320,7 +330,7 @@ EventController.prototype.getEvent = function(req, res) {
   });
 }
 
-//Get your online events
+//Get list of your published events
 EventController.prototype.getMyEvents = function(req, res) {
 
   Event.find({
@@ -344,7 +354,7 @@ EventController.prototype.getMyEvents = function(req, res) {
   });
 }
 
-//Get your saved/offline events
+//Get your drafted events that are not yet published
 EventController.prototype.getMySavedEvents = function(req, res) {
 
   Event.find({
@@ -368,6 +378,7 @@ EventController.prototype.getMySavedEvents = function(req, res) {
   });
 }
 
+//Reuse a published event
 EventController.prototype.reuseEvent = function(req, res) {
 
   var eventId = req.params.event_id;
@@ -392,7 +403,17 @@ EventController.prototype.reuseEvent = function(req, res) {
       });
     } else {
 
-      var newEvent = JSON.parse(JSON.stringify(evt));
+      var newEvent = utils.convertToObject(evt);
+
+      if (!newEvent) {
+
+        return res.status(422).send({
+          success: false,
+          message: 'Unable to parse event object!'
+        });
+      }
+
+      //Delete the id property before saving as new object in db
       delete newEvent._id;
       newEvent.feedback = [];
       newEvent.tasks = [];
@@ -415,24 +436,31 @@ EventController.prototype.reuseEvent = function(req, res) {
               res.json(newEvent);
             } else {
 
-
+              //Copy list of the task managers added to the previous event
+              //to the newly created event
               utils.syncLoop(tasks.length, function(loop, loopTasks, eventId) {
 
-                var task = JSON.parse(JSON.stringify(tasks[loop.iteration()]));
+                var task = utils.convertToObject(tasks[loop.iteration()]);
 
-                delete task._id;
-                task.volunteers = [];
-                task.completed = false;
-                task.event_ref = eventId;
+                if (task) {
 
-                task = new Task(task);
-                task.save(function(err) {
+                  //Delete the id property before saving as new object in db
+                  delete task._id;
+                  task.volunteers = [];
+                  task.completed = false;
+                  task.event_ref = eventId;
 
-                  if (!err) {
+                  task = new Task(task);
+                  task.save(function(err) {
 
-                    loop.next();
-                  }
-                });
+                    if (!err) {
+
+                      loop.next();
+                    }
+                  });
+                } else {
+                  loop.next();
+                }
               }, function(processedTasks, eventId) {
 
                 Event.findById(eventId, function(err, evt) {
