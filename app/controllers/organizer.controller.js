@@ -1,7 +1,6 @@
 'use strict';
 
 var User = require('../models/user.model');
-var asyncModule = require('async');
 var Organizer = require('../models/organizer.model');
 var Utils = require('../middleware/utils');
 

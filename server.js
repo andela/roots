@@ -4,11 +4,24 @@ var port = process.env.PORT || 2015;
 var config = require('./config/config');
 var mongoose = require('mongoose');
 
+var Utils = require('./app/middleware/utils');
+var VolunteerController = require('./app/controllers/volunteer.controller');
+
+var utils = new Utils();
+var volunteerCtrl = new VolunteerController();
+
+
 mongoose.connect(config.db);
 app.listen(port, function(err) {
-  if(err){
+  if (err) {
     console.log(err);
-  }else{
+  } else {
+
+    try{
+      utils.cronJob('0 0 * * * *', volunteerCtrl.scheduleReminder);
+    }catch(err){
+
+    }
     console.log('Server started on port: ' + port);
   }
 });

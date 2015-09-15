@@ -1,5 +1,6 @@
 'use strict';
 
+var moment = require('moment');
 var Task = require('../models/task.model');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
@@ -84,7 +85,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
 
                   eventMail = user.email;
 
-                  User.findById(user._id, function(err, user) {
+                  User.findById(volunteerId, function(err, user) {
 
                     if (err) {
                       return res.status(500).send(err);
@@ -378,18 +379,18 @@ VolunteerController.prototype.addSchedule = function(req, res) {
       //from user model
       User.populate(volunteer, {
         'path': 'user_ref'
-      }, function(err, user) {
+      }, function(err, volunteer) {
 
         if (err) {
           return res.status(500).send(err);
-        } else if (!user) {
+        } else if (!volunteer) {
           return res.status(422).send({
             success: false,
             message: 'Unable to retrieve volunteer user details!'
           });
         } else {
 
-          volunteerEmail = user.email;
+          volunteerEmail = volunteer.user_ref.email;
 
           //Check if volunteer has been added to the specified task
           //before assigning any task to volunteer
@@ -442,21 +443,6 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                       });
                     } else {
 
-                      Volunteer.findByIdAndUpdate(volunteerId, {
-                        $set: {
-                          added: true
-                        }
-                      }, function(err, volunteer) {
-
-                        if (err) {
-                          return res.status(500).send(err);
-                        } else if (!volunteer) {
-                          return res.status(422).send({
-                            success: false,
-                            message: 'Error occured while updating volunteer details!'
-                          });
-                        } else {
-
                           //After retrieving the volunteer's complete new schedule list
                           //compare it with the prev schedule list to get newly added schedule
                           var newSchedules = volunteer.schedules;
@@ -507,9 +493,8 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                           utils.sendMail(mailOptions);
 
                           return res.json(newSchedules[0]);
-                        }
-                      });
-                    }
+                        }                     
+                    
                   });
                 }
               });
@@ -624,7 +609,7 @@ VolunteerController.prototype.getTaskVolunteers = function(req, res) {
       }, function(err, populatedVolunteers) {
 
         if (err || !populatedVolunteers) {
-          done({
+          return({
             success: false,
             message: 'Error populating volunteers details!'
           });
@@ -656,7 +641,6 @@ VolunteerController.prototype.getEventVolunteers = function(req, res) {
       });
     } else {
 
-      
       //Populate the volunteers list with their matching
       //user details from user model
       User.populate(volunteers, {
@@ -664,13 +648,76 @@ VolunteerController.prototype.getEventVolunteers = function(req, res) {
       }, function(err, populatedVolunteers) {
 
         if (err || !populatedVolunteers) {
-          done({
+          return({
             success: false,
             message: 'Error populating volunteers details!'
           });
         } else {
           res.json(populatedVolunteers);
         }
+      });
+    }
+  });
+}
+
+VolunteerController.prototype.scheduleReminder = function() {
+
+  var scheduleLimit = new Date();
+  var now = new Date();
+  scheduleLimit.setHours(scheduleLimit.getHours() + 1);
+
+  Volunteer.find({
+    schedules: {
+      $elemMatch: {
+        startDate: {
+          $lte: scheduleLimit, $gt: now
+        }
+      }
+    }
+  }, function(err, volunteers) {
+
+    if (!err && volunteers.length) {
+      User.populate(volunteers, {
+        'path': 'user_ref'
+      }, function(err, populatedVolunteers) {
+
+        if (!err) {
+
+          utils.syncLoop(populatedVolunteers.length, function(loop, volunteers) {
+
+            var volunteer = volunteers[loop.iteration()];
+
+            Event.findById(volunteer.event_ref, function(err, evt) {
+
+              if (err || !evt) {
+                loop.next();
+              } else {
+
+                var schedules = "";
+
+                volunteer.schedules.forEach(function(schedule) {
+
+                  schedules += schedule.description + " between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
+                  schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "\n\n"
+                });
+
+                var mailOptions = {
+                  to: volunteer.user_ref.email,
+                  from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                  subject: 'A gentle reminder from <b>' + evt.name + '</b> event',
+                  text: 'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.',
+                  html: 'Hello,\n\n' +
+                    'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.'
+                };
+                
+                utils.sendMail(mailOptions);
+                loop.next();
+              }
+            });
+
+          }, function(volunteers) {}, populatedVolunteers);
+        }
+
       });
     }
   });

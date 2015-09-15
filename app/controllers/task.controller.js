@@ -315,7 +315,7 @@ TaskController.prototype.getTask = function(req, res) {
       }, function(err, userPopulatedTask) {
 
         if (err || !userPopulatedTask) {
-          done({
+          return ({
             success: false,
             message: 'Error populating task details!'
           });
@@ -327,7 +327,7 @@ TaskController.prototype.getTask = function(req, res) {
           }, function(err, populatedTask) {
 
             if (err || !populatedTask) {
-              done({
+              return ({
                 success: false,
                 message: 'Error populating task details!'
               });
@@ -339,7 +339,7 @@ TaskController.prototype.getTask = function(req, res) {
               }, function(err, taskDetailed) {
 
                 if (err || !taskDetailed) {
-                  done({
+                  return ({
                     success: false,
                     message: 'Error populating task details!'
                   });
