@@ -20,7 +20,7 @@ app.listen(port, function(err) {
     try{
       utils.cronJob('0 0 * * * *', volunteerCtrl.scheduleReminder);
     }catch(err){
-
+      console.log('The following occured while starting cronJob module: ' + err);
     }
     console.log('Server started on port: ' + port);
   }

@@ -39,7 +39,8 @@
     "passport-facebook": "^2.0.0",
     "passport-google-oauth": "^0.2.0",
     "passport-twitter": "^1.0.3",
-    "path": "^0.11.14"
+    "path": "^0.11.14",
+    "promise": "^7.0.4"
   },
   "devDependencies": {
     "jasmine-node": "^1.14.5",

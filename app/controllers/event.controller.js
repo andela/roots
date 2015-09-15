@@ -1,5 +1,6 @@
 'use strict';
 
+var Promise = require('promise');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
@@ -437,53 +438,70 @@ EventController.prototype.reuseEvent = function(req, res) {
             } else {
 
               //Copy list of the task managers added to the previous event
-              //to the newly created event
-              utils.syncLoop(tasks.length, function(loop, loopTasks, eventId) {
+              //to the newly created event using Promise instance 
+              
+              var promiseObject = function(curIndex) {
 
-                var task = utils.convertToObject(tasks[loop.iteration()]);
+                return new Promise(function(resolve) {
 
-                if (task) {
+                  var task = utils.convertToObject(tasks[curIndex]);
 
-                  //Delete the id property before saving as new object in db
-                  delete task._id;
-                  task.volunteers = [];
-                  task.completed = false;
-                  task.event_ref = eventId;
+                  if (task) {
 
-                  task = new Task(task);
-                  task.save(function(err) {
+                    //Delete the id property before saving as new object in db
+                    delete task._id;
+                    task.volunteers = [];
+                    task.completed = false;
+                    task.event_ref = clonedEventId;
 
-                    if (!err) {
+                    task = new Task(task);
+                    task.save(function(err) {
 
-                      loop.next();
-                    }
-                  });
-                } else {
-                  loop.next();
-                }
-              }, function(processedTasks, eventId) {
+                      resolve(curIndex);
 
-                Event.findById(eventId, function(err, evt) {
-
-                  if (err) {
-                    return res.status(500).send(err);
-                  } else {
-
-                    User.populate(evt, {
-                      path: 'user_ref manager_ref'
-                    }, function(err, populatedEvents) {
-
-                      if (err) {
-                        return res.json(err);
-                      }
-
-                      res.json(populatedEvents);
                     });
+                  } else {
+                    resolve(curIndex);
                   }
 
                 });
+              }
 
-              }, tasks, clonedEventId);
+              //Executes recursively to loop through all the task objects
+              
+              var promiseObjectLoop = function(curIndex) {
+                promiseObject(curIndex).then(function(prevIndex) {
+                  prevIndex += 1;
+                  if (prevIndex < tasks.length) {
+                    promiseObjectLoop(prevIndex);
+                  } else {
+
+                    //Return created events after all task objects have been duplicated
+                    Event.findById(clonedEventId, function(err, evt) {
+
+                      if (err) {
+                        return res.status(500).send(err);
+                      } else {
+
+                        User.populate(evt, {
+                          path: 'user_ref manager_ref'
+                        }, function(err, populatedEvents) {
+
+                          if (err) {
+                            return res.json(err);
+                          }
+
+                          res.json(populatedEvents);
+                        });
+                      }
+
+                    });
+
+                  }
+                });
+              }
+
+              promiseObjectLoop(0);
             }
           });
         }

@@ -1,6 +1,7 @@
 'use strict';
 
 var moment = require('moment');
+var Promise = require('promise');
 var Task = require('../models/task.model');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
@@ -443,58 +444,58 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                       });
                     } else {
 
-                          //After retrieving the volunteer's complete new schedule list
-                          //compare it with the prev schedule list to get newly added schedule
-                          var newSchedules = volunteer.schedules;
-                          var index;
+                      //After retrieving the volunteer's complete new schedule list
+                      //compare it with the prev schedule list to get newly added schedule
+                      var newSchedules = volunteer.schedules;
+                      var index;
 
-                          prevSchedules.forEach(function(prevSchd) {
+                      prevSchedules.forEach(function(prevSchd) {
 
-                            var isNewSchd = newSchedules.every(function(newSchd) {
+                        var isNewSchd = newSchedules.every(function(newSchd) {
 
-                              if (newSchd._id.toString() === prevSchd._id.toString()) {
+                          if (newSchd._id.toString() === prevSchd._id.toString()) {
 
-                                index = newSchedules.indexOf(newSchd);
-                                return false;
-                              }
-
-                              return true;
-                            });
-
-                            if (!isNewSchd) {
-
-                              newSchedules.splice(index, 1);
-                            }
-                          });
-
-                          if (newSchedules.length > 0) {
-
-                            for (var i = 0; i < newSchedules.length; i++) {
-
-                              if (schedule.description === newSchedules[i].startDate && schedule.startDate === newSchedules[i].endDate && schedule.description === newSchedules[i].endDate) {
-
-                                newSchedules[0] = newSchedules[i];
-
-                                break;
-                              }
-                            }
+                            index = newSchedules.indexOf(newSchd);
+                            return false;
                           }
 
-                          //Send notification to volunteer
-                          var mailOptions = {
-                            to: volunteerEmail,
-                            from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                            subject: 'A task has been assigned to you on <b>' + eventName + '</b> event',
-                            text: '<b>' + schedule.description + ' </b> task has been assigned to you on <b>' + eventName + ' event. Thank you as we look forward to your punctuality.<b>',
-                            html: 'Hello,\n\n' +
-                              '<b>' + schedule.description + '</b> task has been assigned to you on <b>' + eventName + '</b> event. Thank you as we look forward to your punctuality.'
-                          };
+                          return true;
+                        });
 
-                          utils.sendMail(mailOptions);
+                        if (!isNewSchd) {
 
-                          return res.json(newSchedules[0]);
-                        }                     
-                    
+                          newSchedules.splice(index, 1);
+                        }
+                      });
+
+                      if (newSchedules.length > 0) {
+
+                        for (var i = 0; i < newSchedules.length; i++) {
+
+                          if (schedule.description === newSchedules[i].startDate && schedule.startDate === newSchedules[i].endDate && schedule.description === newSchedules[i].endDate) {
+
+                            newSchedules[0] = newSchedules[i];
+
+                            break;
+                          }
+                        }
+                      }
+
+                      //Send notification to volunteer
+                      var mailOptions = {
+                        to: volunteerEmail,
+                        from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                        subject: 'A task has been assigned to you on <b>' + eventName + '</b> event',
+                        text: '<b>' + schedule.description + ' </b> task has been assigned to you on <b>' + eventName + ' event. Thank you as we look forward to your punctuality.<b>',
+                        html: 'Hello,\n\n' +
+                          '<b>' + schedule.description + '</b> task has been assigned to you on <b>' + eventName + '</b> event. Thank you as we look forward to your punctuality.'
+                      };
+
+                      utils.sendMail(mailOptions);
+
+                      return res.json(newSchedules[0]);
+                    }
+
                   });
                 }
               });
@@ -609,7 +610,7 @@ VolunteerController.prototype.getTaskVolunteers = function(req, res) {
       }, function(err, populatedVolunteers) {
 
         if (err || !populatedVolunteers) {
-          return({
+          return ({
             success: false,
             message: 'Error populating volunteers details!'
           });
@@ -648,7 +649,7 @@ VolunteerController.prototype.getEventVolunteers = function(req, res) {
       }, function(err, populatedVolunteers) {
 
         if (err || !populatedVolunteers) {
-          return({
+          return ({
             success: false,
             message: 'Error populating volunteers details!'
           });
@@ -670,7 +671,8 @@ VolunteerController.prototype.scheduleReminder = function() {
     schedules: {
       $elemMatch: {
         startDate: {
-          $lte: scheduleLimit, $gt: now
+          $lte: scheduleLimit,
+          $gt: now
         }
       }
     }
@@ -683,39 +685,63 @@ VolunteerController.prototype.scheduleReminder = function() {
 
         if (!err) {
 
-          utils.syncLoop(populatedVolunteers.length, function(loop, volunteers) {
+          //Get list of volunteers to send remiders too, about one hour
+          //before schedule
 
-            var volunteer = volunteers[loop.iteration()];
+          var promiseObject = function(curIndex) {
 
-            Event.findById(volunteer.event_ref, function(err, evt) {
+            return new Promise(function(resolve) {
 
-              if (err || !evt) {
-                loop.next();
-              } else {
 
-                var schedules = "";
 
-                volunteer.schedules.forEach(function(schedule) {
+              var volunteer = populatedVolunteers[curIndex];
 
-                  schedules += schedule.description + " between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
-                  schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "\n\n"
-                });
+              //Retrieve event details
+              Event.findById(volunteer.event_ref, function(err, evt) {
 
-                var mailOptions = {
-                  to: volunteer.user_ref.email,
-                  from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                  subject: 'A gentle reminder from <b>' + evt.name + '</b> event',
-                  text: 'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.',
-                  html: 'Hello,\n\n' +
-                    'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.'
-                };
-                
-                utils.sendMail(mailOptions);
-                loop.next();
+                if (err || !evt) {
+                  resolve(curIndex);
+                } else {
+
+                  var schedules = "";
+
+                  //Populate schedule list(s) details 
+                  volunteer.schedules.forEach(function(schedule) {
+
+                    schedules += schedule.description + " between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
+                    schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "\n\n"
+                  });
+
+                  //Send reminder to volunteer
+                  var mailOptions = {
+                    to: volunteer.user_ref.email,
+                    from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                    subject: 'A gentle reminder from <b>' + evt.name + '</b> event',
+                    text: 'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.',
+                    html: 'Hello,\n\n' +
+                      'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.'
+                  };
+
+                  utils.sendMail(mailOptions);
+                  resolve(curIndex);
+                }
+              });
+
+            });
+          }
+
+          //Executes recursively to loop through all the volunteer objects
+
+          var promiseObjectLoop = function(curIndex) {
+            promiseObject(curIndex).then(function(prevIndex) {
+              prevIndex += 1;
+              if (prevIndex < populatedVolunteers.length) {
+                promiseObjectLoop(prevIndex);
               }
             });
+          }
 
-          }, function(volunteers) {}, populatedVolunteers);
+          promiseObjectLoop(0);
         }
 
       });
