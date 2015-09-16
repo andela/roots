@@ -276,7 +276,6 @@ EventController.prototype.saveEventDetails = function(req, res) {
 
 //Get all events that are published
 EventController.prototype.getAllEvents = function(req, res) {
-console.log('backend running');
   // Event.find({
   //   online: true
   // }, function(err, events) {
