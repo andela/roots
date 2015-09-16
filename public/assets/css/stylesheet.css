@@ -533,7 +533,7 @@ label {
 
 .form-container {
   margin:0 auto;
-  width:75%;
+  width:50%;
   padding: 4%;
   margin-top: 5%;
 }
@@ -542,8 +542,4 @@ label {
   height: 250px;
   width:300px;
   background: url('../../assets/img/preview-icon.jpg') no-repeat center;
-}
-
-label {
-  font-size: 10px;
 }
