@@ -1,12 +1,5 @@
 angular.module('eventApp')
-  .controller('createeventCtrl', function($scope, $rootScope, UserService, $location) {
-
-	$scope.changeColor = function(elem,elem2) {
-		console.log(elem);
-		$('md-toolbar.bars').css("background-color", elem);
-		$('md-toolbar.bars1').css("background-color", elem2);
-
-	};
+  .controller('createeventCtrl', function($scope, $rootScope, UserService, $location, $sce) {
 
     $scope.createEventPage = function (){
       $location.url('/createevent');
@@ -99,7 +92,11 @@ angular.module('eventApp')
       organizerInfo : '',
       organizerPhonenumber1 : '',
       organizerPhonenumber2 : '',
-
+      logoImg:'',
+      headerColor:'',
+      borderColor: '',
+      fontColor:'',
+      contentColor:'',
       organizerTeamMembers : {
         one : {
     	  name : '',
@@ -118,6 +115,23 @@ angular.module('eventApp')
 	    }
       },
     };
+
+   //  $scope.editor = function() {
+   //    var $editor = $("#editor"),
+   //    str = $scope.event.organizerInfo,
+	  // html = $.parseHTML(str);
+	  // $editor.html(html);
+	  // console.log(html);
+
+   //  };
+
+    $scope.$watch("event.organizerInfo",
+      function(oldVal, newVal){
+        if(oldVal !== newVal){
+          $scope.orgInfo = $sce.trustAsHtml($scope.event.organizerInfo)
+        }
+      });
+
 
     $scope.category = {
       categories : [

@@ -490,3 +490,23 @@ p {
   height:30;
   border-style: solid;
   border-radius: 2px;
+
+label {
+  font-size: 14px;
+}
+
+.custom {
+  margin-left: 200px;
+}
+
+#hc {
+  color: grey;
+  padding-top: 50px;
+  margin-left: 520px;
+}
+
+.colors {
+  color: grey;
+  padding-top: 50px;
+  margin-left: 30px;
+}

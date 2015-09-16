@@ -1,4 +1,4 @@
-
+<link rel='stylesheet' href='../../libs/bootstrap/dist/css/bootstrap.min.css'/>
 <div class="navbar" data-ng-init="signupCheck()">
   <nav class="nav-div">
     <div class="nav-wrapper">
@@ -18,7 +18,7 @@
     </div>
   </nav>
 </div>
- <link rel='stylesheet' href='../../libs/bootstrap/dist/css/bootstrap.min.css'/>
+
 <div ng-controller = "createeventCtrl">
   <md-content class="md-padding">
     <form name="createEvent">
@@ -133,7 +133,7 @@
                 </div>
                 <div>
                   <label>Organizer Info</label>
-                  <summernote height="300"></summernote>
+                  <summernote ng-model="event.organizerInfo" height="300"></summernote>
                 </div>
                 <fieldset>
                   <legend>Phone Numbers</legend>
@@ -337,12 +337,21 @@
             </div>
           </md-content>
         </md-tab>
-        <md-tab label="2. Preview"id="previewTab">
+        <md-tab label="2. Preview" id="previewTab">
           <md-content class="md-padding">
             <div id = "previewDiv">
-              <h4 class="md-display-2">Select a theme</h4>
+
               <div layout="column">
                 <div id="theme" layout="row">
+
+                <div layout="row">
+                <h2>Select a theme</h2>
+                <h5 id="hc">Header Color</h5>
+                <h5 class="colors">Border Color</h5>
+                <h5 class="colors">Font Color</h5>
+                <h5 class="colors">Content Color</h5>
+                </div>
+                <div layout="row">
 
                   <md-button type="button" class="md-raised" id="default" ng-click="changeColor('#9E9E9E')">default</md-button>
                   <md-button type="button" class="md-raised" id="theme1" id="themes" ng-click="changeColor('#F44336')">red</md-button>
@@ -351,51 +360,72 @@
                   <md-button type="button" class="md-raised" id="theme4" id="themes" ng-click="changeColor('#4CAF50')">green</md-button>
                   <md-button type="button" class="md-raised" id="theme5" id="themes" ng-click="changeColor('#00BCD4')">cyan</md-button>
 
+                  <div class="custom" layout="row" layout-align="end center">
+                    <md-whiteframe flex="33"class="md-whiteframe-z2">
+                      <color-picker ng-model="event.headerColor"></color-picker>
+                    </md-whiteframe>
+                    <md-whiteframe flex="35"class="md-whiteframe-z2">
+                      <color-picker ng-model="event.borderColor"></color-picker>
+                    </md-whiteframe>
+                    <md-whiteframe flex="30"class="md-whiteframe-z2">
+                      <color-picker ng-model="event.fontColor"></color-picker>
+                    </md-whiteframe>
+                    <md-whiteframe flex="35" class="md-whiteframe-z2">
+                      <color-picker ng-model="event.contentColor"></color-picker>
+                    </md-whiteframe>
+                  </div>
+
                 </div>
                 <h4>Event Page Preview</h4>
                 <div layout="column" class="md-raised">
                   <div id="padding">
                     <div layout="row">
-                      <md-toolbar class="md-warn" id="eventTitleDiv" >
+                      <md-toolbar class="md-warn" id="eventTitleDiv" ng-style="{'background-color' : event.headerColor ,'border-color' : event.borderColor, 'color' : event.fontColor}">
                         <div class="md-toolbar-tools">
                           <h2 class="md-flex">Event Title</h2>
                         </div>
                       </md-toolbar>
-                      <md-toolbar class="md-warn" id="sideHeaderDiv">
+                      <md-toolbar class="md-warn" id="sideHeaderDiv" ng-style="{'background-color' : event.headerColor,'border-color' : event.borderColor, 'color' : event.fontColor}">
                         <div class="md-toolbar-tools">
                           <h2 class="md-flex">Getting there</h2>
                         </div>
                       </md-toolbar>
                     </div>
                     <div layout = "row">
-                       <md-toolbar md-scroll-shrink id="contentMainDiv">
-                        <div class="md-toolbar-tools"></div>
+                       <md-toolbar md-scroll-shrink id="contentMainDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
+                        <div class="md-toolbar-tools">{{event.title}}</div>
                       </md-toolbar>
-                      <md-toolbar md-scroll-shrink id="contentSideDiv">
-                        <div class="md-toolbar-tools"></div>
+                      <md-toolbar md-scroll-shrink id="contentSideDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
+                        <div class="md-toolbar-tools">{{event.venueName}} {{event.country}}</div>
                       </md-toolbar>
                     </div>
                     <div layout="row">
+
 
                       <md-toolbar id="eventDetails" class="md-warn">
                         <p>Event Details</p>
 
+
+                      <md-toolbar id="eventDetails" class="md-warn" ng-style="{'background-color' : event.headerColor,'border-color' : event.borderColor, 'color' : event.fontColor}">
+                        <p>Event Details</p>
+
                       </md-toolbar>
-                      <md-toolbar id="organizers" class="md-warn">
+                      <md-toolbar id="organizers" class="md-warn" ng-style="{'background-color' : event.headerColor ,'border-color' : event.borderColor, 'color' : event.fontColor}">
                         <p>Organizers</p>
                       </md-toolbar>
                     </div>
                     <div layout="row">
-                      <md-toolbar md-scroll-shrink id="eventContent">
-                        <p>Event Name</p> <br/>
-                        <p>Event Venue</p><br/>
-                        <p>Event Category</p><br/>
-                        <p>Event Description</p>
+                      <md-toolbar md-scroll-shrink id="eventContent" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
+                        <p>{{event.title}}</p> <br/>
+                        <p>{{event.venueName}}</p><br/>
+                        <p>{{event.category}}</p><br/>
+                        <p>{{event.description}}</p>
                       </md-toolbar>
-                      <md-toolbar md-scroll-shrink id="organizersContent">
-                        <p>Organizer's Name</p><br/>
-                        <p>About Organizers</p><br/>
-                        <p>Phone Numbers</p>
+                      <md-toolbar md-scroll-shrink id="organizersContent" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
+                        <p>{{event.organizerName}}</p><br/>
+                        <p><div id="editor" ng-bind-html="orgInfo"></div></p><br/>
+                        <p>{{event.organizerPhonenumber1}}</p>
+                        <p>{{event.organizerPhonenumber2}}</p>
                       </md-toolbar>
                     </div><br/>
                     <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
