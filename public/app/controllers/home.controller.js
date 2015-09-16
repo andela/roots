@@ -6,21 +6,22 @@ angular.module('eventApp')
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
-    if (localStorage.getItem('userToken')) {
-      UserService.decodeUser($scope);
-    };
-
+   
     var userToken = $location.search().token;
     $location.search('token', null);
     if (userToken) {
       localStorage.setItem('userToken', userToken);
     }    
-
     var signupCheck = function() {
-      if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
+      if(localStorage.getItem('userToken')) {
+        UserService.decodeUser().then(function(res) {
+          $scope.userName = res.data.firstname;
+          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
+          $scope.loggedIn = true;
+        });
       }
-    }
+    };
+    signupCheck();
 
     var getEvents = function() {
       EventService.getAllEvents().then(function(data) {
