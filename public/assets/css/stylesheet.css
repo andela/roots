@@ -107,22 +107,22 @@ img.bg {
 }
 
 #motto-display {
-  color: white; 
+  color: white;
   font-family: "Courier";
   font-size: 22px;
   margin: 5px;
   white-space: nowrap;
   overflow: hidden;
   width: 39em;
-  animation: type 9s infinite; 
+  animation: type 9s infinite;
 }
 
-@keyframes type{ 
-  from { width: 0; } 
-} 
+@keyframes type{
+  from { width: 0; }
+}
 
 /* Landscape phone to portrait tablet */
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
   #motto-display {
     font-size: 20px;
     width: 17em
@@ -290,7 +290,7 @@ img.bg {
   border: 2px solid #181111 !important;
   padding: 5px !important;
   height: 30px !important;
-  border-radius: 5px !important; 
+  border-radius: 5px !important;
 }
 
 .error-message {
@@ -378,7 +378,7 @@ img.bg {
   background-color: grey;
 }
 p {
-  padding-left: 10px; 
+  padding-left: 10px;
 }
 
 #sideHeaderDiv {
@@ -394,7 +394,7 @@ p {
   height: 50px;
   width: 50%;
   font-size: 20px;
-  
+
   background-color: #C0C0C0;
 }
 
@@ -444,6 +444,7 @@ p {
   padding: 20px;
 }
 
+<<<<<<< HEAD
 #wrapper {
   padding-top: 20px;
 }
@@ -453,7 +454,7 @@ p {
   width: 250px;
   height: 200px;
   border-width: 2px;
-  border-radius: 2px; 
+  border-radius: 2px;
 }
 
 #bannerImg {
@@ -461,7 +462,7 @@ p {
   width: 250px;
   height: 200px;
   border-width: 2px;
-  border-radius: 2px; 
+  border-radius: 2px;
 }
 
 #createEventTab {
@@ -472,4 +473,11 @@ p {
 #organizerTab {
   width: 50%;
   margin-left: 100px;
+}
+
+#image-holder {
+  width :20%;
+  height:30;
+  border-style: solid;
+  border-radius: 2px;
 }
