@@ -348,7 +348,9 @@ EventController.prototype.getEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
-  Event.findById(eventId, function(err, evt) {
+  eventId = eventId.substr(1, eventId.length)
+
+  Event.findById(eventId).populate('user_ref').exec(function(err, evt) {
 
     if (err) {
 
@@ -360,21 +362,21 @@ EventController.prototype.getEvent = function(req, res) {
         message: 'Invalid event id'
       });
     } else {
-
-      User.populate(evt, {
-        path: 'user_ref'
-      }, function(err1, evt1) {
-
-        if (err) {
-          res.status(500).send(err);
-        } else {
-          res.json(evt1);
-        }
-
-      });
+      // User.populate(evt, {
+      //   path: 'user_ref'
+      // }, function(err1, evt1) {
+      //
+      //   if (err) {
+          // res.status(200).send(err);
+      //   } else {
+          res.json(evt);
+      //   }
+      //
+      // });
     }
   });
 }
+
 
 //Get list of your published events
 EventController.prototype.getMyEvents = function(req, res) {
