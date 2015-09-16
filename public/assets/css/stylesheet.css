@@ -535,6 +535,7 @@ p {
   margin-left: 100px;
 }
 
+<<<<<<< HEAD
 .fieldset {
   width: 80%;
   padding-left: 5%;
@@ -565,6 +566,10 @@ label {
   color: grey;
   padding-top: 50px;
   margin-left: 30px;
+
+#organizerTab {
+  width: 50%;
+  margin-left: 100px;
 }
 
 .editImage-box {

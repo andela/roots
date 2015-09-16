@@ -1,0 +1,33 @@
+{
+  "name": "roots",
+  "version": "0.0.0",
+  "homepage": "https://github.com/andela/roots",
+  "authors": [
+    "andela-eashikodi <emeka.ashikodi@andela.co>"
+  ],
+  "description": "An event management system",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.3",
+    "angular-ui-router": "~0.2.15",
+    "angular-material": "~0.10.0",
+    "angular-messages": "~1.4.3",
+    "angular-summernote": "~0.5.0",
+    "ng-file-upload": "~7.0.15",
+    "ngWYSIWYG": "*",
+    "angular-resource": "~1.4.3",
+    "ng-file-upload": "~7.0.15",
+    "angular-sanitize": "~1.4.4",
+    "summernote": "~0.6.16",
+    "angular-summernote": "~0.5.0",
+    "angular-bootstrap": "~0.13.3"
+  },
+  "devDependencies": {
+    "angularjs-color-picker": "~0.6.5"
+  },
+  "devDependencies": {
+    "angularjs-color-picker": "~0.6.5",
+    "angular-summernote": "~0.5.0"
+  }
+}
