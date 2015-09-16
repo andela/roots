@@ -37,7 +37,10 @@ var eventSchema = new mongoose.Schema({
   },
   eventTheme: {
     type: String,
-    default: 'white'
+    headerColor: String,
+    fontColor: String,
+    borderColor: String,
+    contentColor: String
   },
   eventFont: {
     color: {
@@ -78,30 +81,7 @@ var eventSchema = new mongoose.Schema({
       ref: 'Task'
     }
   }]
-}, {
-    headerColor: String,
-    fontColor: String,
-    borderColor: String,
-    contentColor: String
-  },
-   startDate: {
-     type: Date,
-     required: true
-   },
-   endDate: {
-     type: Date,
-     required: true
-   },
-    default: 'white'
-  },
-  startDate: {
-    type: Date,
-    required: true
-  },
-  endDate: {
-    type: Date,
-    required: true
-  },
+},{
   versionKey: false
 });
 

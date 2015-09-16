@@ -142,6 +142,7 @@ EventController.prototype.editEventDetails = function(req, res) {
       }, function(err, evt) {
 
         if (err) {
+          console.log(err);
           return res.status(500).send(err);
         } else if (!evt) {
           return res.status(422).send({
@@ -277,18 +278,34 @@ EventController.prototype.saveEventDetails = function(req, res) {
 
 //Get all events that are published
 EventController.prototype.getAllEvents = function(req, res) {
-
-  Event.find({
-    online: true
-  }, function(err, events) {
+console.log('backend running');
+  // Event.find({
+  //   online: true
+  // }, function(err, events) {
+  //   if (err) {
+  //     return res.json(err);
+  //   }
+  //
+  //   //Populate the user_ref and manager_ref properties of the events' model
+  //   //with the matching user details from the user model
+  //   User.populate(events, {
+  //     path: 'user_ref manager_ref'
+  //   }, function(err, populatedEvents) {
+  //
+  //     if (err) {
+  //       return res.json(err);
+  //     }
+  //
+  //     res.json(populatedEvents);
+  //
+  //   });
+  // });
+  Event.find(function(err, events) {
     if (err) {
       return res.json(err);
     }
-
-    //Populate the user_ref and manager_ref properties of the events' model
-    //with the matching user details from the user model
-    User.populate(events, {
-      path: 'user_ref manager_ref'
+    Event.populate(events, {
+      path: 'user_ref tasks.task_ref'
     }, function(err, populatedEvents) {
 
       if (err) {
