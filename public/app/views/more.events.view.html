@@ -7,7 +7,7 @@
       </md-toolbar>
       <md-content layout-padding>
         <div class="col-md-2">
-		      Event Name <input type="text" ng-model="query">
+		      Event Name <input type="text" ng-model="eventName">
 		    </div>
         <md-select aria-label="sel" id="sideTags" ng-model="event.category" placeholder="Category" style="display: block;">  
           <md-option placeholder="Category" ng-repeat="category in categories" value="{{category.name}}">{{category.name}}
@@ -17,7 +17,6 @@
         <select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">  
           <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>         
         </select>
-        <input type="text" ng-model="event.venue" placeholder="Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
       </md-content>
     </md-sidenav>
     <md-content flex layout-padding>
@@ -28,7 +27,7 @@
 				</div>
         <div class="md-whiteframe-z3" class="column" layout layout-align="center center">
 					<div id="event-list" ng-controller="homeCtrl" data-ng-init="fetchEvents()" class="column">
-					  <div ng-repeat="event in eventList | filter:query | orderBy: event.country" class="col s4" id="event-container">
+					  <div ng-repeat="event in eventList | filter:eventName | orderBy: event.category" class="col s4" id="event-container">
 					    <div class="card small" class="row" layout layout-align="center left" id="whiteFrame">
 					      <div>
 					        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="browseImg">
@@ -37,7 +36,7 @@
 					        <p>{{event.startDate | date:'medium'}}</p>
 					        <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
 					        <p>{{event.country}}
-					        <p>{{event.venue | uppercase}}</p>
+					        <p>{{event.category | uppercase}}</p>
 					        <p>{{event.description}}</p>
 					      </div>
 					    </div>

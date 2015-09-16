@@ -42,7 +42,7 @@ angular.module('eventApp')
     $location.path("/home");
   };
 
-  $scope.categories = ('Technology,Sport,Health & Fitness,Music, Art, Science, Spirituality, Media, Family, Education').split(',').map(function(category){
+  $scope.categories = ('Technology,Sport,Health,Music,Art,Science,Spirituality,Media,Family,Education').split(',').map(function(category){
     return {
       name: category
     };
@@ -110,6 +110,12 @@ angular.module('eventApp')
     about: '',
   };
 
+<<<<<<< HEAD
+=======
+  $scope.event.category = 'categories.name';
+
+  $scope.event.country = 'code';
+>>>>>>> refactor(frontend): edit events view
 
   $scope.countries = [
   {name: 'Afghanistan', code: 'AF'},
