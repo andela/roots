@@ -16,6 +16,8 @@
     "angular-summernote": "~0.5.0",
     "ng-file-upload": "~7.0.15"
     "ngWYSIWYG": "*",
+    "angular-resource": "~1.4.3",
+    "ng-file-upload": "~7.0.15",
     "angular-sanitize": "~1.4.4",
     "summernote": "~0.6.16",
     "angular-summernote": "~0.5.0",
@@ -23,5 +25,9 @@
   },
   "devDependencies": {
     "angularjs-color-picker": "~0.6.5"
+  },
+  "devDependencies": {
+    "angularjs-color-picker": "~0.6.5",
+    "angular-summernote": "~0.5.0"
   }
 }
