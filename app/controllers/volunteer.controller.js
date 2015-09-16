@@ -115,7 +115,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
                           var mailOptions = {
                             to: eventMail,
                             from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                            subject: '<b>' + volunteerName + '</b> volunteered for <b>' + eventName + '</b>',
+                            subject: volunteerName + ' volunteered for ' + eventName,
                             text: '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b>.',
                             html: 'Hello,\n\n' +
                               '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b>.'
@@ -261,7 +261,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                               var mailOptions = {
                                 to: volunteerEmail,
                                 from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                                subject: 'You have been added as volunteer to <b>' + eventName + '</b> event',
+                                subject: 'You have been added as volunteer to ' + eventName + ' event',
                                 text: 'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for your sacrifice.',
                                 html: 'Hello,\n\n' +
                                   'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for your sacrifice.'
@@ -485,7 +485,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                       var mailOptions = {
                         to: volunteerEmail,
                         from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                        subject: 'A task has been assigned to you on <b>' + eventName + '</b> event',
+                        subject: 'A task has been assigned to you on ' + eventName + ' event',
                         text: '<b>' + schedule.description + ' </b> task has been assigned to you on <b>' + eventName + ' event. Thank you as we look forward to your punctuality.<b>',
                         html: 'Hello,\n\n' +
                           '<b>' + schedule.description + '</b> task has been assigned to you on <b>' + eventName + '</b> event. Thank you as we look forward to your punctuality.'
@@ -666,8 +666,13 @@ VolunteerController.prototype.scheduleReminder = function() {
   var scheduleLimit = new Date();
   var now = new Date();
   scheduleLimit.setHours(scheduleLimit.getHours() + 1);
-
+  
   Volunteer.find({
+    'schedules.startDate': {
+      $lte: scheduleLimit,
+      $gt: now
+    }
+  }, {
     schedules: {
       $elemMatch: {
         startDate: {
@@ -677,22 +682,20 @@ VolunteerController.prototype.scheduleReminder = function() {
       }
     }
   }, function(err, volunteers) {
-
+    
     if (!err && volunteers.length) {
       User.populate(volunteers, {
         'path': 'user_ref'
       }, function(err, populatedVolunteers) {
 
         if (!err) {
-
+          
           //Get list of volunteers to send remiders too, about one hour
           //before schedule
 
           var promiseObject = function(curIndex) {
 
             return new Promise(function(resolve) {
-
-
 
               var volunteer = populatedVolunteers[curIndex];
 
@@ -708,7 +711,7 @@ VolunteerController.prototype.scheduleReminder = function() {
                   //Populate schedule list(s) details 
                   volunteer.schedules.forEach(function(schedule) {
 
-                    schedules += schedule.description + " between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
+                    schedules += schedule.description + ": between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
                     schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "\n\n"
                   });
 
@@ -716,12 +719,12 @@ VolunteerController.prototype.scheduleReminder = function() {
                   var mailOptions = {
                     to: volunteer.user_ref.email,
                     from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                    subject: 'A gentle reminder from <b>' + evt.name + '</b> event',
+                    subject: 'A gentle reminder from ' + evt.name + ' event',
                     text: 'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.',
                     html: 'Hello,\n\n' +
                       'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.'
                   };
-
+                  
                   utils.sendMail(mailOptions);
                   resolve(curIndex);
                 }
@@ -740,8 +743,9 @@ VolunteerController.prototype.scheduleReminder = function() {
               }
             });
           }
-
-          promiseObjectLoop(0);
+          if (populatedVolunteers.length) {
+            promiseObjectLoop(0);
+          }
         }
 
       });

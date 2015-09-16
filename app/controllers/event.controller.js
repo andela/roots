@@ -439,7 +439,7 @@ EventController.prototype.reuseEvent = function(req, res) {
 
               //Copy list of the task managers added to the previous event
               //to the newly created event using Promise instance 
-              
+
               var promiseObject = function(curIndex) {
 
                 return new Promise(function(resolve) {
@@ -468,40 +468,45 @@ EventController.prototype.reuseEvent = function(req, res) {
               }
 
               //Executes recursively to loop through all the task objects
-              
+
               var promiseObjectLoop = function(curIndex) {
-                promiseObject(curIndex).then(function(prevIndex) {
-                  prevIndex += 1;
-                  if (prevIndex < tasks.length) {
-                    promiseObjectLoop(prevIndex);
-                  } else {
 
-                    //Return created events after all task objects have been duplicated
-                    Event.findById(clonedEventId, function(err, evt) {
 
-                      if (err) {
-                        return res.status(500).send(err);
-                      } else {
+                if (curIndex < tasks.length) {
 
-                        User.populate(evt, {
-                          path: 'user_ref manager_ref'
-                        }, function(err, populatedEvents) {
+                  promiseObject(curIndex).then(function(prevIndex) {
 
-                          if (err) {
-                            return res.json(err);
-                          }
+                    promiseObjectLoop(prevIndex + 1);
+                  });
 
-                          res.json(populatedEvents);
-                        });
-                      }
+                } else {
 
-                    });
+                  //Return created events after all task objects have been duplicated
+                  Event.findById(clonedEventId, function(err, evt) {
 
-                  }
-                });
+                    if (err) {
+                      return res.status(500).send(err);
+                    } else {
+
+                      User.populate(evt, {
+                        path: 'user_ref manager_ref'
+                      }, function(err, populatedEvents) {
+
+                        if (err) {
+                          return res.json(err);
+                        }
+
+                        res.json(populatedEvents);
+                      });
+                    }
+
+                  });
+                }
+
               }
 
               promiseObjectLoop(0);
+
             }
           });
         }

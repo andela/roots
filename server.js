@@ -18,7 +18,7 @@ app.listen(port, function(err) {
   } else {
 
     try{
-      utils.cronJob('0 0 * * * *', volunteerCtrl.scheduleReminder);
+      utils.cronJob('0 0 * * * *', volunteerCtrl.scheduleReminder);//cron job runs every hour
     }catch(err){
       console.log('The following occured while starting cronJob module: ' + err);
     }
