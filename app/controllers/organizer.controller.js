@@ -1,12 +1,34 @@
 'use strict';
 
 var User = require('../models/user.model');
+<<<<<<< HEAD
 var Organizer = require('../models/organizer.model');
+=======
+var async = require('async');
+>>>>>>> feat(main app): frontend
 var Utils = require('../middleware/utils');
+var mongoose = require('mongoose');
+require('../models/organizer.model');
 
+<<<<<<< HEAD
+=======
+var Organizer = mongoose.model('Organizer');
+
+>>>>>>> feat(main app): frontend
 var utils = new Utils();
 
 var OrganizerController = function() {};
+
+OrganizerController.prototype.registerProfile = function(req, res) {
+  var organizer = new Organizer(req.body);
+  console.log(req.body);
+  organizer.save(req.body, function(err, organizer){
+    if(err) {
+      return res.json(err);
+    }
+    return res.json(organizer);
+  });
+};
 
 OrganizerController.prototype.createProfile = function(req, res) {
 

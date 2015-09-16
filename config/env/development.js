@@ -15,6 +15,11 @@ module.exports = {
     clientID: process.env.ROOTS_FACEBOOK_CLIENT_ID,   
     clientSecret: process.env.ROOTS_FACEBOOK_CLIENT_SECRET
   },
+  cloudinary: {
+    cloud_name: process.env.ROOTS_CLOUD_NAME, 
+    api_key: process.env.ROOTS_API_KEY,   
+    api_secret: process.env.ROOTS_API_SECRET
+  },
   corsOptions: {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

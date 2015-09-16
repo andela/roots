@@ -1,5 +1,5 @@
 'use strict';
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote'])
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete'])
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -23,6 +23,10 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
     .state('user.create', {
       url: '/create',
       templateUrl: '../app/views/create.event.html',
+
+    .state('cevent', {
+      url: '/cevent',
+      templateUrl: '../app/views/event.view.html',
       controller: 'eventCtrl'
     })
     .state('user', {

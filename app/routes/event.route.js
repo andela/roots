@@ -8,9 +8,13 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/event')
+<<<<<<< HEAD
     .post(userCtrl.verifyToken, evtCtrl.createEvent)
     .get(userCtrl.verifyToken, evtCtrl.getMyEvents);
 
+=======
+    .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.registerEvent);
+>>>>>>> feat(main app): frontend
   router.route('/events')
     .get(evtCtrl.getAllEvents);
 

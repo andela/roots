@@ -1,14 +1,16 @@
 var express = require('express');
 var UserController = require('../controllers/user.controller');
 var OrganizerController = require('../controllers/organizer.controller');
+var EventController = require('../controllers/event.controller');
 var orgCtrl = new OrganizerController();
 var userCtrl = new UserController();
+var evCtrl = new EventController();
 var router = express.Router();
 
 module.exports = function(app) {
 
   router.route('/organizer')
-    .post(userCtrl.verifyToken, orgCtrl.createProfile);
+    .post(userCtrl.verifyToken, evCtrl.imageProcessing, orgCtrl.registerProfile);
 
   router.route('/organizers')
     .get(userCtrl.verifyToken, orgCtrl.getAllProfiles);
