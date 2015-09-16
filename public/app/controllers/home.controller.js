@@ -53,6 +53,15 @@ angular.module('eventApp')
           $location.path("/cevent");
     };
 
+    $scope.fetchEvents = function() {
+      console.log('i ran');
+      EventService.getAllEvents().then(function(data){
+        console.log(data);
+      $scope.eventList = data.data;
+    });
+
+    };
+
     function UserLogin($scope, $rootScope, $mdDialog, view) {
       if (view === 'signup') {
         $scope.signupDialog = true;
