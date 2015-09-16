@@ -37,6 +37,7 @@ var eventSchema = new mongoose.Schema({
   },
   eventTheme: {
     type: String,
+<<<<<<< HEAD
     default: 'white'
   },
   eventFont: {
@@ -79,6 +80,9 @@ var eventSchema = new mongoose.Schema({
     }
   }]
 }, {
+=======
+<<<<<<< HEAD
+>>>>>>> feat(main app): events
     headerColor: String,
     fontColor: String,
     borderColor: String,
@@ -92,6 +96,22 @@ var eventSchema = new mongoose.Schema({
      type: Date,
      required: true
    },
+<<<<<<< HEAD
+=======
+=======
+    default: 'white'
+  },
+  startDate: {
+    type: Date,
+    required: true
+  },
+  endDate: {
+    type: Date,
+    required: true
+  },
+>>>>>>> feat(main app): events
+
+>>>>>>> feat(main app): events
   versionKey: false
 });
 

@@ -1,8 +1,8 @@
 angular.module('eventApp')
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
-  if (localStorage.getItem('userToken')) {
-      UserService.decodeUser($scope);
-  };
+   if (localStorage.getItem('userToken')) {
+        UserService.decodeUser($scope);
+    };
 
   $scope.submitEventDetails = function (eventDetails, organizer){
     var token = localStorage.getItem('userToken');
@@ -28,7 +28,6 @@ angular.module('eventApp')
    }).success(function(data){
        $location.url('/home');
      });
-
   };
 
   $scope.view = 'create';

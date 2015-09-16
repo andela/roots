@@ -70,11 +70,12 @@
     width: 300px;
 }
 
-#event_list {
+#event-list {
   position: relative;
-  min-height: 800px;
+  min-height: 900px;
   max-height: auto;
-  background: white;
+  background-color: #eee;
+  padding: 5%;
 }
 
 img.bg {
@@ -288,7 +289,7 @@ img.bg {
 
 .input-textbox {
   border: 2px solid #bebebe !important;
-  padding: 5px !important;
+  /*padding: 5px !important;*/
   height: 30px !important;
   border-radius: 5px !important;
 }
@@ -473,12 +474,19 @@ p {
 #width {
   width: 50%;
 }
+
+#bannerImg {
+  border-style: dashed;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px;
+}
 .createEventTab {
   width: 50%;
   margin-left: 100px;
 }
 
-<<<<<<< HEAD
 .fieldset {
   width: 80%;
   padding-left: 5%;
@@ -512,4 +520,30 @@ label {
 #organizerTab {
   width: 50%;
   margin-left: 100px;
+}
+
+#event-container {
+  background-color: #eee;
+}
+
+.switch-container {
+  background-color: #eee;
+  padding: 2%;
+}
+
+.form-container {
+  margin:0 auto;
+  width:75%;
+  padding: 4%;
+  margin-top: 5%;
+}
+
+.image-box {
+  height: 250px;
+  width:300px;
+  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+}
+
+label {
+  font-size: 10px;
 }
