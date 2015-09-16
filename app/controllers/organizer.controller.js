@@ -1,20 +1,13 @@
 'use strict';
 
 var User = require('../models/user.model');
-<<<<<<< HEAD
-var Organizer = require('../models/organizer.model');
-=======
 var async = require('async');
->>>>>>> feat(main app): frontend
 var Utils = require('../middleware/utils');
 var mongoose = require('mongoose');
 require('../models/organizer.model');
 
-<<<<<<< HEAD
-=======
 var Organizer = mongoose.model('Organizer');
 
->>>>>>> feat(main app): frontend
 var utils = new Utils();
 
 var OrganizerController = function() {};
@@ -47,6 +40,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
+
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -149,6 +143,69 @@ OrganizerController.prototype.editProfile = function(req, res) {
         }
       });
     }
+  async.waterfall([
+
+    function(done) {
+
+      Organizer.findOne({
+        _id: req.params.organizer_id
+      }, function(err, org) {
+
+        if (err) {
+          return res.send(err);
+        } else if (!org) {
+          return res.status(422).send({
+            success: false,
+            message: 'Invalid organizer id'
+          });
+        } else if (org.user_ref) {
+
+          Organizer.populate(org, {
+            path: 'user_ref'
+          }, function(err1, org1) {
+
+            if (err) {
+              done(null, org);
+            } else {
+              done(null, org1);
+            }
+          });
+
+
+
+        } else {
+          done(null, org);
+        }
+
+      });
+    },
+    function(org, done) {
+
+      if (org.staff.length) {
+
+        Organizer.populate(org, {
+          path: 'manager_ref'
+        }, function(err1, org1) {
+
+          if (err) {
+            done(null, org);
+          } else {
+            done(null, org1);
+          }
+
+        });
+      } else {
+        done(null, org);
+      }
+    }
+
+  ], function(err, org) {
+
+    if (err)
+      return res.send(err);
+
+    res.json(org);
+
   });
 }
 
@@ -172,6 +229,7 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     } else if (!orgProfile) {
+
       return res.status(422).send({
         success: false,
         message: 'Profile not found'
