@@ -235,7 +235,6 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
         message: 'Profile not found'
       });
     } else {
-
       if (orgProfile.user_ref.toString() !== req.decoded._id) {
 
         return res.status(403).send({
