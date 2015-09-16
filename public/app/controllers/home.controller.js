@@ -6,12 +6,13 @@ angular.module('eventApp')
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
-   
+
     var userToken = $location.search().token;
     $location.search('token', null);
     if (userToken) {
       localStorage.setItem('userToken', userToken);
-    }    
+    }
+
     var signupCheck = function() {
       if(localStorage.getItem('userToken')) {
         UserService.decodeUser().then(function(res) {
@@ -108,7 +109,7 @@ angular.module('eventApp')
               $scope.emailTaken = true;
               $scope.progressLoad = false;
               $scope.validEmail = false;
-            } else {              
+            } else {
               $scope.loginUser({
                 email: newUser.email,
                 password: newUser.password
