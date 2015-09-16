@@ -18,6 +18,7 @@
     </div>
   </nav>
 </div>
+ <link rel='stylesheet' href='../../libs/bootstrap/dist/css/bootstrap.min.css'/>
 <div ng-controller = "createeventCtrl">
   <md-content class="md-padding">
     <form name="createEvent">
@@ -25,125 +26,132 @@
         <md-tab label="1. Create Events">
           <md-content class="md-padding">
             <div class="md-padding">
-              <div layout= "column" id="createEventTab">
+              <fieldset class="fieldset">
+                <legend>Event Details</legend>
+              </fieldset>
+              <div layout= "column" class="createEventTab">
                 <md-input-container>
                   <label>Event Title</label>
                   <input ng-model="event.title" required name= "eventTitle">
                   <div ng-messages="createEvent.eventTitle.$error">
-                    <div ng-message="required">This is required.</div>
+                    <div ng-message="required">Required.</div>
                   </div>
                 </md-input-container>
                   <div layout="row">
                     <md-input-container>
-                      <md-select placeholder="Select Event category"ng-model="category">
-                        <md-option ng-repeat="category in event.categories">{{category}}</md-option>
+                      <md-select placeholder="Select Event category"ng-model="event.category">
+                        <md-option ng-repeat="category in category.categories">{{category}}</md-option>
                       </md-select>
                     </md-input-container>
                   </div>
                   <div>
                       <label>Event Description</label>
-                      <wysiwyg-edit content="your_variable"></wysiwyg-edit>
+                      <summernote height="300"></summernote>
                   </div>
-                    <div layout="column" layout-fill style="padding-bottom: 32px;">
-                      <fieldset>
-                        <legend>Venue</legend>
-                        <md-input-container>
-                          <md-select placeholder="Select Country" ng-model="country">
-                            <md-option ng-repeat="country in event.countries">{{country}}</md-option>
+                    <div layout="column">
+                      <h4>Venue</h4>
+                      <div layout="column">
+                        <md-input-container class="md-padding">
+                          <md-select placeholder="Select Country" ng-model="event.country">
+                            <md-option ng-repeat="country in country.countries">{{country}}</md-option>
                           </md-select>
                         </md-input-container>
-                        <md-input-container>
+                        <md-input-container class="md-padding">
                           <label>Event Venue Name</label>
                           <input ng-model="event.venueName" required name="venueName">
                           <div ng-messages="createEvent.venueName.$error">
-                            <div ng-message="required">This is required.</div>
+                            <div ng-message="required">Required.</div>
                           </div>
                         </md-input-container>
-                        <md-input-container>
+                        <md-input-container class="md-padding">
                           <label>Address 1</label>
                           <input ng-model="event.address1" required name="address1">
                           <div ng-messages="createEvent.address1.$error">
-                            <div ng-message="required">This is required.</div>
+                            <div ng-message="required">Required.</div>
                           </div>
                         </md-input-container>
-                        <md-input-container>
+                        <md-input-container class="md-padding">
                           <label>Address 2</label>
                           <input ng-model="event.address2">
                         </md-input-container>
-                      </fieldset>
-                      <fieldset>
-                        <legend>Event Time</legend>
-                        <div style="width: 50%" layout="row">
-                          <div layout layout-sm="column">
-                            <md-input-container flex>
+                      </div>
+                        <h4>Event Time</h4>
+                          <div layout="row">
+                            <md-input-container class="md-padding">
                               <label>Start Date</label>
                               <input type="date" ng-model="event.startDate" required name="startDate">
                               <div ng-messages="createEvent.startDate.$error">
-                                <div ng-message="required">This is required.</div>
+                                <div ng-message="required">Required.</div>
                               </div>
                             </md-input-container>
-                            <md-input-container flex>
+                            <md-input-container class="md-padding">
                               <label>Start Time</label>
                               <input type="time" ng-model="event.startTime" required name="startTime">
                               <div ng-messages="createEvent.startTime.$error">
-                                <div ng-message="required">This is required.</div>
-                              </div>>
+                                <div ng-message="required">Required.</div>
+                              </div>
                             </md-input-container>
                           </div>
-                        </div>
-                        <div style="width: 50%" layout="row">
-                          <div layout layout-sm="column">
-                            <md-input-container flex>
+                          <div layout="row">
+                            <md-input-container class="md-padding">
                               <label>End Date</label>
                               <input type="date" ng-model="event.endDate">
                             </md-input-container>
-                            <md-input-container flex>
+                            <md-input-container class="md-padding">
                               <label>End Time</label>
                               <input type="time" ng-model="event.endTime">
                             </md-input-container>
                           </div>
+
                         </div>
                       </fieldset>
                       <div id="wrapper">
+
+                      <div id="wrapper">
+
                        <input id="bannerFile" type="file" ng-click="previewFile('#bannerFile', '#bannerImg')"><br>
-                       <img ng-model= "event.bannerImg" id="bannerImg" src="" height="200">
+                       <img ng-model= "event.bannerImg" id="bannerImg" src="../../assets/img/camera.png" class="images">
                      </div>
                   </div>
               </div>
             </div>
           </md-content>
-        </md-tab>
-        <md-tab label="2. Organizers Team">
           <md-content class="md-padding">
             <div class="md-padding">
-              <div layout= "column" id="organizerTab">
+              <fieldset class="fieldset">
+                <legend>Organizer Profile</legend>
+              </fieldset>
+              <div layout= "column" class="createEventTab">
                 <div>
                   <md-input-container>
                     <label>Organizer's Name</label>
                     <input ng-model="event.organizerName" required name="organizerName">
                       <div ng-messages="createEvent.organizerName.$error">
-                        <div ng-message="required">This is required.</div>
+                        <div ng-message="required">Required.</div>
                       </div>
                   </md-input-container>
                 </div>
                 <div>
-                    <label>Organizer's info</label>
-                    <wysiwyg-edit content=""></wysiwyg-edit>
+                  <label>Organizer Info</label>
+                  <summernote height="300"></summernote>
                 </div>
                 <fieldset>
                   <legend>Phone Numbers</legend>
-                    <div layout= "column" style="width:50%">
+                    <div layout= "column" id="width">
                       <md-input-container>
-                        <input placeholder = "Number 1" ng-model="event.organizerPhoneNumber1">
+                        <input required type="number" name = "organizerNumber1" placeholder = "Number 1" ng-model="event.organizerPhoneNumber1">
+                        <div ng-messages="createEvent.organizerNumber1.$error">
+                          <div ng-message="required">Required.</div>
+                      </div>
                       </md-input-container>
                       <md-input-container>
-                         <input placeholder= "Number 2" ng-model="event.organizerPhoneNumber2">
+                        <input type="number" placeholder= "Number 2" ng-model="event.organizerPhoneNumber2">
                       </md-input-container>
                     </div>
                 </fieldset>
                 <div id="wrapper">
                     <input id="logoFile" type="file" ng-click="previewFile('#logoFile', '#logoImg')"><br>
-                    <img ng-model= "event.logoImg" id="logoImg" src="">
+                    <img ng-model= "event.logoImg" id="logoImg" src="../../assets/img/camera.png" class="images">
                 </div>
 
 <div>
@@ -299,29 +307,29 @@
                 <div layout = "row">
                   <md-input-container>
                     <label>Name</label>
-                    <input ng-model="event.organizerTeamMembers.one.name">
+                    <input ng-model="event.organizerTeamMembers.two.name">
                   </md-input-container>
                   <md-input-container>
                     <label>Email</label>
-                    <input ng-model="event.organizerTeamMembers.one.email">
+                    <input ng-model="event.organizerTeamMembers.two.email">
                   </md-input-container>
                   <md-input-container>
                     <label>Role</label>
-                    <input ng-model="event.organizerTeamMembers.one.role">
+                    <input ng-model="event.organizerTeamMembers.two.role">
                   </md-input-container>
                 </div>
                 <div layout = "row">
                   <md-input-container>
                     <label>Name</label>
-                    <input ng-model="event.organizerTeamMembers.one.name">
+                    <input ng-model="event.organizerTeamMembers.three.name">
                   </md-input-container>
                   <md-input-container>
                     <label>Email</label>
-                    <input ng-model="event.organizerTeamMembers.one.email">
+                    <input ng-model="event.organizerTeamMembers.three.email">
                   </md-input-container>
                   <md-input-container>
                     <label>Role</label>
-                    <input ng-model="event.organizerTeamMembers.one.role">
+                    <input ng-model="event.organizerTeamMembers.three.role">
                   </md-input-container>
                 </div>
               </div>
@@ -335,53 +343,58 @@
               <h4 class="md-display-2">Select a theme</h4>
               <div layout="column">
                 <div id="theme" layout="row">
-                  <md-button type="button" class="md-raised" id="default" ng-click="changeColor('#9E9E9E','#E0E0E0')">default<div id="bar"></div></md-button>
-                  <md-button type="button" class="md-raised" id="theme1" ng-click="changeColor('#F44336','#E57373')">red<div id="bar"></div></md-button>
-                  <md-button type="button" class="md-raised" id="theme2" ng-click="changeColor('#2196F3','#90CAF9')">blue<div id="bar"></div></md-button>
-                  <md-button type="button" class="md-raised" id="theme3" ng-click="changeColor('#FF9800','#FFCC80')">orange<div id="bar"></div></md-button>
-                  <md-button type="button" class="md-raised" id="theme4" ng-click="changeColor('#4CAF50','#81C784')">green<div id="bar"></div></md-button>
 
-                  <md-button type="button" class="md-raised" id="theme5" ng-click="changeColor('#00BCD4', '#80DEEA')">cyan<div id="bar"></div></md-button>
+                  <md-button type="button" class="md-raised" id="default" ng-click="changeColor('#9E9E9E')">default</md-button>
+                  <md-button type="button" class="md-raised" id="theme1" id="themes" ng-click="changeColor('#F44336')">red</md-button>
+                  <md-button type="button" class="md-raised" id="theme2" id="themes" ng-click="changeColor('#2196F3')">blue</md-button>
+                  <md-button type="button" class="md-raised" id="theme3" id="themes" ng-click="changeColor('#BCAAA4')">brown</md-button>
+                  <md-button type="button" class="md-raised" id="theme4" id="themes" ng-click="changeColor('#4CAF50')">green</md-button>
+                  <md-button type="button" class="md-raised" id="theme5" id="themes" ng-click="changeColor('#00BCD4')">cyan</md-button>
+
                 </div>
                 <h4>Event Page Preview</h4>
-                <div layout="column">
+                <div layout="column" class="md-raised">
                   <div id="padding">
                     <div layout="row">
-                      <md-toolbar md-scroll-shrink id="headerDiv" class="bars">
-                        <h4 class="md-toolbar-tools">
-                          <span>Event Title</span>
-                        </h4>
+                      <md-toolbar class="md-warn" id="eventTitleDiv" >
+                        <div class="md-toolbar-tools">
+                          <h2 class="md-flex">Event Title</h2>
+                        </div>
                       </md-toolbar>
-                      <md-toolbar md-scroll-shrink id = "sideHeaderDiv" class="bars">
-                        <h4 class="md-toolbar-tools">
-                          <span>Getting there</span>
-                        </h4>
+                      <md-toolbar class="md-warn" id="sideHeaderDiv">
+                        <div class="md-toolbar-tools">
+                          <h2 class="md-flex">Getting there</h2>
+                        </div>
                       </md-toolbar>
                     </div>
                     <div layout = "row">
-                      <md-toolbar md-scroll-shrink id="contentMainDiv" class="bars1">
+                       <md-toolbar md-scroll-shrink id="contentMainDiv">
+                        <div class="md-toolbar-tools"></div>
                       </md-toolbar>
-                      <md-toolbar md-scroll-shrink id = "contentSideDiv" class="bars1">
+                      <md-toolbar md-scroll-shrink id="contentSideDiv">
+                        <div class="md-toolbar-tools"></div>
                       </md-toolbar>
                     </div>
                     <div layout="row">
-                      <md-toolbar md-scroll-shrink id="eventDetails" class="bars">
+
+                      <md-toolbar id="eventDetails" class="md-warn">
                         <p>Event Details</p>
+
                       </md-toolbar>
-                      <md-toolbar md-scroll-shrink id="organizers" class="bars">
+                      <md-toolbar id="organizers" class="md-warn">
                         <p>Organizers</p>
                       </md-toolbar>
                     </div>
                     <div layout="row">
-                      <md-toolbar md-scroll-shrink id="eventContent" class="bars1">
+                      <md-toolbar md-scroll-shrink id="eventContent">
                         <p>Event Name</p> <br/>
                         <p>Event Venue</p><br/>
                         <p>Event Category</p><br/>
                         <p>Event Description</p>
                       </md-toolbar>
-                      <md-toolbar md-scroll-shrink id="organizersContent" class="bars1">
+                      <md-toolbar md-scroll-shrink id="organizersContent">
                         <p>Organizer's Name</p><br/>
-                        <p>About Organizers</p><br/><br/>
+                        <p>About Organizers</p><br/>
                         <p>Phone Numbers</p>
                       </md-toolbar>
                     </div><br/>
