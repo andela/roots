@@ -20,7 +20,7 @@ var eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  online: {    
+  online: {
     type: Boolean,
     default: false
   },

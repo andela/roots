@@ -91,9 +91,9 @@ Utils.prototype.cronJob = function(intervalPattern, executeFunction) {
   var job = new CronJob({
     cronTime: intervalPattern,
     onTick: executeFunction,
-    start: false  
+    start: false
   });
-  
+
   job.start();
 }
 
