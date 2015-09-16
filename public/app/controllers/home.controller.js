@@ -7,6 +7,7 @@ angular.module('eventApp')
       return false;
     });
 
+    $rootScope.hideBtn = false;
     var userToken = $location.search().token;
     $location.search('token', null);
     if (userToken) {

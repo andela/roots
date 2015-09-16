@@ -102,6 +102,10 @@ img.bg {
   }
 }
 
+#display-name {
+  font-size: 15px;
+}
+
 #motto-display {
   color: white;
   font-family: "Courier";
@@ -211,6 +215,11 @@ img.bg {
   display: inline-block;
 }
 
+.user-menu > li > a {
+  font-size: 15px;
+  text-decoration: none;
+}
+
 .user-dropdown:hover {
   font-weight: bold;
   cursor: pointer;
@@ -240,7 +249,7 @@ img.bg {
 .navbar-image {
   width: 30px;
   height: 30px;
-  margin-bottom: -10px;
+  vertical-align: middle;
   border: 1px solid white;
   border-radius: 2px;
 }
@@ -257,7 +266,8 @@ img.bg {
 }
 
 .event-btn {
-  font-family: "Courier"
+  font-family: "Courier";
+  margin-right: 5px;
 }
 
 .event-btn:hover {

@@ -13,7 +13,7 @@ angular.module('eventApp')
       $location.url('/home');
     }
   };
-
+  $rootScope.hideBtn = true;
   $scope.submitEventDetails = function (eventDetails, organizer){
     var token = localStorage.getItem('userToken');
     eventDetails.user_ref = $rootScope.userId;
