@@ -16,6 +16,7 @@
     "angular-summernote": "~0.5.0",
     "ng-file-upload": "~7.0.15",
     "angular-resource": "~1.4.3",
+<<<<<<< HEAD
     "ng-file-upload": "~7.0.15",
     "angular-sanitize": "~1.4.4",
     "summernote": "~0.6.16",
@@ -25,5 +26,9 @@
   "devDependencies": {
     "angularjs-color-picker": "~0.6.5",
     "angular-summernote": "~0.5.0"
+=======
+    "angular-summernote": "~0.5.0",
+    "ng-file-upload": "~7.0.15"
+>>>>>>> resolving conflicts
   }
 }
