@@ -54,9 +54,7 @@ angular.module('eventApp')
     };
 
     $scope.fetchEvents = function() {
-      console.log('i ran');
       EventService.getAllEvents().then(function(data){
-        console.log(data);
       $scope.eventList = data.data;
     });
 

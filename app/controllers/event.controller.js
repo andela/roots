@@ -113,7 +113,6 @@ EventController.prototype.editEventDetails = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     } else if (!evt) {
-      console.log('i got here');
       return res.status(422).send({
         success: false,
         message: 'Event not found!'
@@ -142,7 +141,6 @@ EventController.prototype.editEventDetails = function(req, res) {
       }, function(err, evt) {
 
         if (err) {
-          console.log(err);
           return res.status(500).send(err);
         } else if (!evt) {
           return res.status(422).send({
