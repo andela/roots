@@ -28,7 +28,11 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       templateUrl: '../app/views/user.view.html',
       controller: 'homeCtrl'
     })
-
+    .state('user.editEvent', {
+      url: '/event/:event_id',
+      templateUrl: '../app/views/editEvent.view.html',
+      controller: 'editeventCtrl'
+    })
     .state('user.profile', {
       url: '/profile',
       templateUrl: '../app/views/user.profile.html'
