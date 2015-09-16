@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location) {
+  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', 'EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, EventService) {
     $("a[href='#downpage']").click(function() {
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
+    if (localStorage.getItem('userToken')) {
+      UserService.decodeUser($scope);
+    };
 
     var userToken = $location.search().token;
     $location.search('token', null);
@@ -13,11 +16,17 @@ angular.module('eventApp')
       localStorage.setItem('userToken', userToken);
     }    
 
-    $rootScope.signupCheck = function() {
+    var signupCheck = function() {
       if (localStorage.getItem('userToken')) {
         UserService.decodeUser($scope);
       }
     }
+
+    var getEvents = function() {
+      EventService.getAllEvents().then(function(data) {
+        $scope.eventList = data.data;
+      })
+    };
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
@@ -83,7 +92,7 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           } else {
             localStorage.setItem('userToken', res.data.token);
-            $rootScope.signupCheck();
+            signupCheck();
             $mdDialog.hide();
           }
         });

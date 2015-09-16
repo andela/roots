@@ -1,15 +1,7 @@
 'use strict';
-<<<<<<< HEAD
-<<<<<<< HEAD
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete'])
-=======
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote'])
->>>>>>> refactor (frontend): install summernote
-=======
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','color.picker'])
->>>>>>> refactor(frontend): make changes to preview
 
-.config(function($stateProvider, $urlRouterProvider) {
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker'])
+  .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('user.home',{

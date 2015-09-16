@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -19,14 +19,12 @@ var eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-<<<<<<< HEAD
   online: {
     type: Boolean,
     default: false
-=======
+  },
   country: {
-    type: String  
->>>>>>> feat(main app): frontend
+    type: String
   },
   venue: {
     type: String
@@ -41,7 +39,6 @@ var eventSchema = new mongoose.Schema({
     type: String,
     default: 'white'
   },
-<<<<<<< HEAD
   eventFont: {
     color: {
       type: String,
@@ -82,17 +79,19 @@ var eventSchema = new mongoose.Schema({
     }
   }]
 }, {
-=======
-  // startDate: {
-  //   type: Date,
-  //   required: true
-  // },
-  // endDate: {
-  //   type: Date,
-  //   required: true
-  // },
-
->>>>>>> feat(main app): frontend
+    headerColor: String,
+    fontColor: String,
+    borderColor: String,
+    contentColor: String
+  },
+   startDate: {
+     type: Date,
+     required: true
+   },
+   endDate: {
+     type: Date,
+     required: true
+   },
   versionKey: false
 });
 

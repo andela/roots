@@ -123,7 +123,7 @@ UserController.prototype.authenticate = function(req, res) {
           expiresInMinutes: 1440 //24hr expiration
         });
         //return info including token in JSON format
-        res.json({
+        return res.json({
           success: true,
           message: 'Enjoy your token',
           token: token

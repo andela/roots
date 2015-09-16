@@ -1,12 +1,10 @@
 'use strict';
 
-<<<<<<< HEAD
 var Promise = require('promise');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
 var Utils = require('../middleware/utils');
-=======
 var async = require('async');
 var configCloud = require('../../config/config');
 var Utils = require('../middleware/utils');
@@ -14,7 +12,7 @@ var TaskController = require('./task.controller');
 var cloudinary = require('cloudinary');
 var formidable = require('formidable');
 var mongoose = require('mongoose');
->>>>>>> feat(main app): frontend
+
 
 require('../models/user.model');
 require('../models/event.model');
@@ -22,17 +20,14 @@ require('../models/task.model');
 
 var Event = mongoose.model('Event');
 var utils = new Utils();
-<<<<<<< HEAD
-
-=======
 var taskController = new TaskController();
->>>>>>> feat(main app): frontend
+
 var EventController = function() {};
 
 cloudinary.config({
-  cloud_name: configCloud.cloudinary.cloud_name,
-  api_key: configCloud.cloudinary.api_key,
-  api_secret: configCloud.cloudinary.api_secret
+  cloud_name: 'dev8nation',
+  api_key: 687213232223225,
+  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
 });
 
 EventController.prototype.registerEvent = function(req, res) {
@@ -45,7 +40,7 @@ EventController.prototype.registerEvent = function(req, res) {
     return res.json(eventDetails);
   });
 };
-  
+
 
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
@@ -56,7 +51,7 @@ EventController.prototype.imageProcessing = function(req, res, next) {
       next();
     }, {
       width: 800,
-      height: 800  
+      height: 800
     });
   });
 };
@@ -490,7 +485,7 @@ EventController.prototype.reuseEvent = function(req, res) {
             } else {
 
               //Copy list of the task managers added to the previous event
-              //to the newly created event using Promise instance 
+              //to the newly created event using Promise instance
 
               var promiseObject = function(curIndex) {
 
