@@ -516,3 +516,10 @@ label {
   padding-top: 50px;
   margin-left: 30px;
 }
+
+.editImage-box {
+  height: 250px;
+  width:300px;
+  background-position: center;
+  background-repeat: no-repeat;
+}

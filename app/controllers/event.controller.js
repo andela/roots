@@ -46,14 +46,16 @@ EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
     req.body = fields;
-    cloudinary.uploader.upload(file.file.path, function(result){
-      req.body.imageUrl = result.secure_url;
-      next();
-    }, {
-      width: 800,
-      height: 800
+      if(Object.keys(file) != 0){
+      cloudinary.uploader.upload(file.file.path, function(result){
+        req.body.imageUrl = result.secure_url;
+        next();
+      }, {
+        width: 800,
+        height: 800
+      });
+    } else {next();}
     });
-  });
 };
 
 
@@ -96,7 +98,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body.eventObj) {
+  if (!req.body) {
 
     return res.status(422).send({
       success: false,
@@ -104,14 +106,14 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
-  var eventObj = req.body.eventObj;
-  var eventId = req.params.event_id;
+  var eventObj = req.body;
+  var eventId = req.body._id;
 
   Event.findById(eventId, function(err, evt) {
-
     if (err) {
       return res.status(500).send(err);
     } else if (!evt) {
+      console.log('i got here');
       return res.status(422).send({
         success: false,
         message: 'Event not found!'
@@ -123,14 +125,13 @@ EventController.prototype.editEventDetails = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-
       Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          eventUrl: eventObj.eventUrl,
+          imageUrl: eventObj.imageUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
@@ -305,7 +306,6 @@ EventController.prototype.deleteEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
-
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
@@ -322,14 +322,14 @@ EventController.prototype.deleteEvent = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-
-      Task.remove({
-        event_ref: eventId
-      }, function(err) {
-
-        if (err)
-          return res.status(500).send(err);
-
+//commented this part out cos it prevents deleting events due to absence of Task
+      // Task.remove({
+      //   event_ref: eventId
+      // }, function(err) {
+      //
+      //   if (err)
+      //     return res.send(err);
+      //
         Event.remove({
           _id: eventId
         }, function(err, evt) {
@@ -340,7 +340,7 @@ EventController.prototype.deleteEvent = function(req, res) {
             message: 'Succesfully deleted'
           });
         });
-      });
+      // });
     }
   });
 }

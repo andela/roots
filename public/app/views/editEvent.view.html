@@ -1,11 +1,9 @@
-<p>LINKIN PARK</p>
-<p>{{event.name}}</p>
-<p>{{event.category}}</p>
+<div ng-controller="editeventCtrl">
   <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
 <div layout="column" class="card form-container">
   <h3 class="md-padding">Event Details</h3>
   <md-content class="md-padding">
-  <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
+  <form ng-submit="submitEventDetails(event)" name="eventForm">
     <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
     <md-select aria-label="sel" ng-model="event.category" placeholder="" style="display: block;">
       <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
@@ -24,16 +22,10 @@
       <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
     </div>
     <br>
-    <div layout layout-sm="column">
-        <label>Event Starts</label>
-        <md-input-container flex class="md-padding">
-          <p>Current Event Date:<span></span></p>
-        </md-input-container>
-        <label>Event End</label>
-        <md-input-container flex class="md-padding">
-          <input ng-model="event.endDate" type="datetime-local" placeholder="Date/Time">
-        </md-input-container>
-    </div>
+    <div layout-sm="column">
+        <p>Current Start-Date:<span> {{event.startDate | date:'medium'}}</span></p>
+        <p>End-Date:<span> {{event.endDate | date:'medium'}}</span></p>
+    </div><br>
     <div layout layout-sm="column">
         <label>Event Starts</label>
         <md-input-container flex class="md-padding">
@@ -45,52 +37,17 @@
         </md-input-container>
     </div>
     <div id="image-wrapper">
-      <img id="edit-preview" class="image-box" src="" alt="" style="background-image: url({{event.imageUrl}}) no-repeat center;"><br>
+      <img id="edit-preview" class="editImage-box" src="" alt="" style="background-image: url({event.imageUrl}) no-repeat center"><br>
       <input ng-click="previewImg('#edit-upload','#edit-preview')" accept="image/*" ngf-select="true" id="edit-upload" ng-model="event.imageUrl" type="file"><br>
     </div><br><br>
-    <h3>Organizer Profile</h3>
-    <ng-form>
-    <md-input-container>
-      <label>Organizer's Name</label>
-      <input type="text" required name="e-title" ng-model="organizer.name"/>
-    </md-input-container>
-      <label>About the Organizer's</label>
-      <summernote height="300" ng-model="organizer.about"></summernote>
-      <br>
-      <label>Phone Numbers</label>
-      <div layout= "column" style="width:50%">
-        <md-input-container>
-          <input placeholder = "Number 1" ng-model="organizer.PhoneNumber1">
-        </md-input-container>
-        <md-input-container>
-           <input placeholder= "Number 2" ng-model="organizer.PhoneNumber2">
-        </md-input-container>
       </div>
-      <div id="image-wrapper">
-        <img id="editImg-preview" class="image-box" src="" alt=""><br>
-        <input ng-click="previewImg('#editImg-upload','#editImg-preview')" id="editImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
-      </div><br>
-      <label>Team Member's</label>
-      <div layout layout-sm="column">
-        <md-input-container class="md-padding" flex>
-          <label>Name</label>
-          <input  type="text" >
-        </md-input-container>
-        <md-input-container class="md-padding" flex>
-          <label>Email</label>
-          <input  type="email">
-        </md-input-container>
-        <md-input-container class="md-padding" flex>
-          <label>Role</label>
-          <input  type="text">
-        </md-input-container>
+      <div class="md-toolbar-tools centre" layout-align="center">
+        <md-button class="md-raised" ng-click="submitEventDetails(event)" type="submit" ng-disabled="eventForm.$invalid">Save Changes</md-button>
       </div>
-
-    </ng-form><br>
-   <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button>
   </form>
   <div class="md-toolbar-tools centre" layout-align="center">
-    <md-button class="md-raised" ng-click="currDisplay('preview')">NEXT</md-button>
+    <md-button class="md-raised" ng-click="delete()" type="submit">DELETE EVENT</md-button>
   </div>
   </md-content>
+</div>
 </div>
