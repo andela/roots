@@ -561,6 +561,11 @@ label {
   width: 700px;
 }
 
+#homeEvent-container{
+  background-color: #eee;
+  width: 33%;
+}
+
 #dateBtn {
   margin-left: 600px;
 }

@@ -110,13 +110,6 @@ angular.module('eventApp')
     about: '',
   };
 
-<<<<<<< HEAD
-=======
-  $scope.event.category = 'categories.name';
-
-  $scope.event.country = 'code';
->>>>>>> refactor(frontend): edit events view
-
   $scope.countries = [
   {name: 'Afghanistan', code: 'AF'},
   {name: 'Åland Islands', code: 'AX'},
