@@ -1,4 +1,5 @@
 var nodemailer = require('nodemailer');
+var CronJob = require('cron').CronJob;
 
 var Utils = function() {};
 
@@ -31,6 +32,8 @@ Utils.prototype.sendMail = function(mailOptions, done) {
 //for executing asynchronous calls that involve iteration
 
 Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData, syncData2) {
+
+  //syncData and syncData2 are parameters passed to this function that are meant to be processed by the process and/or exit callbacks. syncData2 is not mandatory
 
   var index = 0,
     done = false,
@@ -67,6 +70,31 @@ Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData, syncD
   };
   loop.next();
   return loop;
+}
+
+Utils.prototype.convertToObject = function(objectToConvert) {
+
+  try {
+
+    var convertedObject = JSON.parse(JSON.stringify(objectToConvert));
+    return convertedObject;
+  } catch (err) {
+    return null;
+  }
+}
+
+//For executing cron(interval based) jobs
+//intervalPattern - interval/time at which the cron executes
+//executeFunction - function to be executed at the specified interval
+Utils.prototype.cronJob = function(intervalPattern, executeFunction) {
+
+  var job = new CronJob({
+    cronTime: intervalPattern,
+    onTick: executeFunction,
+    start: false  
+  });
+  
+  job.start();
 }
 
 module.exports = Utils;
