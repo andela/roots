@@ -24,7 +24,7 @@
           <div layout-sm="row">
             <label>Country</label>
             <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">
-              <md-option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</md-option>
+              <md-option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</md-option>
             </md-select>
             <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
           </div>
@@ -177,16 +177,13 @@
           </div>
         </div>
       </div>
-            <div class="md-toolbar-tools centre" layout-align="center">
-              <md-button class="md-raised" ng-click="currDisplay('create')">BACK</md-button>
-            </div>
-          </div>
-        </div>
-        <div class="md-toolbar-tools centre" layout-align="center"> 
-           <md-button class="md-raised" ng-click="currDisplay('create')">CREATE</md-button>
-           <md-button class="md-raised" ng-click="currDisplay('preview')">PREVIEW</md-button>
-        </div>
+      <div class="md-toolbar-tools centre" layout-align="center">
+        <md-button class="md-raised" ng-click="currDisplay('create')">BACK</md-button>
       </div>
     </div>
+  </div>
+  <div class="md-toolbar-tools centre" layout-align="center"> 
+     <md-button class="md-raised" ng-click="currDisplay('create')">CREATE</md-button>
+     <md-button class="md-raised" ng-click="currDisplay('preview')">PREVIEW</md-button>
   </div>
 </div>
