@@ -10,7 +10,7 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/organizer')
-    .post(userCtrl.verifyToken, evCtrl.imageProcessing, orgCtrl.registerProfile);
+    .post(userCtrl.verifyToken, evCtrl.imageProcessing, orgCtrl.createProfile);
 
   router.route('/organizers')
     .get(userCtrl.verifyToken, orgCtrl.getAllProfiles);
