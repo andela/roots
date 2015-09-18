@@ -31,7 +31,7 @@
 					  <div ng-repeat="event in filtered =(eventList | filter : find)" class="col s4" id="event-container">
 					    <div class="card small" class="row" layout layout-align="center left" id="whiteFrame">
 					      <div>
-					        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="browseImg">
+					        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="image-preview">
 					      </div>
 					      <div>
 					        <p>{{event.startDate | date:'medium'}}</p>
