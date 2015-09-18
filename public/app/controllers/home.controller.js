@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location) {
+  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', 'EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, EventService) {
     $("a[href='#downpage']").click(function() {
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
@@ -11,13 +11,25 @@ angular.module('eventApp')
     $location.search('token', null);
     if (userToken) {
       localStorage.setItem('userToken', userToken);
-    }    
-
-    $rootScope.signupCheck = function() {
-      if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
-      }
     }
+
+    var signupCheck = function() {
+      if(localStorage.getItem('userToken')) {
+        UserService.decodeUser().then(function(res) {
+          $rootScope.userId = res.data._id;
+          $scope.userName = res.data.firstname;
+          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
+          $scope.loggedIn = true;
+        });
+      }
+    };
+    signupCheck();
+
+    var getEvents = function() {
+      EventService.getAllEvents().then(function(data) {
+        $scope.eventList = data.data;
+      })
+    };
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
@@ -34,6 +46,18 @@ angular.module('eventApp')
         },
         templateUrl: "app/views/login.view.html"
       });
+    };
+
+    $scope.toEvent= function() {
+        if($scope.loggedIn = true)
+          $location.path("/cevent");
+    };
+
+    $scope.fetchEvents = function() {
+      EventService.getAllEvents().then(function(data){
+      $scope.eventList = data.data;
+    });
+
     };
 
     function UserLogin($scope, $rootScope, $mdDialog, view) {
@@ -78,13 +102,14 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           } else {
             localStorage.setItem('userToken', res.data.token);
-            $rootScope.signupCheck();
+            signupCheck();
             $mdDialog.hide();
           }
         });
       };
 
       $scope.signupUser = function(newUser) {
+        console.log(newUser);
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
@@ -92,7 +117,7 @@ angular.module('eventApp')
               $scope.emailTaken = true;
               $scope.progressLoad = false;
               $scope.validEmail = false;
-            } else {              
+            } else {
               $scope.loginUser({
                 email: newUser.email,
                 password: newUser.password

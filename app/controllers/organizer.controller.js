@@ -1,12 +1,26 @@
 'use strict';
 
 var User = require('../models/user.model');
-var Organizer = require('../models/organizer.model');
+var async = require('async');
 var Utils = require('../middleware/utils');
+var mongoose = require('mongoose');
+require('../models/organizer.model');
+
+var Organizer = mongoose.model('Organizer');
 
 var utils = new Utils();
 
 var OrganizerController = function() {};
+
+OrganizerController.prototype.registerProfile = function(req, res) {
+  var organizer = new Organizer(req.body);
+  organizer.save(req.body, function(err, organizer){
+    if(err) {
+      return res.json(err);
+    }
+    return res.json(organizer);
+  });
+};
 
 OrganizerController.prototype.createProfile = function(req, res) {
 
@@ -25,6 +39,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
+
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -240,6 +255,7 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
     }
   });
 }
+
 
 OrganizerController.prototype.editRole = function(req, res) {
 

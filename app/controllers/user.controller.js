@@ -75,7 +75,6 @@ UserController.prototype.decodeUser = function(req, res) {
 
 UserController.prototype.verifyToken = function(req, res, next) {
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
   if (token) {
     jwt.verify(token, config.secret, function(err, decoded) {
       if (err) {
@@ -123,7 +122,7 @@ UserController.prototype.authenticate = function(req, res) {
           expiresInMinutes: 1440 //24hr expiration
         });
         //return info including token in JSON format
-        res.json({
+        return res.json({
           success: true,
           message: 'Enjoy your token',
           token: token
@@ -261,6 +260,20 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
     }
   });
 };
+
+
+// UserController.prototype.deleteCurrentUser = function(req, res) {
+//   User.remove({
+//     _id: req.params.user_id
+//   }, function(err, user) {
+//     if (err) return res.send(err);
+
+//     res.json({
+//       message: 'Succesfully deleted'
+//     });
+
+//   });
+// };
 
 UserController.prototype.forgotPass = function(req, res, next) {
   async.waterfall([

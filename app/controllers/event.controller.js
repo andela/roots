@@ -5,10 +5,59 @@ var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
 var Utils = require('../middleware/utils');
+var async = require('async');
+var configCloud = require('../../config/config');
+var Utils = require('../middleware/utils');
+var TaskController = require('./task.controller');
+var cloudinary = require('cloudinary');
+var formidable = require('formidable');
+var mongoose = require('mongoose');
 
+
+require('../models/user.model');
+require('../models/event.model');
+require('../models/task.model');
+
+var Event = mongoose.model('Event');
 var utils = new Utils();
+var taskController = new TaskController();
 
 var EventController = function() {};
+
+cloudinary.config({
+  cloud_name: 'dev8nation',
+  api_key: 687213232223225,
+  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
+});
+
+EventController.prototype.registerEvent = function(req, res) {
+  var eventDetails = new Event(req.body);
+
+  eventDetails.save(req.body, function(err, eventDetails){
+    if(err) {
+      return res.json(err);
+    }
+    return res.json(eventDetails);
+  });
+};
+
+
+EventController.prototype.imageProcessing = function(req, res, next) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, file) {
+    req.body = fields;
+      if(Object.keys(file) != 0){
+      cloudinary.uploader.upload(file.file.path, function(result){
+        req.body.imageUrl = result.secure_url;
+        next();
+      }, {
+        width: 800,
+        height: 800
+      });
+    } else {next();}
+    });
+};
+
 
 EventController.prototype.createEvent = function(req, res) {
 
@@ -49,7 +98,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body.eventObj) {
+  if (!req.body) {
 
     return res.status(422).send({
       success: false,
@@ -57,11 +106,10 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
-  var eventObj = req.body.eventObj;
-  var eventId = req.params.event_id;
+  var eventObj = req.body;
+  var eventId = req.body._id;
 
   Event.findById(eventId, function(err, evt) {
-
     if (err) {
       return res.status(500).send(err);
     } else if (!evt) {
@@ -76,14 +124,13 @@ EventController.prototype.editEventDetails = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-
       Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          eventUrl: eventObj.eventUrl,
+          imageUrl: eventObj.imageUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
@@ -229,18 +276,33 @@ EventController.prototype.saveEventDetails = function(req, res) {
 
 //Get all events that are published
 EventController.prototype.getAllEvents = function(req, res) {
-
-  Event.find({
-    online: true
-  }, function(err, events) {
+  // Event.find({
+  //   online: true
+  // }, function(err, events) {
+  //   if (err) {
+  //     return res.json(err);
+  //   }
+  //
+  //   //Populate the user_ref and manager_ref properties of the events' model
+  //   //with the matching user details from the user model
+  //   User.populate(events, {
+  //     path: 'user_ref manager_ref'
+  //   }, function(err, populatedEvents) {
+  //
+  //     if (err) {
+  //       return res.json(err);
+  //     }
+  //
+  //     res.json(populatedEvents);
+  //
+  //   });
+  // });
+  Event.find(function(err, events) {
     if (err) {
       return res.json(err);
     }
-
-    //Populate the user_ref and manager_ref properties of the events' model
-    //with the matching user details from the user model
-    User.populate(events, {
-      path: 'user_ref manager_ref'
+    Event.populate(events, {
+      path: 'user_ref tasks.task_ref'
     }, function(err, populatedEvents) {
 
       if (err) {
@@ -258,7 +320,6 @@ EventController.prototype.deleteEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
-
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
@@ -275,14 +336,14 @@ EventController.prototype.deleteEvent = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-
-      Task.remove({
-        event_ref: eventId
-      }, function(err) {
-
-        if (err)
-          return res.status(500).send(err);
-
+//commented this part out cos it prevents deleting events due to absence of Task
+      // Task.remove({
+      //   event_ref: eventId
+      // }, function(err) {
+      //
+      //   if (err)
+      //     return res.send(err);
+      //
         Event.remove({
           _id: eventId
         }, function(err, evt) {
@@ -293,7 +354,7 @@ EventController.prototype.deleteEvent = function(req, res) {
             message: 'Succesfully deleted'
           });
         });
-      });
+      // });
     }
   });
 }
@@ -303,7 +364,9 @@ EventController.prototype.getEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
-  Event.findById(eventId, function(err, evt) {
+  eventId = eventId.substr(1, eventId.length)
+
+  Event.findById(eventId).populate('user_ref').exec(function(err, evt) {
 
     if (err) {
 
@@ -315,21 +378,21 @@ EventController.prototype.getEvent = function(req, res) {
         message: 'Invalid event id'
       });
     } else {
-
-      User.populate(evt, {
-        path: 'user_ref'
-      }, function(err1, evt1) {
-
-        if (err) {
-          res.status(500).send(err);
-        } else {
-          res.json(evt1);
-        }
-
-      });
+      // User.populate(evt, {
+      //   path: 'user_ref'
+      // }, function(err1, evt1) {
+      //
+      //   if (err) {
+          // res.status(200).send(err);
+      //   } else {
+          res.json(evt);
+      //   }
+      //
+      // });
     }
   });
 }
+
 
 //Get list of your published events
 EventController.prototype.getMyEvents = function(req, res) {
@@ -438,7 +501,7 @@ EventController.prototype.reuseEvent = function(req, res) {
             } else {
 
               //Copy list of the task managers added to the previous event
-              //to the newly created event using Promise instance 
+              //to the newly created event using Promise instance
 
               var promiseObject = function(curIndex) {
 

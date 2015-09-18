@@ -3,6 +3,7 @@ var CronJob = require('cron').CronJob;
 
 var Utils = function() {};
 
+
 Utils.prototype.sendMail = function(mailOptions, done) {
 
   var transporter = nodemailer.createTransport({
@@ -91,9 +92,9 @@ Utils.prototype.cronJob = function(intervalPattern, executeFunction) {
   var job = new CronJob({
     cronTime: intervalPattern,
     onTick: executeFunction,
-    start: false  
+    start: false
   });
-  
+
   job.start();
 }
 

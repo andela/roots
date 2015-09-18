@@ -1,29 +1,59 @@
 'use strict';
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria', 'ngWYSIWYG'])
-
-.config(function($stateProvider, $urlRouterProvider) {
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker'])
+  .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('home',{
+    .state('user.home',{
       url: '/home',
       templateUrl: '../app/views/home.view.html',
       controller: 'homeCtrl'
     })
-    .state('passwordreset', {
+    .state('user.passwordreset', {
       url: '/passwordreset/:token',
       templateUrl: '../app/views/password.reset.html',
       controller: 'resetPasswordCtrl'
     })
-    .state('registration', {
+    .state('user.registration', {
       url: '/registration',
       templateUrl: '../app/views/twitter.user.html',
       controller: 'twitterCtrl'
     })
-    .state('createevent', {
-    	url: '/createevent',
-    	templateUrl: '../app/views/createEvent.view.html',
-      controller: 'createeventCtrl'
+    .state('user.cevent', {
+      url: '/cevent',
+      templateUrl: '../app/views/event.view.html',
+      controller: 'eventCtrl'
     })
+    .state('user', {
+      url: '/user',
+      templateUrl: '../app/views/user.view.html',
+      controller: 'homeCtrl'
+    })
+    .state('user.editEvent', {
+      url: '/event/:event_id',
+      templateUrl: '../app/views/editEvent.view.html',
+      controller: 'editeventCtrl'
+    })
+    .state('user.profile', {
+      url: '/profile',
+      templateUrl: '../app/views/user.profile.html'
+    });
 
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/user/home');
 });
+
+angular.module('eventApp')
+  .config(function($mdThemingProvider) {
+    // Extend the red theme with a few different colors
+    var neonRedMap = $mdThemingProvider.extendPalette('red', {
+      '500': '000000'
+    });
+    // Register the new color palette map with the name <code>neonRed</code>
+    $mdThemingProvider.definePalette('neonRed', neonRedMap);
+    // Use that theme for the primary intentions
+    $mdThemingProvider.theme('default')
+      .primaryPalette('neonRed')
+      .accentPalette('light-blue',{
+        'default':'50'
+      })
+      .warnPalette('red');
+  });
