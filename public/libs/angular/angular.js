@@ -65,15 +65,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     message += '\nhttp://errors.angularjs.org/1.4.5/' +
-=======
-    message += '\nhttp://errors.angularjs.org/1.4.4/' +
->>>>>>> modify stylesheet.css
-=======
-    message += '\nhttp://errors.angularjs.org/1.4.5/' +
->>>>>>> refactor(frontend): make changes to preview
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2390,27 +2382,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-<<<<<<< HEAD
-<<<<<<< HEAD
   full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
   dot: 5,
   codeName: 'permanent-internship'
-=======
-  full: '1.4.4',    // all of these placeholder strings will be replaced by grunt's
-  major: 1,    // package task
-  minor: 4,
-  dot: 4,
-  codeName: 'pylon-requirement'
->>>>>>> modify stylesheet.css
-=======
-  full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
-  major: 1,    // package task
-  minor: 4,
-  dot: 5,
-  codeName: 'permanent-internship'
->>>>>>> refactor(frontend): make changes to preview
 };
 
 
@@ -5424,24 +5400,10 @@ var $CoreAnimateCssProvider = function() {
         return this.getPromise().then(f1,f2);
       },
       'catch': function(f1) {
-<<<<<<< HEAD
-<<<<<<< HEAD
         return this.getPromise()['catch'](f1);
       },
       'finally': function(f1) {
         return this.getPromise()['finally'](f1);
-=======
-        return this.getPromise().catch(f1);
-      },
-      'finally': function(f1) {
-        return this.getPromise().finally(f1);
->>>>>>> modify stylesheet.css
-=======
-        return this.getPromise()['catch'](f1);
-      },
-      'finally': function(f1) {
-        return this.getPromise()['finally'](f1);
->>>>>>> refactor(frontend): make changes to preview
       }
     };
 
