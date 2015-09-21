@@ -55,7 +55,7 @@ EventController.prototype.createEvent = function(req, res) {
 
   var userId = req.decoded._id;
   var eventObj = req.body.eventObj;
-  eventObj.imageUrl = req.body.imageUrl;
+  eventObj.eventBanner = req.body.imageUrl;
   eventObj.user_ref = userId;
   eventObj.tasks = [];
 
@@ -121,7 +121,7 @@ EventController.prototype.editEventDetails = function(req, res) {
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          imageUrl: req.body.imageUrl,
+          eventBanner: req.body.imageUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
