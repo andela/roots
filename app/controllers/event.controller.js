@@ -21,18 +21,6 @@ cloudinary.config({
   api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
 });
 
-EventController.prototype.registerEvent = function(req, res) {
-  var eventDetails = new Event(req.body);
-
-  eventDetails.save(req.body, function(err, eventDetails){
-    if(err) {
-      return res.json(err);
-    }
-    return res.json(eventDetails);
-  });
-};
-
-
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
@@ -67,7 +55,7 @@ EventController.prototype.createEvent = function(req, res) {
 
   var userId = req.decoded._id;
   var eventObj = req.body.eventObj;
-
+  eventObj.imageUrl = req.body.imageUrl;
   eventObj.user_ref = userId;
   eventObj.tasks = [];
 
@@ -133,7 +121,7 @@ EventController.prototype.editEventDetails = function(req, res) {
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          imageUrl: eventObj.imageUrl,
+          imageUrl: req.body.imageUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,

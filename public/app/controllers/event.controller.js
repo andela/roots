@@ -1,5 +1,6 @@
 angular.module('eventApp')
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce','$window', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce, $window) {
+
    if (!localStorage.getItem('userToken')) {
     $location.url('/user/home');
   }
@@ -20,8 +21,9 @@ angular.module('eventApp')
         $scope.organizer = organizer[0];
       });
     });
+
   };
-  
+ 
   $scope.submitEventDetails = function (eventDetails, organizer){
     
     if(eventDetails.startDate > eventDetails.endDate){
