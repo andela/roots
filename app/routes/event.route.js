@@ -8,26 +8,36 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/event')
+    //Get user's list of your published events
     .get(userCtrl.verifyToken, evtCtrl.getMyEvents)
-    .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.registerEvent);
+    //Create new event
+    .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.createEvent);
 
   router.route('/events')
+    //Get all published event
     .get(evtCtrl.getAllEvents);
 
   router.route('/event/:event_id')
+    //Get an event's details
     .get(evtCtrl.getEvent)
+    //Edit an event details
     .put(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.editEventDetails)
+    //Delete an event
     .delete(userCtrl.verifyToken, evtCtrl.deleteEvent);
 
   router.route('/event/:event_id/launch')
+    //Publish an event
     .put(userCtrl.verifyToken, evtCtrl.launchEvent);
 
   router.route('/event/:event_id/save')
+    //Save an event's details
     .post(userCtrl.verifyToken, evtCtrl.saveEventDetails);
 
+  //Get list of event drafts
   router.route('/events/saved')
     .get(userCtrl.verifyToken, evtCtrl.getMySavedEvents);
 
+  //Reuse an event
   router.route('/event/:event_id/reuse')
     .post(userCtrl.verifyToken, evtCtrl.reuseEvent);
 
