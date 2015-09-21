@@ -16,15 +16,8 @@ var VolunteerController = function() {};
 
 VolunteerController.prototype.volunteerForTask = function(req, res) {
 
-  if (!req.body.volunteerId) {
-
-    return res.status(422).send({
-      success: false,
-      message: 'Check parameters!'
-    });
-  }
   var taskId = req.params.task_id;
-  var volunteerId = req.body.volunteerId; //id of the user volunteering
+  var volunteerId = req.decoded._id; //id of the user volunteering
   var eventId;
   var eventMail;
   var eventName;
@@ -150,6 +143,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
   var eventName;
   var taskDescription;
   var volunteerEmail;
+  var userId;
 
   //Check if volunteer has already volunteered for same task
   Task.findOne({
@@ -189,6 +183,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
               });
             } else {
 
+              userId = user._id;
               volunteerEmail = user.email;
 
               //Validate task id
@@ -224,7 +219,8 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                       Task.findByIdAndUpdate(taskId, {
                         $push: {
                           volunteers: {
-                            volunteer_ref: volunteerId
+                            volunteer_ref: volunteerId,
+                            user_ref: userId
                           }
                         }
                       }, {

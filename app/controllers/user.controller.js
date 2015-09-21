@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var config = require('../../config/config');
 var User = require('../models/user.model');
 var Organizer = require('../models/organizer.model');
+var Volunteer = require('../models/volunteer.model');
+var Task = require('../models/task.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
@@ -216,41 +218,57 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
               success: false,
               message: 'Unable to delete user organizer profile.'
             });
+          } else {
+
+            //Remove volunteer ref from the task model
+            Task.update({
+              'volunteers.user_ref': userId
+            }, {
+              $pull: {
+                volunteers: {
+                  user_ref: userId
+                }
+              }
+            }, function(err) {
+
+              //Delete volunteer object
+              Volunteer.remove({
+                user_ref: userId
+              }, function(err) {
+
+                Organizer.update({
+                  'staff.manager_ref': userId
+                }, {
+                  $pull: {
+                    'staff': {
+                      manager_ref: userId
+                    }
+                  }
+                }, function(err) {
+                  if (err) {
+
+                    return res.status(422).send({
+                      success: false,
+                      message: 'Unable to delete user from other organizer profile.'
+                    });
+                  }
+
+                  User.remove({
+                    _id: userId
+                  }, function(err, user) {
+                    if (err) return res.status(500).send(err);
+
+                    res.json({
+                      message: 'Succesfully deleted'
+                    });
+
+                  });
+                });
+              });
+            });
           }
         });
-
       }
-
-      Organizer.update({
-        'staff.manager_ref': userId
-      }, {
-        $pull: {
-          'staff': {
-            manager_ref: userId
-          }
-        }
-      }, function(err) {
-        if (err) {
-
-          return res.status(422).send({
-            success: false,
-            message: 'Unable to delete user from other organizer profile.'
-          });
-        }
-
-        User.remove({
-          _id: userId
-        }, function(err, user) {
-          if (err) return res.status(500).send(err);
-
-          res.json({
-            message: 'Succesfully deleted'
-          });
-
-        });
-
-      });
-
     } else {
 
       return res.status(422).send({
