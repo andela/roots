@@ -3,8 +3,8 @@
 <div layout="column" class="card form-container">
   <h3 class="md-padding">Event Details</h3>
   <md-content class="md-padding">
-  <form ng-submit="submitEventDetails(event)" name="eventForm">
-    <label>Event Title</label>
+
+  <form name="eventForm">
     <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
     <label>Event Category</label>
         <md-select aria-label="sel" placeholder={{event.category}} ng-model="event.category" style="display: block;">

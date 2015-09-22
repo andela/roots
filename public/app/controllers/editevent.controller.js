@@ -1,11 +1,13 @@
 angular.module('eventApp')
   .controller('editeventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
    if (localStorage.getItem('userToken')) {
-        UserService.decodeUser();
+        UserService.decodeUser($scope);
     };
 
     EventService.getEvent($stateParams.event_id)
       .success(function(event){
+        event.startDate = parseDate(event.startDate);
+        event.endDate = parseDate(event.endDate);    
         $scope.event = event;
       });
 
@@ -37,8 +39,7 @@ angular.module('eventApp')
     };
 
     $scope.submitEventDetails = function (eventDetails){
-      var token = localStorage.getItem('userToken');
-      eventDetails.user_ref = $rootScope.userId;
+      var token = localStorage.getItem('userToken');         
       Upload.upload({
         method: "PUT",
         url: '/api/event/' + $stateParams.event_id + '?token='+ token,
@@ -67,4 +68,9 @@ angular.module('eventApp')
       };
       $scope.details = '';
     };
+
+    function parseDate(date){
+      return new Date(Date.parse(date));
+    }
+      
 }]);

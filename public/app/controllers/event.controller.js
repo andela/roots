@@ -21,9 +21,9 @@ angular.module('eventApp')
         $scope.organizer = organizer[0];
       });
     });
-
   };
  
+
   $scope.submitEventDetails = function (eventDetails, organizer){
     
     if(eventDetails.startDate > eventDetails.endDate){

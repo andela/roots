@@ -36,9 +36,8 @@ OrganizerController.prototype.createProfile = function(req, res) {
         var newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
         newOrgProfile.name = req.body.organName;
-        var newStaff = req.body.staff;
-        var validatedStaff = [];
-
+        newOrgProfile.imageUrl = req.body.imageUrl;
+        newOrgProfile.staff = [];
 
         newOrgProfile.save(function(err, orgProfile) {
 

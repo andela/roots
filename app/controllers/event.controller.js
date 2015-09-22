@@ -55,7 +55,7 @@ EventController.prototype.createEvent = function(req, res) {
 
   var userId = req.decoded._id;
   var eventObj = req.body.eventObj;
-  eventObj.eventBanner = req.body.imageUrl;
+
   eventObj.user_ref = userId;
   eventObj.tasks = [];
 
@@ -89,7 +89,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body) {
+  if (!req.body.eventObj) {
 
     return res.status(422).send({
       success: false,
@@ -97,8 +97,15 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
-  var eventObj = req.body;
-  var eventId = req.body._id;
+  var eventObj = req.body.eventObj;
+  var eventId = req.params.event_id;
+
+  try {
+    eventObj.venue = JSON.parse(eventObj.venue);
+    eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
+  } catch (err) {
+
+  }
 
   Event.findById(eventId, function(err, evt) {
     if (err) {
@@ -121,7 +128,7 @@ EventController.prototype.editEventDetails = function(req, res) {
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          eventBanner: req.body.imageUrl,
+          imageUrl: eventObj.imageUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
@@ -236,6 +243,7 @@ EventController.prototype.saveEventDetails = function(req, res) {
       newEvent.eventUrl = evt.eventUrl;
       newEvent.eventTheme = evt.eventTheme;
       newEvent.eventFont = evt.eventFont;
+      newEvent.imageUrl = evt.imageUrl;
       newEvent.startDate = evt.startDate;
       newEvent.endDate = evt.endDate;
       newEvent.online = false;

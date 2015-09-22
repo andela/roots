@@ -70,6 +70,7 @@
           <md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
       </form>
       <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
+
       </md-content>
     </div>
     <div id="for preview" ng-show="prev">
@@ -110,6 +111,7 @@
               <div layout="row">
                 <md-toolbar md-scroll-shrink id="contentMainDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor}">
                 <img id="prevImage" src="" alt="" height='500px' width='100%'>
+
                 </md-toolbar>
               </div>
               <div id="card">
@@ -148,6 +150,7 @@
                 </md-card>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
                 <md-button class="md-raised" type="submit" ng-click="event.venue = result" ng-disabled="eventForm.$invalid">Create Event</md-button >
+
 
               </section>
             </div>
