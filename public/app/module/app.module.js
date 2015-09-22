@@ -40,20 +40,6 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
   $urlRouterProvider.otherwise('/user/home');
 });
 
-// angular.module('eventApp').run(['$rootScope', '$location', 'UserService', function($rootScope, $location, UserService) {
-
-//    // $rootScope.signupCheck = function() {
-//       if(localStorage.getItem('userToken')) {
-//         UserService.decodeUser().then(function(res) {
-//           $rootScope.userName = res.data.firstname;
-//           $rootScope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-//           $rootScope.loggedIn = true;
-//         });
-//       }
-//     // };
-
-// }]);
-
 angular.module('eventApp')
   .config(function($mdThemingProvider) {
     // Extend the red theme with a few different colors
