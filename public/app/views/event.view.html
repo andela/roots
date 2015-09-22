@@ -10,15 +10,47 @@
     <div layout="column" class="card form-container"  ng-switch-when="create">
       <h3 class="md-padding">Event Details</h3>
       <md-content class="md-padding">
-        <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
-          <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
-          <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
-            <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
+      <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
+        <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
+        <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
+          <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
+        </md-select>
+        <md-textarea-container flex>
+          <label>Event Description</label>
+          <summernote height="300" ng-model="event.description"></summernote>
+        </md-textarea-container>
+        <br>
+        <label>Venue</label><br>
+        <div layout-sm="row">
+          <label>Country</label>
+          <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.venue.country" style="display: block;">
+            <md-option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</md-option>
           </md-select>
-          <md-textarea-container flex>
-            <label>Event Description</label>
-            <summernote height="300" ng-model="event.description"></summernote>
-          </md-textarea-container>
+          <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
+        </div>
+        <br>
+        <div layout layout-sm="column">
+            <label>Event Starts</label>
+            <md-input-container flex class="md-padding">
+              <input ng-model="event.startDate" type="datetime-local" placeholder="Date/Time">
+            </md-input-container>
+            <label>Event End</label>
+            <md-input-container flex class="md-padding">
+              <input ng-model="event.endDate" type="datetime-local" placeholder="Date/Time">
+            </md-input-container>
+        </div>
+        <div id="image-wrapper">
+          <img id="image-preview" class="image-box" src="" alt=""><br>
+          <input ng-click="previewImg('#image-upload','#image-preview')" accept="image/*" ngf-select="true" id="image-upload" ng-model="event.imageUrl" type="file"><br>
+        </div><br><br>
+        <h3>Organizer Profile</h3>
+        <ng-form>
+        <md-input-container>
+          <label>Organizer's Name</label>
+          <input type="text" required name="e-title" ng-model="organizer.name"/>
+        </md-input-container>
+          <label>About the Organizer's</label>
+          <summernote height="300" ng-model="organizer.about"></summernote>
           <br>
           <label>Venue</label><br>
           <div layout-sm="row">
@@ -80,10 +112,10 @@
                 <input  type="text">
               </md-input-container>
             </div>
-
           </ng-form><br>
           <div class="md-toolbar-tools centre" layout-align="center"> 
            <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">CREATE</md-button>
+           <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
            <md-button class="md-raised" ng-click="currDisplay('preview')">PREVIEW</md-button>
         </div>
          <!-- <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button> -->
@@ -145,7 +177,7 @@
                   <div class="md-toolbar-tools">{{event.name}}</div>
                 </md-toolbar>
                 <md-toolbar md-scroll-shrink id="contentSideDiv" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor, 'background-color' : event.eventTheme.contentColor}">
-                  <div class="md-toolbar-tools">{{event.venue}} {{event.country}}</div>
+                  <div class="md-toolbar-tools">{{event.venue.address}} {{event.venue.country}}</div>
                 </md-toolbar>
               </div>
               <div layout="row">
@@ -163,7 +195,7 @@
               <div layout="row">
                 <md-toolbar md-scroll-shrink id="eventContent" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor, 'background-color' : event.eventTheme.contentColor}">
                   <p>{{event.name}}</p> <br>
-                  <p>{{event.venue}}</p><br>
+                  <p>{{event.venue.address}}</p><br>
                   <p>{{event.category}}</p><br>
                   <p ng-bind-html="eventInfo"></p>
                 </md-toolbar>
@@ -175,7 +207,8 @@
                 </md-toolbar>
               </div><br/>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                <md-button class="md-raised" type="submit" ng-click="currDisplay('create')" ng-disabled="createEvent.$invalid">Create Event</md-button >
+                <md-button class="md-raised" type="submit" ng-disabled="createEvent.$invalid">Create Event</md-button >
+                <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
               </section>
             </div>
           </div>

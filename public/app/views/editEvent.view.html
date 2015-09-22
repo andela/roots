@@ -3,7 +3,7 @@
 <div layout="column" class="card form-container">
   <h3 class="md-padding">Event Details</h3>
   <md-content class="md-padding">
-  <form ng-submit="submitEventDetails(event)" name="eventForm">
+  <form name="eventForm">
     <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
     <md-select aria-label="sel" ng-model="event.category" placeholder="" style="display: block;">
       <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
