@@ -16,10 +16,10 @@
     <label>Venue</label><br>
     <div layout-sm="row">
       <label>Country</label>
-      <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">
+      <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.venue.country" style="display: block;">
         <md-option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</md-option>
       </md-select>
-      <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
+      <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
     </div>
     <br>
     <div layout-sm="column">
