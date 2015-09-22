@@ -7,6 +7,7 @@ var Organizer = require('../models/organizer.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
+var async = require('async');
 
 
 var UserController = function(passport) {
