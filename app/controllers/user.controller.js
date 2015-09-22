@@ -232,8 +232,6 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
         }
       }, function(err) {
         if (err) {
-<<<<<<< HEAD
-
           return res.status(422).send({
             success: false,
             message: 'Unable to delete user from other organizer profile.'
@@ -254,9 +252,6 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
       });
 
     } else {
-
-=======
-
           return res.status(422).send({
             success: false,
             message: 'Unable to delete user from other organizer profile.'
@@ -276,16 +271,7 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
 
       });
 
-    } else {
-
->>>>>>> Api functions for organizer profile tasks
-      return res.status(422).send({
-        success: false,
-        message: 'User not found in db'
-      });
-    }
-  });
-};
+    };
 
 
 // UserController.prototype.deleteCurrentUser = function(req, res) {
