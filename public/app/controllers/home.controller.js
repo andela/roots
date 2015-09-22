@@ -3,7 +3,9 @@
 angular.module('eventApp')
   .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', 'EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, EventService) {
     $("a[href='#downpage']").click(function() {
-      $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
+      $("html, body").animate({
+        scrollTop: $('#event-list').offset().top
+      }, "slow");
       return false;
     });
 
@@ -12,16 +14,13 @@ angular.module('eventApp')
     if (userToken) {
       localStorage.setItem('userToken', userToken);
     }
-   
-    $rootScope.signupCheck = function() {
-      if(localStorage.getItem('userToken')) {
-        UserService.decodeUser().then(function(res) {
-          $rootScope.loggedIn = true;
-          $rootScope.userName = res.data.firstname;
-          $rootScope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-        });
+
+    var signupCheck = function() {
+      if (localStorage.getItem('userToken')) {
+        UserService.decodeUser($scope);
       }
-    };
+    }
+    signupCheck();
 
     var getEvents = function() {
       EventService.getAllEvents().then(function(data) {
@@ -46,13 +45,14 @@ angular.module('eventApp')
       });
     };
 
-    $scope.toEvent= function() {
-        if($scope.loggedIn = true)
-          $location.path("/cevent");
+    $scope.toEvent = function() {
+      if ($scope.loggedIn = true)
+        $location.path("/cevent");
     };
 
     $scope.fetchEvents = function() {
-      EventService.getAllEvents().then(function(data){
+
+      EventService.getAllEvents().then(function(data) {
         $scope.eventList = data.data;
       });
     };
@@ -60,8 +60,7 @@ angular.module('eventApp')
     function UserLogin($scope, $rootScope, $mdDialog, view) {
       if (view === 'signup') {
         $scope.signupDialog = true;
-      }
-      else {
+      } else {
         $scope.loginDialog = true;
       }
 
@@ -99,7 +98,7 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           } else {
             localStorage.setItem('userToken', res.data.token);
-            $rootScope.signupCheck();
+            signupCheck();
             $mdDialog.hide();
           }
         });
@@ -131,11 +130,10 @@ angular.module('eventApp')
         UserService.sendLink(userEmail).then(function(res) {
           $scope.errorEmail = false;
           $scope.progressBar = true;
-          if((res.data.message === 'No user found') && userEmail) {
+          if ((res.data.message === 'No user found') && userEmail) {
             $scope.errorEmail = true;
             $scope.progressBar = false;
-          }
-          else if (res.data.message === 'Message Sent!') {
+          } else if (res.data.message === 'Message Sent!') {
             $scope.emailSent = true;
           }
           console.log(res);
