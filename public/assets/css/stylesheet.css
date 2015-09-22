@@ -11,6 +11,13 @@
   color: white;
   margin-left: 50px;
   cursor: pointer;
+  font-size: 25px;
+}
+
+#page-footer {
+  background:#1f1f1f;
+  position:relative;
+  padding:20px
 }
 
 .error-div {
@@ -75,6 +82,7 @@
   max-height: auto;
   background-color: #eee;
   padding: 5%;
+  margin-bottom: 0;
 }
 
 img.bg {
@@ -106,6 +114,10 @@ img.bg {
   font-size: 15px;
 }
 
+#icon-menu {
+  display: none;
+}
+
 #motto-display {
   color: white;
   font-family: "Courier";
@@ -127,11 +139,29 @@ img.bg {
       font-size: 20px;
       width: 17em
   }
+  #display-name {
+    display: none;
+  }
+  #icon-menu {
+    margin-right:50px;
+    display: block;
+  }
+  #nav-menu {
+    display: none;
+  }
+  #navbar-logo {
+    margin-left: 5px;
+  }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   #motto-display {
     font-size: 20px;
     width: 27em
+  }
+}
+@media (min-width: 768px) {
+  .user-dropdown {
+    position: relative;
   }
 }
 
@@ -211,7 +241,6 @@ img.bg {
   font-size: 15px;
   cursor: pointer;
   font-family: "Courier";
-  position: relative;
   display: inline-block;
 }
 
@@ -401,9 +430,6 @@ label {
   height: 50px;
   width: 50%;
   background-color: grey;
-}
-p {
-  padding-left: 10px;
 }
 
 #eventTitleDiv {
