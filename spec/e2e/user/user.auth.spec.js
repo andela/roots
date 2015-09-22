@@ -16,7 +16,6 @@ describe('User Authentication Test', function() {
   var newPasswordFld = element(by.model('newUser.password'));
   var emailFld = element(by.model('userInfo.email'));
   var passwordFld = element(by.model('userInfo.password'));
-
   var messageFlds = element.all(by.css('.error-message'));
   var welcomeLink = element(by.id('welcome'));
 
@@ -44,8 +43,8 @@ describe('User Authentication Test', function() {
         fieldRenderTest(newLastnameFld, 'input');
         fieldRenderTest(newPasswordFld, 'input');
         fieldRenderTest(signupButtn, 'button');
-
         fieldAttribTest(newEmailFld, 'type', 'text');
+        fieldAttribTest(newEmailFld, 'type', 'email');
         fieldAttribTest(newFirstnameFld, 'type', 'text');
         fieldAttribTest(newLastnameFld, 'type', 'text');
         fieldAttribTest(newPasswordFld, 'type', 'password');
@@ -139,7 +138,88 @@ describe('User Authentication Test', function() {
         mongoose.disconnect();
         done();
       });
+
+
+      });
+
     });
+
+    describe('Sign up process Test', function() {
+
+      beforeEach(function(done) {
+        console.log(config.db);
+        mongoose.connect(config.db);
+        User.remove({
+          email: 'hfjshfj@mail.com'
+        }, function(err) {
+          if (!err) {
+            console.log('User collection removed!');
+          }
+        });
+        done();
+      });
+
+
+      it('expects to be signed in', function() {
+
+        signupLink.click();
+
+        newEmailFld.sendKeys('hfjshfj@mail.com');
+        newFirstnameFld.sendKeys('hfjshfj');
+        newLastnameFld.sendKeys('hfjshfj');
+        newPasswordFld.sendKeys('hfjshfj');
+
+        signupButtn.click();
+
+        fieldTextTest(welcomeLink, 'Welcome hfjshfj');
+
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
+      });
+
+      it('expects to notify of duplicate user registration attempt', function() {
+
+
+        var user = new User();
+        user.firstname = 'hfjshfj';
+        user.lastname = 'hfjshfj';
+        user.email = 'hfjshfj@mail.com';
+        user.password = '****';
+        user.phoneNumber1 = '12345';
+        user.gender = 'male';
+
+        user.save(function() {});
+
+        waits(1000);
+
+        signupLink.click();
+        newEmailFld.sendKeys('hfjshfj@mail.com');
+        newFirstnameFld.sendKeys('hfjshfj');
+        newLastnameFld.sendKeys('hfjshfj');
+        newPasswordFld.sendKeys('hfjshfj');
+
+        signupButtn.click();
+        fieldTextTest(messageFlds.get(3), 'This email is taken');
+
+      });
+
+      afterEach(function(done) {
+
+        User.remove({
+          email: 'hfjshfj@mail.com'
+        }, function(err) {
+          if (!err) {
+            console.log('User collection removed!');
+          }
+        });
+        mongoose.disconnect();
+        done();
+      });
+    });
+
+
   });
 
 
@@ -261,6 +341,129 @@ describe('User Authentication Test', function() {
       afterEach(function(done) {
 
         User.remove({}, function(err) {
+
+    describe('Login page and login validation Test', function() {
+
+      it('expects Login link to be present and as link', function() {
+        fieldRenderTest(loginLink, 'a');
+        fieldTextTest(loginLink, 'Log in');
+      });
+
+      it('expects input fields to be present', function() {
+
+        loginLink.click();
+
+        fieldRenderTest(emailFld, 'input');
+        fieldRenderTest(passwordFld, 'input');
+        fieldRenderTest(loginButtn, 'button');
+
+        fieldAttribTest(emailFld, 'type', 'email');
+        fieldAttribTest(passwordFld, 'type', 'password');
+
+      });
+
+      it('expects signup dialog to be displayed', function() {
+
+        loginLink.click();
+        showSignupLink.click();
+        expect(signupButtn.isDisplayed()).toBe(true);
+      });
+
+
+      it('should not alow user sign in with wrong email', function() {
+
+        loginLink.click();
+
+        emailFld.sendKeys('hfjshfj1@mail.com');
+        passwordFld.sendKeys('hfjshfj');
+
+        loginButtn.click();
+
+        fieldTextTest(messageFlds.get(0), 'This email is not registered');
+
+
+      });
+    });
+
+    describe('Log in process Test', function() {
+
+      beforeEach(function(done) {
+
+        mongoose.connect(config.db);
+        User.remove({}, function(err) {
+
+          if (!err) {
+            console.log('User collection removed!');
+          }
+        });
+        done();
+      });
+
+
+      it('should not allow user sign in with wrong password', function() {
+
+        var user = new User();
+        user.firstname = 'hfjshfj';
+        user.lastname = 'hfjshfj';
+        user.email = 'hfjshfj@mail.com';
+        user.password = '****';
+        user.phoneNumber1 = '12345';
+        user.gender = 'male';
+
+        user.save(function() {});
+
+        waits(1000);
+
+        loginLink.click();
+
+        emailFld.sendKeys('hfjshfj@mail.com');
+        passwordFld.sendKeys('hfjshfj2');
+
+        loginButtn.click();
+
+        fieldTextTest(messageFlds.get(1), 'Wrong Password');
+
+
+      });
+
+      it('should allow user to login with correct credentials', function() {
+
+        var user = new User();
+        user.firstname = 'hfjshfj';
+        user.lastname = 'hfjshfj';
+        user.email = 'hfjshfj@mail.com';
+        user.password = 'hfjshfj';
+        user.phoneNumber1 = '12345';
+        user.gender = 'male';
+
+        user.save(function() {});
+
+        waits(1000);
+
+        loginLink.click();
+
+        emailFld.sendKeys('hfjshfj@mail.com');
+        passwordFld.sendKeys('hfjshfj');
+
+        loginButtn.click();
+        fieldTextTest(welcomeLink, 'Welcome hfjshfj');
+
+        welcomeLink.click();
+        waits(1000);
+        logoutLink.click();
+        waits(1000);
+
+      });
+
+
+      afterEach(function(done) {
+
+        User.remove({}, function(err) {
+
+          if (!err) {
+            console.log('User collection removed!');
+          }
+
         });
 
         mongoose.disconnect();

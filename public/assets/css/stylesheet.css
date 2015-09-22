@@ -11,6 +11,13 @@
   color: white;
   margin-left: 50px;
   cursor: pointer;
+  font-size: 25px;
+}
+
+#page-footer {
+  background:#1f1f1f;
+  position:relative;
+  padding:20px
 }
 
 .error-div {
@@ -75,6 +82,7 @@
   max-height: auto;
   background-color: #eee;
   padding: 5%;
+  margin-bottom: 0;
 }
 
 img.bg {
@@ -102,6 +110,14 @@ img.bg {
   }
 }
 
+#display-name {
+  font-size: 15px;
+}
+
+#icon-menu {
+  display: none;
+}
+
 #motto-display {
   color: white;
   font-family: "Courier";
@@ -123,11 +139,29 @@ img.bg {
       font-size: 20px;
       width: 17em
   }
+  #display-name {
+    display: none;
+  }
+  #icon-menu {
+    margin-right:50px;
+    display: block;
+  }
+  #nav-menu {
+    display: none;
+  }
+  #navbar-logo {
+    margin-left: 5px;
+  }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   #motto-display {
     font-size: 20px;
     width: 27em
+  }
+}
+@media (min-width: 768px) {
+  .user-dropdown {
+    position: relative;
   }
 }
 
@@ -207,8 +241,12 @@ img.bg {
   font-size: 15px;
   cursor: pointer;
   font-family: "Courier";
-  position: relative;
   display: inline-block;
+}
+
+.user-menu > li > a {
+  font-size: 15px;
+  text-decoration: none;
 }
 
 .user-dropdown:hover {
@@ -240,7 +278,7 @@ img.bg {
 .navbar-image {
   width: 30px;
   height: 30px;
-  margin-bottom: -10px;
+  vertical-align: middle;
   border: 1px solid white;
   border-radius: 2px;
 }
@@ -257,7 +295,8 @@ img.bg {
 }
 
 .event-btn {
-  font-family: "Courier"
+  font-family: "Courier";
+  margin-right: 5px;
 }
 
 .event-btn:hover {
@@ -308,10 +347,18 @@ img.bg {
 }
 
 #theme1 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
   background-color: red;
 }
 
 #theme2 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
   background-color: blue;
 }
 
@@ -320,6 +367,18 @@ img.bg {
 }
 
 #theme4 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: orange;
+}
+
+#theme4 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
   background-color: green;
 }
 
@@ -351,14 +410,26 @@ label {
 
 
 .md-warn {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: #00BCD4;
+}
+
+#bar {
+  padding: 5px;
+  height: 5px;
+  width : 60;
+  background-color: white;
+}
+
+#headerDiv {
   font-size: 20px;
   border-radius: 8px 8px 0px 0px;
   height: 50px;
   width: 50%;
   background-color: grey;
-}
-p {
-  padding-left: 10px;
 }
 
 #eventTitleDiv {
@@ -367,6 +438,7 @@ p {
   border-style: solid;
   border-width: 1px;
 }
+
 #sideHeaderDiv {
   margin-left: 10%;
   font-size: 20px;
@@ -452,6 +524,21 @@ p {
 }
 
 
+#eventContent {
+  height: 400px;
+  width: 50%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
+#organizersContent {
+  height: 400px;
+  width: 30%;
+  margin-left: 10%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
 #padding {
   padding: 20px;
 }
@@ -467,7 +554,6 @@ p {
   border-width: 2px;
   border-radius: 2px;
 }
-<<<<<<< HEAD
 
 #bannerImg {
   border-style: dashed;
@@ -475,9 +561,8 @@ p {
   height: 200px;
   border-width: 2px;
   border-radius: 2px;
+}
 
-=======
->>>>>>> - add editEvent view and controller
 #width {
   width: 50%;
 }
@@ -496,6 +581,7 @@ p {
   height:30;
   border-style: solid;
   border-radius: 2px;
+}
 
 label {
   font-size: 10px;
@@ -515,6 +601,11 @@ label {
   color: grey;
   padding-top: 50px;
   margin-left: 30px;
+}
+
+#organizerTab {
+  width: 50%;
+  margin-left: 100px;
 }
 
 .editImage-box {

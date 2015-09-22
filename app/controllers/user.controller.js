@@ -7,6 +7,7 @@ var Organizer = require('../models/organizer.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
+var async = require('async');
 
 
 var UserController = function(passport) {
@@ -231,7 +232,6 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
         }
       }, function(err) {
         if (err) {
-
           return res.status(422).send({
             success: false,
             message: 'Unable to delete user from other organizer profile.'
@@ -252,14 +252,26 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
       });
 
     } else {
+          return res.status(422).send({
+            success: false,
+            message: 'Unable to delete user from other organizer profile.'
+          });
+        }
 
-      return res.status(422).send({
-        success: false,
-        message: 'User not found in db'
+        User.remove({
+          _id: userId
+        }, function(err, user) {
+          if (err) return res.send(err);
+
+          res.json({
+            message: 'Succesfully deleted'
+          });
+
+        });
+
       });
-    }
-  });
-};
+
+    };
 
 
 // UserController.prototype.deleteCurrentUser = function(req, res) {

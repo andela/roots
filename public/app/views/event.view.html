@@ -20,13 +20,14 @@
           <summernote height="300" ng-model="event.description"></summernote>
         </md-textarea-container>
         <br>
-        <label>Venue</label><br>
         <div layout-sm="row">
           <label>Country</label>
-          <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">
-            <md-option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</md-option>
-          </md-select>
-          <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
+          <select id="ddlViewBy" placeholder="Select Country" style="display: block;">
+            <option value=''>Select a country</option>
+            <option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</option>
+          </select><br>
+          <label>Venue</label><br>
+          <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click="getCountry()" ng-autocomplete="result" details="details" options="options1">
         </div>
         <br>
         <div layout layout-sm="column">
@@ -82,10 +83,10 @@
           </div>
 
         </ng-form><br>
-       <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button>
+       <md-button class="md-raised" ng-click="event.venue = result" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button>
       </form>
       <div class="md-toolbar-tools centre" layout-align="center">
-        <md-button class="md-raised" ng-click="currDisplay('preview')">NEXT</md-button>
+        <md-button class="md-raised" ng-click="currDisplay('preview')">Choose theme</md-button>
       </div>
       </md-content>
     </div>

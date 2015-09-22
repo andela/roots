@@ -4,7 +4,6 @@ var Promise = require('promise');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
-var Utils = require('../middleware/utils');
 var async = require('async');
 var configCloud = require('../../config/config');
 var Utils = require('../middleware/utils');
@@ -13,21 +12,20 @@ var cloudinary = require('cloudinary');
 var formidable = require('formidable');
 var mongoose = require('mongoose');
 
-
 require('../models/user.model');
 require('../models/event.model');
 require('../models/task.model');
 
 var Event = mongoose.model('Event');
 var utils = new Utils();
-var taskController = new TaskController();
 
+var taskController = new TaskController();
 var EventController = function() {};
 
 cloudinary.config({
-  cloud_name: 'dev8nation',
-  api_key: 687213232223225,
-  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
+  cloud_name: configCloud.cloudinary.cloud_name,
+  api_key: configCloud.cloudinary.api_key,
+  api_secret: configCloud.cloudinary.api_secret
 });
 
 EventController.prototype.registerEvent = function(req, res) {
@@ -40,22 +38,20 @@ EventController.prototype.registerEvent = function(req, res) {
     return res.json(eventDetails);
   });
 };
-
+  
 
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
     req.body = fields;
-      if(Object.keys(file) != 0){
-      cloudinary.uploader.upload(file.file.path, function(result){
-        req.body.imageUrl = result.secure_url;
-        next();
-      }, {
-        width: 800,
-        height: 800
-      });
-    } else {next();}
+    cloudinary.uploader.upload(file.file.path, function(result){
+      req.body.imageUrl = result.secure_url;
+      next();
+    }, {
+      width: 800,
+      height: 800  
     });
+  });
 };
 
 
@@ -98,7 +94,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body) {
+  if (!req.body.eventObj) {
 
     return res.status(422).send({
       success: false,
@@ -106,10 +102,11 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
-  var eventObj = req.body;
-  var eventId = req.body._id;
+  var eventObj = req.body.eventObj;
+  var eventId = req.params.event_id;
 
   Event.findById(eventId, function(err, evt) {
+
     if (err) {
       return res.status(500).send(err);
     } else if (!evt) {
@@ -124,13 +121,14 @@ EventController.prototype.editEventDetails = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
+
       Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          imageUrl: eventObj.imageUrl,
+          eventUrl: eventObj.eventUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
@@ -141,6 +139,7 @@ EventController.prototype.editEventDetails = function(req, res) {
       }, function(err, evt) {
 
         if (err) {
+          console.log(err);
           return res.status(500).send(err);
         } else if (!evt) {
           return res.status(422).send({
@@ -276,6 +275,7 @@ EventController.prototype.saveEventDetails = function(req, res) {
 
 //Get all events that are published
 EventController.prototype.getAllEvents = function(req, res) {
+console.log('backend running');
   // Event.find({
   //   online: true
   // }, function(err, events) {
@@ -320,6 +320,7 @@ EventController.prototype.deleteEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
+
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
@@ -336,14 +337,14 @@ EventController.prototype.deleteEvent = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-//commented this part out cos it prevents deleting events due to absence of Task
-      // Task.remove({
-      //   event_ref: eventId
-      // }, function(err) {
-      //
-      //   if (err)
-      //     return res.send(err);
-      //
+
+      Task.remove({
+        event_ref: eventId
+      }, function(err) {
+
+        if (err)
+          return res.status(500).send(err);
+
         Event.remove({
           _id: eventId
         }, function(err, evt) {
@@ -354,7 +355,7 @@ EventController.prototype.deleteEvent = function(req, res) {
             message: 'Succesfully deleted'
           });
         });
-      // });
+      });
     }
   });
 }
@@ -501,7 +502,7 @@ EventController.prototype.reuseEvent = function(req, res) {
             } else {
 
               //Copy list of the task managers added to the previous event
-              //to the newly created event using Promise instance
+              //to the newly created event using Promise instance 
 
               var promiseObject = function(curIndex) {
 

@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-var Schema = mongoose.Schema;
+
 
 var organizerSchema = new mongoose.Schema({
   user_ref: {
@@ -32,4 +32,5 @@ var organizerSchema = new mongoose.Schema({
   versionKey: false
 });
 
-mongoose.model('Organizer', organizerSchema);
+var Organizer = mongoose.model('Organizer', organizerSchema);
+module.exports = Organizer;

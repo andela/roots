@@ -1,0 +1,38 @@
+<div ng-controller="homeCtrl" data-ng-init="signupCheck()">
+  <div class="navbar">
+    <nav class="nav-div">
+      <div class="nav-wrapper">
+        <span ui-sref="home" class="brand-logo left"><strong id="navbar-logo">World Tree</strong></span>
+         <ul ng-if="!loggedIn" class="right" id="nav-menu">
+          <li><a ng-click="login('signup', $event)" tabindex="-1" class="nav-link">Sign up</a></li>
+          <li><a ng-click="login('login', $event)" tabindex="-1" class="nav-link">Log in</a></li>
+          <button ng-click="login('toCreate', $event)" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
+        </ul>
+        <ul class="right" id="nav-menu">
+          <li class="user-dropdown">
+            <a href="" ng-click="">
+            <img ng-src="{{profilePic}}" class="navbar-image">
+            <span>Welcome {{userName}}</span>
+            </a>
+            <ul class="user-menu">
+              <li class="menu-list"><a href="" ng-click="">My Profile</a></li>
+              <li class="menu-list"><a href="" ng-click="">Browse Events</a></li>
+              <li class="menu-list"><a href="" ng-click="logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <md-toolbar style="background:#f8f8ff;color:black;z-index:0;height:90px;border-bottom:2px solid black">
+    <div style="height:40px;margin-top:20px;margin-left:100px">
+      <strong style="font-size:35px;font-weight:bolder;color:#1f1f1f">Create An Event</strong>
+    </div>
+  </md-toolbar>
+  <md-content>
+    <md-toolbar style="background:#cccccc;border-bottom:2px solid black">
+
+    </md-toolbar>
+  </md-content>
+ 
+</div>
