@@ -23,10 +23,10 @@
         <label>Venue</label><br>
         <div layout-sm="row">
           <label>Country</label>
-          <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">
+          <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.venue.country" style="display: block;">
             <md-option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</md-option>
           </md-select>
-          <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
+          <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
         </div>
         <br>
         <div layout layout-sm="column">
@@ -83,6 +83,7 @@
 
         </ng-form><br>
        <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button>
+       <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
       </form>
       <div class="md-toolbar-tools centre" layout-align="center">
         <md-button class="md-raised" ng-click="currDisplay('preview')">NEXT</md-button>
@@ -141,7 +142,7 @@
                   <div class="md-toolbar-tools">{{event.name}}</div>
                 </md-toolbar>
                 <md-toolbar md-scroll-shrink id="contentSideDiv" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor, 'background-color' : event.eventTheme.contentColor}">
-                  <div class="md-toolbar-tools">{{event.venue}} {{event.country}}</div>
+                  <div class="md-toolbar-tools">{{event.venue.address}} {{event.venue.country}}</div>
                 </md-toolbar>
               </div>
               <div layout="row">
@@ -159,7 +160,7 @@
               <div layout="row">
                 <md-toolbar md-scroll-shrink id="eventContent" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor, 'background-color' : event.eventTheme.contentColor}">
                   <p>{{event.name}}</p> <br>
-                  <p>{{event.venue}}</p><br>
+                  <p>{{event.venue.address}}</p><br>
                   <p>{{event.category}}</p><br>
                   <p ng-bind-html="eventInfo"></p>
                 </md-toolbar>
@@ -172,6 +173,7 @@
               </div><br/>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
                 <md-button class="md-raised" type="submit" ng-disabled="createEvent.$invalid">Create Event</md-button >
+                <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
               </section>
             </div>
           </div>

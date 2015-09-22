@@ -22,7 +22,7 @@ angular.module('eventApp')
           return $http.get(baseUrl + "events");
       },
       getEvent: function(eventId) {
-          return $http.get(baseUrl + "event/:" + eventId);
+          return $http.get(baseUrl + "event/" + eventId);
       }
     };
   }]);

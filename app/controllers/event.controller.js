@@ -24,17 +24,22 @@ cloudinary.config({
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
-    req.body = fields;
-      if(Object.keys(file) != 0){
-      cloudinary.uploader.upload(file.file.path, function(result){
+    req.body.eventObj = fields;
+    if (Object.keys(file) != 0) {
+      cloudinary.uploader.upload(file.file.path, function(result) {
         req.body.imageUrl = result.secure_url;
+        if (req.body.imageUrl) {
+          req.body.eventObj.imageUrl = req.body.imageUrl;
+        }
         next();
       }, {
         width: 800,
         height: 800
       });
-    } else {next();}
-    });
+    } else {
+      next();
+    }
+  });
 };
 
 
@@ -49,11 +54,13 @@ EventController.prototype.createEvent = function(req, res) {
   }
 
   var userId = req.decoded._id;
-  var eventTasks = req.body.eventObj.tasks;
   var eventObj = req.body.eventObj;
-  eventObj.eventBanner = req.body.imageUrl;
+
   eventObj.user_ref = userId;
   eventObj.tasks = [];
+
+  eventObj.venue = JSON.parse(eventObj.venue);
+  eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
 
   Event.create(eventObj, function(err, newEvent) {
 
@@ -78,7 +85,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body) {
+  if (!req.body.eventObj) {
 
     return res.status(422).send({
       success: false,
@@ -86,8 +93,15 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
-  var eventObj = req.body;
-  var eventId = req.body._id;
+  var eventObj = req.body.eventObj;
+  var eventId = req.params.event_id;
+
+  try {
+    eventObj.venue = JSON.parse(eventObj.venue);
+    eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
+  } catch (err) {
+
+  }
 
   Event.findById(eventId, function(err, evt) {
     if (err) {
@@ -110,7 +124,7 @@ EventController.prototype.editEventDetails = function(req, res) {
           description: eventObj.description,
           category: eventObj.category,
           venue: eventObj.venue,
-          eventBanner: req.body.imageUrl,
+          imageUrl: eventObj.imageUrl,
           eventTheme: eventObj.eventTheme,
           eventFont: eventObj.eventFont,
           startDate: eventObj.startDate,
@@ -225,6 +239,7 @@ EventController.prototype.saveEventDetails = function(req, res) {
       newEvent.eventUrl = evt.eventUrl;
       newEvent.eventTheme = evt.eventTheme;
       newEvent.eventFont = evt.eventFont;
+      newEvent.imageUrl = evt.imageUrl;
       newEvent.startDate = evt.startDate;
       newEvent.endDate = evt.endDate;
       newEvent.online = false;

@@ -38,7 +38,7 @@ var eventSchema = new mongoose.Schema({
     latitude: Number,
     longitude: Number
   },
-  eventBanner: {
+  imageUrl: {
     type: String
   },  
   eventTheme: {    
