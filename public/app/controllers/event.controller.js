@@ -1,20 +1,10 @@
 angular.module('eventApp')
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
 
-  $scope.signupCheck = function() {
-    if(localStorage.getItem('userToken')) {
-      UserService.decodeUser().then(function(res) {
-        $scope.userName = res.data.firstname;
-        $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-        $scope.loggedIn = true;
-      });
-    }
-    else {
-      $location.url('/home');
-    }
-  };
+  
   $rootScope.hideBtn = true;
   $scope.submitEventDetails = function (eventDetails, organizer){
+    eventDetails.country = $scope.getCountryCode().text;
     var token = localStorage.getItem('userToken');
     eventDetails.user_ref = $rootScope.userId;
     organizer.user_ref = $rootScope.userId;
@@ -60,14 +50,18 @@ angular.module('eventApp')
 
   $scope.getCountryCode = function() {
     var e = document.getElementById("ddlViewBy");
-    $scope.countryCode = e.options[e.selectedIndex].value;
-    return $scope.countryCode;
+    var ctCode = e.options[e.selectedIndex].value;
+    var ctName = e.options[e.selectedIndex].text;
+    return {
+     code: ctCode,
+     text: ctName
+    };
   };
 
   $scope.getCountry = function() {
     $scope.result = '';
     $scope.options1 = {
-      country: $scope.getCountryCode()
+      country: $scope.getCountryCode().code
     };
     $scope.details = '';
   };

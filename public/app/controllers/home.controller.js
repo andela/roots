@@ -14,17 +14,16 @@ angular.module('eventApp')
       localStorage.setItem('userToken', userToken);
     }
 
-    var signupCheck = function() {
+    $rootScope.signupCheck = function() {
       if(localStorage.getItem('userToken')) {
         UserService.decodeUser().then(function(res) {
+          $rootScope.loggedIn = true;
           $rootScope.userId = res.data._id;
-          $scope.userName = res.data.firstname;
-          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-          $scope.loggedIn = true;
+          $rootScope.userName = res.data.firstname;
+          $rootScope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
         });
       }
     };
-    signupCheck();
 
     var getEvents = function() {
       EventService.getAllEvents().then(function(data) {
@@ -47,11 +46,6 @@ angular.module('eventApp')
         },
         templateUrl: "app/views/login.view.html"
       });
-    };
-
-    $scope.toEvent= function() {
-        if($scope.loggedIn = true)
-          $location.path("/cevent");
     };
 
     $scope.fetchEvents = function() {
@@ -105,14 +99,13 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           } else {
             localStorage.setItem('userToken', res.data.token);
-            signupCheck();
+            $rootScope.signupCheck();
             $mdDialog.hide();
           }
         });
       };
 
       $scope.signupUser = function(newUser) {
-        console.log(newUser);
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
@@ -144,7 +137,6 @@ angular.module('eventApp')
           else if (res.data.message === 'Message Sent!') {
             $scope.emailSent = true;
           }
-          console.log(res);
           $scope.progressBar = false;
         });
       };
@@ -156,7 +148,7 @@ angular.module('eventApp')
         name: recipient.firstname
       });
       UserService.sendWelcomeMail(data).success(function(data, status, headers, config) {
-
+        //this function request the backend to send a welcome mail
       });
     };
   }]);
