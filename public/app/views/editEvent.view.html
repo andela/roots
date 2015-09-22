@@ -16,8 +16,9 @@
     </md-textarea-container>
     <br>
     <div layout-sm="row">
-      <label>Venue</label><br>
-      <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click="getCountry()" ng-autocomplete="result" details="details" options="options1">
+      <label>Country</label>
+      <country-list></country-list><br>
+      <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
     </div>
     <br>
     <label>Event Date<span class="req">*</span></label><br>
