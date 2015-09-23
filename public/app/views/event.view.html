@@ -63,11 +63,12 @@
             <input required ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
           </div><br>
         </ng-form><br>
-          <md-button class="md-raised" ng-click="event.venue = result" type="submit" ng-disabled="eventForm.$invalid">CREATE</md-button>
+          <md-button class="md-raised" type="submit" ng-click="publishEvent(false)" ng-disabled="eventForm.$invalid">Create Event</md-button>
+          <md-button class="md-raised" type="submit" ng-click="publishEvent(true)" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
+           <md-button class="md-raised" ng-click="prev = true">PREVIEW</md-button>
           <md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
       </form>
       <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
-
       </md-content>
     </div>
     <div id="for preview" ng-show="prev">
@@ -154,8 +155,8 @@
                   </md-toolbar>
                 </div><br/>
                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                  <md-button class="md-raised" type="submit" ng-disabled="createEvent.$invalid">Create Event</md-button >
-                  <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
+                  <md-button class="md-raised" type="submit" ng-click="publishEvent(false)" ng-disabled="createEvent.$invalid">Create Event</md-button >
+                  <md-button class="md-raised" type="submit" ng-click="publishEvent(true)" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
                 </section>
               </div>
             </div>

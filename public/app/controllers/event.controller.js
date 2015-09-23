@@ -89,6 +89,9 @@ angular.module('eventApp')
     };
     $scope.details = '';
   };
+   $scope.publishEvent = function(publish){
+    $scope.event.online = publish;      
+  }
 
   $scope.previewImg = function (inElement,prevElement,imageElement){
     $(inElement).on('change', function () {
