@@ -1,7 +1,7 @@
-'use strict';
+  'use strict';
 
 var mongoose = require('mongoose');
-
+var Schema = mongoose.Schema;
 var eventSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -13,38 +13,34 @@ var eventSchema = new mongoose.Schema({
   },
   user_ref: {
     type: String,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   description: {
     type: String,
     required: true
   },
-  online: {    
+  online: {
     type: Boolean,
     default: false
   },
+  country: {
+    type: String
+  },
   venue: {
-    name: String,
-    country: String,
-    state: String,
-    town: String,
-    address: {
-      type: String,
-      required: true
-    },
-    latitude: Number,
-    longitude: Number
+    type: String
   },
   eventBanner: {
     type: String
   },
-  eventUrl: {
+  imageUrl: {
     type: String
   },
   eventTheme: {
     type: String,
-    default: 'white'
+    headerColor: String,
+    fontColor: String,
+    borderColor: String,
+    contentColor: String
   },
   eventFont: {
     color: {
@@ -85,9 +81,8 @@ var eventSchema = new mongoose.Schema({
       ref: 'Task'
     }
   }]
-}, {
+},{
   versionKey: false
 });
 
-var Event = mongoose.model('Event', eventSchema);
-module.exports = Event;
+mongoose.model('Event', eventSchema);

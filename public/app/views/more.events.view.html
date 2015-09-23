@@ -1,0 +1,50 @@
+<div ng-controller="homeCtrl" data-ng-init="fetchEvents()" layout= "row" id="moreevent-container">
+	<div layout="column" style="height:800px;">
+  <section layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar class="md-theme-indigo">
+        <h1 class="md-toolbar-tools">Filter by...</h1>
+      </md-toolbar>
+      <md-content layout-padding>
+        <div class="col-md-2">
+		      Event Name <input type="text" ng-model="find.name">
+		    </div>
+        <md-select aria-label="sel" id="sideTags" ng-model="find.category" placeholder="Category" style="display: block;">  
+          <md-option ng-click="fetchEvents()" value="">All</md-option>
+          <md-option placeholder="Category" ng-repeat="category in categories" value="{{category.name}}">{{category.name}}
+          </md-option>
+        </md-select> 
+						<span>Country</span>
+        <select id="ddlViewBy" placeholder="Select Country" ng-model="find.country" style="display: block;">
+        	<option ng-click="fetchEvents()" value="">None<option>  
+          <option ng-repeat="country in countries" value="{{country.name}}">{{country.name}}</option>         
+        </select>
+      </md-content>
+    </md-sidenav>
+    <md-content flex layout-padding>
+      <div layout="column" layout-fill layout-align="top center">
+        <div class="md-toolbar-tools" layout="row"> 
+					<span><strong>Events for you...</strong>
+					<md-button id="dateBtn" class="md-primary">Date</md-button>
+				</div>
+					<div id="event-list" class="column">
+					  <div ng-repeat="event in filtered =(eventList | filter : find)" class="col s4" id="event-container">
+					    <div class="card small" class="row" layout layout-align="center left" id="whiteFrame">
+					      <div>
+					        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="image-preview">
+					      </div>
+					      <div>
+					        <p>{{event.startDate | date:'medium'}}</p>
+					        <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
+					        <p>Country: {{event.country}}
+					        <p>Category: {{event.category | uppercase}}</p>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+      </div>
+      <div flex></div>
+    </md-content>
+  </section>
+</div>
+</div>

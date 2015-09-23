@@ -81,7 +81,7 @@ describe('User Authentication Test', function() {
 
       beforeEach(function(done) {
         mongoose.connect(config.db);
-        User.remove({}, function(err) {          
+        User.remove({}, function(err) {
         });
         done();
       });
@@ -134,7 +134,7 @@ describe('User Authentication Test', function() {
       afterEach(function(done) {
 
         User.remove({}, function(err) {
-          
+
         });
         mongoose.disconnect();
         done();
@@ -198,7 +198,7 @@ describe('User Authentication Test', function() {
       beforeEach(function(done) {
 
         mongoose.connect(config.db);
-        User.remove({}, function(err) {         
+        User.remove({}, function(err) {
         });
         done();
       });

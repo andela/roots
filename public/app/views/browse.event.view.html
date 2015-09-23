@@ -1,0 +1,23 @@
+<div class="md-toolbar-tools" id= "event-container"> 
+	<span><strong>Popular Events coming up...</strong>
+</div>
+<div class="md-whiteframe-z3" class="column" layout layout-align="center center">
+	<div id="event-list" ng-controller="homeCtrl" data-ng-init="fetchEvents()" class="column">
+	  <div ng-repeat="event in eventList" class="col s4" id="event-container">
+	    <div class="card small" class="row" layout layout-align="center left" id="whiteFrame">
+	      <div>
+	        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="image-preview">
+	      </div>
+	      <div>
+	        <p>{{event.startDate | date:'medium'}}</p>
+	        <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
+	        <p>{{event.venue | uppercase}}</p>
+	        <p>{{event.description}}</p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+<div class="md-toolbar-tools centre" layout-align="center"> 
+	<md-button ui-sref="user.moreEvents"class="md-raised" ng-click="">Browse More Events</md-button>
+</div>

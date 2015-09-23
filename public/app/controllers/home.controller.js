@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location) {
+  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', 'EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, EventService) {
     $("a[href='#downpage']").click(function() {
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
@@ -11,13 +11,23 @@ angular.module('eventApp')
     $location.search('token', null);
     if (userToken) {
       localStorage.setItem('userToken', userToken);
-    }    
-
-    $rootScope.signupCheck = function() {
-      if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
-      }
     }
+   
+    $rootScope.signupCheck = function() {
+      if(localStorage.getItem('userToken')) {
+        UserService.decodeUser().then(function(res) {
+          $rootScope.loggedIn = true;
+          $rootScope.userName = res.data.firstname;
+          $rootScope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
+        });
+      }
+    };
+
+    var getEvents = function() {
+      EventService.getAllEvents().then(function(data) {
+        $scope.eventList = data.data;
+      })
+    };
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
@@ -33,6 +43,17 @@ angular.module('eventApp')
           view: view
         },
         templateUrl: "app/views/login.view.html"
+      });
+    };
+
+    $scope.toEvent= function() {
+        if($scope.loggedIn = true)
+          $location.path("/cevent");
+    };
+
+    $scope.fetchEvents = function() {
+      EventService.getAllEvents().then(function(data){
+        $scope.eventList = data.data;
       });
     };
 
@@ -85,6 +106,7 @@ angular.module('eventApp')
       };
 
       $scope.signupUser = function(newUser) {
+        console.log(newUser);
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
@@ -92,7 +114,7 @@ angular.module('eventApp')
               $scope.emailTaken = true;
               $scope.progressLoad = false;
               $scope.validEmail = false;
-            } else {              
+            } else {
               $scope.loginUser({
                 email: newUser.email,
                 password: newUser.password

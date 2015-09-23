@@ -8,15 +8,15 @@ var router = express.Router();
 module.exports = function(app) {
 
   router.route('/event')
-    .post(userCtrl.verifyToken, evtCtrl.createEvent)
-    .get(userCtrl.verifyToken, evtCtrl.getMyEvents);
-
+    .get(userCtrl.verifyToken, evtCtrl.getMyEvents)
+    .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.registerEvent);
+    
   router.route('/events')
     .get(evtCtrl.getAllEvents);
 
   router.route('/event/:event_id')
     .get(evtCtrl.getEvent)
-    .put(userCtrl.verifyToken, evtCtrl.editEventDetails)
+    .put(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.editEventDetails)
     .delete(userCtrl.verifyToken, evtCtrl.deleteEvent);
 
   router.route('/event/:event_id/launch')
