@@ -331,10 +331,10 @@ OrganizerController.prototype.deleteStaff = function(req, res) {
 
 OrganizerController.prototype.getProfile = function(req, res) {
 
-  var orgId = req.params.organizer_id;
+  var org_name = req.query.name;
 
-  Organizer.findById(orgId, function(err, org) {
-
+  //find organizer by the user reference (user_ref) instead of org_id
+  Organizer.find({name: org_name}, function(err, org) {
     if (err) {
       return res.status(500).send(err);
     } else if (!org) {
@@ -360,7 +360,6 @@ OrganizerController.prototype.getProfile = function(req, res) {
 }
 
 OrganizerController.prototype.getAllProfiles = function(req, res) {
-
   Organizer.find(function(err, organizers) {
     if (err) {
       return res.json(err);
@@ -372,7 +371,6 @@ OrganizerController.prototype.getAllProfiles = function(req, res) {
       if (err) {
         return res.json(err);
       }
-
       res.json(populatedProfiles);
 
     });
