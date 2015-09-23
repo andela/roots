@@ -1,4 +1,5 @@
 angular.module('eventApp')
+<<<<<<< HEAD
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce','$window', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce, $window) {
 
    if (!localStorage.getItem('userToken')) {
@@ -6,6 +7,7 @@ angular.module('eventApp')
   }
   $rootScope.hideBtn = true;
   $scope.services = function(){
+
     EventService.getEvent($stateParams.event_id)
       .success(function(event){
         $scope.event = event;
@@ -15,7 +17,9 @@ angular.module('eventApp')
         $('.values').css('border-color', event.borderColor);
         $('.values').css('background-color', event.contentColor);
         $('.values').css('color', event.fontColor);
-        $scope.Address = event.venue;
+
+        $scope.venue = event.venue;
+
         EventService.getOrganizer(event.org_name)
       .success(function(organizer){
         $scope.organizer = organizer[0];
@@ -60,11 +64,12 @@ angular.module('eventApp')
      });
   };
 
-  $scope.view = 'create';
 
-  $scope.currDisplay = function(view){
-    $scope.view = view;
-  };
+    $scope.view = 'create';
+
+    $scope.currDisplay = function(view) {
+      $scope.view = view;
+    };    
 
   $scope.categories = ('Technology,Sport,Health,Music,Art,Science,Spirituality,Media,Family,Education,Party').split(',').map(function(category){
     return {
