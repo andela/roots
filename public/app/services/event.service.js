@@ -23,6 +23,10 @@ angular.module('eventApp')
       },
       getEvent: function(eventId) {
           return $http.get(baseUrl + "event/:" + eventId);
+      },
+      getOrganizer: function(name) {
+          var token = localStorage.getItem('userToken');
+          return $http.get(baseUrl + "myorganizer" + "?token=" + token + '&name=' + name);
       }
     };
   }]);
