@@ -1,13 +1,7 @@
 angular.module('eventApp')
-<<<<<<< HEAD
-  .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
-   if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
-=======
   .controller('eventCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'Upload', '$rootScope', '$sce', function($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
     if (localStorage.getItem('userToken')) {
       UserService.decodeUser($scope);
->>>>>>> Fix(frontend|backend) Modify create event feature interation to ensure some data are stored in appropriate model objects during create and edit event. Add create and publish event button. Prepopulate date fields during event edit
     };
 
     $scope.submitEventDetails = function(eventDetails, organizer) {
