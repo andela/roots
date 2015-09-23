@@ -578,3 +578,10 @@ label {
 #dateBtn {
  margin-left: 600px;
 }
+
+#browseBtn {
+  position: relative;
+  background-color: #eee;
+  padding: 5%;
+  margin-bottom: 0;
+}
