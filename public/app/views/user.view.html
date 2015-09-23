@@ -16,21 +16,47 @@
           </ul>
         </li>
       </ul>
-      <ul ng-if="loggedIn" class="right" id="nav-menu">
+      <ul ng-if="loggedIn" class="right">
         <li class="user-dropdown">
           <a href="" ng-click="">
           <img ng-src="{{profilePic}}" class="navbar-image">
-          <span id="display-name">Welcome {{userName}}</span>
+          <span id="display-name">Welcome {{userName | lowercase}}</span>
           </a>
           <ul class="user-menu">
             <li class="menu-list"><a href="" ng-click="">My Profile</a></li>
-            <li class="menu-list"><a ui-sref="user.browseEvents" href="" ng-click="">Browse Events</a></li>
+            <li class="menu-list"><a href="" ng-click="">Browse Events</a></li>
             <li class="menu-list"><a href="" ng-click="logout()">Logout</a></li>
           </ul>
         </li>
-        <button ui-sref="user.cevent" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
+        <button ng-hide="hideBtn" ui-sref="user.cevent" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
       </ul>
     </div>
   </nav>
 </div>
 <div ui-view></div>
+<footer id="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+        <h5 class="grey-text">About <strong><em>World Tree</em></strong></h5>
+        <p class="grey-text text-lighten-4">
+        World tree Inc is an online event management application that helps organize events efficiently 
+        </p>
+      </div>
+      <div class="col l4 offset-l2 s12">
+        <h5 class="grey-text">Connect with us</h5>
+        <ul>
+          <li><a class="grey-text text-lighten-3" href="#!">Twitter</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Facebook</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Google+</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright" style="color:white">
+    <div class="container">
+    © 2015 World Tree
+    </div>
+  </div>
+</footer>
