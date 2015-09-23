@@ -11,6 +11,13 @@
   color: white;
   margin-left: 50px;
   cursor: pointer;
+  font-size: 25px;
+}
+
+#page-footer {
+  background:#1f1f1f;
+  position:relative;
+  padding:20px
 }
 
 .error-div {
@@ -75,6 +82,7 @@
   max-height: auto;
   background-color: #eee;
   padding: 5%;
+  margin-bottom: 0;
 }
 
 img.bg {
@@ -102,6 +110,14 @@ img.bg {
   }
 }
 
+#display-name {
+  font-size: 15px;
+}
+
+#icon-menu {
+  display: none;
+}
+
 #motto-display {
   color: white;
   font-family: "Courier";
@@ -123,11 +139,29 @@ img.bg {
       font-size: 20px;
       width: 17em
   }
+  #display-name {
+    display: none;
+  }
+  #icon-menu {
+    margin-right:50px;
+    display: block;
+  }
+  #nav-menu {
+    display: none;
+  }
+  #navbar-logo {
+    margin-left: 5px;
+  }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   #motto-display {
     font-size: 20px;
     width: 27em
+  }
+}
+@media (min-width: 768px) {
+  .user-dropdown {
+    position: relative;
   }
 }
 
@@ -207,8 +241,12 @@ img.bg {
   font-size: 15px;
   cursor: pointer;
   font-family: "Courier";
-  position: relative;
   display: inline-block;
+}
+
+.user-menu > li > a {
+  font-size: 15px;
+  text-decoration: none;
 }
 
 .user-dropdown:hover {
@@ -237,10 +275,6 @@ img.bg {
     color: #00bfff;
 }
 
-#display-name {
-  font-size: 15px !important;
-}
-
 .navbar-image {
   width: 30px;
   height: 30px;
@@ -261,7 +295,8 @@ img.bg {
 }
 
 .event-btn {
-  font-family: "Courier"
+  font-family: "Courier";
+  margin-right: 5px;
 }
 
 .event-btn:hover {
@@ -307,16 +342,23 @@ img.bg {
   height:100px;
   width: 100px;
 }
-
 #default {
   background-color: grey;
 }
 
 #theme1 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
   background-color: red;
 }
 
 #theme2 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
   background-color: blue;
 }
 
@@ -325,6 +367,18 @@ img.bg {
 }
 
 #theme4 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: orange;
+}
+
+#theme4 {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
   background-color: green;
 }
 
@@ -354,15 +408,28 @@ label {
   font-size: 10px;
 }
 
+
 .md-warn {
+  margin-right: 10px;
+  padding: 10px;
+  height:100px;
+  width: 100px;
+  background-color: #00BCD4;
+}
+
+#bar {
+  padding: 5px;
+  height: 5px;
+  width : 60;
+  background-color: white;
+}
+
+#headerDiv {
   font-size: 20px;
   border-radius: 8px 8px 0px 0px;
   height: 50px;
   width: 50%;
   background-color: grey;
-}
-p {
-  padding-left: 10px;
 }
 
 #eventTitleDiv {
@@ -430,6 +497,7 @@ p {
   border-style: solid;
   border-width: 1px;
   color: #424242;
+
 }
 
 #eventContent {
@@ -455,6 +523,22 @@ p {
   border-radius: 0px 0px 8px 8px;
 }
 
+
+#eventContent {
+  height: 400px;
+  width: 50%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
+#organizersContent {
+  height: 400px;
+  width: 30%;
+  margin-left: 10%;
+  font-size: 20px;
+  background-color: #C0C0C0;
+}
+
 #padding {
   padding: 20px;
 }
@@ -465,6 +549,14 @@ p {
 
 .images {
   border-style: solid;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px;
+}
+
+#bannerImg {
+  border-style: dashed;
   width: 250px;
   height: 200px;
   border-width: 2px;
@@ -482,6 +574,13 @@ p {
 .fieldset {
   width: 80%;
   padding-left: 5%;
+}
+
+#image-holder {
+  width :20%;
+  height:30;
+  border-style: solid;
+  border-radius: 2px;
 }
 
 label {
@@ -514,55 +613,4 @@ label {
   width:300px;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-
-.switch-container {
-  background-color: #eee;
-  padding: 2%;
-}
-
-.form-container {
-  margin:0 auto;
-  width:70%;
-  padding: 4%;
-  margin-top: 5%;
-}
-
-.image-box {
-  height: 250px;
-  width:300px;
-  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
-}
-
-label {
-  font-size: 10px;
-}
-
-#image-preview {
-  height: 250px;
-  width: 400px;  
-}
-
-#whiteFrame {
-  margin-bottom: 20px;
-  height: 250px;
-}
-
-.md-whiteframe-z3{
-  padding : 5%;
-}
-
-#event-container {
-  background-color: #eee;
-  width: 700px;
-}
-
-#homeEvent-container{
-  background-color: #eee;
-  width: 33%;
-}
-
-#dateBtn {
-  margin-left: 600px;
 }
