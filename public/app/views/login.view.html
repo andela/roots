@@ -1,5 +1,5 @@
 <md-dialog aria-label="login" class="dialog-form">
-  <md-dialog-content ng-show="loginDialog">
+  <md-dialog-content ng-if="loginDialog">
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
@@ -34,7 +34,7 @@
       </md-content>
     </div>
   </md-dialog-content>
-  <md-dialog-content ng-show="signupDialog">
+  <md-dialog-content ng-if="signupDialog">
     <div class="modal-div">
       <md-content>
         <div layout="row" layout-align="center center">
@@ -74,7 +74,7 @@
       </md-content>
     </div>
   </md-dialog-content>
-  <md-dialog-content ng-show="resetDialog">
+  <md-dialog-content ng-if="resetDialog">
   <div class="modal-div">
       <md-content ng-hide="emailSent">
         <div layout="row" layout-align="center center">
