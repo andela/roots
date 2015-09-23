@@ -3,11 +3,20 @@ angular.module('eventApp')
    if (localStorage.getItem('userToken')) {
         UserService.decodeUser();
     };
-
+  EventService.getEvent($stateParams.event_id)
+    .success(function(event){
+      $scope.event = event;
+      EventService.getOrganizer($scope.event.org_name)
+    .success(function(organizer){
+      $scope.organizer = organizer[0];
+    });
+  });
+  
   $scope.submitEventDetails = function (eventDetails, organizer){
     var token = localStorage.getItem('userToken');
     eventDetails.user_ref = $rootScope.userId;
     organizer.user_ref = $rootScope.userId;
+    eventDetails.org_name = organizer.name;
     Upload.upload({
       method: "POST",
       url: '/api/event?token='+ token,
