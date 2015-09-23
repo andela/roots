@@ -23,9 +23,9 @@ angular.module('eventApp')
       }
     };
 
-    var getEvents = function() {
-      EventService.getAllEvents().then(function(data) {
-        $scope.eventList = data.data;
+    $scope.getOrganizers = function() {
+      EventService.getAllProfiles().then(function(data) {
+        $scope.organizers = data.data;
       })
     };
 
