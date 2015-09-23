@@ -113,8 +113,8 @@
               </md-input-container>
             </div>
         </ng-form><br>
-       <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button>
-       <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
+       <md-button class="md-raised" type="submit" ng-click="publishEvent(false)" ng-disabled="eventForm.$invalid">Create Event</md-button>
+       <md-button class="md-raised" type="submit" ng-click="publishEvent(true)" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
       </form>
       <div class="md-toolbar-tools centre" layout-align="center">
         <md-button class="md-raised" ng-click="currDisplay('preview')">NEXT</md-button>
@@ -204,8 +204,8 @@
                   </md-toolbar>
                 </div><br/>
                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                  <md-button class="md-raised" type="submit" ng-disabled="createEvent.$invalid">Create Event</md-button >
-                  <md-button class="md-raised" type="submit" ng-click="publishEvent()" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
+                  <md-button class="md-raised" type="submit" ng-click="publishEvent(false)" ng-disabled="createEvent.$invalid">Create Event</md-button >
+                  <md-button class="md-raised" type="submit" ng-click="publishEvent(true)" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
                 </section>
               </div>
             </div>
