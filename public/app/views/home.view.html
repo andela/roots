@@ -20,8 +20,8 @@
         <div class="card-image">
               <img ng-src="{{event.imageUrl}}" class="responsive-img">
         </div>
-        <div class="card-content">
-          <p><span class="card-title black-text"><strong ui-sref="user.editEvent({event_id: event._id})">{{event.name | uppercase}}</strong></span></p>
+        <div class="card-content" ui-sref="user.editEvent({event_id: event._id})">
+          <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
           <p>{{event.venue | uppercase}}</p>
           <p>{{event.startDate | date:'medium'}}</p>
         </div>
