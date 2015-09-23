@@ -22,7 +22,7 @@ module.exports = function(app) {
     .put(userCtrl.verifyToken, orgCtrl.editRole)
     .delete(userCtrl.verifyToken, orgCtrl.deleteStaff);
 
-  router.route('/organizer/:organizer_id')
+  router.route('/myorganizer')
     .get(userCtrl.verifyToken, orgCtrl.getProfile)
     .put(userCtrl.verifyToken, orgCtrl.editProfile);
 
