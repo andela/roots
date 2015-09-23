@@ -69,8 +69,8 @@ angular.module('eventApp')
       $scope.details = '';
     };
 
-    $scope.publishEvent = function(){
-      $scope.event.online = true;      
+    $scope.publishEvent = function(publish){
+      $scope.event.online = publish;      
     }
 
     $scope.previewImg = function(inElement, prevElement) {
