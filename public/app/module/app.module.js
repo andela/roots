@@ -18,6 +18,7 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       templateUrl: '../app/views/twitter.user.html',
       controller: 'twitterCtrl'
     })
+
     .state('user.cevent', {
       url: '/cevent',
       templateUrl: '../app/views/event.view.html',
@@ -36,6 +37,18 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
     .state('user.profile', {
       url: '/profile',
       templateUrl: '../app/views/user.profile.html'
+    })
+
+    .state('user.browseEvents', {
+      url: '/browse-events',
+      templateUrl: '../app/views/browse.event.view.html',
+      controller: 'eventCtrl'
+    })
+
+    .state('user.moreEvents', {
+      url: '/more-events',
+      templateUrl: '../app/views/more.events.view.html',
+      controller: 'eventCtrl'
     });
 
   $urlRouterProvider.otherwise('/user/home');

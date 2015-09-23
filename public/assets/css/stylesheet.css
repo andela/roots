@@ -237,10 +237,14 @@ img.bg {
     color: #00bfff;
 }
 
+#display-name {
+  font-size: 15px !important;
+}
+
 .navbar-image {
   width: 30px;
   height: 30px;
-  margin-bottom: -10px;
+  vertical-align: middle;
   border: 1px solid white;
   border-radius: 2px;
 }
@@ -303,6 +307,7 @@ img.bg {
   height:100px;
   width: 100px;
 }
+
 #default {
   background-color: grey;
 }
@@ -349,7 +354,6 @@ label {
   font-size: 10px;
 }
 
-
 .md-warn {
   font-size: 20px;
   border-radius: 8px 8px 0px 0px;
@@ -367,6 +371,7 @@ p {
   border-style: solid;
   border-width: 1px;
 }
+
 #sideHeaderDiv {
   margin-left: 10%;
   font-size: 20px;
@@ -425,7 +430,6 @@ p {
   border-style: solid;
   border-width: 1px;
   color: #424242;
-
 }
 
 #eventContent {
@@ -451,7 +455,6 @@ p {
   border-radius: 0px 0px 8px 8px;
 }
 
-
 #padding {
   padding: 20px;
 }
@@ -467,17 +470,7 @@ p {
   border-width: 2px;
   border-radius: 2px;
 }
-<<<<<<< HEAD
 
-#bannerImg {
-  border-style: dashed;
-  width: 250px;
-  height: 200px;
-  border-width: 2px;
-  border-radius: 2px;
-
-=======
->>>>>>> - add editEvent view and controller
 #width {
   width: 50%;
 }
@@ -490,12 +483,6 @@ p {
   width: 80%;
   padding-left: 5%;
 }
-
-#image-holder {
-  width :20%;
-  height:30;
-  border-style: solid;
-  border-radius: 2px;
 
 label {
   font-size: 10px;
@@ -517,9 +504,65 @@ label {
   margin-left: 30px;
 }
 
+#organizerTab {
+  width: 50%;
+  margin-left: 100px;
+}
+
 .editImage-box {
   height: 250px;
   width:300px;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+
+.switch-container {
+  background-color: #eee;
+  padding: 2%;
+}
+
+.form-container {
+  margin:0 auto;
+  width:70%;
+  padding: 4%;
+  margin-top: 5%;
+}
+
+.image-box {
+  height: 250px;
+  width:300px;
+  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+}
+
+label {
+  font-size: 10px;
+}
+
+#image-preview {
+  height: 250px;
+  width: 400px;  
+}
+
+#whiteFrame {
+  margin-bottom: 20px;
+  height: 250px;
+}
+
+.md-whiteframe-z3{
+  padding : 5%;
+}
+
+#event-container {
+  background-color: #eee;
+  width: 700px;
+}
+
+#homeEvent-container{
+  background-color: #eee;
+  width: 33%;
+}
+
+#dateBtn {
+  margin-left: 600px;
 }

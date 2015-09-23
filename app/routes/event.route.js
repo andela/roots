@@ -10,7 +10,7 @@ module.exports = function(app) {
   router.route('/event')
     .get(userCtrl.verifyToken, evtCtrl.getMyEvents)
     .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.registerEvent);
-
+    
   router.route('/events')
     .get(evtCtrl.getAllEvents);
 

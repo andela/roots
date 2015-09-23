@@ -1,7 +1,6 @@
 'use strict';
 
 var User = require('../models/user.model');
-var async = require('async');
 var Utils = require('../middleware/utils');
 var mongoose = require('mongoose');
 require('../models/organizer.model');
@@ -148,7 +147,6 @@ OrganizerController.prototype.editProfile = function(req, res) {
 OrganizerController.prototype.addTeamMember = function(req, res) {
 
   var orgId = req.params.organizer_id;
-
   var manager = req.body.manager;
   var managerEmail;
 

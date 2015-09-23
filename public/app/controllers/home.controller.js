@@ -12,18 +12,16 @@ angular.module('eventApp')
     if (userToken) {
       localStorage.setItem('userToken', userToken);
     }
-
-    var signupCheck = function() {
+   
+    $rootScope.signupCheck = function() {
       if(localStorage.getItem('userToken')) {
         UserService.decodeUser().then(function(res) {
-          $rootScope.userId = res.data._id;
-          $scope.userName = res.data.firstname;
-          $scope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
-          $scope.loggedIn = true;
+          $rootScope.loggedIn = true;
+          $rootScope.userName = res.data.firstname;
+          $rootScope.profilePic = res.data.profilePic || "../../assets/img/icons/default-avatar.png";
         });
       }
     };
-    signupCheck();
 
     var getEvents = function() {
       EventService.getAllEvents().then(function(data) {
@@ -55,9 +53,8 @@ angular.module('eventApp')
 
     $scope.fetchEvents = function() {
       EventService.getAllEvents().then(function(data){
-      $scope.eventList = data.data;
-    });
-
+        $scope.eventList = data.data;
+      });
     };
 
     function UserLogin($scope, $rootScope, $mdDialog, view) {
@@ -102,7 +99,7 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           } else {
             localStorage.setItem('userToken', res.data.token);
-            signupCheck();
+            $rootScope.signupCheck();
             $mdDialog.hide();
           }
         });

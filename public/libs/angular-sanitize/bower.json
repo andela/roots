@@ -1,9 +1,23 @@
 {
   "name": "angular-sanitize",
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> refactor(frontend): make changes to preview
   "version": "1.4.5",
   "main": "./angular-sanitize.js",
   "ignore": [],
   "dependencies": {
     "angular": "1.4.5"
+<<<<<<< HEAD
+=======
+  "version": "1.4.4",
+  "main": "./angular-sanitize.js",
+  "ignore": [],
+  "dependencies": {
+    "angular": "1.4.4"
+>>>>>>> modify stylesheet.css
+=======
+>>>>>>> refactor(frontend): make changes to preview
   }
 }

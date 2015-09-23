@@ -50,5 +50,14 @@
   },
   "_source": "git://github.com/psergus/ngWYSIWYG.git",
   "_target": "*",
+<<<<<<< HEAD
+<<<<<<< HEAD
   "_originalSource": "ngWYSIWYG"
+=======
+  "_originalSource": "ngWYSIWYG",
+  "_direct": true
+>>>>>>> modify stylesheet.css
+=======
+  "_originalSource": "ngWYSIWYG"
+>>>>>>> refactor(frontend): make changes to preview
 }

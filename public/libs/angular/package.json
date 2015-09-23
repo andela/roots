@@ -1,6 +1,14 @@
 {
   "name": "angular",
+<<<<<<< HEAD
+<<<<<<< HEAD
   "version": "1.4.5",
+=======
+  "version": "1.4.4",
+>>>>>>> modify stylesheet.css
+=======
+  "version": "1.4.5",
+>>>>>>> refactor(frontend): make changes to preview
   "description": "HTML enhanced for web apps",
   "main": "index.js",
   "scripts": {

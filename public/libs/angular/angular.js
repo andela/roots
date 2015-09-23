@@ -1,5 +1,13 @@
 /**
+<<<<<<< HEAD
+<<<<<<< HEAD
  * @license AngularJS v1.4.5
+=======
+ * @license AngularJS v1.4.4
+>>>>>>> modify stylesheet.css
+=======
+ * @license AngularJS v1.4.5
+>>>>>>> refactor(frontend): make changes to preview
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -28111,6 +28119,7 @@ var SelectController =
  * to the model identified by the `ngModel` directive. With static or repeated options, this is
  * the content of the `value` attribute or the textContent of the `<option>`, if the value attribute is missing.
  * If you want dynamic value attributes, you can use interpolation inside the value attribute.
+<<<<<<< HEAD
  *
  * <div class="alert alert-warning">
  * Note that the value of a `select` directive used without `ngOptions` is always a string.
@@ -28119,6 +28128,16 @@ var SelectController =
  * This is because an option element can only be bound to string values at present.
  * </div>
  *
+=======
+ *
+ * <div class="alert alert-warning">
+ * Note that the value of a `select` directive used without `ngOptions` is always a string.
+ * When the model needs to be bound to a non-string value, you must either explictly convert it
+ * using a directive (see example below) or use `ngOptions` to specify the set of options.
+ * This is because an option element can only be bound to string values at present.
+ * </div>
+ *
+>>>>>>> refactor(frontend): make changes to preview
  * If the viewValue of `ngModel` does not match any of the options, then the control
  * will automatically add an "unknown" option, which it then removes when the mismatch is resolved.
  *
