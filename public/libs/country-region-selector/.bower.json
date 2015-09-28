@@ -1,0 +1,38 @@
+{
+  "name": "country-region-selector",
+  "version": "0.1.9",
+  "main": "source/crs.min.js",
+  "license": "MIT",
+  "ignore": [
+    ".gitignore",
+    "*.md",
+    "gruntfile.js",
+    "LICENSE",
+    "package.json",
+    "bower.json"
+  ],
+  "devDependencies": {},
+  "keywords": [
+    "country",
+    "countries",
+    "regions",
+    "states",
+    "provinces",
+    "counties",
+    "territories",
+    "forms",
+    "dropdowns",
+    "select boxes"
+  ],
+  "homepage": "https://github.com/benkeen/country-region-selector",
+  "_release": "0.1.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.9",
+    "commit": "9a86d6a0de2806675307846e77fa29bbb350f31b"
+  },
+  "_source": "git://github.com/benkeen/country-region-selector.git",
+  "_target": "~0.1.9",
+  "_originalSource": "country-region-selector",
+  "_direct": true
+}

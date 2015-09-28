@@ -106,7 +106,6 @@ angular.module('eventApp')
       };
 
       $scope.signupUser = function(newUser) {
-        console.log(newUser);
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {

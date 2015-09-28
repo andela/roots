@@ -23,7 +23,7 @@
           <span id="display-name">Welcome {{userName | lowercase}}</span>
           </a>
           <ul class="user-menu">
-            <li class="menu-list"><a href="" ng-click="">My Profile</a></li>
+            <li class="menu-list"><a ui-sref="user.profile">My Profile</a></li>
             <li class="menu-list"><a ui-sref="user.moreEvents" href="" ng-click="">Browse Events</a></li>
             <li class="menu-list"><a href="" ng-click="logout()">Logout</a></li>
           </ul>

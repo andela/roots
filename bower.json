@@ -22,5 +22,8 @@
   },
   "devDependencies": {
     "angularjs-color-picker": "~0.6.5"
+  },
+  "resolutions": {
+    "angular": "~1.4.6"
   }
 }

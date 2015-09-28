@@ -1,8 +1,141 @@
- <md-toolbar style="background:#f8f8ff;color:black;z-index:0;height:90px;border-bottom:2px solid black">
+<!--   <md-toolbar style="background:#f8f8ff;color:black;z-index:0;height:90px;border-bottom:2px solid black">
     <div style="height:40px;margin-top:20px;margin-left:100px">
       <strong style="font-size:35px;font-weight:bolder;color:#1f1f1f">User Profile</strong>
     </div>
   </md-toolbar>
   <md-content>
   
+  </md-content> -->
+<link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
+  <md-toolbar style="background:#597eaa">
+    <div class="md-toolbar-tools">
+      <strong style="color:black;font-size:30px" >My Profile</strong>
+    </div>
+  </md-toolbar>
+  <md-content class="md-padding">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="My Events">
+        <md-content class="md-padding">
+            <div layout="row" style="padding-left:1em;margin:0 20px">
+              <div flex>
+                <div ng-repeat="event in events | orderBy: '-created_at' ">
+                  <md-card style="margin-left: 10px; float: left; width:300px">
+                    <img ng-src="{{event.imageUrl}}" width="300px" height="300px">
+                    <md-card-content>
+                      <a><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
+                      <a href="" style="margin-right:8px">edit</a><a style="margin-right:8px" href="">delete</a><a href="">view</a>
+                    </md-card-content>
+                  </md-card>
+                </div>
+              </div>
+            </div>
+          </md-content>
+      </md-tab>
+      <md-tab label="Edit Profile">
+        <md-content class="md-padding">
+            
+            <div style="height:250px;width:200px">
+              <img src="../../assets/img/icons/default-avatar.png" style="width:200px">
+              <span style="height:40px;background:rgba(0,0,0,.3);display:block;margin-top:-5px;padding:10px 30px"><a href="">change profile photo</a></span>
+            </div><br>
+            <md-toolbar style="background:#f0f0f0;color:black">
+              <div class="md-toolbar-tools">
+                <strong>Account Information</strong>
+              </div>
+            </md-toolbar>
+            <form>
+              <br>
+              <div layout="row">
+                <input type="text" flex="30" placeholder="First Name" class="input-textbox" style="margin-right:30px" ng-model="userInformation.firstname">
+                <input type="text" flex="30" placeholder="Last Name" class="input-textbox" ng-model="userInformation.firstname">
+              </div><br>
+              <div layout="row">
+                <input type="text" flex="30" placeholder="Email" class="input-textbox" style="margin-right:30px" ng-model="userInformation.firstname">
+                <select class="select-textbox" flex="30" style="display:block">
+                  <option>Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
+              </div><br>
+              <div layout="row">
+                <input type="text" flex="30" placeholder="Phone Number 1" class="input-textbox" style="margin-right:30px" ng-model="userInformation.firstname">
+                <input type="text" flex="30" placeholder="Phone Number 2" class="input-textbox" ng-model="userInformation.firstname">
+              </div>
+              <strong>Date Of Birth</strong>
+              <div layout="row">
+                <input type="text" flex="20" placeholder="Month" class="input-textbox" style="margin-right:10px">
+                <input type="text" flex="20" placeholder="Day" class="input-textbox" style="margin-right:10px">
+                <input type="text" flex="20" placeholder="Year" class="input-textbox">
+              </div>
+              <strong>Address 1</strong>
+              <div layout="row">
+                <textarea flex="65"></textarea>
+              </div><br>
+              <strong>Address 2</strong>
+              <div layout="row">
+                <textarea flex="65"></textarea>
+              </div><br>
+              <md-button class="md-raised" ng-click="updateUser()"> Save Changes</md-button>
+            </form>
+          </md-content>
+      </md-tab>
+      <md-tab label="Saved Events">
+        <md-content class="md-padding" layout-padding style="max-height:500px;padding: 10px;">
+            <md-list>
+              <md-subheader class="md-no=sticky"><strong>list of saved events</strong></md-subheader>
+              <md-subheader><a href="#" ng-click="removeSaved()">clear all</a></md-subheader>
+              <md-divider></md-divider>
+              <md-list-item ng-repeat="item in saved">
+                <a style="color:black" ui-sref="user.home">{{item.name}}</a>
+                <md-list-item>
+                  <a ng-click="deleteItem(item.key)"><em>delete</em></a>
+                </md-list-item>
+              </md-list-item>
+              <md-divider></md-divider>
+            </md-list>
+          </md-content>
+      </md-tab>
+      <md-tab label="My Organizer Profile">
+        <md-content class="md-padding">
+          <h3>Organizer Profile</h3>
+          <ng-form>
+          <md-input-container>
+            <label>Organizer's Name</label>
+            <input type="text" required name="e-title" ng-model="organizer.name"/>
+          </md-input-container>
+            <label>About the Organizer's</label>
+            <summernote height="300" ng-model="organizer.about"></summernote>
+            <br>
+            <label>Phone Numbers</label>
+            <div layout= "column" style="width:50%">
+              <md-input-container>
+                <input placeholder = "Number 1" ng-model="organizer.PhoneNumber1">
+              </md-input-container>
+              <md-input-container>
+                 <input placeholder= "Number 2" ng-model="organizer.PhoneNumber2">
+              </md-input-container>
+            </div>
+            <div id="image-wrapper">
+              <img id="orgImg-preview" class="image-box" src="" alt=""><br>
+              <input ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
+            </div><br>
+            <label>Team Member's</label>
+            <div layout layout-sm="column">
+              <md-input-container class="md-padding" flex>
+                <label>Name</label>
+                <input  type="text" >
+              </md-input-container>
+              <md-input-container class="md-padding" flex>
+                <label>Email</label>
+                <input  type="email">
+              </md-input-container>
+              <md-input-container class="md-padding" flex>
+                <label>Role</label>
+                <input  type="text">
+              </md-input-container>
+            </div>
+          </ng-form><br>
+        </md-content>
+      </md-tab>
+    </md-tabs>
   </md-content>

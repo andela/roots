@@ -35,4 +35,5 @@ var organizerSchema = new mongoose.Schema({
   versionKey: false
 });
 
-mongoose.model('Organizer', organizerSchema);
+var Organizer = mongoose.model('Organizer', organizerSchema);
+module.exports = Organizer;

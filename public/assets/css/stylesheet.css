@@ -309,9 +309,16 @@ img.bg {
 
 .input-textbox {
   border: 2px solid #bebebe !important;
-  /*padding: 5px !important;*/
+  padding: 5px !important;
   height: 30px !important;
   border-radius: 5px !important;
+}
+
+.select-textbox {
+  border: 2px solid #bebebe;
+  padding: 5px;
+  height: 43px;
+  border-radius: 5px;
 }
 
 .error-message {
