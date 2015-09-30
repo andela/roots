@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 
 var organizerSchema = new mongoose.Schema({
   user_ref: {
-    type: String
+    type: String,
   },
   name: {
     type: String,
@@ -17,6 +17,9 @@ var organizerSchema = new mongoose.Schema({
   },
   imageUrl: {
     type: String
+  },
+  phoneNumber1 : {
+    type: Number
   }
   // staff: [{
   //   manager_ref: {

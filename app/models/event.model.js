@@ -15,6 +15,10 @@ var eventSchema = new mongoose.Schema({
     type: String,
     ref: 'User'
   },
+  org_name: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true
@@ -29,24 +33,22 @@ var eventSchema = new mongoose.Schema({
   venue: {
     type: String
   },
-  eventBanner: {
-    type: String
-  },
   imageUrl: {
     type: String
   },
-  eventTheme: {
-    type: String,
-    headerColor: String,
-    fontColor: String,
-    borderColor: String,
-    contentColor: String
+  headerColor: {
+    type: String
+  },
+  fontColor: {
+    type: String
+  },
+  borderColor: {
+    type: String
+  },
+  contentColor: {
+    type: String
   },
   eventFont: {
-    color: {
-      type: String,
-      default: 'black'
-    },
     size: {
       type: Number,
       default: 14
