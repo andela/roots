@@ -6,7 +6,7 @@ angular.module('eventApp')
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
-
+    $rootScope.hideBtn = false;
     var userToken = $location.search().token;
     $location.search('token', null);
     if (userToken) {
@@ -31,7 +31,7 @@ angular.module('eventApp')
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
-      $scope.loggedIn = false;
+      $rootScope.loggedIn = false;
       $location.url('/home');
     };
 
