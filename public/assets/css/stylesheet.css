@@ -367,6 +367,11 @@ img.bg {
  background-color: #00BCD4 ;
 }
 
+.org-image {
+  height: 250px;
+  width:300px;
+}
+
 .image-box {
  height: 250px;
  width:300px;

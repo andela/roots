@@ -14,10 +14,6 @@ var formidable = require('formidable');
 var mongoose = require('mongoose');
 
 
-require('../models/user.model');
-require('../models/event.model');
-require('../models/task.model');
-
 var Event = mongoose.model('Event');
 var utils = new Utils();
 var taskController = new TaskController();
@@ -54,8 +50,10 @@ EventController.prototype.imageProcessing = function(req, res, next) {
         width: 800,
         height: 800
       });
-    } else {next();}
-    });
+    } else {
+      next();
+    }
+  });
 };
 
 

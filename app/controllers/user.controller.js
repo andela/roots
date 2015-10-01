@@ -155,7 +155,7 @@ UserController.prototype.deleteAll = function(req, res) {
 
 UserController.prototype.editUser = function(req, res) {
   User.update({
-    _id: req.params.user_id
+    _id: req.decoded._id
   }, req.body, {
     new: true
   }, function(err, user) {
@@ -189,17 +189,29 @@ UserController.prototype.editTwitUser = function(req, res) {
 };
 
 UserController.prototype.getCurrentUser = function(req, res) {
-  User.findById(req.params.user_id, function(err, user) {
+  User.findById(req.decoded._id, function(err, user) {
     if (err) {
       res.status(500).send(err);
     }
-    res.json(user);
+
+    if(user.organizer_ref){
+
+      Organizer.populate(user, {'path': 'organizer_ref'}, function(err, user2){
+
+        if(err){
+          return res.json(err);
+        }
+        res.json(user2);
+      });
+    } else{
+      res.json(user);
+    }  
   });
 };
 
 UserController.prototype.deleteCurrentUser = function(req, res) {
 
-  var userId = req.params.user_id;
+  var userId = req.decoded._id;
   User.findById(userId, function(err, user) {
 
     if (err) {

@@ -3,9 +3,9 @@
 var User = require('../models/user.model');
 var Utils = require('../middleware/utils');
 var mongoose = require('mongoose');
-require('../models/organizer.model');
+var Organizer = require('../models/organizer.model');
 
-var Organizer = mongoose.model('Organizer');
+// var Organizer = mongoose.model('Organizer');
 
 var utils = new Utils();
 
@@ -21,15 +21,37 @@ OrganizerController.prototype.registerProfile = function(req, res) {
   });
 };
 
+OrganizerController.prototype.deleteProfile = function(req, res) {
+  Organizer.findByIdAndRemove({_id: req.params.organizer_id}, function(err, orgProfile) {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(orgProfile);
+  });
+};
+
+OrganizerController.prototype.deleteUserOrgProfile = function(req, res, next) {
+    Organizer.remove({user_ref: req.decoded._id}, function(err, orgProfile) {
+      if (err) {
+        return res.json(err);
+      }
+      User.findByIdAndUpdate({_id: req.decoded._id}, {organizer_ref: undefined}, function(err, user) {
+        if (err) {
+          return res.json(err);
+        }
+        next();
+      });
+    });
+};
+
 OrganizerController.prototype.createProfile = function(req, res) {
 
-  if (!req.body.organName) {
+  if (!req.body.name) {
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   } else {
-
     User.findOne({
       email: req.decoded.email
     }, function(err, user) {
@@ -38,7 +60,6 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
-
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -48,20 +69,21 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
         var newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
-        newOrgProfile.name = req.body.organName;
-        var newStaff = req.body.staff;
-        var validatedStaff = [];
-
+        newOrgProfile.name = req.body.name;
+        newOrgProfile.about = req.body.about;
+        newOrgProfile.imageUrl = req.body.imageUrl;
+        newOrgProfile.staff = [];
 
         newOrgProfile.save(function(err, orgProfile) {
-
           if (err) {
-            if (err.code == 11000)
-              return res.status(422).send({
+            if (err.code == 11000){
+              return res.status(422).json({
                 success: false,
                 message: 'Organizer name taken!'
               });
-            return res.json(err);
+            } else  { 
+                return res.json(err);
+            }
           }
 
           //Link user profile to the newly created organizer profile
@@ -74,7 +96,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
                 message: 'Organizer profile created, but unable to update the user organizer_ref'
               });
             }
-            res.json(orgProfile);
+            return res.json(orgProfile);
           });
         });
       } else {

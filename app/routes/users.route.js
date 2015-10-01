@@ -10,10 +10,10 @@ module.exports = function(app) {
    .get(ctrl.getUsers)
    .delete(ctrl.deleteAll);
 
-  router.route('/users/:user_id')
-   .get(ctrl.getCurrentUser)
-   .put(ctrl.editUser)
-   .delete(ctrl.deleteCurrentUser);
+  router.route('/user')
+   .get(ctrl.verifyToken, ctrl.getCurrentUser)
+   .put(ctrl.verifyToken, ctrl.editUser)
+   .delete(ctrl.verifyToken, ctrl.deleteCurrentUser);
 
   router.route('/twitterUser/:user_id')
     .put(ctrl.editTwitUser);

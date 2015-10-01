@@ -5,6 +5,10 @@ angular.module('eventApp')
       createUser: function(param) {
         return $http.post(baseUrl + "users", param);
       },
+      getCurrentUser: function() {
+        var token = localStorage.getItem('userToken');
+        return $http.get(baseUrl + "user?token=" + token);
+      },
       authenticate: function(param) {
         return $http.post(baseUrl + "authenticate", param);
       },
