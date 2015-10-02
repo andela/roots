@@ -11,7 +11,7 @@ var OrganizerController = function() {};
 
 OrganizerController.prototype.createProfile = function(req, res) {
 
-  if (!req.body.organName) {
+  if (!req.body.organizerName) {
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
@@ -35,7 +35,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
         var newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
-        newOrgProfile.name = req.body.organName;
+        newOrgProfile.name = req.body.organizerName;
         newOrgProfile.imageUrl = req.body.imageUrl;
         newOrgProfile.staff = [];
 
