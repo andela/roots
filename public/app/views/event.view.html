@@ -7,7 +7,7 @@
   </md-toolbar>
   <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.css"/>
   <div ng-switch on="view" class="switch-container">
-    <div ng-hide="prev" layout="column" class="card form-container">
+    <div ng-hide="prev" layout="column" class="card form-container" ng-cloak>
       <h3 class="md-padding">Event Details</h3>
       <md-content class="md-padding">
       <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
@@ -27,11 +27,12 @@
         <div layout-sm="row">
 
           <label>Country</label>
-          <country-list></country-list>
+          <country-list ctry="event.venue.country" required></country-list>
             <br>
-          <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
+          <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="event.venue.address" details="details" options="options1">
         </div>
         <br>
+
         <label>Event Date<span class="req">*</span></label><br>
         <div layout="row" >
           <div layout="column" class="md-padding calendar">
@@ -57,23 +58,25 @@
           <label>About the Organizer's</label>
           <summernote height="300" ng-model="organizer.about"></summernote>
           <br>
+
           <div id="image-wrapper">
             <label>Organizer Logo<span class="req">*</span></label><br>
             <img id="orgImg-preview" class="image-box" src="" alt=""><br>
             <input required ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
           </div><br>
         </ng-form><br>
-          <md-button class="md-raised" type="submit" ng-click="publishEvent(false)" ng-disabled="eventForm.$invalid">Create Event</md-button>
-          <md-button class="md-raised" type="submit" ng-click="publishEvent(true)" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
-           <md-button class="md-raised" ng-click="prev = true">PREVIEW</md-button>
+         <md-button class="md-raised" type="submit" ng-click="publishEvent(false);" ng-disabled="eventForm.$invalid">Create Event</md-button>
+          <md-button class="md-raised" type="submit" ng-click="publishEvent(true);" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
+           <md-button type="button" class="md-raised" ng-click="switchView();">PREVIEW</md-button>
           <md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
       </form>
       <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
       </md-content>
+      </div>
     </div>
-    <div id="for preview" ng-show="prev">
+    <div id="for preview" ng-show="prev" ng-cloak>
       <div id ="previewDiv">
-        <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
+        <form ng-submit="submitEventDetails(event, organizer)" name="createEvent">
           <div layout="column">
             <div layout="row">
               <h2>Select a theme</h2>
@@ -155,8 +158,8 @@
                   </md-toolbar>
                 </div><br/>
                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                  <md-button class="md-raised" type="submit" ng-click="publishEvent(false)" ng-disabled="createEvent.$invalid">Create Event</md-button >
-                  <md-button class="md-raised" type="submit" ng-click="publishEvent(true)" ng-disabled="createEvent.$invalid">Create Event and Publish</md-button >
+                  <md-button class="md-raised" type="submit" ng-click="publishEvent(false);" ng-disabled="eventForm.$invalid">Create Event</md-button >
+                  <md-button class="md-raised" type="submit" ng-click="publishEvent(true);" ng-disabled="eventForm.$invalid">Create Event and Publish</md-button >
                 </section>
               </div>
             </div>
@@ -164,7 +167,7 @@
         </form>
       </div>
       <div class="md-toolbar-tools centre" layout-align="center">
-        <md-button class="md-raised" ng-click="prev = false">BACK</md-button>
+        <md-button class="md-raised" ng-click="switchView();">BACK</md-button>
       </div>
     </div>
   </div>

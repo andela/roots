@@ -1,5 +1,4 @@
 angular.module('eventApp')
-<<<<<<< HEAD
   .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce','$window', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce, $window) {
 
    if (!localStorage.getItem('userToken')) {
@@ -65,11 +64,17 @@ angular.module('eventApp')
   };
 
 
+
     $scope.view = 'create';
 
     $scope.currDisplay = function(view) {
       $scope.view = view;
-    };    
+    };
+
+    $scope.switchView = function() {
+      $scope.prev = !$scope.prev;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }; 
 
   $scope.categories = ('Technology,Sport,Health,Music,Art,Science,Spirituality,Media,Family,Education,Party').split(',').map(function(category){
     return {
@@ -136,12 +141,16 @@ angular.module('eventApp')
   });
 
   $scope.event = {
-      headerColor:'',
+    eventTheme:{
+      headerColor:'rgb(30, 25, 84)',
       borderColor:'',
-      fontColor:'',
+      fontColor:'rgb(155, 86, 86)',
       contentColor:''
+    },
+    venue: {}
   };
 
+  $scope.prev = false;
   $scope.organizer = {
     about: '',
     phoneNumber1: ''
