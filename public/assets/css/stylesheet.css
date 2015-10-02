@@ -403,13 +403,14 @@ p {
  background-color: grey;
  border-style: solid;
  border-width: 1px;
+ border-radius: 8px 8px 0px 0px;
+ width: 50%;
 }
 
 #sideHeaderDiv {
  margin-left: 10%;
  font-size: 20px;
  border-radius: 8px 8px 0px 0px;
- height: 50px;
  width: 30%;
  color: #424242 ;
  background-color: grey;
@@ -432,7 +433,6 @@ p {
 #addressMap {
   width: 30%;
   height: 300px;
-  background-color: #CCC;
   margin-left: 10%;
   font-size: 20px;
   background-color: #F5F5F5 ;
@@ -443,11 +443,10 @@ p {
 }
 
 #contentSideDiv {
-  width: 30%;
   height: 250px;
-  background-color: #CCC;
-  margin-left: 10%;
+  width: 30%;
   font-size: 20px;
+  margin-left: 10%;
   background-color: #F5F5F5 ;
   border-style: solid;
   border-width: 1px;
@@ -519,8 +518,6 @@ p {
  border-radius: 2px;
 }
 
-<<<<<<< HEAD
-=======
 #bannerImg {
   border-style: dashed;
   width: 250px;
@@ -529,7 +526,6 @@ p {
   border-radius: 2px;
 }
 
->>>>>>> feat(datetime picker) create event page:
 #width {
  width: 50%;
 }
@@ -594,9 +590,17 @@ label {
  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
 }
 
+label {
+  font-size: 0.8em;
+}
+.req {
+  color: red;
+  font-size: 1.5em;
+}
+
 #image-preview {
  height: 250px;
- width: 400px;  
+ width: 400px;
 }
 
 #whiteFrame {
@@ -631,4 +635,13 @@ label {
 
 #preview {
   padding-left: 10%;
+}
+
+#card {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.values {
+  padding-left: 2%
 }

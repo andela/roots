@@ -1,9 +1,5 @@
 'use strict';
-<<<<<<< HEAD
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker','ngMap'])
-=======
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker','ui.bootstrap','ui.bootstrap.datetimepicker'])
->>>>>>> feat(datetime picker) create event page:
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker','ui.bootstrap','ui.bootstrap.datetimepicker','ngMap'])
   .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
@@ -63,7 +59,7 @@ angular.module('eventApp')
       templateUrl: '../app/views/country.list.html'
     };
   });
-  
+
 angular.module('eventApp')
   .config(function($mdThemingProvider) {
     // Extend the red theme with a few different colors

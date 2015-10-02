@@ -1,10 +1,6 @@
 {
   "name": "angular-sanitize",
-<<<<<<< HEAD
-  "version": "1.4.6",
-=======
   "version": "1.4.7",
->>>>>>> feat(datetime picker) create event page:
   "description": "AngularJS module for sanitizing HTML",
   "main": "index.js",
   "scripts": {

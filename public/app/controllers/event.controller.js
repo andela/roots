@@ -19,13 +19,10 @@ angular.module('eventApp')
       $scope.organizer = organizer[0];
     });
   });
-  
+
   $scope.submitEventDetails = function (eventDetails, organizer){
-<<<<<<< HEAD
     eventDetails.country = $scope.getCountryCode().text;
-=======
     $scope.isLoading = true;
->>>>>>> feat(datetime picker) create event page:
     var token = localStorage.getItem('userToken');
     eventDetails.user_ref = $rootScope.userId;
     organizer.user_ref = $rootScope.userId;
@@ -103,7 +100,7 @@ angular.module('eventApp')
       $('md-toolbar.md-warn').css("background-color", elem);
   };
 
-  $scope.$watch("organizer.about", 
+  $scope.$watch("organizer.about",
     function(oldVal, newVal){
       if(oldVal !== newVal){
         $scope.orgInfo = $sce.trustAsHtml($scope.organizer.about)

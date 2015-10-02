@@ -1,9 +1,5 @@
 /**
-<<<<<<< HEAD
- * @license AngularJS v1.4.6
-=======
  * @license AngularJS v1.4.7
->>>>>>> feat(datetime picker) create event page:
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -61,11 +57,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-<<<<<<< HEAD
-    message += '\nhttp://errors.angularjs.org/1.4.6/' +
-=======
     message += '\nhttp://errors.angularjs.org/1.4.7/' +
->>>>>>> feat(datetime picker) create event page:
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -2387,19 +2379,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-<<<<<<< HEAD
-  full: '1.4.6',    // all of these placeholder strings will be replaced by grunt's
-  major: 1,    // package task
-  minor: 4,
-  dot: 6,
-  codeName: 'multiplicative-elevation'
-=======
   full: '1.4.7',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
   dot: 7,
   codeName: 'dark-luminescence'
->>>>>>> feat(datetime picker) create event page:
 };
 
 
@@ -5900,17 +5884,10 @@ function $BrowserProvider() {
            $scope.keys = [];
            $scope.cache = $cacheFactory('cacheId');
            $scope.put = function(key, value) {
-<<<<<<< HEAD
-             if (isUndefined($scope.cache.get(key))) {
-               $scope.keys.push(key);
-             }
-             $scope.cache.put(key, isUndefined(value) ? null : value);
-=======
              if (angular.isUndefined($scope.cache.get(key))) {
                $scope.keys.push(key);
              }
              $scope.cache.put(key, angular.isUndefined(value) ? null : value);
->>>>>>> feat(datetime picker) create event page:
            };
          }]);
      </file>
@@ -12548,15 +12525,6 @@ var $parseMinErr = minErr('$parse');
 
 
 function ensureSafeMemberName(name, fullExpression) {
-  // From the JavaScript docs:
-  // Property names must be strings. This means that non-string objects cannot be used
-  // as keys in an object. Any non-string object, including a number, is typecasted
-  // into a string via the toString method.
-  //
-  // So, to ensure that we are checking the same `name` that JavaScript would use,
-  // we cast it to a string, if possible
-  name =  (isObject(name) && name.toString) ? name.toString() : name;
-
   if (name === "__defineGetter__" || name === "__defineSetter__"
       || name === "__lookupGetter__" || name === "__lookupSetter__"
       || name === "__proto__") {

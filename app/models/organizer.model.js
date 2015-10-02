@@ -18,20 +18,6 @@ var organizerSchema = new mongoose.Schema({
   imageUrl: {
     type: String
   },
-<<<<<<< HEAD
-  phoneNumber1 : {
-    type: Number
-  }
-  // staff: [{
-  //   manager_ref: {
-  //     type: String,
-  //     ref: 'User'      
-  //   },
-  //   role: {
-  //     type: String      
-  //   }
-  // }]
-=======
   staff: [{
     manager_ref: {
       type: String,
@@ -41,7 +27,6 @@ var organizerSchema = new mongoose.Schema({
       type: String
     }
   }]
->>>>>>> feat(datetime picker) create event page:
 
 }, {
   versionKey: false
