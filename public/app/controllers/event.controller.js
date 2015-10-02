@@ -78,19 +78,22 @@ angular.module('eventApp')
     $scope.details = '';
   };
 
-  $scope.previewImg = function (inElement,prevElement){
+  $scope.previewImg = function (inElement,prevElement,imageElement){
     $(inElement).on('change', function () {
       var preview = document.querySelector(prevElement);
       var file    = document.querySelector(inElement).files[0];
+      var prevImage = document.querySelector(imageElement);
       var reader  = new FileReader();
       reader.onloadend = function () {
         preview.src = reader.result;
+        prevImage.src = reader.result;
       }
-      if (file) {
-        reader.readAsDataURL(file);
-      } else {
-        preview.src = "";
-      }
+        if ((file && prevImage) || file) {
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = "";
+          prevImage.src = "";
+        }
     })
   };
 
