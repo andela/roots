@@ -16,6 +16,7 @@ angular.module('eventApp')
     }
 
     var signupCheck = function() {
+
       if (localStorage.getItem('userToken')) {
         UserService.decodeUser($scope);
       }
@@ -31,7 +32,7 @@ angular.module('eventApp')
     $scope.logout = function() {
       localStorage.removeItem('userToken');
       $rootScope.loggedIn = false;
-      $location.url('/home');
+      location.reload();
     };
 
     $scope.login = function(view) {
@@ -105,7 +106,7 @@ angular.module('eventApp')
       };
 
       $scope.signupUser = function(newUser) {
-        console.log(newUser);
+        
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {
@@ -136,7 +137,7 @@ angular.module('eventApp')
           } else if (res.data.message === 'Message Sent!') {
             $scope.emailSent = true;
           }
-          console.log(res);
+         
           $scope.progressBar = false;
         });
       };
