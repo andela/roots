@@ -336,281 +336,271 @@ img.bg {
    color:    #000;
 }
 
-.themes {
-  margin-right: 10px;
-  padding: 10px;
-  height:100px;
-  width: 100px;
-}
 #default {
-  background-color: grey;
+ background-color: grey;
 }
 
 #theme1 {
-  margin-right: 10px;
-  padding: 10px;
-  height:100px;
-  width: 100px;
-  background-color: red;
+ background-color: red;
 }
 
 #theme2 {
-  margin-right: 10px;
-  padding: 10px;
-  height:100px;
-  width: 100px;
-  background-color: blue;
+ background-color: blue;
 }
 
 #theme3 {
-  background-color: #BCAAA4;
+ background-color: #BCAAA4 ;
 }
 
 #theme4 {
-  margin-right: 10px;
-  padding: 10px;
-  height:100px;
-  width: 100px;
-  background-color: orange;
-}
-
-#theme4 {
-  margin-right: 10px;
-  padding: 10px;
-  height:100px;
-  width: 100px;
-  background-color: green;
+ background-color: green;
 }
 
 #theme5 {
-  background-color: #00BCD4;
-}
-
-.switch-container {
-  background-color: #eee;
-  padding: 2%;
-}
-
-.form-container {
-  margin:0 auto;
-  width:75%;
-  padding: 4%;
-  margin-top: 5%;
+ background-color: #00BCD4 ;
 }
 
 .image-box {
-  height: 250px;
-  width:300px;
-  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+ height: 250px;
+ width:300px;
+ background: url('../../assets/img/preview-icon.jpg') no-repeat center;
 }
 
 label {
-  font-size: 10px;
+ font-size: 10px;
 }
-
 
 .md-warn {
-  margin-right: 10px;
-  padding: 10px;
-  height:100px;
-  width: 100px;
-  background-color: #00BCD4;
+ font-size: 20px;
+ border-radius: 8px 8px 0px 0px;
+ height: 50px;
+ width: 50%;
+ background-color: grey;
 }
-
-#bar {
-  padding: 5px;
-  height: 5px;
-  width : 60;
-  background-color: white;
-}
-
-#headerDiv {
-  font-size: 20px;
-  border-radius: 8px 8px 0px 0px;
-  height: 50px;
-  width: 50%;
-  background-color: grey;
+p {
+ padding-left: 10px;
 }
 
 #eventTitleDiv {
-  color: #424242;
-  background-color: grey;
-  border-style: solid;
-  border-width: 1px;
+ color: #424242 ;
+ background-color: grey;
+ border-style: solid;
+ border-width: 1px;
 }
 
 #sideHeaderDiv {
-  margin-left: 10%;
-  font-size: 20px;
-  border-radius: 8px 8px 0px 0px;
-  height: 50px;
-  width: 30%;
-  color: #424242;
-  background-color: grey;
-  border-style: solid;
-  border-width: 1px;
+ margin-left: 10%;
+ font-size: 20px;
+ border-radius: 8px 8px 0px 0px;
+ height: 50px;
+ width: 30%;
+ color: #424242 ;
+ background-color: grey;
+ border-style: solid;
+ border-width: 1px;
 }
 
 #contentMainDiv {
-  height: 50px;
-  width: 50%;
+ height: 250px;
+ width: 50%;
+ font-size: 20px;
+ background-color: #F5F5F5 ;
+ border-style: solid;
+ border-width: 1px;
+ color: #424242 ;
+ border-radius: 0px 0px 8px 8px;
+}
+
+
+#addressMap {
+  width: 30%;
+  height: 300px;
+  background-color: #CCC;
+  margin-left: 10%;
   font-size: 20px;
-  background-color: #F5F5F5;
+  background-color: #F5F5F5 ;
   border-style: solid;
   border-width: 1px;
-  color: #424242;
+  color: #424242 ;
   border-radius: 0px 0px 8px 8px;
 }
 
 #contentSideDiv {
-  height: 50px;
   width: 30%;
+  height: 250px;
+  background-color: #CCC;
   margin-left: 10%;
   font-size: 20px;
-  background-color: #F5F5F5;
+  background-color: #F5F5F5 ;
   border-style: solid;
   border-width: 1px;
-  color: #424242;
+  color: #424242 ;
   border-radius: 0px 0px 8px 8px;
 }
 
 #eventDetails {
-  margin-top: 20px;
-  font-size: 20px;
-  border-radius: 8px 8px 0px 0px;
-  height: 50px;
-  width: 50%;
-  background-color: grey;
-  border-style: solid;
-  border-width: 1px;
-  color: #424242;
+ margin-top: 20px;
+ font-size: 20px;
+ border-radius: 8px 8px 0px 0px;
+ height: 50px;
+ width: 50%;
+ background-color: grey;
+ border-style: solid;
+ border-width: 1px;
+ color: #424242 ;
 }
 
 #organizers {
-  margin-top: 20px;
-  margin-left: 10%;
-  font-size: 20px;
-  border-radius: 8px 8px 0px 0px;
-  height: 50px;
-  width: 30%;
-  background-color: grey;
-  border-style: solid;
-  border-width: 1px;
-  color: #424242;
-
+ margin-top: 20px;
+ margin-left: 10%;
+ font-size: 20px;
+ border-radius: 8px 8px 0px 0px;
+ height: 50px;
+ width: 30%;
+ background-color: grey;
+ border-style: solid;
+ border-width: 1px;
+ color: #424242 ;
 }
 
 #eventContent {
-  height: 300px;
-  width: 50%;
-  font-size: 20px;
-  background-color: #F5F5F5;
-  border-style: solid;
-  border-width: 1px;
-  color: #424242;
-  border-radius: 0px 0px 8px 8px;
+ height: 300px;
+ width: 50%;
+ font-size: 20px;
+ background-color: #F5F5F5 ;
+ border-style: solid;
+ border-width: 1px;
+ color: #424242 ;
+ border-radius: 0px 0px 8px 8px;
 }
 
 #organizersContent {
-  height: 300px;
-  width: 30%;
-  margin-left: 10%;
-  font-size: 20px;
-  background-color: #F5F5F5;
-  border-style: solid;
-  border-width: 1px;
-  color: #424242;
-  border-radius: 0px 0px 8px 8px;
-}
-
-
-#eventContent {
-  height: 400px;
-  width: 50%;
-  font-size: 20px;
-  background-color: #C0C0C0;
-}
-
-#organizersContent {
-  height: 400px;
-  width: 30%;
-  margin-left: 10%;
-  font-size: 20px;
-  background-color: #C0C0C0;
+ height: 300px;
+ width: 30%;
+ margin-left: 10%;
+ font-size: 20px;
+ background-color: #F5F5F5 ;
+ border-style: solid;
+ border-width: 1px;
+ color: #424242 ;
+ border-radius: 0px 0px 8px 8px;
 }
 
 #padding {
-  padding: 20px;
+ padding: 20px;
 }
 
 #wrapper {
-  padding-top: 20px;
+ padding-top: 20px;
 }
 
 .images {
-  border-style: solid;
-  width: 250px;
-  height: 200px;
-  border-width: 2px;
-  border-radius: 2px;
-}
-
-#bannerImg {
-  border-style: dashed;
-  width: 250px;
-  height: 200px;
-  border-width: 2px;
-  border-radius: 2px;
+ border-style: solid;
+ width: 250px;
+ height: 200px;
+ border-width: 2px;
+ border-radius: 2px;
 }
 
 #width {
-  width: 50%;
+ width: 50%;
 }
 .createEventTab {
-  width: 50%;
-  margin-left: 100px;
+ width: 50%;
+ margin-left: 100px;
 }
 
 .fieldset {
-  width: 80%;
-  padding-left: 5%;
-}
-
-#image-holder {
-  width :20%;
-  height:30;
-  border-style: solid;
-  border-radius: 2px;
+ width: 80%;
+ padding-left: 5%;
 }
 
 label {
-  font-size: 10px;
+ font-size: 10px;
 }
 
 .custom {
-  margin-left: 200px;
+ margin-left: 200px;
 }
 
 #hc {
-  color: grey;
-  padding-top: 50px;
-  margin-left: 520px;
+ color: grey;
+ padding-top: 50px;
+ margin-left: 520px;
 }
 
 .colors {
-  color: grey;
-  padding-top: 50px;
-  margin-left: 30px;
+ color: grey;
+ padding-top: 50px;
+ margin-left: 30px;
 }
 
 #organizerTab {
-  width: 50%;
-  margin-left: 100px;
+ width: 50%;
+ margin-left: 100px;
 }
 
 .editImage-box {
-  height: 250px;
-  width:300px;
-  background-position: center;
-  background-repeat: no-repeat;
+ height: 250px;
+ width:300px;
+ background-position: center;
+ background-repeat: no-repeat;
+}
+
+
+.switch-container {
+ background-color: #eee;
+ padding: 2%;
+}
+
+.form-container {
+ margin:0 auto;
+ width:70%;
+ padding: 4%;
+ margin-top: 5%;
+}
+
+.image-box {
+ height: 250px;
+ width:300px;
+ background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+}
+
+#image-preview {
+ height: 250px;
+ width: 400px;  
+}
+
+#whiteFrame {
+ margin-bottom: 20px;
+ height: 250px;
+}
+
+.md-whiteframe-z3{
+ padding : 5%;
+}
+
+#event-container {
+ background-color: #eee;
+ width: 700px;
+}
+
+#homeEvent-container{
+ background-color: #eee;
+ width: 33%;
+}
+
+#dateBtn {
+ margin-left: 600px;
+}
+
+#browseBtn {
+  position: relative;
+  background-color: #eee;
+  padding: 5%;
+  margin-bottom: 0;
+}
+
+#preview {
+  padding-left: 10%;
 }

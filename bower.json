@@ -9,7 +9,6 @@
   "main": "server.js",
   "license": "MIT",
   "dependencies": {
-    "angular": "~1.4.3",
     "angular-ui-router": "~0.2.15",
     "angular-material": "~0.10.0",
     "angular-messages": "~1.4.3",
@@ -17,7 +16,9 @@
     "angular-resource": "~1.4.3",
     "ng-file-upload": "~7.0.15",
     "summernote": "~0.6.16",
-    "angular-bootstrap": "~0.13.3"
+    "angular-bootstrap": "~0.13.3",
+    "angular": "~1.4.6",
+    "angular-sanitize": "~1.4.6"
   },
   "devDependencies": {
     "angularjs-color-picker": "~0.6.5"

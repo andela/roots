@@ -33,11 +33,12 @@
 					      <div>
 					        <img ng-src="{{event.imageUrl}}" class="responsive-img" id="image-preview">
 					      </div>
-					      <div>
+					      <div ui-sref="user.eventDetails({event_id: event._id})">
 					        <p>{{event.startDate | date:'medium'}}</p>
 					        <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
 					        <p>Country: {{event.country}}
 					        <p>Category: {{event.category | uppercase}}</p>
+                  <md-button ui-sref="user.eventDetails({event_id: event._id})">Click to see more...</md-button>
 					      </div>
 					    </div>
 					  </div>

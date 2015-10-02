@@ -1,13 +1,5 @@
 /**
-<<<<<<< HEAD
-<<<<<<< HEAD
- * @license AngularJS v1.4.5
-=======
- * @license AngularJS v1.4.4
->>>>>>> modify stylesheet.css
-=======
- * @license AngularJS v1.4.5
->>>>>>> refactor(frontend): make changes to preview
+ * @license AngularJS v1.4.6
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */

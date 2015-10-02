@@ -1,5 +1,5 @@
 'use strict';
-angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker'])
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker','ngMap'])
   .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
@@ -38,13 +38,11 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       url: '/profile',
       templateUrl: '../app/views/user.profile.html'
     })
-
-    .state('user.browseEvents', {
-      url: '/browse-events',
-      templateUrl: '../app/views/browse.event.view.html',
+    .state('user.eventDetails', {
+      url: '/eventdetails/:event_id',
+      templateUrl: '../app/views/eventDetails.view.html',
       controller: 'eventCtrl'
     })
-
     .state('user.moreEvents', {
       url: '/more-events',
       templateUrl: '../app/views/more.events.view.html',
@@ -54,6 +52,14 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
   $urlRouterProvider.otherwise('/user/home');
 });
 
+angular.module('eventApp')
+  .directive("countryList", function() {
+    return {
+      restrict: 'E',
+      templateUrl: '../app/views/country.list.html'
+    };
+  });
+  
 angular.module('eventApp')
   .config(function($mdThemingProvider) {
     // Extend the red theme with a few different colors
@@ -69,4 +75,51 @@ angular.module('eventApp')
         'default':'50'
       })
       .warnPalette('red');
+  });
+
+angular.module('eventApp')
+  .directive('addressBasedGoogleMap', function() {
+    return {
+      restrict: "A",
+      template: "<div id='addressMap'></div>",
+      scope: {
+        address: "=",
+        zoom: "="
+      },
+      controller: function($scope) {
+        var geocoder;
+        var latlng;
+        var map;
+        var marker;
+        var initialize = function() {
+          geocoder = new google.maps.Geocoder();
+          var mapOptions = {
+            zoom: $scope.zoom,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          map = new google.maps.Map(document.getElementById('addressMap'), mapOptions);
+        };
+        var markAdressToMap = function() {
+          geocoder.geocode({
+              'address': $scope.address
+            },
+            function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                marker = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location
+                });
+              }
+            });
+        };
+        $scope.$watch("address", function() {
+          if ($scope.address !== undefined) {
+            markAdressToMap();
+          }
+        });
+        initialize();
+      },
+    };
   });

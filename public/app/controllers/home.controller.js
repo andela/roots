@@ -6,7 +6,7 @@ angular.module('eventApp')
       $("html, body").animate({ scrollTop: $('#event-list').offset().top}, "slow");
       return false;
     });
-
+    $rootScope.hideBtn = false;
     var userToken = $location.search().token;
     $location.search('token', null);
     if (userToken) {
@@ -23,15 +23,15 @@ angular.module('eventApp')
       }
     };
 
-    var getEvents = function() {
-      EventService.getAllEvents().then(function(data) {
-        $scope.eventList = data.data;
+    $scope.getOrganizers = function() {
+      EventService.getAllProfiles().then(function(data) {
+        $scope.organizers = data.data;
       })
     };
 
     $scope.logout = function() {
       localStorage.removeItem('userToken');
-      $scope.loggedIn = false;
+      $rootScope.loggedIn = false;
       $location.url('/home');
     };
 
