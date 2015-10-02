@@ -21,7 +21,11 @@ angular.module('eventApp')
   });
   
   $scope.submitEventDetails = function (eventDetails, organizer){
+<<<<<<< HEAD
     eventDetails.country = $scope.getCountryCode().text;
+=======
+    $scope.isLoading = true;
+>>>>>>> feat(datetime picker) create event page:
     var token = localStorage.getItem('userToken');
     eventDetails.user_ref = $rootScope.userId;
     organizer.user_ref = $rootScope.userId;
@@ -44,6 +48,7 @@ angular.module('eventApp')
      file: organizer.imageUrl,
      fields: organizer
    }).success(function(data){
+     $scope.isLoading = false;
        $location.url('/home');
      });
   };

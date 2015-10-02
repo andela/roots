@@ -1,5 +1,9 @@
 /**
+<<<<<<< HEAD
  * @license AngularJS v1.4.6
+=======
+ * @license AngularJS v1.4.7
+>>>>>>> feat(datetime picker) create event page:
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */

@@ -16,7 +16,11 @@
   </div>
   <div id="event-list" data-ng-init="fetchEvents()" class="row">
     <div class="title blue-text bold center"><h4>FEATURED EVENTS</h4><hr style="width: 15%;"></div><br>
+<<<<<<< HEAD
     <div ng-repeat="event in eventList" class="col s4" id="homeEvent-container">
+=======
+    <div ng-repeat="event in eventList | orderBy: 'startDate' | limitTo: 12" class="col m4" id="event-container">
+>>>>>>> feat(datetime picker) create event page:
       <div class="card medium">
         <div class="card-image">
               <img ng-src="{{event.imageUrl}}" class="responsive-img">

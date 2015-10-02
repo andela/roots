@@ -5,11 +5,12 @@
       <md-button ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
     </div>
   </md-toolbar>
-  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.css"/>
   <div ng-switch on="view" class="switch-container">
     <div ng-hide="prev" layout="column" class="card form-container">
       <h3 class="md-padding">Event Details</h3>
       <md-content class="md-padding">
+<<<<<<< HEAD
         <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
           <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
           <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
@@ -86,6 +87,67 @@
            <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
         </div>
         </form>
+=======
+      <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
+        <label>Event Title<span class="req">*</span></label>
+        <input type="text" ng-required="true" name="e-title" placeholder="Title" ng-model="event.name"/><br>
+        <label>Event Category<span class="req">*</span></label>
+        <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
+          <md-option ng-repeat="category in categories" required value="{{category.name}}">{{category.name}}</md-option>
+        </md-select>
+
+        <md-textarea-container flex>
+          <label class="required">Event Description<span class="req">*</span></label>
+          <summernote height="300" ng-model="event.description" required></summernote>
+        </md-textarea-container>
+        <br>
+        <div layout-sm="row">
+          <label>EVENT LOCATION DETAILS</label>
+          <md-select id="ddlViewBy" placeholder="Select Country" ng-model="event.country" style="display: block;">
+            <md-option ng-repeat="country in countries" value="{{country.code}}">{{country.name}}</md-option>
+          </md-select>
+          <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
+        </div>
+        <br>
+        <label>Event Date<span class="req">*</span></label><br>
+        <div layout="row" >
+          <div layout="column" class="md-padding calendar">
+            Start Date: {{ event.startDate | date:'medium' }}<br>
+            <datetimepicker id="startdate" ng-model="event.startDate" ></datetimepicker>
+          </div>
+          <div layout="column" class="md-padding calendar">
+            End Date: {{ event.endDate | date:'medium' }}<br>
+            <datetimepicker id="enddate" ng-model="event.endDate" ></datetimepicker>
+          </div>
+        </div><br>
+        <div id="image-wrapper">
+          <label>Event Image<span class="req">*</span></label><br>
+          <img id="image-preview" class="image-box" src="" alt=""><br>
+          <input ng-click="previewImg('#image-upload','#image-preview')" accept="image/*" ngf-select="true" id="image-upload" ng-model="event.imageUrl" type="file" required ><br>
+        </div><br><br>
+        <h3>Organizer Profile</h3>
+        <ng-form>
+        <md-input-container>
+          <label>Organizer's Name<span class="req">*</span></label>
+          <input type="text" required name="e-title" ng-model="organizer.name"/>
+        </md-input-container>
+          <label>About the Organizer's</label>
+          <summernote height="300" ng-model="organizer.about"></summernote>
+          <br>
+          <div id="image-wrapper">
+            <label>Organizer Logo<span class="req">*</span></label><br>
+            <img id="orgImg-preview" class="image-box" src="" alt=""><br>
+            <input required ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file" required><br>
+          </div><br>
+        </ng-form><br>
+       <md-button class="md-raised" type="submit" ng-disabled="eventForm.$invalid">Create Event</md-button>
+       <md-progress-circular md-mode="indeterminate" ng-show="isLoading" ></md-progress-circular>
+
+      </form>
+      <div class="md-toolbar-tools centre" layout-align="center">
+        <md-button class="md-raised" ng-click="currDisplay('preview')">NEXT</md-button>
+      </div>
+>>>>>>> feat(datetime picker) create event page:
       </md-content>
     </div>
     <div id="for preview" ng-show="prev">
@@ -170,7 +232,12 @@
                 </md-toolbar>
               </div><br/>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+<<<<<<< HEAD
                 <md-button class="md-raised" type="submit" ng-click="event.venue = result" ng-disabled="eventForm.$invalid">Create Event</md-button >
+=======
+                <md-button class="md-raised" type="submit" ng-disabled="createEvent.$invalid">Create Event</md-button >
+                <md-progress-circular md-mode="indeterminate" ng-show="isLoading" ></md-progress-circular>
+>>>>>>> feat(datetime picker) create event page:
               </section>
             </div>
           </div>

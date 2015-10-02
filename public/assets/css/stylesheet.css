@@ -367,9 +367,26 @@ img.bg {
 }
 
 label {
+<<<<<<< HEAD
  font-size: 10px;
 }
 
+=======
+  font-size: 0.8em;
+}
+.req {
+  color: red;
+  font-size: 1.5em;
+}
+
+.calendar {
+  background-color: #eee;
+  height: auto;
+  border-radius: 5%;
+  margin-right: 5%;
+}
+
+>>>>>>> feat(datetime picker) create event page:
 .md-warn {
  font-size: 20px;
  border-radius: 8px 8px 0px 0px;
@@ -502,6 +519,17 @@ p {
  border-radius: 2px;
 }
 
+<<<<<<< HEAD
+=======
+#bannerImg {
+  border-style: dashed;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px;
+}
+
+>>>>>>> feat(datetime picker) create event page:
 #width {
  width: 50%;
 }

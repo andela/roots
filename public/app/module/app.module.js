@@ -1,5 +1,9 @@
 'use strict';
+<<<<<<< HEAD
 angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker','ngMap'])
+=======
+angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource', 'ngAnimate','ngAria','summernote','ngFileUpload','ngAutocomplete','color.picker','ui.bootstrap','ui.bootstrap.datetimepicker'])
+>>>>>>> feat(datetime picker) create event page:
   .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
