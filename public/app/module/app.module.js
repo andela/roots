@@ -56,10 +56,9 @@ angular.module('eventApp')
   .directive("countryList", function() {
     return {
       restrict: 'E',
-      require: ['^ctry']
       scope: {
-        ctry = '='
-      }
+        ctry: '='
+      },
       templateUrl: '../app/views/country.list.html'
     };
   });
