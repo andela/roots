@@ -1,57 +1,47 @@
 <div ng-controller="eventCtrl" id="for preview">
-      <div id ="preview" >
-        <div layout="column">
-          <h4>Event Details</h4>
+  <div id ="preview" class="switch-container">
+    <div layout="column">
+      <md-toolbar md-scroll-shrink id="contentMainDiv">
+        <img src="{{event.imageUrl}}" height='500px' width='100%'/>
+      </md-toolbar>
+      <div id="card">
+        <md-card>
           <div layout="column" class="md-raised">
             <div id="padding">
               <div layout="row">
-                <md-toolbar class="md-warn" id="eventTitleDiv">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex"><b>{{event.name}}</b></h2>
-                  </div>
-                </md-toolbar>
-                <md-toolbar class="md-warn" id="sideHeaderDiv">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex"><b>Getting to: {{event.venue}}</b></h2>
-                  </div>
-                </md-toolbar>
-              </div>
-              <div layout = "row">
-                <md-toolbar md-scroll-shrink id="contentMainDiv">
-                  <img src="{{event.imageUrl}}" height='248px' width='553px'/>
-                </md-toolbar>
-                  <div address-based-google-map address="Address" zoom="16" id="addressMap"></div>
-              </div>
-              <div layout="row">
-                 <md-toolbar id="eventDetails" class="md-warn">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex"><b>Event Details</b></h2>
-                  </div>
-                </md-toolbar>
-                <md-toolbar id="organizers" class="md-warn">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex"><b>Organizer Details</b></h2>
-                  </div>
-                </md-toolbar>
-              </div>
-              <div layout="row">
-                <div id="eventContent" class="values">
-                  <p>{{event.name}}</p>
-                  <p>Category: {{event.category}}</p>
-                  <p ng-bind-html="eventInfo"></p>
+                <div class="md-warn" id="eventTitleDiv">
+                    <h3 class="md-flex">{{event.name}}</h3>
                 </div>
-                <div id="organizersContent" class="values">
-                  <p>By: {{organizer.name}}</p>
-                  <p ng-bind-html="orgInfo"></p>
-                  <p>Call us: {{organizer.phoneNumber1}}</p>
-                  <p>{{organizer.phoneNumber2}}</p>
+              </div>
+              <md-content flex layout-padding>
+                <div class="values">
+                  <hr>
+                  <h4><b>Event Details</b></h4>
+                  <hr><br>
+                  <h5>Category:</h5><h6>{{event.category}}</h6><br>
+                  <h5>Event Venue:</h5><h6>{{event.venue}}</h6><br>
+                  <h5>About this Event:</h5><h6 ng-bind-html="eventInfo"></h6><br><br>
+                  <hr>
+                  <h4><b>Organizer Details</b></h4>
+                  <hr><br>
+                  <h5>Organized By:</h5><h6>{{organizer.name}}</b></h6><br>
+                  <h5>About this Organizer:</h5><h6 ng-bind-html="orgInfo"></h6><br>
+                  <h6>Call us: {{organizer.phoneNumber1}}</h6><br>
                 </div>
-              </div><br/>
+              </md-content>
+              <md-toolbar class="md-warn" id="sideHeaderDiv">
+                <div class="md-toolbar-tools">
+                  <h2 class="md-flex"><b>Getting to: {{event.venue}}</b></h2>
+                </div>
+              </md-toolbar>
+              <div address-based-google-map address="Address" zoom="16" id="addressMap"></div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="md-toolbar-tools centre" layout-align="center">
-        <md-button class="md-raised" ui-sref="user.moreEvents">BACK</md-button>
+        </md-card>
       </div>
     </div>
+  </div>
+  <div class="md-toolbar-tools centre" layout-align="center">
+    <md-button class="md-raised" ui-sref="user.moreEvents">BACK</md-button>
+  </div>
+</div>
