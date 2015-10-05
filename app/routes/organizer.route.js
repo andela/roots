@@ -2,16 +2,18 @@ var express = require('express');
 var UserController = require('../controllers/user.controller');
 var OrganizerController = require('../controllers/organizer.controller');
 var EventController = require('../controllers/event.controller');
+var Utils = require('../middleware/utils');
 var orgCtrl = new OrganizerController();
 var userCtrl = new UserController();
 var evCtrl = new EventController();
 var router = express.Router();
+var utils = new Utils();
 
 module.exports = function(app) {
 
   //Create an organizer profile for a user
   router.route('/organizer')
-    .post(userCtrl.verifyToken, evCtrl.imageProcessing, orgCtrl.createProfile)
+    .post(userCtrl.verifyToken, utils.imageProcessing, orgCtrl.createProfile)
     .delete(userCtrl.verifyToken, orgCtrl.deleteProfile);
 
   //Get all organizer profiles

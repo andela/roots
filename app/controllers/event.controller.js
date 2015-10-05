@@ -5,9 +5,6 @@ var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
 var Utils = require('../middleware/utils');
-var configCloud = require('../../config/config');
-var cloudinary = require('cloudinary');
-var formidable = require('formidable');
 var mongoose = require('mongoose');
 
 var Event = mongoose.model('Event');
@@ -15,37 +12,9 @@ var utils = new Utils();
 
 var EventController = function() {};
 
-cloudinary.config({
-  cloud_name: 'dev8nation',
-  api_key: 687213232223225,
-  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
-});
-
-EventController.prototype.imageProcessing = function(req, res, next) {
-  var form = new formidable.IncomingForm();
-  form.parse(req, function(err, fields, file) {
-    req.body.eventObj = fields;
-    if (Object.keys(file) != 0) {
-      cloudinary.uploader.upload(file.file.path, function(result) {
-        req.body.imageUrl = result.secure_url;
-        if (req.body.imageUrl) {
-          req.body.eventObj.imageUrl = req.body.imageUrl;
-        }
-        next();
-      }, {
-        width: 800,
-        height: 800
-      });
-    } else {
-      next();
-    }
-  });
-};
-
-
 EventController.prototype.createEvent = function(req, res) {
 
-  if (!req.body.eventObj) {
+  if (!req.body.dataObject) {
 
     return res.status(422).send({
       success: false,
@@ -54,7 +23,7 @@ EventController.prototype.createEvent = function(req, res) {
   }
 
   var userId = req.decoded._id;
-  var eventObj = req.body.eventObj;
+  var eventObj = req.body.dataObject;
 
   eventObj.user_ref = userId;
   eventObj.tasks = [];
@@ -90,7 +59,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body.eventObj) {
+  if (!req.body.dataObject) {
 
     return res.status(422).send({
       success: false,
@@ -98,7 +67,7 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
 
-  var eventObj = req.body.eventObj;
+  var eventObj = req.body.dataObject;
   var eventId = req.params.event_id;
 
   try {

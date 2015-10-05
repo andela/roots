@@ -61,17 +61,17 @@ OrganizerController.prototype.deleteProfile = function(req, res, next) {
 
 
 OrganizerController.prototype.createProfile = function(req, res) {
-  console.log(req.body);
+  
   var profile;
 
-  if (!req.body.orgProfile) {
+  if (!req.body.dataObject) {
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   } else {
 
-    profile = req.body.orgProfile;
+    profile = req.body.dataObject;
     User.findOne({
       email: req.decoded.email
     }, function(err, user) {
@@ -80,6 +80,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
+                  
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -89,9 +90,9 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
         var newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
-        newOrgProfile.name = req.body.profile;
-        newOrgProfile.about = req.body.profile;
-        newOrgProfile.imageUrl = req.body.imageUrl;
+        newOrgProfile.name = profile.name;
+        newOrgProfile.about = profile.about;
+        newOrgProfile.imageUrl = profile.imageUrl;
         newOrgProfile.staff = [];
 
         newOrgProfile.save(function(err, orgProfile) {
@@ -131,9 +132,9 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
 OrganizerController.prototype.editProfile = function(req, res) {
 
-  var profile;
+  var orgProfile;
 
-  if (!req.body.orgProfile) {
+  if (!req.body.dataObject) {
     return res.status(422).send({
       success: false,
       message: 'Please check parameters!'
@@ -152,19 +153,19 @@ OrganizerController.prototype.editProfile = function(req, res) {
       });
 
     } else if (profile.user_ref.toString() !== req.decoded._id) {
-
+      
       return res.status(401).send({
         success: false,
         message: 'Unauthorized!'
       });
 
     } else {
-      profile = req.body.orgProfile;
+      orgProfile = req.body.dataObject;
       Organizer.findByIdAndUpdate(req.params.organizer_id, {
         $set: {
-          name: profile.organizerName,
-          about: profile.about,
-          imageUrl: profile.imageUrl
+          name: orgProfile.organizerName,
+          about: orgProfile.about,
+          imageUrl: orgProfile.imageUrl
         }
       }, {
         'new': true

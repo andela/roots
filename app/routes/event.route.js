@@ -1,9 +1,12 @@
 var express = require('express');
 var UserController = require('../controllers/user.controller');
 var EventController = require('../controllers/event.controller');
+var Utils = require('../middleware/utils');
 var evtCtrl = new EventController();
 var userCtrl = new UserController();
 var router = express.Router();
+var utils = new Utils();
+
 
 module.exports = function(app) {
 
@@ -12,7 +15,7 @@ module.exports = function(app) {
     .get(userCtrl.verifyToken, evtCtrl.getMyEvents)
 
     //Create new event
-    .post(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.createEvent);
+    .post(userCtrl.verifyToken, utils.imageProcessing, evtCtrl.createEvent);
 
   router.route('/events')
     //Get all published event
@@ -22,7 +25,7 @@ module.exports = function(app) {
     //Get an event's details
     .get(evtCtrl.getEvent)
     //Edit an event details
-    .put(userCtrl.verifyToken, evtCtrl.imageProcessing, evtCtrl.editEventDetails)
+    .put(userCtrl.verifyToken, utils.imageProcessing, evtCtrl.editEventDetails)
     //Delete an event
     .delete(userCtrl.verifyToken, evtCtrl.deleteEvent);
 
