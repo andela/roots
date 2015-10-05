@@ -12,10 +12,11 @@
       <md-content class="md-padding">
       <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
         <label>Event Title<span class="req">*</span></label>
-        <input type="text" ng-required="true" name="e-title" placeholder="Title" ng-model="event.name"/><br>
+        <input type="text" name="e-title" ng-model="event.name"/>
+      
         <label>Event Category<span class="req">*</span></label>
         <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
-          <md-option ng-repeat="category in categories" required value="{{category.name}}">{{category.name}}</md-option>
+          <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
         </md-select>
 
         <md-textarea-container flex>
@@ -48,7 +49,7 @@
         <div id="image-wrapper">
           <label>Event Image<span class="req">*</span></label><br>
           <img id="image-preview" class="image-box" src="" alt=""><br>
-          <input ng-click="previewImg('#image-upload','#image-preview')" accept="image/*" ngf-select="true" id="image-upload" ng-model="event.imageUrl" type="file" required ><br>
+          <input ng-click="previewImg('#image-upload','#image-preview')" accept="image/*" ngf-select="true" id="image-upload" ng-model="event.imageUrl" type="file" ><br>
         </div><br><br>
         <h3>Organizer Profile</h3>
         <ng-form>
@@ -62,17 +63,13 @@
           <div id="image-wrapper">
             <label>Organizer Logo<span class="req">*</span></label><br>
             <img id="orgImg-preview" class="image-box" src="" alt=""><br>
-            <input required ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file" required><br>
+            <input required ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
           </div><br>
         </ng-form><br>
-        <md-button class="md-raised" ng-click="event.venue = result" type="submit" ng-disabled="eventForm.$invalid">CREATE</md-button>
-        <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
-       <md-progress-circular md-mode="indeterminate" ng-show="isLoading" ></md-progress-circular>
-
+          <md-button class="md-raised" ng-click="event.venue = result" type="submit" ng-disabled="eventForm.$invalid">CREATE</md-button>
+          <md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
       </form>
-      <div class="md-toolbar-tools centre" layout-align="center">
-        <md-button class="md-raised" ng-click="currDisplay('preview')">NEXT</md-button>
-      </div>
+      <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
       </md-content>
     </div>
     <div id="for preview" ng-show="prev">
@@ -158,7 +155,7 @@
               </div><br/>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
                 <md-button class="md-raised" type="submit" ng-click="event.venue = result" ng-disabled="eventForm.$invalid">Create Event</md-button >
-                <md-progress-circular md-mode="indeterminate" ng-show="isLoading" ></md-progress-circular>
+
               </section>
             </div>
           </div>

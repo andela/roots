@@ -4,38 +4,33 @@
   <h3 class="md-padding">Event Details</h3>
   <md-content class="md-padding">
   <form ng-submit="submitEventDetails(event)" name="eventForm">
+    <label>Event Title</label>
     <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
-    <md-select aria-label="sel" ng-model="event.category" placeholder="" style="display: block;">
-      <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
-    </md-select>
+    <label>Event Category</label>
+        <md-select aria-label="sel" placeholder={{event.category}} ng-model="event.category" style="display: block;">
+          <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name }}</md-option>
+        </md-select>
     <md-textarea-container flex>
       <label>Event Description</label>
       <summernote height="300" ng-model="event.description"></summernote>
     </md-textarea-container>
     <br>
-    <label>Venue</label><br>
     <div layout-sm="row">
-      <label>Country</label>
-      <country-list></country-list>
-      <br>
       <label>Venue</label><br>
       <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click="getCountry()" ng-autocomplete="result" details="details" options="options1">
     </div>
     <br>
-    <div layout-sm="column">
-        <p>Current Start-Date:<span> {{event.startDate | date:'medium'}}</span></p>
-        <p>End-Date:<span> {{event.endDate | date:'medium'}}</span></p>
+    <label>Event Date<span class="req">*</span></label><br>
+    <div layout="row" >
+      <div layout="column" class="md-padding calendar">
+        Start Date: {{ event.startDate | date:'medium' }}<br>
+        <datetimepicker id="startdate" ng-model="event.startDate" ></datetimepicker>
+      </div>
+      <div layout="column" class="md-padding calendar">
+        End Date: {{ event.endDate | date:'medium' }}<br>
+        <datetimepicker id="enddate" ng-model="event.endDate" ></datetimepicker>
+      </div>
     </div><br>
-    <div layout layout-sm="column">
-        <label>Event Starts</label>
-        <md-input-container flex class="md-padding">
-          <input ng-model="event.startDate" type="datetime-local" placeholder="Date/Time">
-        </md-input-container>
-        <label>Event End</label>
-        <md-input-container flex class="md-padding">
-          <input ng-model="event.endDate" type="datetime-local" placeholder="Date/Time">
-        </md-input-container>
-    </div>
     <div id="image-wrapper">
       <img id="edit-preview" class="editImage-box" src="" alt="" style="background-image: url({event.imageUrl}) no-repeat center"><br>
       <input ng-click="previewImg('#edit-upload','#edit-preview')" accept="image/*" ngf-select="true" id="edit-upload" ng-model="event.imageUrl" type="file"><br>
