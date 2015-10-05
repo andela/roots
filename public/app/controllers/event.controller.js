@@ -19,51 +19,40 @@ angular.module('eventApp')
 
         $scope.venue = event.venue;
 
-        EventService.getOrganizer(event.org_name)
-      .success(function(organizer){
-        $scope.organizer = organizer[0];
+       UserService.getCurrentUser().success(function(res) {
+        
+        if(res.organizer_ref){
+
+          $scope.organizer = res.organizer_ref;
+          $scope.organizer.phoneNumber1 = res.phoneNumber1;
+          $scope.organizer.phoneNumber2 = res.phoneNumber2;          
+        }        
+       
+      }).error(function(err){
+        //checks error
+
       });
     });
   };
- 
 
-  $scope.submitEventDetails = function (eventDetails, organizer){
-    
-    if(eventDetails.startDate > eventDetails.endDate){
-      $window.alert('invalid date range');
-    }
-    else {
-    eventDetails.country = $scope.getCountryCode().text;
-    $scope.isLoading = true;
-    var token = localStorage.getItem('userToken');
-    eventDetails.user_ref = $rootScope.userId;
-    organizer.user_ref = $rootScope.userId;
-    eventDetails.org_name = organizer.name;
-    Upload.upload({
-      method: "POST",
-      url: '/api/event?token='+ token,
-      file: eventDetails.imageUrl,
-      fields: eventDetails
-    })
-    .success(function(data) {
-      $scope.submitOrgProfile(organizer,token);
-    })
-    }
-  };
+    $scope.submitEventDetails = function(eventDetails, organizer) {
+      var token = localStorage.getItem('userToken');
 
-  $scope.submitOrgProfile = function(organizer,token){
-   Upload.upload({
-     method: "POST",
-     url: '/api/organizer?token='+ token,
-     file: organizer.imageUrl,
-     fields: organizer
-   }).success(function(data){
-     $scope.isLoading = false;
-       $location.url('/home');
-     });
-  };
-
-
+       if(eventDetails.startDate > eventDetails.endDate){
+          $window.alert('invalid date range');
+          return;
+        }
+      $scope.isLoading = true;
+      Upload.upload({
+          method: "POST",
+          url: '/api/event?token=' + token,
+          file: eventDetails.imageUrl,
+          fields: eventDetails
+        })
+        .success(function(data) {
+          $location.url('/home');
+        });
+    };
 
     $scope.view = 'create';
 
@@ -93,7 +82,11 @@ angular.module('eventApp')
   };
 
   $scope.getCountry = function() {
-    $scope.result = '';
+    //$scope.result = '';
+    if(!$scope.venue){
+      $scope.venue = {};
+    }  
+    $scope.venue.address = '';
     $scope.options1 = {
       country: $scope.getCountryCode().code
     };
@@ -121,6 +114,10 @@ angular.module('eventApp')
         }
     })
   };
+
+  $scope.publishEvent = function(publish){
+    $scope.event.online = publish;      
+  }
 
   $scope.changeColor = function(elem) {
       $('md-toolbar.md-warn').css("background-color", elem);

@@ -5,8 +5,8 @@
       <md-button ng-click="prev = true;" hide show-gt-md>PREVIEW</md-button>
     </div>
   </md-toolbar>
-  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.css"/>
-  <div ng-switch on="view" class="switch-container">
+  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
+  <div class="switch-container">
     <div ng-hide="prev" layout="column" class="card form-container" ng-cloak>
       <h3 class="md-padding">Event Details</h3>
       <md-content class="md-padding">
@@ -107,6 +107,7 @@
                   <color-picker color-picker-format= "'rgb'" ng-model="event.eventTheme.contentColor"></color-picker>
                 </md-whiteframe>
               </div>
+
             </div>
             <h4>Event Page Preview</h4>
             <div layout="column" class="md-raised">

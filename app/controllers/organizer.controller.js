@@ -4,20 +4,74 @@ var User = require('../models/user.model');
 var Organizer = require('../models/organizer.model');
 
 var Utils = require('../middleware/utils');
-
 var utils = new Utils();
 
 var OrganizerController = function() {};
 
-OrganizerController.prototype.createProfile = function(req, res) {
 
-  if (!req.body.organizerName) {
+OrganizerController.prototype.deleteProfile = function(req, res, next) {
+
+  var organizerId;
+
+  User.findById({
+    _id: req.decoded._id
+  }, function(err, user) {
+
+    if (err) {
+      return res.json(err);
+    } else {
+      if (!user) {
+        return res.status(422).send({
+          success: false,
+          message: 'Unable to retrieve user details!'
+        });
+      } else if (!user.organizer_ref) {
+
+        return res.status(422).send({
+          success: false,
+          message: 'No organizer profile attached to user record!'
+        });
+      } else {
+
+        User.findByIdAndUpdate({
+          _id: req.decoded._id
+        }, {
+          organizer_ref: undefined
+        }, function(err, user) {
+          if (err) {
+            return res.json(err);
+          }
+          Organizer.remove({
+            user_ref: req.decoded._id
+          }, function(err, orgProfile) {
+            if (err) {
+              return res.json(err);
+            } else {
+              return res.json({
+                success: true,
+                message: 'Organizer profile deleted!'
+              });
+            }
+          });
+        });
+      }
+    }
+  });
+};
+
+
+OrganizerController.prototype.createProfile = function(req, res) {
+  console.log(req.body);
+  var profile;
+
+  if (!req.body.orgProfile) {
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   } else {
 
+    profile = req.body.orgProfile;
     User.findOne({
       email: req.decoded.email
     }, function(err, user) {
@@ -35,19 +89,21 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
         var newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
-        newOrgProfile.name = req.body.organizerName;
+        newOrgProfile.name = req.body.profile;
+        newOrgProfile.about = req.body.profile;
         newOrgProfile.imageUrl = req.body.imageUrl;
         newOrgProfile.staff = [];
 
         newOrgProfile.save(function(err, orgProfile) {
-
           if (err) {
-            if (err.code == 11000)
-              return res.status(422).send({
+            if (err.code == 11000) {
+              return res.status(422).json({
                 success: false,
                 message: 'Organizer name taken!'
               });
-            return res.json(err);
+            } else {
+              return res.json(err);
+            }
           }
 
           //Link user profile to the newly created organizer profile
@@ -60,7 +116,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
                 message: 'Organizer profile created, but unable to update the user organizer_ref'
               });
             }
-            res.json(orgProfile);
+            return res.json(orgProfile);
           });
         });
       } else {
@@ -75,7 +131,9 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
 OrganizerController.prototype.editProfile = function(req, res) {
 
-  if (!req.body.newProfile) {
+  var profile;
+
+  if (!req.body.orgProfile) {
     return res.status(422).send({
       success: false,
       message: 'Please check parameters!'
@@ -101,12 +159,12 @@ OrganizerController.prototype.editProfile = function(req, res) {
       });
 
     } else {
-
+      profile = req.body.orgProfile;
       Organizer.findByIdAndUpdate(req.params.organizer_id, {
         $set: {
-          name: newProfile.name,
-          about: newProfile.about,
-          imageUrl: newProfile.imageUrl
+          name: profile.organizerName,
+          about: profile.about,
+          imageUrl: profile.imageUrl
         }
       }, {
         'new': true
@@ -319,7 +377,9 @@ OrganizerController.prototype.getProfile = function(req, res) {
   var org_name = req.query.name;
 
   //find organizer by the user reference (user_ref) instead of org_id
-  Organizer.find({name: org_name}, function(err, org) {
+  Organizer.find({
+    name: org_name
+  }, function(err, org) {
     if (err) {
       return res.status(500).send(err);
     } else if (!org) {

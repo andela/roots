@@ -59,7 +59,8 @@ EventController.prototype.createEvent = function(req, res) {
   eventObj.user_ref = userId;
   eventObj.tasks = [];
 
-   try {
+
+  try {
     eventObj.venue = JSON.parse(eventObj.venue);
     eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
   } catch (err) {

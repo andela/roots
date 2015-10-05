@@ -11,7 +11,8 @@ module.exports = function(app) {
 
   //Create an organizer profile for a user
   router.route('/organizer')
-    .post(userCtrl.verifyToken, evCtrl.imageProcessing, orgCtrl.createProfile);
+    .post(userCtrl.verifyToken, evCtrl.imageProcessing, orgCtrl.createProfile)
+    .delete(userCtrl.verifyToken, orgCtrl.deleteProfile);
 
   //Get all organizer profiles
   router.route('/organizers')

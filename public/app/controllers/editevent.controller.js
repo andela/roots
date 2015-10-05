@@ -1,13 +1,14 @@
 angular.module('eventApp')
   .controller('editeventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
-   if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
-    };
+    
+    if (!localStorage.getItem('userToken')) {
+      $location.url('/user/home');
+    }
 
     EventService.getEvent($stateParams.event_id)
       .success(function(event){
         event.startDate = parseDate(event.startDate);
-        event.endDate = parseDate(event.endDate);    
+        event.endDate = parseDate(event.endDate);
         $scope.event = event;
       });
 
@@ -72,5 +73,4 @@ angular.module('eventApp')
     function parseDate(date){
       return new Date(Date.parse(date));
     }
-      
 }]);

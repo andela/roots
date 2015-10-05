@@ -15,13 +15,11 @@ angular.module('eventApp')
       localStorage.setItem('userToken', userToken);
     }
 
-    var signupCheck = function() {
-
+    $rootScope.signupCheck = function() {      
       if (localStorage.getItem('userToken')) {
-        UserService.decodeUser($scope);
+        UserService.decodeUser();
       }
-    }
-    signupCheck();
+    }    
 
     $scope.getOrganizers = function() {
       EventService.getAllProfiles().then(function(data) {
@@ -32,7 +30,7 @@ angular.module('eventApp')
     $scope.logout = function() {
       localStorage.removeItem('userToken');
       $rootScope.loggedIn = false;
-      location.reload();
+      $location.url('/home');
     };
 
     $scope.login = function(view) {
@@ -99,14 +97,14 @@ angular.module('eventApp')
             $scope.progressLoad = false;
           } else {
             localStorage.setItem('userToken', res.data.token);
-            signupCheck();
+            $rootScope.signupCheck();
             $mdDialog.hide();
           }
         });
       };
 
       $scope.signupUser = function(newUser) {
-        
+
         if (validateEmail(newUser.email)) {
           $scope.progressLoad = true;
           UserService.createUser(newUser).then(function(res) {

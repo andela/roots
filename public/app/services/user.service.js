@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .factory('UserService', ['$http', '$stateParams', '$location', 'baseUrl', function($http, $stateParams, $location, baseUrl) {
+  .factory('UserService', ['$http', '$stateParams', '$location', '$rootScope', 'baseUrl', function($http, $stateParams, $location, $rootScope, baseUrl) {
 
     function urlBase64Decode(str) {
       var output = str.replace('-', '+').replace('_', '/');
@@ -29,7 +29,7 @@ angular.module('eventApp')
       authenticate: function(param) {
         return $http.post(baseUrl + "authenticate", param);
       },
-      decodeUser: function(scope) {
+      decodeUser: function() {
 
         if (localStorage.getItem('userToken')) {
           var token = localStorage.getItem('userToken');
@@ -38,9 +38,9 @@ angular.module('eventApp')
           if (token) {
             var encoded = token.split('.')[1];
             user = JSON.parse(urlBase64Decode(encoded));
-            scope.userName = user.firstname;
-            scope.profilePic = user.profilePic || "../../assets/img/icons/default-avatar.png";
-            scope.loggedIn = true;
+            $rootScope.userName = user.firstname;
+            $rootScope.profilePic = user.profilePic || "../../assets/img/icons/default-avatar.png";
+            $rootScope.loggedIn = true;
           }
 
         }

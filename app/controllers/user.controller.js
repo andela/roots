@@ -214,7 +214,7 @@ UserController.prototype.getCurrentUser = function(req, res) {
 UserController.prototype.deleteCurrentUser = function(req, res) {
 
   var userId = req.decoded._id;
-  
+
   User.findById(userId, function(err, user) {
 
     if (err) {

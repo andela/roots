@@ -40,26 +40,14 @@ var eventSchema = new mongoose.Schema({
   },
   imageUrl: {
     type: String
-  },  
+
+  },
   eventTheme: {    
     headerColor: String,
     fontColor: String,
     borderColor: String,
     contentColor: String
-  },
-  eventFont: {
-    color: {
-      type: String,
-      default: 'black'
-    },
-    size: {
-      type: Number,
-      default: 14
-    },
-    style: {
-      type: String,
-      default: 'Courier'
-    }
+
   },
   startDate: {
     type: Date,
