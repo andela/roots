@@ -161,6 +161,10 @@ OrganizerController.prototype.editProfile = function(req, res) {
 
     } else {
       orgProfile = req.body.dataObject;
+
+      //Prevent imageUrl field being assigned string 'null'
+      orgProfile.imageUrl = orgProfile.imageUrl || "";
+      
       Organizer.findByIdAndUpdate(req.params.organizer_id, {
         $set: {
           name: orgProfile.organizerName,

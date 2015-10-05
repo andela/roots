@@ -66,7 +66,7 @@ EventController.prototype.editEventDetails = function(req, res) {
       message: 'Check parameters!'
     });
   }
-
+  
   var eventObj = req.body.dataObject;
   var eventId = req.params.event_id;
 
@@ -92,6 +92,10 @@ EventController.prototype.editEventDetails = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
+
+      //Prevent imageUrl field being assigned string 'null'
+      eventObj.imageUrl = eventObj.imageUrl || "";
+      
       Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
@@ -339,6 +343,7 @@ EventController.prototype.getEvent = function(req, res) {
         if (err) {
           res.status(500).send(err);
         } else {
+          
           res.json(evt1);
         }
 
