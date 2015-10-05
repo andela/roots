@@ -36,19 +36,13 @@ angular.module('eventApp')
   };
 
     $scope.submitEventDetails = function(eventDetails, organizer) {
-      var token = localStorage.getItem('userToken');
 
-       if(eventDetails.startDate > eventDetails.endDate){
+      if(eventDetails.startDate > eventDetails.endDate){
           $window.alert('invalid date range');
           return;
         }
       $scope.isLoading = true;
-      Upload.upload({
-          method: "POST",
-          url: '/api/event?token=' + token,
-          file: eventDetails.imageUrl,
-          fields: eventDetails
-        })
+      EventService.createEvent(eventDetails)
         .success(function(data) {
           $location.url('/home');
         });

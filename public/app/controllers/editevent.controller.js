@@ -40,13 +40,8 @@ angular.module('eventApp')
     };
 
     $scope.submitEventDetails = function (eventDetails){
-      var token = localStorage.getItem('userToken');         
-      Upload.upload({
-        method: "PUT",
-        url: '/api/event/' + $stateParams.event_id + '?token='+ token,
-        file: eventDetails.imageUrl,
-        fields: eventDetails
-      })
+     
+      EventService.editEventDetails(eventDetails, $stateParams.event_id)
       .success(function(data) {
           $location.url('/home');
       })
