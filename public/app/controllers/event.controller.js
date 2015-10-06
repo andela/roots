@@ -4,22 +4,24 @@ angular.module('eventApp')
     $location.url('/user/home');
   }
   $rootScope.hideBtn = true;
-  EventService.getEvent($stateParams.event_id)
-    .success(function(event){
-      $scope.event = event;
-      $('.md-warn').css('border-color', event.borderColor);
-      $('.md-warn').css('background-color', event.headerColor);
-      $('.md-warn').css('color', event.fontColor);
-      $('.values').css('border-color', event.borderColor);
-      $('.values').css('background-color', event.contentColor);
-      $('.values').css('color', event.fontColor);
-      $scope.Address = event.venue;
-      EventService.getOrganizer(event.org_name)
-    .success(function(organizer){
-      $scope.organizer = organizer[0];
+  $scope.services = function(){
+    EventService.getEvent($stateParams.event_id)
+      .success(function(event){
+        $scope.event = event;
+        $('.md-warn').css('border-color', event.borderColor);
+        $('.md-warn').css('background-color', event.headerColor);
+        $('.md-warn').css('color', event.fontColor);
+        $('.values').css('border-color', event.borderColor);
+        $('.values').css('background-color', event.contentColor);
+        $('.values').css('color', event.fontColor);
+        $scope.Address = event.venue;
+        EventService.getOrganizer(event.org_name)
+      .success(function(organizer){
+        $scope.organizer = organizer[0];
+      });
     });
-  });
-
+  };
+  
   $scope.submitEventDetails = function (eventDetails, organizer){
     
     if(eventDetails.startDate > eventDetails.endDate){
