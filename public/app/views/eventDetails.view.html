@@ -1,5 +1,5 @@
 <div ng-controller="eventCtrl" id="for preview">
-  <div id ="preview" class="switch-container">
+  <div id ="preview" class="switch-container" data-ng-init="services()">
     <div layout="column">
       <md-toolbar md-scroll-shrink id="contentMainDiv">
         <img src="{{event.imageUrl}}" height='500px' width='100%'/>
