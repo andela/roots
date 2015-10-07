@@ -367,11 +367,6 @@ img.bg {
 }
 
 label {
-<<<<<<< HEAD
- font-size: 10px;
-}
-
-=======
   font-size: 0.8em;
 }
 .req {
@@ -386,7 +381,6 @@ label {
   margin-right: 5%;
 }
 
->>>>>>> feat(datetime picker) create event page:
 .md-warn {
  font-size: 20px;
  border-radius: 8px 8px 0px 0px;
@@ -399,19 +393,21 @@ p {
 }
 
 #eventTitleDiv {
- color: #424242 ;
- background-color: grey;
- border-style: solid;
- border-width: 1px;
- border-radius: 8px 8px 0px 0px;
- width: 50%;
+  margin: auto;
+  color: #424242 ;
+  background-color: grey;
+  border-style: solid;
+  border-width: 1px;
+  text-align: center;
+  width: 100%;
+  height: 80px;
 }
 
 #sideHeaderDiv {
- margin-left: 10%;
  font-size: 20px;
  border-radius: 8px 8px 0px 0px;
- width: 30%;
+ height: 20px;
+ width: 100%;
  color: #424242 ;
  background-color: grey;
  border-style: solid;
@@ -419,87 +415,26 @@ p {
 }
 
 #contentMainDiv {
- height: 250px;
- width: 50%;
+ margin: auto; 
+ height: 500px;
+ width: 100%;
  font-size: 20px;
  background-color: #F5F5F5 ;
- border-style: solid;
- border-width: 1px;
  color: #424242 ;
  border-radius: 0px 0px 8px 8px;
 }
 
 
 #addressMap {
-  width: 30%;
+  width: 100%;
   height: 300px;
-  margin-left: 10%;
+  background-color: #CCC;
   font-size: 20px;
   background-color: #F5F5F5 ;
   border-style: solid;
   border-width: 1px;
   color: #424242 ;
   border-radius: 0px 0px 8px 8px;
-}
-
-#contentSideDiv {
-  height: 250px;
-  width: 30%;
-  font-size: 20px;
-  margin-left: 10%;
-  background-color: #F5F5F5 ;
-  border-style: solid;
-  border-width: 1px;
-  color: #424242 ;
-  border-radius: 0px 0px 8px 8px;
-}
-
-#eventDetails {
- margin-top: 20px;
- font-size: 20px;
- border-radius: 8px 8px 0px 0px;
- height: 50px;
- width: 50%;
- background-color: grey;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
-}
-
-#organizers {
- margin-top: 20px;
- margin-left: 10%;
- font-size: 20px;
- border-radius: 8px 8px 0px 0px;
- height: 50px;
- width: 30%;
- background-color: grey;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
-}
-
-#eventContent {
- height: 300px;
- width: 50%;
- font-size: 20px;
- background-color: #F5F5F5 ;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
- border-radius: 0px 0px 8px 8px;
-}
-
-#organizersContent {
- height: 300px;
- width: 30%;
- margin-left: 10%;
- font-size: 20px;
- background-color: #F5F5F5 ;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
- border-radius: 0px 0px 8px 8px;
 }
 
 #padding {
@@ -529,10 +464,6 @@ p {
 #width {
  width: 50%;
 }
-.createEventTab {
- width: 50%;
- margin-left: 100px;
-}
 
 .fieldset {
  width: 80%;
@@ -559,11 +490,6 @@ label {
  margin-left: 30px;
 }
 
-#organizerTab {
- width: 50%;
- margin-left: 100px;
-}
-
 .editImage-box {
  height: 250px;
  width:300px;
@@ -582,20 +508,6 @@ label {
  width:70%;
  padding: 4%;
  margin-top: 5%;
-}
-
-.image-box {
- height: 250px;
- width:300px;
- background: url('../../assets/img/preview-icon.jpg') no-repeat center;
-}
-
-label {
-  font-size: 0.8em;
-}
-.req {
-  color: red;
-  font-size: 1.5em;
 }
 
 #image-preview {
@@ -634,7 +546,7 @@ label {
 }
 
 #preview {
-  padding-left: 10%;
+  padding-left: 3%;
 }
 
 #card {
