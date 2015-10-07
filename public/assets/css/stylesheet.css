@@ -367,7 +367,18 @@ img.bg {
 }
 
 label {
- font-size: 10px;
+  font-size: 0.8em;
+}
+.req {
+  color: red;
+  font-size: 1.5em;
+}
+
+.calendar {
+  background-color: #eee;
+  height: auto;
+  border-radius: 5%;
+  margin-right: 5%;
 }
 
 .md-warn {
@@ -382,18 +393,21 @@ p {
 }
 
 #eventTitleDiv {
- color: #424242 ;
- background-color: grey;
- border-style: solid;
- border-width: 1px;
+  margin: auto;
+  color: #424242 ;
+  background-color: grey;
+  border-style: solid;
+  border-width: 1px;
+  text-align: center;
+  width: 100%;
+  height: 80px;
 }
 
 #sideHeaderDiv {
- margin-left: 10%;
  font-size: 20px;
  border-radius: 8px 8px 0px 0px;
- height: 50px;
- width: 30%;
+ height: 20px;
+ width: 100%;
  color: #424242 ;
  background-color: grey;
  border-style: solid;
@@ -401,89 +415,26 @@ p {
 }
 
 #contentMainDiv {
- height: 250px;
- width: 50%;
+ margin: auto; 
+ height: 500px;
+ width: 100%;
  font-size: 20px;
  background-color: #F5F5F5 ;
- border-style: solid;
- border-width: 1px;
  color: #424242 ;
  border-radius: 0px 0px 8px 8px;
 }
 
 
 #addressMap {
-  width: 30%;
+  width: 100%;
   height: 300px;
   background-color: #CCC;
-  margin-left: 10%;
   font-size: 20px;
   background-color: #F5F5F5 ;
   border-style: solid;
   border-width: 1px;
   color: #424242 ;
   border-radius: 0px 0px 8px 8px;
-}
-
-#contentSideDiv {
-  width: 30%;
-  height: 250px;
-  background-color: #CCC;
-  margin-left: 10%;
-  font-size: 20px;
-  background-color: #F5F5F5 ;
-  border-style: solid;
-  border-width: 1px;
-  color: #424242 ;
-  border-radius: 0px 0px 8px 8px;
-}
-
-#eventDetails {
- margin-top: 20px;
- font-size: 20px;
- border-radius: 8px 8px 0px 0px;
- height: 50px;
- width: 50%;
- background-color: grey;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
-}
-
-#organizers {
- margin-top: 20px;
- margin-left: 10%;
- font-size: 20px;
- border-radius: 8px 8px 0px 0px;
- height: 50px;
- width: 30%;
- background-color: grey;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
-}
-
-#eventContent {
- height: 300px;
- width: 50%;
- font-size: 20px;
- background-color: #F5F5F5 ;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
- border-radius: 0px 0px 8px 8px;
-}
-
-#organizersContent {
- height: 300px;
- width: 30%;
- margin-left: 10%;
- font-size: 20px;
- background-color: #F5F5F5 ;
- border-style: solid;
- border-width: 1px;
- color: #424242 ;
- border-radius: 0px 0px 8px 8px;
 }
 
 #padding {
@@ -502,12 +453,16 @@ p {
  border-radius: 2px;
 }
 
+#bannerImg {
+  border-style: dashed;
+  width: 250px;
+  height: 200px;
+  border-width: 2px;
+  border-radius: 2px;
+}
+
 #width {
  width: 50%;
-}
-.createEventTab {
- width: 50%;
- margin-left: 100px;
 }
 
 .fieldset {
@@ -535,11 +490,6 @@ label {
  margin-left: 30px;
 }
 
-#organizerTab {
- width: 50%;
- margin-left: 100px;
-}
-
 .editImage-box {
  height: 250px;
  width:300px;
@@ -560,15 +510,9 @@ label {
  margin-top: 5%;
 }
 
-.image-box {
- height: 250px;
- width:300px;
- background: url('../../assets/img/preview-icon.jpg') no-repeat center;
-}
-
 #image-preview {
  height: 250px;
- width: 400px;  
+ width: 400px;
 }
 
 #whiteFrame {
@@ -602,5 +546,14 @@ label {
 }
 
 #preview {
-  padding-left: 10%;
+  padding-left: 3%;
+}
+
+#card {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.values {
+  padding-left: 2%
 }

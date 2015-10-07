@@ -5,21 +5,27 @@
       <md-button ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
     </div>
   </md-toolbar>
-  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.css"/>
   <div ng-switch on="view" class="switch-container">
     <div ng-hide="prev" layout="column" class="card form-container">
       <h3 class="md-padding">Event Details</h3>
       <md-content class="md-padding">
-        <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
-          <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
-          <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
-            <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
-          </md-select>
-          <md-textarea-container flex>
-            <label>Event Description</label>
-            <summernote height="300" ng-model="event.description"></summernote>
-          </md-textarea-container>
-          <br>
+      <form ng-submit="submitEventDetails(event, organizer)" name="eventForm">
+        <label>Event Title<span class="req">*</span></label>
+        <input type="text" name="e-title" ng-model="event.name"/>
+      
+        <label>Event Category<span class="req">*</span></label>
+        <md-select aria-label="sel" ng-model="event.category" placeholder="Select Category" style="display: block;">
+          <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name}}</md-option>
+        </md-select>
+
+        <md-textarea-container flex>
+          <label class="required">Event Description<span class="req">*</span></label>
+          <summernote height="300" ng-model="event.description" required></summernote>
+        </md-textarea-container>
+        <br>
+        <div layout-sm="row">
+          <label>EVENT LOCATION DETAILS</label>
           <div layout-sm="row">
             <label>Country</label>
             <country-list></country-list>
@@ -27,65 +33,43 @@
             <label>Venue</label><br>
             <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click="getCountry()" ng-autocomplete="result" details="details" options="options1">
           </div>
-          <br>
-          <div layout layout-sm="column">
-              <label>Event Starts</label>
-              <md-input-container flex class="md-padding">
-                <input ng-model="event.startDate" type="datetime-local" placeholder="Date/Time">
-              </md-input-container>
-              <label>Event End</label>
-              <md-input-container flex class="md-padding">
-                <input ng-model="event.endDate" type="datetime-local" placeholder="Date/Time">
-              </md-input-container>
-          </div>
-          <div id="image-wrapper">
-            <img id="image-preview" class="image-box" src="" alt=""><br>
-            <input ng-click="previewImg('#image-upload','#image-preview')" accept="image/*" ngf-select="true" id="image-upload" ng-model="event.imageUrl" type="file"><br>
-          </div><br><br>
-          <h3>Organizer Profile</h3>
-          <ng-form>
-          <md-input-container>
-            <label>Organizer's Name</label>
-            <input type="text" required name="e-title" ng-model="organizer.name"/>
-          </md-input-container>
-            <label>About the Organizer's</label>
-            <summernote height="300" ng-model="organizer.about"></summernote>
-            <br>
-            <label>Phone Numbers</label>
-            <div layout= "column" style="width:50%">
-              <md-input-container>
-                <input placeholder = "Number 1" ng-model="organizer.phoneNumber1">
-              </md-input-container>
-              <md-input-container>
-                 <input placeholder= "Number 2" ng-model="organizer.phoneNumber2">
-              </md-input-container>
-            </div>
-            <div id="image-wrapper">
-              <img id="orgImg-preview" class="image-box" src="" alt=""><br>
-              <input ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
-            </div><br>
-            <label>Team Member's</label>
-            <div layout layout-sm="column">
-              <md-input-container class="md-padding" flex>
-                <label>Name</label>
-                <input  type="text" >
-              </md-input-container>
-              <md-input-container class="md-padding" flex>
-                <label>Email</label>
-                <input  type="email">
-              </md-input-container>
-              <md-input-container class="md-padding" flex>
-                <label>Role</label>
-                <input  type="text">
-              </md-input-container>
-            </div>
-
-          </ng-form><br>
-          <div class="md-toolbar-tools centre" layout-align="center"> 
-           <md-button class="md-raised" ng-click="event.venue = result" type="submit" ng-disabled="eventForm.$invalid">CREATE</md-button>
-           <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
         </div>
-        </form>
+        <br>
+        <label>Event Date<span class="req">*</span></label><br>
+        <div layout="row" >
+          <div layout="column" class="md-padding calendar">
+            Start Date: {{ event.startDate | date:'medium' }}<br>
+            <datetimepicker id="startdate" ng-model="event.startDate" ></datetimepicker>
+          </div>
+          <div layout="column" class="md-padding calendar">
+            End Date: {{ event.endDate | date:'medium' }}<br>
+            <datetimepicker id="enddate" ng-model="event.endDate" ></datetimepicker>
+          </div>
+        </div><br>
+        <div id="image-wrapper">
+          <label>Event Image<span class="req">*</span></label><br>
+          <img id="image-preview" class="image-box" src="" alt=""><br>
+          <input ng-click="previewImg('#image-upload','#image-preview', '#prevImage')" accept="image/*" ngf-select="true" id="image-upload" ng-model="event.imageUrl" type="file" ><br>
+        </div><br><br>
+        <h3>Organizer Profile</h3>
+        <ng-form>
+        <md-input-container>
+          <label>Organizer's Name<span class="req">*</span></label>
+          <input type="text" required name="e-title" ng-model="organizer.name"/>
+        </md-input-container>
+          <label>About the Organizer's</label>
+          <summernote height="300" ng-model="organizer.about"></summernote>
+          <br>
+          <div id="image-wrapper">
+            <label>Organizer Logo<span class="req">*</span></label><br>
+            <img id="orgImg-preview" class="image-box" src="" alt=""><br>
+            <input required ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.imageUrl" type="file"><br>
+          </div><br>
+        </ng-form><br>
+          <md-button class="md-raised" ng-click="event.venue = result" type="submit" ng-disabled="eventForm.$invalid">CREATE</md-button>
+          <md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
+      </form>
+      <md-button class="md-raised" ng-click="prev = true;event.venue = result" hide show-gt-md>PREVIEW</md-button>
       </md-content>
     </div>
     <div id="for preview" ng-show="prev">
@@ -124,53 +108,47 @@
           <div layout="column" class="md-raised">
             <div id="padding">
               <div layout="row">
-                <md-toolbar class="md-warn" id="eventTitleDiv" ng-style="{'background-color' : event.headerColor ,'border-color' : event.borderColor, 'color' : event.fontColor}">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex">Event Title</h2>
-                  </div>
-                </md-toolbar>
-                <md-toolbar class="md-warn" id="sideHeaderDiv" ng-style="{'background-color' : event.headerColor,'border-color' : event.borderColor, 'color' : event.fontColor}">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex">Getting there</h2>
-                  </div>
+                <md-toolbar md-scroll-shrink id="contentMainDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor}">
+                <img id="prevImage" src="" alt="" height='500px' width='100%'>
                 </md-toolbar>
               </div>
-              <div layout = "row">
-                <md-toolbar md-scroll-shrink id="contentMainDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
-                  <div class="md-toolbar-tools">{{event.name}}</div>
-                </md-toolbar>
-                <md-toolbar md-scroll-shrink id="contentSideDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
-                  <div class="md-toolbar-tools">{{event.venue}} {{event.country}}</div>
-                </md-toolbar>
-              </div>
-              <div layout="row">
-                <md-toolbar id="eventDetails" class="md-warn" ng-style="{'background-color' : event.headerColor,'border-color' : event.borderColor, 'color' : event.fontColor}">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex">Event Details</h2>
+              <div id="card">
+                <md-card>
+                  <div layout="column" class="md-raised">
+                    <div id="padding">
+                      <div layout="row">
+                        <div class="md-warn" id="eventTitleDiv" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.headerColor}">
+                            <h3 class="md-flex">{{event.name}}</h3>
+                        </div>
+                      </div>
+                      <md-content flex layout-padding>
+                        <div class="values" ng-style="{'color' : event.fontColor, 'background-color' : event.contentColor}">
+                          <hr>
+                          <h4><b>Event Details</b></h4>
+                          <hr><br>
+                          <h5>Category:</h5><h6>{{event.category}}</h6><br>
+                          <h5>Event Venue:</h5><h6>{{event.venue}}</h6><br>
+                          <h5>About this Event:</h5><h6 ng-bind-html="eventInfo"></h6><br><br>
+                          <hr>
+                          <h4><b>Organizer Details</b></h4>
+                          <hr><br>
+                          <h5>Organized By:</h5><h6>{{organizer.name}}</b></h6><br>
+                          <h5>About this Organizer:</h5><h6 ng-bind-html="orgInfo"></h6><br>
+                          <h6>Call us: {{organizer.phoneNumber1}}</h6><br>
+                        </div>
+                      </md-content>
+                      <md-toolbar class="md-warn" id="sideHeaderDiv" ng-style="{'background-color' : event.headerColor,'border-color' : event.borderColor, 'color' : event.fontColor}">
+                        <div class="md-toolbar-tools">
+                          <h2 class="md-flex"><b>Getting to: {{event.venue}}</b></h2>
+                        </div>
+                      </md-toolbar>
+                      <img src="../assets/img/googleMaps.jpeg" height="400px" width="100%">
+                    </div>
                   </div>
-                </md-toolbar>
-                <md-toolbar id="organizers" class="md-warn" ng-style="{'background-color' : event.headerColor ,'border-color' : event.borderColor, 'color' : event.fontColor}">
-                  <div class="md-toolbar-tools">
-                    <h2 class="md-flex">Organizer Details</h2>
-                  </div>
-                </md-toolbar>
-              </div>
-              <div layout="row">
-                <md-toolbar md-scroll-shrink id="eventContent" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
-                  <p>{{event.name}}</p> <br>
-                  <p>{{event.venue}}</p><br>
-                  <p>{{event.category}}</p><br>
-                  <p ng-bind-html="eventInfo"></p>
-                </md-toolbar>
-                <md-toolbar md-scroll-shrink id="organizersContent" ng-style="{'border-color' : event.borderColor, 'color' : event.fontColor, 'background-color' : event.contentColor}">
-                  <p>{{organizer.name}}</p><br/>
-                  <p ng-bind-html="orgInfo"></p><br>
-                  <p>{{organizer.phonenumber1}}</p><br>
-                  <p>{{organizer.phonenumber2}}</p>
-                </md-toolbar>
-              </div><br/>
+                </md-card>
               <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
                 <md-button class="md-raised" type="submit" ng-click="event.venue = result" ng-disabled="eventForm.$invalid">Create Event</md-button >
+
               </section>
             </div>
           </div>

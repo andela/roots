@@ -18,18 +18,15 @@ var organizerSchema = new mongoose.Schema({
   imageUrl: {
     type: String
   },
-  phoneNumber1 : {
-    type: Number
-  }
-  // staff: [{
-  //   manager_ref: {
-  //     type: String,
-  //     ref: 'User'      
-  //   },
-  //   role: {
-  //     type: String      
-  //   }
-  // }]
+  staff: [{
+    manager_ref: {
+      type: String,
+      ref: 'User'
+    },
+    role: {
+      type: String
+    }
+  }]
 
 }, {
   versionKey: false
