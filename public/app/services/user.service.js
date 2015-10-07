@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .factory('UserService', ['$http', '$stateParams', '$location', '$rootScope', 'baseUrl', function($http, $stateParams, $location, $rootScope, baseUrl) {
+  .factory('UserService', ['$http', '$stateParams', '$location', '$rootScope', 'Upload', 'baseUrl', function($http, $stateParams, $location, $rootScope, Upload, baseUrl) {
 
     function urlBase64Decode(str) {
       var output = str.replace('-', '+').replace('_', '/');
@@ -26,6 +26,20 @@ angular.module('eventApp')
         var token = localStorage.getItem('userToken');
         return $http.get(baseUrl + "user?token=" + token);
       },
+      editProfile: function(user) {
+        var token = localStorage.getItem('userToken');
+        return $http.put(baseUrl + "user?token=" + token, user);        
+      },
+      uploadPicture: function(imageObj) {
+        var token = localStorage.getItem('userToken');
+        
+        return Upload.upload({
+          method: "POST",
+          url: '/api/user/uploadpic?token=' + token,
+          file: imageObj.newImage,
+          fields: imageObj
+        });
+      },
       authenticate: function(param) {
         return $http.post(baseUrl + "authenticate", param);
       },
@@ -40,6 +54,7 @@ angular.module('eventApp')
             user = JSON.parse(urlBase64Decode(encoded));
             $rootScope.userName = user.firstname;
             $rootScope.profilePic = user.profilePic || "../../assets/img/icons/default-avatar.png";
+            $rootScope.userId = user._id;
             $rootScope.loggedIn = true;
           }
 

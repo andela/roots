@@ -1,5 +1,6 @@
 angular.module('eventApp')
-  .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce','$window', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce, $window) {
+
+  .controller('eventCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'Upload', '$rootScope', '$state', '$sce', function($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $sce) {
 
    if (!localStorage.getItem('userToken')) {
     $location.url('/user/home');
@@ -44,7 +45,8 @@ angular.module('eventApp')
       $scope.isLoading = true;
       EventService.createEvent(eventDetails)
         .success(function(data) {
-          $location.url('/home');
+          $state.go('user.eventDetails', {event_id: data._id});
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
         });
     };
 
@@ -108,11 +110,7 @@ angular.module('eventApp')
         }
     })
   };
-
-  $scope.publishEvent = function(publish){
-    $scope.event.online = publish;      
-  }
-
+  
   $scope.changeColor = function(elem) {
       $('md-toolbar.md-warn').css("background-color", elem);
   };

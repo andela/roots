@@ -35,7 +35,7 @@ module.exports = function(app) {
     //Get an organizer profile details
     .get(userCtrl.verifyToken, orgCtrl.getProfile)
     //Edit organizer profile details
-    .put(userCtrl.verifyToken, orgCtrl.editProfile);
+    .put(userCtrl.verifyToken, utils.imageProcessing, orgCtrl.editProfile);
 
   app.use('/api', router);
 }

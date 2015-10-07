@@ -154,8 +154,8 @@
                   <md-toolbar md-scroll-shrink id="organizersContent" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor, 'background-color' : event.eventTheme.contentColor}">
                     <p>{{organizer.name}}</p><br/>
                     <p ng-bind-html="orgInfo"></p><br>
-                    <p>{{organizer.phonenumber1}}</p><br>
-                    <p>{{organizer.phonenumber2}}</p>
+                    <p>{{organizer.user_ref.phonenumber1}}</p><br>
+                    <p>{{organizer.user_ref.phonenumber2}}</p>
                   </md-toolbar>
                 </div><br/>
                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>

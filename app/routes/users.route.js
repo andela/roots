@@ -1,7 +1,9 @@
 var express = require('express');
 var UserController = require('../controllers/user.controller');
+var Utils = require('../middleware/utils');
 var ctrl = new UserController();
 var router = express.Router();
+var utils = new Utils();
 
 module.exports = function(app) {
  
@@ -32,6 +34,9 @@ module.exports = function(app) {
 
   router.route('/reset/:token')
     .post(ctrl.resetPass);
+
+  router.route('/user/uploadpic')
+    .post(ctrl.verifyToken, utils.imageProcessing, ctrl.uploadPicture);
 
   app.use('/api', router);
 };

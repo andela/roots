@@ -72,6 +72,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
   } else {
 
     profile = req.body.dataObject;
+    
     User.findOne({
       email: req.decoded.email
     }, function(err, user) {
@@ -140,7 +141,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
       message: 'Please check parameters!'
     });
   }
-  var newProfile = req.body.newProfile;
+ 
   Organizer.findById(req.params.organizer_id, function(err, profile) {
 
     if (err) {
@@ -161,13 +162,13 @@ OrganizerController.prototype.editProfile = function(req, res) {
 
     } else {
       orgProfile = req.body.dataObject;
-
+      
       //Prevent imageUrl field being assigned string 'null'
       orgProfile.imageUrl = orgProfile.imageUrl || "";
       
       Organizer.findByIdAndUpdate(req.params.organizer_id, {
         $set: {
-          name: orgProfile.organizerName,
+          name: orgProfile.name,
           about: orgProfile.about,
           imageUrl: orgProfile.imageUrl
         }

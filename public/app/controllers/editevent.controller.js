@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .controller('editeventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
+  .controller('editeventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope', '$state', '$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $sce) {
     
     if (!localStorage.getItem('userToken')) {
       $location.url('/user/home');
@@ -34,16 +34,13 @@ angular.module('eventApp')
         }
       })
     };
-    $scope.delete = function(){
-      EventService.deleteEvent($stateParams.event_id);
-      $location.url('/home');
-    };
-
+    
     $scope.submitEventDetails = function (eventDetails){
      
       EventService.editEventDetails(eventDetails, $stateParams.event_id)
       .success(function(data) {
-          $location.url('/home');
+          $state.go('user.eventDetails', {event_id: $stateParams.event_id});
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
       })
     };
 
@@ -63,6 +60,12 @@ angular.module('eventApp')
         country: $scope.getCountryCode().code
       };
       $scope.details = '';
+    }
+    $scope.cancelEdit = function (){
+     
+      $state.go('user.eventDetails', {event_id: $stateParams.event_id});
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+
     };
 
     function parseDate(date){

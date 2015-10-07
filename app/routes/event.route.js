@@ -10,10 +10,11 @@ var utils = new Utils();
 
 module.exports = function(app) {
 
-  router.route('/event')
+  router.route('/events/published')
     //Get user's list of your published events
-    .get(userCtrl.verifyToken, evtCtrl.getMyEvents)
-
+    .get(userCtrl.verifyToken, evtCtrl.getMyEvents);
+    
+  router.route('/event')
     //Create new event
     .post(userCtrl.verifyToken, utils.imageProcessing, evtCtrl.createEvent);
 

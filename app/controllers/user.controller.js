@@ -156,7 +156,8 @@ UserController.prototype.deleteAll = function(req, res) {
 };
 
 UserController.prototype.editUser = function(req, res) {
-  User.update({
+
+  User.findByIdAndUpdate({
     _id: req.decoded._id
   }, req.body, {
     new: true
@@ -166,6 +167,33 @@ UserController.prototype.editUser = function(req, res) {
     }
     res.json(user);
   });
+};
+
+UserController.prototype.uploadPicture = function(req, res) {
+
+  var result = req.body.dataObject;
+  if (result && result.imageUrl) {
+
+    User.findByIdAndUpdate(req.decoded._id, {
+      $set: {
+        profilePic: result.imageUrl
+      }
+    }, function(err, user) {
+
+      if (err) {
+        return res.json(err);
+      } else {
+        return res.json(result);
+      }
+    });
+
+  } else {
+
+    return res.status(422).json({
+      success: false,
+      message: 'Unable to upload image.'
+    });
+  }
 };
 
 UserController.prototype.editTwitUser = function(req, res) {
@@ -196,18 +224,20 @@ UserController.prototype.getCurrentUser = function(req, res) {
       res.status(500).send(err);
     }
 
-    if(user.organizer_ref){
+    if (user.organizer_ref) {
 
-      Organizer.populate(user, {'path': 'organizer_ref'}, function(err, user2){
+      Organizer.populate(user, {
+        'path': 'organizer_ref'
+      }, function(err, user2) {
 
-        if(err){
+        if (err) {
           return res.json(err);
         }
         res.json(user2);
       });
-    } else{
+    } else {
       res.json(user);
-    }  
+    }
   });
 };
 

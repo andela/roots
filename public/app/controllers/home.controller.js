@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', 'EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, EventService) {
+  .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', '$state','EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, $state, EventService) {
     $("a[href='#downpage']").click(function() {
       $("html, body").animate({
         scrollTop: $('#event-list').offset().top
@@ -20,13 +20,7 @@ angular.module('eventApp')
         UserService.decodeUser();
       }
     }    
-
-    $scope.getOrganizers = function() {
-      EventService.getAllProfiles().then(function(data) {
-        $scope.organizers = data.data;
-      })
-    };
-
+    
     $scope.logout = function() {
       localStorage.removeItem('userToken');
       $rootScope.loggedIn = false;
@@ -150,4 +144,11 @@ angular.module('eventApp')
 
       });
     };
+
+    $scope.openEventDetails = function(eventId){
+
+      $state.go('user.eventDetails', {event_id: eventId});
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+
   }]);
