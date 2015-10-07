@@ -22,13 +22,11 @@ var eventSchema = new mongoose.Schema({
   online: {
     type: Boolean,
     default: false
-  },
-  country: {
-    type: String
-  },
+  },  
   venue: {
     name: String,
     country: String,
+    countryCode: String,
     state: String,
     town: String,
     address: {

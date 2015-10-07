@@ -25,8 +25,13 @@ angular.module('eventApp')
   $rootScope.hideBtn = true;
  
     $scope.submitEventDetails = function(eventDetails, organizer) {
+      
+      if(!eventDetails.startDate || !eventDetails.endDate){
 
-      if(eventDetails.startDate > eventDetails.endDate){
+        $window.alert('Select event start and end dates');
+        return;
+
+      }else if(eventDetails.startDate > eventDetails.endDate){
           $window.alert('invalid date range');
           return;
       }else{

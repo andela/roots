@@ -54,6 +54,7 @@ angular.module('eventApp')
 
       if(!organizer.name){
         $window.alert("Name field is mandatory!");
+        return;
       }
 
       if ($scope.orgProfileExists) {
@@ -108,8 +109,9 @@ angular.module('eventApp')
 
     $scope.updateUser = function() {
 
-      if(!userInformation.firstname || !userInformation.lastname ||!userInformation.email){
+      if(!$scope.userInformation.firstname || !$scope.userInformation.lastname ||!$scope.userInformation.email){
         $window.alert("Fill all mandatory!");
+        return;
       }
 
       UserService.editProfile($scope.userInformation)

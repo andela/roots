@@ -27,9 +27,9 @@
         <div layout-sm="row">
 
           <label>Country</label>
-          <country-list ctry="event.venue.country" required></country-list>
+          <country-list ctry="event.venue.countryCode"></country-list>
             <br>
-          <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="event.venue.address" details="details" options="options1">
+          <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="event.venue.address" details="details" options="options1" required>
         </div>
         <br>
 

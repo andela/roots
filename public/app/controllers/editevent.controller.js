@@ -37,11 +37,22 @@ angular.module('eventApp')
     
     $scope.submitEventDetails = function (eventDetails){
      
-      EventService.editEventDetails(eventDetails, $stateParams.event_id)
-      .success(function(data) {
-          $state.go('user.eventDetails', {event_id: $stateParams.event_id});
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
-      })
+      if(!eventDetails.startDate || !eventDetails.endDate){
+
+        $window.alert('Select event start and end dates');
+        return;
+
+      }else if(eventDetails.startDate > eventDetails.endDate){
+          $window.alert('invalid date range');
+          return;
+      }else{
+        eventDetails.venue.country = $scope.getCountryCode().text;
+        EventService.editEventDetails(eventDetails, $stateParams.event_id)
+        .success(function(data) {
+            $state.go('user.eventDetails', {event_id: $stateParams.event_id});
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+        })
+      }
     };
 
     $scope.getCountryCode = function() {

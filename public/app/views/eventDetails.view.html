@@ -24,6 +24,13 @@
                 <h5>Event Venue:</h5>
                 <h6>{{event.venue.address}}</h6>
                 <br>
+                <h5>Country:</h5>
+                <h6>{{event.venue.country}}</h6>
+                <br>
+                <h5> Start Date:</h5>
+                <h6>{{ event.startDate | date:'medium' }}</h6>
+                <h5> End Date:</h5>
+                <h6>{{ event.endDate | date:'medium' }}</h6>            
                 <h5>About this Event:</h5>
                 <h6>{{event.description}}</h6>
                 <br>
