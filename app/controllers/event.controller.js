@@ -45,17 +45,22 @@ EventController.prototype.registerEvent = function(req, res) {
 EventController.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
-    req.body = fields;
-      if(Object.keys(file) != 0){
-      cloudinary.uploader.upload(file.file.path, function(result){
+    req.body.eventObj = fields;
+    if (Object.keys(file) != 0) {
+      cloudinary.uploader.upload(file.file.path, function(result) {
         req.body.imageUrl = result.secure_url;
+        if (req.body.imageUrl) {
+          req.body.eventObj.imageUrl = req.body.imageUrl;
+        }
         next();
       }, {
         width: 800,
         height: 800
       });
-    } else {next();}
-    });
+    } else {
+      next();
+    }
+  });
 };
 
 
@@ -70,10 +75,17 @@ EventController.prototype.createEvent = function(req, res) {
   }
 
   var userId = req.decoded._id;
-  var eventTasks = req.body.eventObj.tasks;
   var eventObj = req.body.eventObj;
+
   eventObj.user_ref = userId;
   eventObj.tasks = [];
+
+   try {
+    eventObj.venue = JSON.parse(eventObj.venue);
+    eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
+  } catch (err) {
+
+  }
 
   Event.create(eventObj, function(err, newEvent) {
 

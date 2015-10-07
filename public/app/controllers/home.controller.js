@@ -12,7 +12,7 @@ angular.module('eventApp')
     if (userToken) {
       localStorage.setItem('userToken', userToken);
     }
-   
+
     $rootScope.signupCheck = function() {
       if(localStorage.getItem('userToken')) {
         UserService.decodeUser().then(function(res) {

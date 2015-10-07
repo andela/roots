@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
+  .controller('eventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce','$window', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce, $window) {
    if (!localStorage.getItem('userToken')) {
     $location.url('/user/home');
   }
@@ -19,9 +19,15 @@ angular.module('eventApp')
       $scope.organizer = organizer[0];
     });
   });
-  
+
   $scope.submitEventDetails = function (eventDetails, organizer){
+    
+    if(eventDetails.startDate > eventDetails.endDate){
+      $window.alert('invalid date range');
+    }
+    else {
     eventDetails.country = $scope.getCountryCode().text;
+    $scope.isLoading = true;
     var token = localStorage.getItem('userToken');
     eventDetails.user_ref = $rootScope.userId;
     organizer.user_ref = $rootScope.userId;
@@ -35,6 +41,7 @@ angular.module('eventApp')
     .success(function(data) {
       $scope.submitOrgProfile(organizer,token);
     })
+    }
   };
 
   $scope.submitOrgProfile = function(organizer,token){
@@ -44,6 +51,7 @@ angular.module('eventApp')
      file: organizer.imageUrl,
      fields: organizer
    }).success(function(data){
+     $scope.isLoading = false;
        $location.url('/home');
      });
   };
@@ -54,7 +62,7 @@ angular.module('eventApp')
     $scope.view = view;
   };
 
-  $scope.categories = ('Technology,Sport,Health,Music,Art,Science,Spirituality,Media,Family,Education').split(',').map(function(category){
+  $scope.categories = ('Technology,Sport,Health,Music,Art,Science,Spirituality,Media,Family,Education,Party').split(',').map(function(category){
     return {
       name: category
     };
@@ -98,7 +106,7 @@ angular.module('eventApp')
       $('md-toolbar.md-warn').css("background-color", elem);
   };
 
-  $scope.$watch("organizer.about", 
+  $scope.$watch("organizer.about",
     function(oldVal, newVal){
       if(oldVal !== newVal){
         $scope.orgInfo = $sce.trustAsHtml($scope.organizer.about)
