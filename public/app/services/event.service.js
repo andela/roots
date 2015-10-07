@@ -11,8 +11,7 @@ angular.module('eventApp')
             url: '/api/event?token=' + token,
             file: evtObj.imageUrl,
             fields: evtObj
-         });      
-          // return $http.post(baseUrl + "event?token=" + token, {userId: $rootScope.userId, eventObj: evtObj});
+         });          
       },
       editEventDetails: function(evtObj, ID) {
           
@@ -21,8 +20,7 @@ angular.module('eventApp')
               url: '/api/event/' + ID + '?token='+ token,
               file: evtObj.imageUrl,
               fields: evtObj
-            })
-          // return $http.put(baseUrl + "event/"+ ID + "?token=" + token);
+            });          
       },
       deleteEvent: function(evID) {
           

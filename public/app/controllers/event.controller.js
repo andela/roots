@@ -22,15 +22,6 @@ angular.module('eventApp')
       });
     }
 
-    $scope.submitEventDetails = function(eventDetails, organizer) {
-      
-      EventService.createEvent(eventDetails)
-        .success(function(data) {
-          $state.go('user.eventDetails', {event_id: data._id});
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
-        });
-    };
-
   $rootScope.hideBtn = true;
  
     $scope.submitEventDetails = function(eventDetails, organizer) {
@@ -38,13 +29,15 @@ angular.module('eventApp')
       if(eventDetails.startDate > eventDetails.endDate){
           $window.alert('invalid date range');
           return;
-        }
-      $scope.isLoading = true;
-      EventService.createEvent(eventDetails)
-        .success(function(data) {
-          $state.go('user.eventDetails', {event_id: data._id});
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
-        });
+      }else{
+        eventDetails.venue.country = $scope.getCountryCode().text;
+        $scope.isLoading = true;
+        EventService.createEvent(eventDetails)
+          .success(function(data) {
+            $state.go('user.eventDetails', {event_id: data._id});
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+          });
+      }
     };
 
     $scope.view = 'create';
@@ -138,10 +131,34 @@ angular.module('eventApp')
     venue: {}
   };
 
+  $scope.fetchEvents = function() {
+
+    EventService.getAllEvents().then(function(data) {
+      $scope.eventList = data.data;
+    });
+  };
+
   $scope.prev = false;
   $scope.organizer = {
     about: '',
     phoneNumber1: ''
   };
+
+  $scope.find = {
+      name:'',
+    category:'',
+    venue:{
+      country:''
+    }
+  }
+  $scope.countryCode = "";
+    
+  $scope.$watch("countryCode", function(){    
+    if(!$scope.countryCode){
+      $scope.find.venue.country = "";
+      return;
+    }
+    $scope.find.venue.country = $scope.getCountryCode().text;    
+  });
 
 }]);
