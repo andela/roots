@@ -384,6 +384,7 @@ label {
 .req {
   color: red;
   font-size: 1.5em;
+  margin-left: 5px;
 }
 
 .calendar {

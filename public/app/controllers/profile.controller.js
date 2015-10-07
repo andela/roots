@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eventApp')
-  .controller('profileCtrl', ['$scope', '$rootScope', 'EventService', 'OrganizerService', 'Upload', 'UserService', '$state', function($scope, $rootScope, EventService, OrganizerService, Upload, UserService, $state) {
+  .controller('profileCtrl', ['$scope', '$rootScope', 'EventService', 'OrganizerService', 'Upload', 'UserService', '$state', '$window', function($scope, $rootScope, EventService, OrganizerService, Upload, UserService, $state, $window) {
 
 
     if (!localStorage.getItem('userToken')) {
@@ -51,6 +51,10 @@ angular.module('eventApp')
     }
 
     $scope.organizerButtnSave = function(organizer) {
+
+      if(!organizer.name){
+        $window.alert("Name field is mandatory!");
+      }
 
       if ($scope.orgProfileExists) {
         $scope.editOrganizer(organizer);
@@ -103,6 +107,10 @@ angular.module('eventApp')
     };
 
     $scope.updateUser = function() {
+
+      if(!userInformation.firstname || !userInformation.lastname ||!userInformation.email){
+        $window.alert("Fill all mandatory!");
+      }
 
       UserService.editProfile($scope.userInformation)
         .success(function(res) {

@@ -42,7 +42,7 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
     .state('user.eventDetails', {
       url: '/eventdetails/:event_id',
       templateUrl: '../app/views/eventDetails.view.html',
-      controller: 'eventCtrl'
+      controller: 'eventViewCtrl'
     })
     .state('user.moreEvents', {
       url: '/more-events',

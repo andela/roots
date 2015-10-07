@@ -30,12 +30,15 @@
             </div>
             <form>              
               <div ng-show="userEditMode">
-                <div layout="row">
-                  <input type="text" title="First name" flex="30" placeholder="First Name" class="input-textbox" style="margin-right:30px" ng-model="userInformation.firstname">
+                <div layout="row" style="margin-top:20px;">
+                  <input type="text" title="First name" flex="30" placeholder="First Name" class="input-textbox" ng-model="userInformation.firstname">
+                  <span class="req" style="margin-right:30px;">*</span>
                   <input type="text" title="Last name" flex="30" placeholder="Last Name" class="input-textbox" ng-model="userInformation.lastname">
+                  <span class="req">*</span>
                 </div><br>
                 <div layout="row">
-                  <input type="text" title="Email" flex="30" placeholder="Email" class="input-textbox" style="margin-right:30px" ng-model="userInformation.email">
+                  <input type="text" title="Email" flex="30" placeholder="Email" class="input-textbox" ng-model="userInformation.email">
+                  <span class="req" style="margin-right:30px">*</span>
                   <select  title="Gender" class="select-textbox" flex="30" style="display:block" ng-model="userInformation.gender">
                     <option value="">Select Gender</option>
                     <option value="M">Male</option>
@@ -122,7 +125,8 @@
                 
                   <label>Name</label>
                   <div layout="row">
-                  <input flex="50" class="input-textbox" type="text" required name="e-title" ng-model="organizer.name"/>
+                  <input flex="50" class="input-textbox" type="text" required name="e-title" ng-model="organizer.name">
+                  <span class="req">*</span>
                   </div>
                 
                   <label>About</label>
@@ -174,6 +178,11 @@
                     </md-card-content>
                   </md-card>
                 </div>
+                <div ng-show="!publishedEvents || !publishedEvents.length">
+                    <md-card-content>
+                      No event found under this category
+                    </md-card-content>
+                </div> 
               </div>
             </div>
           </md-content>
@@ -189,8 +198,13 @@
                       <a><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
                       <a href="" style="margin-right:8px" ng-click="editEvent(event._id)">edit</a><a style="margin-right:8px" href="" ng-click="deleteEvent(event._id, eventDrafts)">delete</a><a href="" ng-click="viewEvent(event._id)">view</a>
                     </md-card-content>
-                  </md-card>
+                  </md-card>                  
                 </div>
+                <div ng-show="!eventDrafts || !eventDrafts.length">
+                    <md-card-content>
+                      No event found under this category
+                    </md-card-content>
+                </div> 
               </div>
             </div>
           </md-content>

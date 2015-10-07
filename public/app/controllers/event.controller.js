@@ -1,26 +1,14 @@
 angular.module('eventApp')
 
-  .controller('eventCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'Upload', '$rootScope', '$state', '$sce', function($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $sce) {
+  .controller('eventCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'Upload', '$rootScope', '$state', '$window', '$sce', function($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $window, $sce) {
 
-   if (!localStorage.getItem('userToken')) {
-    $location.url('/user/home');
-  }
-  $rootScope.hideBtn = true;
-  $scope.services = function(){
+    if (!localStorage.getItem('userToken')) {
+      $location.url('/home');
+    }else{
+      $rootScope.hideBtn = true;
 
-    EventService.getEvent($stateParams.event_id)
-      .success(function(event){
-        $scope.event = event;
-        $('.md-warn').css('border-color', event.borderColor);
-        $('.md-warn').css('background-color', event.headerColor);
-        $('.md-warn').css('color', event.fontColor);
-        $('.values').css('border-color', event.borderColor);
-        $('.values').css('background-color', event.contentColor);
-        $('.values').css('color', event.fontColor);
 
-        $scope.venue = event.venue;
-
-       UserService.getCurrentUser().success(function(res) {
+      UserService.getCurrentUser().success(function(res) {
         
         if(res.organizer_ref){
 
@@ -31,11 +19,20 @@ angular.module('eventApp')
        
       }).error(function(err){
         //checks error
-
       });
-    });
-  };
+    }
 
+    $scope.submitEventDetails = function(eventDetails, organizer) {
+      
+      EventService.createEvent(eventDetails)
+        .success(function(data) {
+          $state.go('user.eventDetails', {event_id: data._id});
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        });
+    };
+
+  $rootScope.hideBtn = true;
+ 
     $scope.submitEventDetails = function(eventDetails, organizer) {
 
       if(eventDetails.startDate > eventDetails.endDate){
@@ -100,7 +97,9 @@ angular.module('eventApp')
       var reader  = new FileReader();
       reader.onloadend = function () {
         preview.src = reader.result;
-        prevImage.src = reader.result;
+
+        if(prevImage)
+          prevImage.src = reader.result;
       }
         if ((file && prevImage) || file) {
           reader.readAsDataURL(file);

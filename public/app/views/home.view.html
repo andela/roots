@@ -23,8 +23,7 @@
         </div>
         <div class="card-content event-card-inner" ng-click="openEventDetails(event._id)">
           <p><span class="card-title black-text"><strong>{{event.name | uppercase}}</strong></span></p>
-          <p>{{event.venue.address | uppercase | limitTo:70}}</p>
-          <p>{{event.venue.address | uppercase}}</p>
+          <p>{{event.venue.address | uppercase | limitTo:70}}</p>          
           <p>{{event.startDate | date:'medium'}}</p>
         </div>
       </div>

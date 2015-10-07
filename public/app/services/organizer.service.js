@@ -26,8 +26,11 @@ angular.module('eventApp')
           return $http.delete(baseUrl + "organizer?token=" + token);
       },
       getOrganizer: function(orgId) {
+          return $http.get(baseUrl + "/organizer/" + orgId);
+      },
+      getMyProfile: function(orgId) {
           var token = localStorage.getItem('userToken');
-          return $http.get(baseUrl + "/organizer/" + orgId + "?token=" + token);
+          return $http.get(baseUrl + "/organizer/?token=" + token);
       }
     };
   }]);

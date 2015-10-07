@@ -14,6 +14,8 @@ module.exports = function(app) {
   //Create an organizer profile for a user
   router.route('/organizer')
     .post(userCtrl.verifyToken, utils.imageProcessing, orgCtrl.createProfile)
+    //Get user's organizer details
+    .get(userCtrl.verifyToken, orgCtrl.getCurrentProfile)
     .delete(userCtrl.verifyToken, orgCtrl.deleteProfile);
 
   //Get all organizer profiles
@@ -32,8 +34,8 @@ module.exports = function(app) {
     .delete(userCtrl.verifyToken, orgCtrl.deleteStaff);
 
   router.route('/organizer/:organizer_id')
-    //Get an organizer profile details
-    .get(userCtrl.verifyToken, orgCtrl.getProfile)
+    //Get organizer profile details by id
+    .get(orgCtrl.getProfile)
     //Edit organizer profile details
     .put(userCtrl.verifyToken, utils.imageProcessing, orgCtrl.editProfile);
 

@@ -378,14 +378,10 @@ OrganizerController.prototype.deleteStaff = function(req, res) {
   });
 }
 
-OrganizerController.prototype.getProfile = function(req, res) {
-
-  var org_name = req.query.name;
+OrganizerController.prototype.getCurrentProfile = function(req, res) {  
 
   //find organizer by the user reference (user_ref) instead of org_id
-  Organizer.find({
-    name: org_name
-  }, function(err, org) {
+  Organizer.findOne({ user_ref: req.body.decoded._id }, function(err, org) {
     if (err) {
       return res.status(500).send(err);
     } else if (!org) {
@@ -406,6 +402,26 @@ OrganizerController.prototype.getProfile = function(req, res) {
           res.json(org1);
         }
       });
+    }
+  });
+}
+
+OrganizerController.prototype.getProfile = function(req, res) {
+
+  var orgId = req.params.organizer_id;
+
+  //find organizer by the user reference (user_ref) instead of org_id
+  Organizer.findById(orgId, function(err, org) {
+    if (err) {
+      return res.status(500).send(err);
+    } else if (!org) {
+
+      return res.status(422).send({
+        success: false,
+        message: 'Invalid organizer id'
+      });
+    } else {
+        res.json(org);  
     }
   });
 }

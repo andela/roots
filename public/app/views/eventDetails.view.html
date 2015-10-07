@@ -20,15 +20,12 @@
                 <br>
                 <h5>Category:</h5>
                 <h6>{{event.category}}</h6>
-                <br>
-                <h5>Description:</h5>
-                <h6>{{event.description}}</h6>
-                <br>
+                <br>               
                 <h5>Event Venue:</h5>
                 <h6>{{event.venue.address}}</h6>
                 <br>
                 <h5>About this Event:</h5>
-                <h6 ng-bind-html="eventInfo"></h6>
+                <h6>{{event.description}}</h6>
                 <br>
                 <br>
                 <hr>
@@ -39,7 +36,7 @@
                 <h6>{{organizer.name}}</b></h6>
                 <br>
                 <h5>About this Organizer:</h5>
-                <h6 ng-bind-html="orgInfo"></h6>
+                <h6>{{organizer.about}}</b></h6>
                 <br>
                 <h6>Call us: {{organizer.phoneNumber1}}</h6>
                 <br>
@@ -47,10 +44,10 @@
             </md-content>
             <md-toolbar class="md-warn" id="sideHeaderDiv">
               <div class="md-toolbar-tools">
-                <h2 class="md-flex"><b>Getting to: {{event.venue}}</b></h2>
+                <h2 class="md-flex"><b>Getting to: {{event.venue.address}}</b></h2>
               </div>
             </md-toolbar>
-            <div address-based-google-map address="Address" zoom="16" id="addressMap"></div>
+            <div address-based-google-map address="event.venue.address" zoom="16" id="addressMap"></div>
           </div>
         </div>
       </md-card>
@@ -64,4 +61,6 @@
   <div class="md-toolbar-tools centre" layout-align="center">
     <md-button class="md-raised" ui-sref="user.moreEvents">More Events...</md-button>
   </div>
+</div>
+</div>
 </div>
