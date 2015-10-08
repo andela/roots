@@ -160,7 +160,7 @@
             </div>
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(true)" ng-show="!organizerEditMode && orgProfileExists"> Edit Profile</md-button>
             <md-button class="md-raised" ng-click="organizerButtnSave()" ng-show="organizerEditMode"> Save Changes</md-button>
-            <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>           
+            <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="!organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>           
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(false)" ng-show="organizerEditMode && orgProfileExists"> Cancel Changes</md-button>
           </ng-form><br>
         </md-content>
