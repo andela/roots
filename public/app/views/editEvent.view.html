@@ -3,8 +3,8 @@
 <div layout="column" class="card form-container">
   <h3 class="md-padding">Event Details</h3>
   <md-content class="md-padding">
-  <form ng-submit="submitEventDetails(event)" name="eventForm">
-    <label>Event Title</label>
+
+  <form name="eventForm">
     <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
     <label>Event Category</label>
         <md-select aria-label="sel" placeholder={{event.category}} ng-model="event.category" style="display: block;">
@@ -16,8 +16,9 @@
     </md-textarea-container>
     <br>
     <div layout-sm="row">
-      <label>Venue</label><br>
-      <input type="text" ng-model="event.venue" placeholder="Enter Venue Name" id="Autocomplete" ng-click="getCountry()" ng-autocomplete="result" details="details" options="options1">
+      <label>Country</label>
+      <country-list ctry="event.venue.countryCode"></country-list><br>
+      <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="result" details="details" options="options1">
     </div>
     <br>
     <label>Event Date<span class="req">*</span></label><br>
@@ -42,7 +43,7 @@
   </form>
   </div>
   <div class="md-toolbar-tools centre" layout-align="center">
-    <md-button class="md-raised" ng-click="delete()" type="submit">DELETE EVENT</md-button>
+    <md-button class="md-raised" ng-click="cancelEdit()" type="button">Cancel changes</md-button>
   </div><br>
   </md-content>
 </div>

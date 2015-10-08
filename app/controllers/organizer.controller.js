@@ -1,35 +1,78 @@
 'use strict';
 
 var User = require('../models/user.model');
+var Organizer = require('../models/organizer.model');
+
 var Utils = require('../middleware/utils');
-var mongoose = require('mongoose');
-require('../models/organizer.model');
-
-var Organizer = mongoose.model('Organizer');
-
 var utils = new Utils();
 
 var OrganizerController = function() {};
 
-OrganizerController.prototype.registerProfile = function(req, res) {
-  var organizer = new Organizer(req.body);
-  organizer.save(req.body, function(err, organizer){
-    if(err) {
+
+OrganizerController.prototype.deleteProfile = function(req, res, next) {
+
+  var organizerId;
+
+  User.findById({
+    _id: req.decoded._id
+  }, function(err, user) {
+
+    if (err) {
       return res.json(err);
+    } else {
+      if (!user) {
+        return res.status(422).send({
+          success: false,
+          message: 'Unable to retrieve user details!'
+        });
+      } else if (!user.organizer_ref) {
+
+        return res.status(422).send({
+          success: false,
+          message: 'No organizer profile attached to user record!'
+        });
+      } else {
+
+        User.findByIdAndUpdate({
+          _id: req.decoded._id
+        }, {
+          organizer_ref: undefined
+        }, function(err, user) {
+          if (err) {
+            return res.json(err);
+          }
+          Organizer.remove({
+            user_ref: req.decoded._id
+          }, function(err, orgProfile) {
+            if (err) {
+              return res.json(err);
+            } else {
+              return res.json({
+                success: true,
+                message: 'Organizer profile deleted!'
+              });
+            }
+          });
+        });
+      }
     }
-    return res.json(organizer);
   });
 };
 
-OrganizerController.prototype.createProfile = function(req, res) {
 
-  if (!req.body.organName) {
+OrganizerController.prototype.createProfile = function(req, res) {
+  
+  var profile;
+
+  if (!req.body.dataObject) {
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   } else {
 
+    profile = req.body.dataObject;
+    
     User.findOne({
       email: req.decoded.email
     }, function(err, user) {
@@ -38,7 +81,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
       } else if (user) {
 
         if (user.organizer_ref) {
-
+                  
           return res.status(422).send({
             success: false,
             message: 'User already registered as Organizer!'
@@ -48,20 +91,21 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
         var newOrgProfile = new Organizer();
         newOrgProfile.user_ref = user._id;
-        newOrgProfile.name = req.body.organName;
-        var newStaff = req.body.staff;
-        var validatedStaff = [];
-
+        newOrgProfile.name = profile.name;
+        newOrgProfile.about = profile.about;
+        newOrgProfile.imageUrl = profile.imageUrl;
+        newOrgProfile.staff = [];
 
         newOrgProfile.save(function(err, orgProfile) {
-
           if (err) {
-            if (err.code == 11000)
-              return res.status(422).send({
+            if (err.code == 11000) {
+              return res.status(422).json({
                 success: false,
                 message: 'Organizer name taken!'
               });
-            return res.json(err);
+            } else {
+              return res.json(err);
+            }
           }
 
           //Link user profile to the newly created organizer profile
@@ -74,7 +118,7 @@ OrganizerController.prototype.createProfile = function(req, res) {
                 message: 'Organizer profile created, but unable to update the user organizer_ref'
               });
             }
-            res.json(orgProfile);
+            return res.json(orgProfile);
           });
         });
       } else {
@@ -89,13 +133,15 @@ OrganizerController.prototype.createProfile = function(req, res) {
 
 OrganizerController.prototype.editProfile = function(req, res) {
 
-  if (!req.body.newProfile) {
+  var orgProfile;
+
+  if (!req.body.dataObject) {
     return res.status(422).send({
       success: false,
       message: 'Please check parameters!'
     });
   }
-  var newProfile = req.body.newProfile;
+ 
   Organizer.findById(req.params.organizer_id, function(err, profile) {
 
     if (err) {
@@ -108,19 +154,23 @@ OrganizerController.prototype.editProfile = function(req, res) {
       });
 
     } else if (profile.user_ref.toString() !== req.decoded._id) {
-
+      
       return res.status(401).send({
         success: false,
         message: 'Unauthorized!'
       });
 
     } else {
-
+      orgProfile = req.body.dataObject;
+      
+      //Prevent imageUrl field being assigned string 'null'
+      orgProfile.imageUrl = orgProfile.imageUrl || "";
+      
       Organizer.findByIdAndUpdate(req.params.organizer_id, {
         $set: {
-          name: newProfile.name,
-          about: newProfile.about,
-          logo: newProfile.logo
+          name: orgProfile.name,
+          about: orgProfile.about,
+          imageUrl: orgProfile.imageUrl
         }
       }, {
         'new': true
@@ -254,7 +304,6 @@ OrganizerController.prototype.addTeamMember = function(req, res) {
   });
 }
 
-
 OrganizerController.prototype.editRole = function(req, res) {
 
   var orgId = req.params.organizer_id;
@@ -329,12 +378,10 @@ OrganizerController.prototype.deleteStaff = function(req, res) {
   });
 }
 
-OrganizerController.prototype.getProfile = function(req, res) {
-
-  var org_name = req.query.name;
+OrganizerController.prototype.getCurrentProfile = function(req, res) {  
 
   //find organizer by the user reference (user_ref) instead of org_id
-  Organizer.find({name: org_name}, function(err, org) {
+  Organizer.findOne({ user_ref: req.body.decoded._id }, function(err, org) {
     if (err) {
       return res.status(500).send(err);
     } else if (!org) {
@@ -355,6 +402,26 @@ OrganizerController.prototype.getProfile = function(req, res) {
           res.json(org1);
         }
       });
+    }
+  });
+}
+
+OrganizerController.prototype.getProfile = function(req, res) {
+
+  var orgId = req.params.organizer_id;
+
+  //find organizer by the user reference (user_ref) instead of org_id
+  Organizer.findById(orgId, function(err, org) {
+    if (err) {
+      return res.status(500).send(err);
+    } else if (!org) {
+
+      return res.status(422).send({
+        success: false,
+        message: 'Invalid organizer id'
+      });
+    } else {
+        res.json(org);  
     }
   });
 }

@@ -1,7 +1,9 @@
 var express = require('express');
 var UserController = require('../controllers/user.controller');
+var Utils = require('../middleware/utils');
 var ctrl = new UserController();
 var router = express.Router();
+var utils = new Utils();
 
 module.exports = function(app) {
  
@@ -10,10 +12,10 @@ module.exports = function(app) {
    .get(ctrl.getUsers)
    .delete(ctrl.deleteAll);
 
-  router.route('/users/:user_id')
-   .get(ctrl.getCurrentUser)
-   .put(ctrl.editUser)
-   .delete(ctrl.deleteCurrentUser);
+  router.route('/user')
+   .get(ctrl.verifyToken, ctrl.getCurrentUser)
+   .put(ctrl.verifyToken, ctrl.editUser)
+   .delete(ctrl.verifyToken, ctrl.deleteCurrentUser);
 
   router.route('/twitterUser/:user_id')
     .put(ctrl.editTwitUser);
@@ -32,6 +34,9 @@ module.exports = function(app) {
 
   router.route('/reset/:token')
     .post(ctrl.resetPass);
+
+  router.route('/user/uploadpic')
+    .post(ctrl.verifyToken, utils.imageProcessing, ctrl.uploadPicture);
 
   app.use('/api', router);
 };
