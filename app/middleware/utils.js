@@ -1,5 +1,8 @@
 var nodemailer = require('nodemailer');
 var CronJob = require('cron').CronJob;
+var configCloud = require('../../config/config');
+var cloudinary = require('cloudinary');
+var formidable = require('formidable');
 
 var Utils = function() {};
 
@@ -72,6 +75,33 @@ Utils.prototype.syncLoop = function(iterationNum, process, exit, syncData, syncD
   loop.next();
   return loop;
 }
+
+cloudinary.config({
+  cloud_name: 'dev8nation',
+  api_key: 687213232223225,
+  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
+});
+
+Utils.prototype.imageProcessing = function(req, res, next) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, file) {
+    req.body.dataObject = fields;
+    if (Object.keys(file) != 0) {
+      cloudinary.uploader.upload(file.file.path, function(result) {
+        req.body.imageUrl = result.secure_url;
+        if (req.body.imageUrl) {
+          req.body.dataObject.imageUrl = req.body.imageUrl;
+        }
+        next();
+      }, {
+        width: 800,
+        height: 800
+      });
+    } else {
+      next();
+    }
+  });
+};
 
 Utils.prototype.convertToObject = function(objectToConvert) {
 
