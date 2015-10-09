@@ -14,16 +14,16 @@ var EventController = function() {};
 
 EventController.prototype.createEvent = function(req, res) {
 
-  if (!req.body.dataObject) {
+  if (!req.body.formDataObject) {
 
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   }
-
+  
   var userId = req.decoded._id;
-  var eventObj = req.body.dataObject;
+  var eventObj = req.body.formDataObject;
 
   eventObj.user_ref = userId;
   eventObj.tasks = [];
@@ -41,14 +41,20 @@ EventController.prototype.createEvent = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     }
+
+    var origin = req.get('origin');  
+    var eventUrl = origin + "#/user/eventdetails/" + newEvent._id;
+    
     //Send mail to event manager
     var mailOptions = {
       to: req.decoded.email,
       from: 'World tree ✔ <no-reply@worldtreeinc.com>',
       subject: newEvent.name + ' created',
       text: newEvent.name + ' created',
-      html: 'Hello,\n\n' +
-        'You just created <b>' + newEvent.name + '</b>.\n'
+      html: 'Hello,<br/>' +
+        'You just created <b>' + newEvent.name + '</b>.<br/>' +
+        'View your event at ' +  eventUrl + '<br/>' + 
+        'If the address does not appear as link, please copy the link and paste in a browser address bar'
     };
 
     utils.sendMail(mailOptions);
@@ -59,7 +65,7 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body.dataObject) {
+  if (!req.body.formDataObject) {
 
     return res.status(422).send({
       success: false,
@@ -67,7 +73,7 @@ EventController.prototype.editEventDetails = function(req, res) {
     });
   }
   
-  var eventObj = req.body.dataObject;
+  var eventObj = req.body.formDataObject;
   var eventId = req.params.event_id;
 
   try {
