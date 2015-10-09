@@ -165,7 +165,14 @@ UserController.prototype.editUser = function(req, res) {
     if (err) {
       return res.json(err);
     }
-    res.json(user);
+    var token = jwt.sign(user, config.secret, {
+      expiresInMinutes: 1440 //24hr expiration
+    });
+
+    return res.json({
+      user: user,
+      token: token
+    });
   });
 };
 
@@ -177,13 +184,21 @@ UserController.prototype.uploadPicture = function(req, res) {
     User.findByIdAndUpdate(req.decoded._id, {
       $set: {
         profilePic: result.imageUrl
-      }
+      },
+      new: true
     }, function(err, user) {
 
       if (err) {
         return res.json(err);
       } else {
-        return res.json(result);
+        var token = jwt.sign(user, config.secret, {
+          expiresInMinutes: 1440 //24hr expiration
+        });
+
+        return res.json({
+          user: user,
+          token: token
+        });
       }
     });
 

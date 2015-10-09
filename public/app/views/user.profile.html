@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css"/>
 
-  <md-toolbar style="background:#597eaa">
+  <md-toolbar style="background:#597eaa;">
     <div class="md-toolbar-tools">
       <strong style="color:black;font-size:30px" >My Profile</strong>
     </div>
   </md-toolbar>
-  <md-content class="md-padding">
+  <md-content class="md-padding" style="min-height: 300px;">
     <md-tabs md-dynamic-height md-border-bottom>      
       <md-tab label="Edit Profile">
         <md-content class="md-padding" style="width: 80%; margin:0 auto">
@@ -159,8 +159,8 @@
               </div>
             </div>
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(true)" ng-show="!organizerEditMode && orgProfileExists"> Edit Profile</md-button>
-            <md-button class="md-raised" ng-click="organizerButtnSave(organizer)" ng-show="organizerEditMode"> Save Changes</md-button>
-            <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>           
+            <md-button class="md-raised" ng-click="organizerButtnSave()" ng-show="organizerEditMode"> Save Changes</md-button>
+            <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="!organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>           
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(false)" ng-show="organizerEditMode && orgProfileExists"> Cancel Changes</md-button>
           </ng-form><br>
         </md-content>

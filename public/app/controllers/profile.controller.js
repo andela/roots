@@ -16,11 +16,12 @@ angular.module('eventApp')
 
       $scope.tempUserProfile;
       $scope.tempOrgProfile;
+      $scope.organizer = {};
 
-      UserService.getCurrentUser().success(function(res) {
-        $scope.organizer = res.organizer_ref;
+      UserService.getCurrentUser().success(function(res) {        
 
-        if ($scope.organizer) {
+        if (res.organizer_ref) {
+          $scope.organizer = res.organizer_ref;
           $scope.organizerEditMode = false;
           $scope.orgProfileExists = true;
         }
@@ -30,64 +31,64 @@ angular.module('eventApp')
           $scope.userInformation.profilePic = "../../assets/img/icons/default-avatar.png";
         }
         $scope.syncGenderDateDet();
-      }).error(function(err) {
-        //checks error
+      }).error(function(err, status) {
+        processError(err, status);
       });
 
       EventService.getMyPublishedEvents().success(function(res) {
         $scope.publishedEvents = res;
 
-      }).error(function(err) {
-        //checks error
+      }).error(function(err, status) {
+        processError(err, status);
       });
 
       EventService.getMyEventDrafts().success(function(res) {
         $scope.eventDrafts = res;
 
-      }).error(function(err) {
-        //checks error
+      }).error(function(err, status) {
+        processError(err, status);
       });
 
     }
 
-    $scope.organizerButtnSave = function(organizer) {
+    $scope.organizerButtnSave = function() {
 
-      if(!organizer.name){
+      if(!$scope.organizer.name){
         $window.alert("Name field is mandatory!");
         return;
       }
 
       if ($scope.orgProfileExists) {
-        $scope.editOrganizer(organizer);
+        $scope.editOrganizer();
       } else {
-        $scope.registerOrganizer(organizer);
+        $scope.registerOrganizer();
       }
     }
 
-    $scope.registerOrganizer = function(organizer) {
+    $scope.registerOrganizer = function() {
 
-      OrganizerService.createProfile(organizer)
+      OrganizerService.createProfile($scope.organizer)
         .success(function(res) {
-          
           $scope.userInformation.organizer_ref = res._id;
           $scope.organizer = res;
           $scope.organizerEditMode = false;
           $scope.orgProfileExists = true;
 
-        }).error(function(err) {
-          //checks error
+        }).error(function(err, status) {
+          processError(err, status);
         });
     };
 
-    $scope.editOrganizer = function(organizer) {
+    $scope.editOrganizer = function() {
 
-      OrganizerService.editProfile(organizer)
+      OrganizerService.editProfile($scope.organizer)
         .success(function(res) {
           
           $scope.organizer = res;
           $scope.organizerEditMode = false;
-        }).error(function(err) {
-          //checks error
+        }).error(function(err, status) {
+
+          processError(err, status);          
         });
     };
 
@@ -102,8 +103,8 @@ angular.module('eventApp')
           $scope.organizer = {};
           $scope.organizer.newImage = undefined;
 
-        }).error(function(err) {
-          //checks error
+        }).error(function(err, status) {
+          processError(err, status);
         });
     };
 
@@ -115,21 +116,23 @@ angular.module('eventApp')
       }
 
       UserService.editProfile($scope.userInformation)
-        .success(function(res) {
-          
+        .success(function(res) {          
+          localStorage.setItem('userToken', res.token);
+          UserService.decodeUser();
+
           $scope.userInformation = res;
           $scope.syncGenderDateDet();
           $scope.userEditMode = false;
 
-        }).error(function(err) {
-          //checks error
+        }).error(function(err, status) {
+          processError(err, status);
         });
     };
 
     $scope.uploadPicture = function() {
 
       if (!$scope.userInformation.newImage) {
-
+        $window.alert("Choose a photo!");
         return;
       }
 
@@ -137,13 +140,15 @@ angular.module('eventApp')
           newImage: $scope.userInformation.newImage
         })
         .success(function(res) {
-
-          if (res.imageUrl)
-            $scope.userInformation.profilePic = res.imageUrl;
+                  
+          localStorage.setItem('userToken', res.token);
+          UserService.decodeUser();
+          $scope.userInformation.profilePic = res.user.profilePic;
+         
           $scope.userEditMode = false;
 
-        }).error(function(err) {
-          //checks error
+        }).error(function(err, status) {
+          processError(err, status);
         });
     };
 
@@ -239,6 +244,15 @@ angular.module('eventApp')
       var dateObj = new Date(Date.parse(date));
       var dateString = (Number(dateObj.getMonth()) + 1) + "-" + dateObj.getDate() + "-" + dateObj.getFullYear();
       return dateString;
+    }
+
+    function processError(err, status){
+
+      if(Number(status) === 422 || Number(status) === 401 || Number(status) === 403){
+        $window.alert(err.message);
+      }else{
+        $window.alert("An error just occured, please try again!");
+      }
     }
 
   }]);

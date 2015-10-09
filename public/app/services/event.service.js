@@ -1,11 +1,13 @@
 angular.module('eventApp')
   .factory('EventService', ['$http', '$stateParams', '$location', '$rootScope', 'Upload', 'baseUrl', function($http, $stateParams, $location, $rootScope, Upload, baseUrl) {
 
-    var token = localStorage.getItem('userToken');
+    
 
     return {
       createEvent: function(evtObj) {
           
+          var token = localStorage.getItem('userToken');
+
           return  Upload.upload({
             method: "POST",
             url: '/api/event?token=' + token,
@@ -15,6 +17,8 @@ angular.module('eventApp')
       },
       editEventDetails: function(evtObj, ID) {
           
+          var token = localStorage.getItem('userToken');
+
           return  Upload.upload({
               method: "PUT",
               url: '/api/event/' + ID + '?token='+ token,
@@ -24,9 +28,11 @@ angular.module('eventApp')
       },
       deleteEvent: function(evID) {
           
+          var token = localStorage.getItem('userToken');
           return $http.delete(baseUrl + "event/"+ evID + "?token=" + token);
       },
       editEventTasks: function(data, param) {
+          var token = localStorage.getItem('userToken');
           return $http.put(baseUrl + "event/:event_id/tasks" + token, data, param);
       },
       getAllEvents: function() {
@@ -35,13 +41,16 @@ angular.module('eventApp')
       getEvent: function(eventId) {
           return $http.get(baseUrl + "event/" + eventId);
       },
-      getMyPublishedEvents: function() {         
+      getMyPublishedEvents: function() {
+          var token = localStorage.getItem('userToken');                 
           return $http.get(baseUrl + "events/published?token=" + token);
       },
-      getMyEventDrafts: function() {          
+      getMyEventDrafts: function() {
+          var token = localStorage.getItem('userToken');        
           return $http.get(baseUrl + "events/saved?token=" + token);
       },
-      publishEvent: function(eventId) {          
+      publishEvent: function(eventId) {   
+          var token = localStorage.getItem('userToken');       
           return $http.put(baseUrl + "/event/" + eventId + "/launch?token=" + token);
       }
     };
