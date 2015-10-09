@@ -184,7 +184,8 @@ UserController.prototype.uploadPicture = function(req, res) {
     User.findByIdAndUpdate(req.decoded._id, {
       $set: {
         profilePic: result.imageUrl
-      },
+      }
+    }, {
       new: true
     }, function(err, user) {
 

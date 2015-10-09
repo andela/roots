@@ -120,7 +120,7 @@ angular.module('eventApp')
           localStorage.setItem('userToken', res.token);
           UserService.decodeUser();
 
-          $scope.userInformation = res;
+          $scope.userInformation = res.user;
           $scope.syncGenderDateDet();
           $scope.userEditMode = false;
 
@@ -139,8 +139,7 @@ angular.module('eventApp')
       UserService.uploadPicture({
           newImage: $scope.userInformation.newImage
         })
-        .success(function(res) {
-                  
+        .success(function(res) {              
           localStorage.setItem('userToken', res.token);
           UserService.decodeUser();
           $scope.userInformation.profilePic = res.user.profilePic;
