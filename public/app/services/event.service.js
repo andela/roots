@@ -29,29 +29,29 @@ angular.module('eventApp')
       deleteEvent: function(evID) {
           
           var token = localStorage.getItem('userToken');
-          return $http.delete(baseUrl + "event/"+ evID + "?token=" + token);
+          return $http.delete("/api/event/"+ evID + "?token=" + token);
       },
       editEventTasks: function(data, param) {
           var token = localStorage.getItem('userToken');
-          return $http.put(baseUrl + "event/:event_id/tasks" + token, data, param);
+          return $http.put("/api/event/:event_id/tasks" + token, data, param);
       },
       getAllEvents: function() {
-          return $http.get(baseUrl + "events");
+          return $http.get("/api/events");
       },
       getEvent: function(eventId) {
-          return $http.get(baseUrl + "event/" + eventId);
+          return $http.get("/api/event/" + eventId);
       },
       getMyPublishedEvents: function() {
           var token = localStorage.getItem('userToken');                 
-          return $http.get(baseUrl + "events/published?token=" + token);
+          return $http.get("/api/events/published?token=" + token);
       },
       getMyEventDrafts: function() {
           var token = localStorage.getItem('userToken');        
-          return $http.get(baseUrl + "events/saved?token=" + token);
+          return $http.get("/api/events/saved?token=" + token);
       },
       publishEvent: function(eventId) {   
           var token = localStorage.getItem('userToken');       
-          return $http.put(baseUrl + "/event/" + eventId + "/launch?token=" + token);
+          return $http.put("/api/event/" + eventId + "/launch?token=" + token);
       }
     };
   }]);

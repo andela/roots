@@ -20,15 +20,15 @@ angular.module('eventApp')
 
     return {
       createUser: function(param) {
-        return $http.post(baseUrl + "users", param);
+        return $http.post("/api/users", param);
       },
       getCurrentUser: function() {
         var token = localStorage.getItem('userToken');
-        return $http.get(baseUrl + "user?token=" + token);
+        return $http.get("/api/user?token=" + token);
       },
       editProfile: function(user) {
         var token = localStorage.getItem('userToken');
-        return $http.put(baseUrl + "user?token=" + token, user);        
+        return $http.put("/api/user?token=" + token, user);        
       },
       uploadPicture: function(imageObj) {
         var token = localStorage.getItem('userToken');
@@ -41,7 +41,7 @@ angular.module('eventApp')
         });
       },
       authenticate: function(param) {
-        return $http.post(baseUrl + "authenticate", param);
+        return $http.post("/api/authenticate", param);
       },
       decodeUser: function() {
 
@@ -63,19 +63,19 @@ angular.module('eventApp')
       },
       decodeTwitUser: function() {
         var token = localStorage.getItem('twitToken');
-        return $http.get(baseUrl + "decode?token=" + token);
+        return $http.get("/api/decode?token=" + token);
       },
       editTwitUser: function(userId, param) {
-        return $http.put(baseUrl + "twitterUser/" + userId, param);
+        return $http.put("/api/twitterUser/" + userId, param);
       },
       sendWelcomeMail: function(data) {
-        return $http.post(baseUrl + "user/welcomeMail", data);
+        return $http.post("/api/user/welcomeMail", data);
       },
       sendLink: function(data) {
-        return $http.post(baseUrl + "forgotPass", data);
+        return $http.post("/api/forgotPass", data);
       },
       resetPassword: function(token, data) {
-        return $http.post(baseUrl + "reset/" + token, data);
+        return $http.post("/api/reset/" + token, data);
       }
     };
 
