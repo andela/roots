@@ -173,7 +173,7 @@
                   <md-card style="margin-left: 10px; float: left; width:300px">
                     <img ng-src="{{event.imageUrl}}" width="300px" height="300px">
                     <md-card-content>
-                      <a><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
+                      <a ng-click="viewEvent(event._id)"><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
                       <a href="" style="margin-right:8px" ng-click="editEvent(event._id)">edit</a><a style="margin-right:8px" href="" ng-click="deleteEvent(event._id, publishedEvents)">delete</a><a href="" ng-click="viewEvent(event._id)">view</a>
                     </md-card-content>
                   </md-card>
@@ -195,7 +195,7 @@
                   <md-card style="margin-left: 10px; float: left; width:300px">
                     <img ng-src="{{event.imageUrl}}" width="300px" height="300px">
                     <md-card-content>
-                      <a><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
+                      <a ng-click="viewEvent(event._id)"><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
                       <a href="" style="margin-right:8px" ng-click="editEvent(event._id)">edit</a><a style="margin-right:8px" href="" ng-click="deleteEvent(event._id, eventDrafts)">delete</a><a href="" ng-click="viewEvent(event._id)">view</a>
                     </md-card-content>
                   </md-card>                  
