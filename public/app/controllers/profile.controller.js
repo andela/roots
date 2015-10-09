@@ -103,7 +103,7 @@ angular.module('eventApp')
           $scope.organizer = {};
           $scope.organizer.newImage = undefined;
 
-        }).error(function(err) {
+        }).error(function(err, status) {
           processError(err, status);
         });
     };
@@ -124,7 +124,7 @@ angular.module('eventApp')
           $scope.syncGenderDateDet();
           $scope.userEditMode = false;
 
-        }).error(function(err) {
+        }).error(function(err, status) {
           processError(err, status);
         });
     };
@@ -147,7 +147,7 @@ angular.module('eventApp')
          
           $scope.userEditMode = false;
 
-        }).error(function(err) {
+        }).error(function(err, status) {
           processError(err, status);
         });
     };
