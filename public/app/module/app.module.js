@@ -58,7 +58,7 @@ angular.module('eventApp')
     return {
       restrict: 'E',
       scope: {
-        ctry: '='
+        countryCode: '='
       },
       templateUrl: '../app/views/country.list.html'
     };
