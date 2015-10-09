@@ -178,7 +178,7 @@ UserController.prototype.editUser = function(req, res) {
 
 UserController.prototype.uploadPicture = function(req, res) {
 
-  var result = req.body.dataObject;
+  var result = req.body.formDataObject;
   if (result && result.imageUrl) {
 
     User.findByIdAndUpdate(req.decoded._id, {
