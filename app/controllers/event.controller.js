@@ -51,10 +51,10 @@ EventController.prototype.createEvent = function(req, res) {
       from: 'World tree ✔ <no-reply@worldtreeinc.com>',
       subject: newEvent.name + ' created',
       text: newEvent.name + ' created',
-      html: 'Hello,<br/>' +
-        'You just created <b>' + newEvent.name + '</b>.<br/>' +
-        'View your event at ' +  eventUrl + '<br/>' + 
-        'If the address does not appear as link, please copy the link and paste in a browser address bar'
+      html: '<div style="color: #3b5160; font: Helvetica, Arial, sans-serif; font-weight: normal;"> Hello,<br/>' +
+        'You just created <b>' + newEvent.name + '</b> event. ' +
+        'You can view the event at <a href="'+ eventUrl + '">' +  newEvent.name + '</a><br/>' +
+        'If the address does not appear as link, please copy this url to your browser address bar ' + eventUrl + '</div>'
     };
 
     utils.sendMail(mailOptions);
