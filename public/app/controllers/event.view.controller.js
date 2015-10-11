@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .controller('eventViewCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'OrganizerService', 'Upload', '$rootScope', '$state', '$sce', function($scope, $stateParams, UserService, $location, EventService, OrganizerService, Upload, $rootScope, $state, $sce) {
+  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state) {
 
      $scope.services = function(){
 
@@ -30,6 +30,7 @@ angular.module('eventApp')
         });
       };
 
+      $rootScope.hideBtn = false;
 
     $scope.editEvent = function() {
       $state.go('user.editEvent', {

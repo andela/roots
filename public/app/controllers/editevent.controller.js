@@ -1,9 +1,11 @@
 angular.module('eventApp')
-  .controller('editeventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope', '$state', '$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $sce) {
+  .controller('editeventCtrl',['$scope','$stateParams', '$location', 'EventService','Upload','$rootScope', '$state', function ($scope, $stateParams, $location, EventService, Upload, $rootScope, $state) {
     
     if (!localStorage.getItem('userToken')) {
       $location.url('/user/home');
     }
+    
+    $rootScope.hideBtn = true;
 
     EventService.getEvent($stateParams.event_id)
       .success(function(event){
