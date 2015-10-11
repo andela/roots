@@ -111,7 +111,7 @@ angular.module('eventApp')
     $scope.updateUser = function() {
 
       if(!$scope.userInformation.firstname || !$scope.userInformation.lastname ||!$scope.userInformation.email){
-        $window.alert("Fill all mandatory!");
+        $window.alert("Fill all mandatory fields!");
         return;
       }
 
@@ -132,7 +132,7 @@ angular.module('eventApp')
     $scope.uploadPicture = function() {
 
       if (!$scope.userInformation.newImage) {
-        $window.alert("Choose a photo!");
+        $window.alert("Choose a photo to upload!");
         return;
       }
 
