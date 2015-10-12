@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .controller('editeventCtrl',['$scope','$stateParams', '$location', 'EventService','Upload','$rootScope', '$state', function ($scope, $stateParams, $location, EventService, Upload, $rootScope, $state) {
+  .controller('editeventCtrl',['$scope','$stateParams', '$location', 'EventService', 'OrganizerService', 'Upload','$rootScope', '$state', '$sce', function ($scope, $stateParams, $location, EventService, OrganizerService, Upload, $rootScope, $state, $sce) {
     
     if (!localStorage.getItem('userToken')) {
       $location.url('/user/home');
@@ -12,6 +12,23 @@ angular.module('eventApp')
         event.startDate = parseDate(event.startDate);
         event.endDate = parseDate(event.endDate);
         $scope.event = event;
+
+        $('.md-warn').css('border-color', event.eventTheme.borderColor);
+        $('.md-warn').css('background-color', event.eventTheme.headerColor);
+        $('.md-warn').css('color', event.eventTheme.fontColor);
+        $('.values').css('border-color', event.eventTheme.borderColor);
+        $('.values').css('background-color', event.eventTheme.contentColor);
+        $('.values').css('color', event.eventTheme.fontColor);
+
+        if (event.user_ref.organizer_ref) {
+
+          OrganizerService.getOrganizer(event.user_ref.organizer_ref)
+            .success(function(organizer) {                
+              $scope.organizer = organizer;
+              $scope.organizer.phoneNumber1 = event.user_ref.phoneNumber1;
+            });
+        }
+
       });
 
     $scope.categories = ('Technology,Sport,Health & Fitness,Music,Food & Drink,Arts,Parties,Business').split(',').map(function(category){
@@ -81,7 +98,21 @@ angular.module('eventApp')
 
     };
 
+    $scope.switchView = function() {
+      $scope.prev = !$scope.prev;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    };
+
+    $scope.$watch("event.description",
+      function(oldVal, newVal){
+        if(oldVal !== newVal){
+          $scope.eventInfo = $sce.trustAsHtml($scope.event.description)
+      }
+    });
+
     function parseDate(date){
       return new Date(Date.parse(date));
     }
+
+    $scope.prev = false;
 }]);
