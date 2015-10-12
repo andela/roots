@@ -27,14 +27,14 @@ angular.module('eventApp')
       },
       deleteProfile: function() {
           var token = localStorage.getItem('userToken');        
-          return $http.delete(baseUrl + "organizer?token=" + token);
+          return $http.delete("/api/organizer?token=" + token);
       },
       getOrganizer: function(orgId) {
-          return $http.get(baseUrl + "/organizer/" + orgId);
+          return $http.get("/api/organizer/" + orgId);
       },
       getMyProfile: function(orgId) { 
           var token = localStorage.getItem('userToken');         
-          return $http.get(baseUrl + "/organizer/?token=" + token);
+          return $http.get("/api/organizer/?token=" + token);
       }
     };
   }]);

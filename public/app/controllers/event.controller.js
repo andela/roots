@@ -147,23 +147,6 @@ angular.module('eventApp')
   $scope.organizer = {
     about: '',
     phoneNumber1: ''
-  };
-
-  $scope.find = {
-      name:'',
-    category:'',
-    venue:{
-      country:''
-    }
-  }
-  $scope.countryCode = "";
-    
-  $scope.$watch("countryCode", function(){    
-    if(!$scope.countryCode){
-      $scope.find.venue.country = "";
-      return;
-    }
-    $scope.find.venue.country = $scope.getCountryCode().text;    
-  });
+  };  
 
 }]);

@@ -47,7 +47,7 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
     .state('user.moreEvents', {
       url: '/more-events',
       templateUrl: '../app/views/more.events.view.html',
-      controller: 'eventCtrl'
+      controller: 'moreEventsCtrl'
     });
 
   $urlRouterProvider.otherwise('/user/home');
@@ -58,7 +58,7 @@ angular.module('eventApp')
     return {
       restrict: 'E',
       scope: {
-        ctry: '='
+        countryCode: '='
       },
       templateUrl: '../app/views/country.list.html'
     };

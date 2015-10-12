@@ -111,7 +111,7 @@ angular.module('eventApp')
     $scope.updateUser = function() {
 
       if(!$scope.userInformation.firstname || !$scope.userInformation.lastname ||!$scope.userInformation.email){
-        $window.alert("Fill all mandatory!");
+        $window.alert("Fill all mandatory fields!");
         return;
       }
 
@@ -120,7 +120,7 @@ angular.module('eventApp')
           localStorage.setItem('userToken', res.token);
           UserService.decodeUser();
 
-          $scope.userInformation = res;
+          $scope.userInformation = res.user;
           $scope.syncGenderDateDet();
           $scope.userEditMode = false;
 
@@ -132,15 +132,14 @@ angular.module('eventApp')
     $scope.uploadPicture = function() {
 
       if (!$scope.userInformation.newImage) {
-        $window.alert("Choose a photo!");
+        $window.alert("Choose a photo to upload!");
         return;
       }
 
       UserService.uploadPicture({
           newImage: $scope.userInformation.newImage
         })
-        .success(function(res) {
-                  
+        .success(function(res) {              
           localStorage.setItem('userToken', res.token);
           UserService.decodeUser();
           $scope.userInformation.profilePic = res.user.profilePic;

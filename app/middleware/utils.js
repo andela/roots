@@ -85,12 +85,12 @@ cloudinary.config({
 Utils.prototype.imageProcessing = function(req, res, next) {
   var form = new formidable.IncomingForm();
   form.parse(req, function(err, fields, file) {
-    req.body.dataObject = fields;
+    req.body.formDataObject = fields;
     if (Object.keys(file) != 0) {
       cloudinary.uploader.upload(file.file.path, function(result) {
         req.body.imageUrl = result.secure_url;
         if (req.body.imageUrl) {
-          req.body.dataObject.imageUrl = req.body.imageUrl;
+          req.body.formDataObject.imageUrl = req.body.imageUrl;
         }
         next();
       }, {

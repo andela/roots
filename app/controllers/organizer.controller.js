@@ -64,14 +64,14 @@ OrganizerController.prototype.createProfile = function(req, res) {
   
   var profile;
 
-  if (!req.body.dataObject) {
+  if (!req.body.formDataObject) {
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   } else {
 
-    profile = req.body.dataObject;
+    profile = req.body.formDataObject;
     
     User.findOne({
       email: req.decoded.email
@@ -135,7 +135,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
 
   var orgProfile;
 
-  if (!req.body.dataObject) {
+  if (!req.body.formDataObject) {
     return res.status(422).send({
       success: false,
       message: 'Please check parameters!'
@@ -161,7 +161,7 @@ OrganizerController.prototype.editProfile = function(req, res) {
       });
 
     } else {
-      orgProfile = req.body.dataObject;
+      orgProfile = req.body.formDataObject;
       
       //Prevent imageUrl field being assigned string 'null'
       orgProfile.imageUrl = orgProfile.imageUrl || "";
