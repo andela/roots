@@ -73,7 +73,7 @@ angular.module('eventApp')
   };
 
   $scope.getCountry = function() {
-    //$scope.result = '';
+    
     if(!$scope.venue){
       $scope.venue = {};
     }  
