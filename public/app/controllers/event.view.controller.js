@@ -9,12 +9,12 @@ angular.module('eventApp')
 
             $scope.event.description = $sce.trustAsHtml($scope.event.description);
 
-           $('.md-warn').css('border-color', event.eventTheme.borderColor);
-          $('.md-warn').css('background-color', event.eventTheme.headerColor);
-          $('.md-warn').css('color', event.eventTheme.fontColor);
-          $('.values').css('border-color', event.eventTheme.borderColor);
-          $('.values').css('background-color', event.eventTheme.contentColor);
-          $('.values').css('color', event.eventTheme.fontColor);
+            $('.md-warn').css('border-color', event.eventTheme.borderColor);
+            $('.md-warn').css('background-color', event.eventTheme.headerColor);
+            $('.md-warn').css('color', event.eventTheme.fontColor);
+            $('.values').css('border-color', event.eventTheme.borderColor);
+            $('.values').css('background-color', event.eventTheme.contentColor);
+            $('.values').css('color', event.eventTheme.fontColor);
           
           $scope.canPublish = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id && !$scope.event.online;
 
