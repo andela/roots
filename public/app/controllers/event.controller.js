@@ -112,13 +112,6 @@ angular.module('eventApp')
       $('md-toolbar.md-warn').css("background-color", elem);
   };
 
-  $scope.$watch("organizer.about",
-    function(oldVal, newVal){
-      if(oldVal !== newVal){
-        $scope.orgInfo = $sce.trustAsHtml($scope.organizer.about)
-    }
-  });
-
   $scope.$watch("event.description",
     function(oldVal, newVal){
       if(oldVal !== newVal){

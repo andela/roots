@@ -1,5 +1,5 @@
 angular.module('eventApp')
-  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state) {
+  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state','$sce', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce) {
 
      $scope.services = function(){
 
@@ -7,14 +7,14 @@ angular.module('eventApp')
           .success(function(event){
             $scope.event = event;
 
-           $('.md-warn').css('border-color', event.eventTheme.borderColor);
+          $('.md-warn').css('border-color', event.eventTheme.borderColor);
           $('.md-warn').css('background-color', event.eventTheme.headerColor);
           $('.md-warn').css('color', event.eventTheme.fontColor);
           $('.values').css('border-color', event.eventTheme.borderColor);
           $('.values').css('background-color', event.eventTheme.contentColor);
           $('.values').css('color', event.eventTheme.fontColor);
           $scope.address = event.venue.address;
-
+          $scope.eventInfo = $sce.trustAsHtml($scope.event.description);
           $scope.canPublish = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id && !$scope.event.online;
 
           $scope.canEdit = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id;
@@ -44,12 +44,10 @@ angular.module('eventApp')
       $location.url('/home');
     };
 
-
     $scope.publishEvent = function() {
       EventService.publishEvent($stateParams.event_id)
         .success(function(data) {
           $scope.canPublish = false;          
         });
     }
-
   }]);

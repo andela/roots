@@ -23,7 +23,7 @@
           </md-textarea-container>
           <br>
           <div layout-sm="row">
-            <label>Country</label>
+            <label>Country<span class="req">*</span></label>
             <country-list country-code="event.venue.countryCode"></country-list>
             <br>
             <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="event.venue.address" details="details" options="options1" required>
@@ -133,7 +133,7 @@
                           <h5> End Date:</h5>
                           <h6>{{ event.endDate | date:'medium' }}</h6>
                           <h5>About this Event:</h5>
-                          <h6>{{event.description}}</h6>
+                          <h6 ng-bind-html="eventInfo"></h6>
                           <br>
                           <br>
                           <hr>

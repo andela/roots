@@ -32,7 +32,7 @@
                 <h5> End Date:</h5>
                 <h6>{{ event.endDate | date:'medium' }}</h6>            
                 <h5>About this Event:</h5>
-                <h6>{{event.description}}</h6>
+                <h6 ng-bind-html="eventInfo"></h6>
                 <br>
                 <br>
                 <hr>

@@ -529,8 +529,10 @@ label {
 }
 
 #whiteFrame {
- margin-bottom: 20px;
+ margin-bottom: 5%;
  height: 250px;
+ width: 80%;
+ margin-left: 13%;
 }
 
 .md-whiteframe-z3{
@@ -538,8 +540,7 @@ label {
 }
 
 #event-container {
- background-color: #eee;
- width: 700px;
+ width: 900px;
 }
 
 #homeEvent-container{
