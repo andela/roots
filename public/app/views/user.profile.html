@@ -79,11 +79,11 @@
                   <span style="margin-right:30px"><strong>Gender: </strong>{{userInformation.genderDet}}</span>              
                 </div><br>
                 <div layout="row">
-                  <span style="margin-right:30px" ><strong>Phone Number 1: </strong>{{userInformation.phoneNumber1}}</span>                 
+                  <span style="margin-right:30px" ><strong>Phone Number(s): </strong>{{userInformation.phoneNumber1}}<span ng-if="userInformation.phoneNumber2">, {{userInformation.phoneNumber2}}</span></span>                 
                 </div><br>
-                <div layout="row" ng-show="userInformation.phoneNumber2">                  
+                <!-- <div layout="row" ng-show="userInformation.phoneNumber2">                  
                   <span style="margin-right:30px"><strong>Phone Number 2: </strong>{{userInformation.phoneNumber2}}</span>   
-                </div><br>             
+                </div><br>    -->          
                 <div layout="row">
                   <span style="margin-right:30px" ><strong>Date Of Birth: </strong> {{userInformation.dobDet}}</span>                                 
                 </div><br> 
