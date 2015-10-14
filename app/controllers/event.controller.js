@@ -42,7 +42,7 @@ EventController.prototype.createEvent = function(req, res) {
       return res.status(500).send(err);
     }
 
-    var origin = req.get('origin');  
+    var origin = req.get('origin') || req.get('host'); 
     var eventUrl = origin + "#/user/eventdetails/" + newEvent._id;
     
     //Send mail to event manager
