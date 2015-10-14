@@ -34,10 +34,10 @@ var userSchema = new mongoose.Schema({
     type: String
   },
   phoneNumber1: {
-    type: Number
+    type: String
   },
   phoneNumber2: {
-    type: Number
+    type: String
   },
   dateOfBirth: {
     type: Date

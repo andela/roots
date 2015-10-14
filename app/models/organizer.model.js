@@ -1,16 +1,22 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
-var Schema = mongoose.Schema;
 
 var organizerSchema = new mongoose.Schema({
   user_ref: {
     type: String,
+    ref: 'User',
+    required: true,
+    index: {
+      unique: true
+    }
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    index: {
+      unique: true
+    }
   },
   about: {
     type: String
@@ -32,4 +38,6 @@ var organizerSchema = new mongoose.Schema({
   versionKey: false
 });
 
-mongoose.model('Organizer', organizerSchema);
+var Organizer = mongoose.model('Organizer', organizerSchema);
+
+module.exports = Organizer;

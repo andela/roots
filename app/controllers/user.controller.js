@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var config = require('../../config/config');
 var User = require('../models/user.model');
 var Organizer = require('../models/organizer.model');
+var Volunteer = require('../models/volunteer.model');
+var Task = require('../models/task.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
@@ -154,16 +156,60 @@ UserController.prototype.deleteAll = function(req, res) {
 };
 
 UserController.prototype.editUser = function(req, res) {
-  User.update({
-    _id: req.params.user_id
+
+  User.findByIdAndUpdate({
+    _id: req.decoded._id
   }, req.body, {
     new: true
   }, function(err, user) {
     if (err) {
       return res.json(err);
     }
-    res.json(user);
+    var token = jwt.sign(user, config.secret, {
+      expiresInMinutes: 1440 //24hr expiration
+    });
+
+    return res.json({
+      user: user,
+      token: token
+    });
   });
+};
+
+UserController.prototype.uploadPicture = function(req, res) {
+
+  var result = req.body.formDataObject;
+  if (result && result.imageUrl) {
+
+    User.findByIdAndUpdate(req.decoded._id, {
+      $set: {
+        profilePic: result.imageUrl
+      }
+    }, {
+      new: true
+    }, function(err, user) {
+
+      if (err) {
+        return res.json(err);
+      } else {
+        var token = jwt.sign(user, config.secret, {
+          expiresInMinutes: 1440 //24hr expiration
+        });
+
+        return res.json({
+          user: user,
+          token: token
+        });
+      }
+    });
+
+  } else {
+
+    return res.status(422).json({
+      success: false,
+      message: 'Unable to upload image.'
+    });
+  }
 };
 
 UserController.prototype.editTwitUser = function(req, res) {
@@ -189,17 +235,32 @@ UserController.prototype.editTwitUser = function(req, res) {
 };
 
 UserController.prototype.getCurrentUser = function(req, res) {
-  User.findById(req.params.user_id, function(err, user) {
+  User.findById(req.decoded._id, function(err, user) {
     if (err) {
       res.status(500).send(err);
     }
-    res.json(user);
+
+    if (user.organizer_ref) {
+
+      Organizer.populate(user, {
+        'path': 'organizer_ref'
+      }, function(err, user2) {
+
+        if (err) {
+          return res.json(err);
+        }
+        res.json(user2);
+      });
+    } else {
+      res.json(user);
+    }
   });
 };
 
 UserController.prototype.deleteCurrentUser = function(req, res) {
 
-  var userId = req.params.user_id;
+  var userId = req.decoded._id;
+
   User.findById(userId, function(err, user) {
 
     if (err) {
@@ -217,41 +278,57 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
               success: false,
               message: 'Unable to delete user organizer profile.'
             });
+          } else {
+
+            //Remove volunteer ref from the task model
+            Task.update({
+              'volunteers.user_ref': userId
+            }, {
+              $pull: {
+                volunteers: {
+                  user_ref: userId
+                }
+              }
+            }, function(err) {
+
+              //Delete volunteer object
+              Volunteer.remove({
+                user_ref: userId
+              }, function(err) {
+
+                Organizer.update({
+                  'staff.manager_ref': userId
+                }, {
+                  $pull: {
+                    'staff': {
+                      manager_ref: userId
+                    }
+                  }
+                }, function(err) {
+                  if (err) {
+
+                    return res.status(422).send({
+                      success: false,
+                      message: 'Unable to delete user from other organizer profile.'
+                    });
+                  }
+
+                  User.remove({
+                    _id: userId
+                  }, function(err, user) {
+                    if (err) return res.status(500).send(err);
+
+                    res.json({
+                      message: 'Succesfully deleted'
+                    });
+
+                  });
+                });
+              });
+            });
           }
         });
-
       }
-
-      Organizer.update({
-        'staff.manager_ref': userId
-      }, {
-        $pull: {
-          'staff': {
-            manager_ref: userId
-          }
-        }
-      }, function(err) {
-        if (err) {
-
-          return res.status(422).send({
-            success: false,
-            message: 'Unable to delete user from other organizer profile.'
-          });
-        }
-
-        User.remove({
-          _id: userId
-        }, function(err, user) {
-          if (err) return res.status(500).send(err);
-
-          res.json({
-            message: 'Succesfully deleted'
-          });
-
-        });
-
-      });
-
     } else {
 
       return res.status(422).send({
@@ -261,20 +338,6 @@ UserController.prototype.deleteCurrentUser = function(req, res) {
     }
   });
 };
-
-
-// UserController.prototype.deleteCurrentUser = function(req, res) {
-//   User.remove({
-//     _id: req.params.user_id
-//   }, function(err, user) {
-//     if (err) return res.send(err);
-
-//     res.json({
-//       message: 'Succesfully deleted'
-//     });
-
-//   });
-// };
 
 UserController.prototype.forgotPass = function(req, res, next) {
   async.waterfall([

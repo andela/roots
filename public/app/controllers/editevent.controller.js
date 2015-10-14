@@ -1,12 +1,34 @@
 angular.module('eventApp')
-  .controller('editeventCtrl',['$scope','$stateParams','UserService','$location', 'EventService','Upload','$rootScope','$sce', function ($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $sce) {
-   if (localStorage.getItem('userToken')) {
-        UserService.decodeUser();
-    };
+  .controller('editeventCtrl',['$scope','$stateParams', '$location', 'EventService', 'OrganizerService', 'Upload','$rootScope', '$state', '$sce', function ($scope, $stateParams, $location, EventService, OrganizerService, Upload, $rootScope, $state, $sce) {
+    
+    if (!localStorage.getItem('userToken')) {
+      $location.url('/user/home');
+    }
+    
+    $rootScope.hideBtn = true;
 
     EventService.getEvent($stateParams.event_id)
       .success(function(event){
+        event.startDate = parseDate(event.startDate);
+        event.endDate = parseDate(event.endDate);
         $scope.event = event;
+
+        $('.md-warn').css('border-color', event.eventTheme.borderColor);
+        $('.md-warn').css('background-color', event.eventTheme.headerColor);
+        $('.md-warn').css('color', event.eventTheme.fontColor);
+        $('.values').css('border-color', event.eventTheme.borderColor);
+        $('.values').css('background-color', event.eventTheme.contentColor);
+        $('.values').css('color', event.eventTheme.fontColor);
+
+        if (event.user_ref.organizer_ref) {
+
+          OrganizerService.getOrganizer(event.user_ref.organizer_ref)
+            .success(function(organizer) {                
+              $scope.organizer = organizer;
+              $scope.organizer.phoneNumber1 = event.user_ref.phoneNumber1;
+            });
+        }
+
       });
 
     $scope.categories = ('Technology,Sport,Health & Fitness,Music,Food & Drink,Arts,Parties,Business').split(',').map(function(category){
@@ -31,23 +53,25 @@ angular.module('eventApp')
         }
       })
     };
-    $scope.delete = function(){
-      EventService.deleteEvent($stateParams.event_id);
-      $location.url('/home');
-    };
-
+    
     $scope.submitEventDetails = function (eventDetails){
-      var token = localStorage.getItem('userToken');
-      eventDetails.user_ref = $rootScope.userId;
-      Upload.upload({
-        method: "PUT",
-        url: '/api/event/' + $stateParams.event_id + '?token='+ token,
-        file: eventDetails.imageUrl,
-        fields: eventDetails
-      })
-      .success(function(data) {
-          $location.url('/home');
-      })
+     
+      if(!eventDetails.startDate || !eventDetails.endDate){
+
+        $window.alert('Select event start and end dates');
+        return;
+
+      }else if(eventDetails.startDate > eventDetails.endDate){
+          $window.alert('invalid date range');
+          return;
+      }else{
+        eventDetails.venue.country = $scope.getCountryCode().text;
+        EventService.editEventDetails(eventDetails, $stateParams.event_id)
+        .success(function(data) {
+            $state.go('user.eventDetails', {event_id: $stateParams.event_id});
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+        })
+      }
     };
 
     $scope.getCountryCode = function() {
@@ -66,5 +90,29 @@ angular.module('eventApp')
         country: $scope.getCountryCode().code
       };
       $scope.details = '';
+    }
+    $scope.cancelEdit = function (){
+     
+      $state.go('user.eventDetails', {event_id: $stateParams.event_id});
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+
     };
+
+    $scope.switchView = function() {
+      $scope.prev = !$scope.prev;
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    };
+
+    $scope.$watch("event.description",
+      function(oldVal, newVal){
+        if(oldVal !== newVal){
+          $scope.eventInfo = $sce.trustAsHtml($scope.event.description)
+      }
+    });
+
+    function parseDate(date){
+      return new Date(Date.parse(date));
+    }
+
+    $scope.prev = false;
 }]);

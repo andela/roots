@@ -5,82 +5,31 @@ var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
 var Utils = require('../middleware/utils');
-var async = require('async');
-var configCloud = require('../../config/config');
-var Utils = require('../middleware/utils');
-var TaskController = require('./task.controller');
-var cloudinary = require('cloudinary');
-var formidable = require('formidable');
 var mongoose = require('mongoose');
-
-
-require('../models/user.model');
-require('../models/event.model');
-require('../models/task.model');
 
 var Event = mongoose.model('Event');
 var utils = new Utils();
-var taskController = new TaskController();
 
 var EventController = function() {};
 
-cloudinary.config({
-  cloud_name: 'dev8nation',
-  api_key: 687213232223225,
-  api_secret: 'kqQ5ebJHMcZuJSLS4cpgdK8tFNY'
-});
-
-EventController.prototype.registerEvent = function(req, res) {
-  var eventDetails = new Event(req.body);
-
-  eventDetails.save(req.body, function(err, eventDetails){
-    if(err) {
-      return res.json(err);
-    }
-    return res.json(eventDetails);
-  });
-};
-
-
-EventController.prototype.imageProcessing = function(req, res, next) {
-  var form = new formidable.IncomingForm();
-  form.parse(req, function(err, fields, file) {
-    req.body.eventObj = fields;
-    if (Object.keys(file) != 0) {
-      cloudinary.uploader.upload(file.file.path, function(result) {
-        req.body.imageUrl = result.secure_url;
-        if (req.body.imageUrl) {
-          req.body.eventObj.imageUrl = req.body.imageUrl;
-        }
-        next();
-      }, {
-        width: 800,
-        height: 800
-      });
-    } else {
-      next();
-    }
-  });
-};
-
-
 EventController.prototype.createEvent = function(req, res) {
 
-  if (!req.body.eventObj) {
+  if (!req.body.formDataObject) {
 
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   }
-
+  
   var userId = req.decoded._id;
-  var eventObj = req.body.eventObj;
+  var eventObj = req.body.formDataObject;
 
   eventObj.user_ref = userId;
   eventObj.tasks = [];
 
-   try {
+
+  try {
     eventObj.venue = JSON.parse(eventObj.venue);
     eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
   } catch (err) {
@@ -92,14 +41,20 @@ EventController.prototype.createEvent = function(req, res) {
     if (err) {
       return res.status(500).send(err);
     }
+
+    var origin = req.get('origin');  
+    var eventUrl = origin + "#/user/eventdetails/" + newEvent._id;
+    
     //Send mail to event manager
     var mailOptions = {
       to: req.decoded.email,
       from: 'World tree ✔ <no-reply@worldtreeinc.com>',
       subject: newEvent.name + ' created',
       text: newEvent.name + ' created',
-      html: 'Hello,\n\n' +
-        'You just created <b>' + newEvent.name + '</b>.\n'
+      html: '<div style="color: #3b5160; font: Helvetica, Arial, sans-serif; font-weight: normal;"> Hello,<br/>' +
+        'You just created <b>' + newEvent.name + '</b> event. ' +
+        'You can view the event at <a href="'+ eventUrl + '">' +  newEvent.name + '</a><br/>' +
+        'If the address does not appear as link, please copy this url to your browser address bar ' + eventUrl + '</div>'
     };
 
     utils.sendMail(mailOptions);
@@ -110,16 +65,23 @@ EventController.prototype.createEvent = function(req, res) {
 
 EventController.prototype.editEventDetails = function(req, res) {
 
-  if (!req.body) {
+  if (!req.body.formDataObject) {
 
     return res.status(422).send({
       success: false,
       message: 'Check parameters!'
     });
   }
+  
+  var eventObj = req.body.formDataObject;
+  var eventId = req.params.event_id;
 
-  var eventObj = req.body;
-  var eventId = req.body._id;
+  try {
+    eventObj.venue = JSON.parse(eventObj.venue);
+    eventObj.eventTheme = JSON.parse(eventObj.eventTheme);
+  } catch (err) {
+
+  }
 
   Event.findById(eventId, function(err, evt) {
     if (err) {
@@ -136,6 +98,10 @@ EventController.prototype.editEventDetails = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
+
+      //Prevent imageUrl field being assigned string 'null'
+      eventObj.imageUrl = eventObj.imageUrl || "";
+      
       Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
@@ -257,6 +223,7 @@ EventController.prototype.saveEventDetails = function(req, res) {
       newEvent.eventUrl = evt.eventUrl;
       newEvent.eventTheme = evt.eventTheme;
       newEvent.eventFont = evt.eventFont;
+      newEvent.imageUrl = evt.imageUrl;
       newEvent.startDate = evt.startDate;
       newEvent.endDate = evt.endDate;
       newEvent.online = false;
@@ -288,33 +255,18 @@ EventController.prototype.saveEventDetails = function(req, res) {
 
 //Get all events that are published
 EventController.prototype.getAllEvents = function(req, res) {
-  // Event.find({
-  //   online: true
-  // }, function(err, events) {
-  //   if (err) {
-  //     return res.json(err);
-  //   }
-  //
-  //   //Populate the user_ref and manager_ref properties of the events' model
-  //   //with the matching user details from the user model
-  //   User.populate(events, {
-  //     path: 'user_ref manager_ref'
-  //   }, function(err, populatedEvents) {
-  //
-  //     if (err) {
-  //       return res.json(err);
-  //     }
-  //
-  //     res.json(populatedEvents);
-  //
-  //   });
-  // });
-  Event.find(function(err, events) {
+
+  Event.find({
+    online: true
+  }, function(err, events) {
     if (err) {
       return res.json(err);
     }
-    Event.populate(events, {
-      path: 'user_ref tasks.task_ref'
+
+    //Populate the user_ref and manager_ref properties of the events' model
+    //with the matching user details from the user model
+    User.populate(events, {
+      path: 'user_ref manager_ref'
     }, function(err, populatedEvents) {
 
       if (err) {
@@ -332,6 +284,7 @@ EventController.prototype.deleteEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
+
   Event.findById(eventId, function(err, evt) {
 
     if (err) {
@@ -348,14 +301,14 @@ EventController.prototype.deleteEvent = function(req, res) {
         message: 'Unauthorized!'
       });
     } else {
-//commented this part out cos it prevents deleting events due to absence of Task
-      // Task.remove({
-      //   event_ref: eventId
-      // }, function(err) {
-      //
-      //   if (err)
-      //     return res.send(err);
-      //
+
+      Task.remove({
+        event_ref: eventId
+      }, function(err) {
+
+        if (err)
+          return res.status(500).send(err);
+
         Event.remove({
           _id: eventId
         }, function(err, evt) {
@@ -366,7 +319,7 @@ EventController.prototype.deleteEvent = function(req, res) {
             message: 'Succesfully deleted'
           });
         });
-      // });
+      });
     }
   });
 }
@@ -376,9 +329,7 @@ EventController.prototype.getEvent = function(req, res) {
 
   var eventId = req.params.event_id;
 
-  eventId = eventId.substr(1, eventId.length)
-
-  Event.findById(eventId).populate('user_ref').exec(function(err, evt) {
+  Event.findById(eventId, function(err, evt) {
 
     if (err) {
 
@@ -390,21 +341,22 @@ EventController.prototype.getEvent = function(req, res) {
         message: 'Invalid event id'
       });
     } else {
-      // User.populate(evt, {
-      //   path: 'user_ref'
-      // }, function(err1, evt1) {
-      //
-      //   if (err) {
-          // res.status(200).send(err);
-      //   } else {
-          res.json(evt);
-      //   }
-      //
-      // });
+
+      User.populate(evt, {
+        path: 'user_ref'
+      }, function(err1, evt1) {
+
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          
+          res.json(evt1);
+        }
+
+      });
     }
   });
 }
-
 
 //Get list of your published events
 EventController.prototype.getMyEvents = function(req, res) {
@@ -513,7 +465,7 @@ EventController.prototype.reuseEvent = function(req, res) {
             } else {
 
               //Copy list of the task managers added to the previous event
-              //to the newly created event using Promise instance
+              //to the newly created event using Promise instance 
 
               var promiseObject = function(curIndex) {
 

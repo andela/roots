@@ -36,17 +36,18 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
     })
     .state('user.profile', {
       url: '/profile',
-      templateUrl: '../app/views/user.profile.html'
+      templateUrl: '../app/views/user.profile.html',
+      controller: 'profileCtrl'
     })
     .state('user.eventDetails', {
       url: '/eventdetails/:event_id',
       templateUrl: '../app/views/eventDetails.view.html',
-      controller: 'eventCtrl'
+      controller: 'eventViewCtrl'
     })
     .state('user.moreEvents', {
       url: '/more-events',
       templateUrl: '../app/views/more.events.view.html',
-      controller: 'eventCtrl'
+      controller: 'moreEventsCtrl'
     });
 
   $urlRouterProvider.otherwise('/user/home');
@@ -56,6 +57,9 @@ angular.module('eventApp')
   .directive("countryList", function() {
     return {
       restrict: 'E',
+      scope: {
+        countryCode: '='
+      },
       templateUrl: '../app/views/country.list.html'
     };
   });
@@ -123,3 +127,38 @@ angular.module('eventApp')
       },
     };
   });
+
+angular.module('eventApp')
+  .directive('jqdatepicker', function() {
+    return {
+      restrict: 'A',
+      require: 'ngModel',
+      link: function(scope, element, attrs, ngModelCtrl) {
+        $(element).datepicker({
+          dateFormat: 'mm-dd-yy',
+          minDate: 0,
+
+          onSelect: function(date) {
+            var ngModelName = this.attributes['ng-model'].value;
+
+            // if value for the specified ngModel is a property of 
+            // another object on the scope
+            if (ngModelName.indexOf(".") != -1) {
+              var objAttributes = ngModelName.split(".");
+              var lastAttribute = objAttributes.pop();
+              var partialObjString = objAttributes.join(".");
+              var partialObj = eval("scope." + partialObjString);
+
+              partialObj[lastAttribute] = date;
+            }
+            // if value for the specified ngModel is directly on the scope
+            else {
+              scope[ngModelName] = date;
+            }
+            scope.$apply();
+          }
+
+        });
+      }
+    };
+});
