@@ -35,7 +35,7 @@
     </div><br>
     <div id="image-wrapper">
       <img id="edit-preview" class="editImage-box" src="" alt="" style="background-image: url({event.imageUrl}) no-repeat center"><br>
-      <input ng-click="previewImg('#edit-upload','#edit-preview')" accept="image/*" ngf-select="true" id="edit-upload" ng-model="event.imageUrl" type="file"><br>
+      <input ng-click="previewImg('#edit-upload','#edit-preview','#prevImage')" accept="image/*" ngf-select="true" id="edit-upload" ng-model="event.newImageUrl" type="file"><br>
     </div><br><br>
 
       <div class="md-toolbar-tools centre" layout-align="center">
@@ -58,11 +58,11 @@
           </div>
           <div layout="row">
             <md-button type="button" class="md-raised" id="default" ng-click="changeColor('#9E9E9E')">default</md-button>
-            <md-button type="button" class="md-raised" id="theme1" id="themes" ng-click="changeColor('#F44336')">red</md-button>
-            <md-button type="button" class="md-raised" id="theme2" id="themes" ng-click="changeColor('#2196F3')">blue</md-button>
-            <md-button type="button" class="md-raised" id="theme3" id="themes" ng-click="changeColor('#BCAAA4')">brown</md-button>
-            <md-button type="button" class="md-raised" id="theme4" id="themes" ng-click="changeColor('#4CAF50')">green</md-button>
-            <md-button type="button" class="md-raised" id="theme5" id="themes" ng-click="changeColor('#00BCD4')">cyan</md-button>
+            <md-button type="button" class="md-raised" id="theme1" ng-click="changeColor('#F44336')">red</md-button>
+            <md-button type="button" class="md-raised" id="theme2" ng-click="changeColor('#2196F3')">blue</md-button>
+            <md-button type="button" class="md-raised" id="theme3" ng-click="changeColor('#BCAAA4')">brown</md-button>
+            <md-button type="button" class="md-raised" id="theme4" ng-click="changeColor('#4CAF50')">green</md-button>
+            <md-button type="button" class="md-raised" id="theme5" ng-click="changeColor('#00BCD4')">cyan</md-button>
             <div class="custom" layout="row" layout-align="end center">
               <md-whiteframe flex="35" class="md-whiteframe-z2">
                 <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.headerColor"></color-picker>
@@ -83,7 +83,7 @@
             <div id="padding">
               <div layout="row">
                 <md-toolbar md-scroll-shrink id="contentMainDiv" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor}">
-                  <img id="prevImage" src="{{event.imageUrl}}" alt="" height='500px' width='100%'>
+                  <img id="prevImage" ng-src="{{event.imageUrl}}" alt="" height='500px' width='100%'>
                 </md-toolbar>
               </div>
               <div id="card">
