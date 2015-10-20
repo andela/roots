@@ -390,6 +390,12 @@ img.bg {
  background: url('../../assets/img/preview-icon.jpg') no-repeat center;
 }
 
+.user-image-box {
+ height: 200px;
+ width:200px;
+ background: url('../../assets/img/preview-icon.jpg') no-repeat center;
+}
+
 label {
   font-size: 0.8em;
 }
@@ -588,3 +594,83 @@ label {
 
 
 .event-card-inner{-webkit-box-shadow:0 1px 2px rgba(0,0,0,.15);-moz-box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:0 1px 2px rgba(0,0,0,.15);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;background-color:#fff}.event-card-inner:hover{-webkit-box-shadow:0 1px 4px rgba(0,0,0,.3);-moz-box-shadow:0 1px 4px rgba(0,0,0,.3);box-shadow:0 1px 4px rgba(0,0,0,.3);color:rgba(30, 25, 84,.8); cursor:pointer}
+
+#profileToolbar {
+  background: #597eaa;
+}
+
+#profileHeader {
+  color:black;
+  font-size:30px;
+}
+
+#profilePane {
+  min-height: 300px;
+}
+
+.profile-content-box {
+  width: 80%;
+  margin:0 auto;
+}
+
+#user-image-wrapper {
+  height:250px;
+  width:200px;
+}
+
+#profileUsername {
+  margin-bottom: 10px;
+}
+
+#userProfileReadonlyPane{
+  height:250px;
+  width:200px;
+}
+
+#userProfileImage {
+  width:200px;
+}
+
+.profilePictureText {
+  height:40px;
+  background:rgba(0,0,0,.3);
+  display:block;
+  margin-top:-5px;
+  padding:10px 30px;
+}
+
+#userInfoHeader {
+  background:#f0f0f0;
+  color:black;
+}
+
+.profileFirstRow {
+  margin-top:20px;
+}
+
+.profileLeftColumn {
+  margin-right:30px;
+}
+
+.address-textarea {
+  height: 60px
+}
+
+.mini-event-cards {
+  margin-left: 10px;
+  float: left;
+  width:300px;
+}
+
+.event-card-links {
+  margin-right:8px;
+}
+
+.profileText {
+  color: #337ab7;
+}
+
+.event-card-name {
+  color:black;
+  font-size:25px;
+}
