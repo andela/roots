@@ -1,3 +1,11 @@
+.bg-text {
+  margin-top: 100px;
+}
+
+.preview-text-align {
+  margin-left: 20px;
+}
+
 .ta-editor {
   min-height: 300px;
   height: auto;
@@ -15,7 +23,7 @@
 }
 
 #page-footer {
-  background:#1f1f1f;
+  background:#6e7b8b;
   position:relative;
   padding:20px
 }
@@ -96,7 +104,8 @@ img.bg {
 }
 
 #parallax-div {
-  height: 100vh;
+  background: url('../img/bgimg.jpg');
+  height:100%;
 }
 
 #nav-menu {
@@ -304,7 +313,8 @@ img.bg {
 }
 
 .nav-div {
-  background: rgba(0,0,0,.8);
+  /*background: rgba(0,0,0,.8);*/
+  background-color: rgb(119, 136, 153);
 }
 
 .input-textbox {
@@ -488,7 +498,8 @@ label {
 }
 
 .custom {
- margin-left: 200px;
+ margin-right: 60px;
+ width: 110px;
 }
 
 #hc {
@@ -500,7 +511,7 @@ label {
 .colors {
  color: grey;
  padding-top: 50px;
- margin-left: 30px;
+
 }
 
 .editImage-box {
