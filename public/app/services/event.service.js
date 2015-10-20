@@ -17,12 +17,11 @@ angular.module('eventApp')
       },
       editEventDetails: function(evtObj, ID) {
           
-          var token = localStorage.getItem('userToken');
-
+          var token = localStorage.getItem('userToken');          
           return  Upload.upload({
               method: "PUT",
               url: '/api/event/' + ID + '?token='+ token,
-              file: evtObj.imageUrl,
+              file: evtObj.newImageUrl,
               fields: evtObj
             });          
       },
