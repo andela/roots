@@ -5,7 +5,7 @@
       <ul ng-if="!loggedIn" class="right" id="nav-menu">
         <li><a ng-click="login('signup')" tabindex="-1" class="nav-link">Sign up</a></li>
         <li><a ng-click="login('login')" tabindex="-1" class="nav-link">Log in</a></li>
-        <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
+        <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue lighten-3 event-btn" type="submit" name="action">Create Event</button>
       </ul>
       <ul ng-if="!loggedIn" class="right" id="icon-menu">
         <li class="user-dropdown">
@@ -28,7 +28,7 @@
             <li class="menu-list"><a href="" ng-click="logout()">Logout</a></li>
           </ul>
         </li>
-        <button ng-hide="hideBtn" ui-sref="user.cevent" class="btn waves-effect waves-light blue event-btn" type="submit" name="action">Create Event</button>
+        <button ng-hide="hideBtn" ui-sref="user.cevent" class="btn waves-effect waves-light blue lighten-1 event-btn" type="submit" name="action">Create Event</button>
       </ul>
     </div>
   </nav>
@@ -38,13 +38,13 @@
   <div class="container">
     <div class="row">
       <div class="col l6 s12">
-        <h5 class="grey-text">About <strong><em>World Tree</em></strong></h5>
+        <h5 class="black-text">About <strong><em>World Tree</em></strong></h5>
         <p class="grey-text text-lighten-4">
         World tree Inc is an online event management application that helps organize events efficiently 
         </p>
       </div>
       <div class="col l4 offset-l2 s12">
-        <h5 class="grey-text">Connect with us</h5>
+        <h5 class="black-text">Connect with us</h5>
         <ul>
           <li><a class="grey-text text-lighten-3" href="#!">Twitter</a></li>
           <li><a class="grey-text text-lighten-3" href="#!">Facebook</a></li>
@@ -54,7 +54,7 @@
       </div>
     </div>
   </div>
-  <div class="footer-copyright" style="color:white">
+  <div class="footer-copyright black-text">
     <div class="container">
     © 2015 World Tree
     </div>

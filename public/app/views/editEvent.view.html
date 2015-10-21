@@ -4,45 +4,43 @@
 <div ng-hide="prev" layout="column" class="card form-container" ng-cloak>
   <h3 class="md-padding">Event Details</h3>
   <md-content class="md-padding">
-
-  <form name="eventForm">
-    <input type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
-    <label>Event Category</label>
-        <md-select aria-label="sel" placeholder={{event.category}} ng-model="event.category" style="display: block;">
-          <md-option ng-repeat="category in categories" value="{{category.name}}">{{category.name }}</md-option>
-        </md-select>
-    <md-textarea-container flex>
-      <label>Event Description</label>
-      <summernote height="300" ng-model="event.description"></summernote>
-    </md-textarea-container>
-    <br>
-    <div layout-sm="row">
-      <label>Country</label>
-      <country-list country-code="event.venue.countryCode"></country-list><br>
-      <input type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="event.venue.address" details="details" options="options1">
-    </div>
-    <br>
-    <label>Event Date<span class="req">*</span></label><br>
-    <div layout="row" >
-      <div layout="column" class="md-padding calendar">
-        Start Date: {{ event.startDate | date:'medium' }}<br>
-        <datetimepicker id="startdate" ng-model="event.startDate" ></datetimepicker>
+    <form name="eventForm">
+      <input class="input-textbox" type="text" required name="e-title" placeholder="Event title" ng-model="event.name"/>
+      <label>Event Category</label>
+      <select class="select-textbox" aria-label="sel" placeholder={{event.category}} ng-model="event.category" style="display: block;">
+        <option ng-repeat="category in categories" value="{{category.name}}">{{category.name }}</option>
+      </select>
+      <md-textarea-container flex>
+        <label>Event Description</label>
+        <summernote height="300" ng-model="event.description"></summernote>
+      </md-textarea-container>
+      <br>
+      <div layout-sm="row">
+        <label>Country</label>
+        <country-list country-code="event.venue.countryCode"></country-list><br>
+        <input class="input-textbox" type="text" ng-model="event.venue.address" placeholder="Enter Venue Name" id="Autocomplete" ng-click='getCountry()' ng-autocomplete="event.venue.address" details="details" options="options1">
       </div>
-      <div layout="column" class="md-padding calendar">
-        End Date: {{ event.endDate | date:'medium' }}<br>
-        <datetimepicker id="enddate" ng-model="event.endDate" ></datetimepicker>
-      </div>
-    </div><br>
+      <br>
+      <label>Event Date<span class="req">*</span></label><br>
+      <div layout="row" >
+        <div layout="column" class="md-padding calendar">
+          Start Date: {{ event.startDate | date:'medium' }}<br>
+          <datetimepicker id="startdate" ng-model="event.startDate" ></datetimepicker>
+        </div>
+        <div layout="column" class="md-padding calendar">
+          End Date: {{ event.endDate | date:'medium' }}<br>
+          <datetimepicker id="enddate" ng-model="event.endDate" ></datetimepicker>
+        </div>
+      </div><br>
     <div id="image-wrapper">
       <img id="edit-preview" class="editImage-box" src="" alt="" style="background-image: url({event.imageUrl}) no-repeat center"><br>
-      <input ng-click="previewImg('#edit-upload','#edit-preview')" accept="image/*" ngf-select="true" id="edit-upload" ng-model="event.imageUrl" type="file"><br>
+      <input ng-click="previewImg('#edit-upload','#edit-preview','#prevImage')" accept="image/*" ngf-select="true" id="edit-upload" ng-model="event.newImageUrl" type="file"><br>
     </div><br><br>
-
-      <div class="md-toolbar-tools centre" layout-align="center">
-        <md-button class="md-raised" ng-click="submitEventDetails(event)" type="submit" ng-disabled="eventForm.$invalid">Save Changes</md-button>
-        <md-button class="md-raised" ng-click="switchView()" type="button">Preview</md-button>
-      </div>
-  </form>
+        <div class="md-toolbar-tools centre" layout-align="center">
+          <md-button class="md-raised" ng-click="submitEventDetails(event)" type="submit" ng-disabled="eventForm.$invalid">Save Changes</md-button>
+          <md-button class="md-raised" ng-click="switchView()" type="button">Preview</md-button>
+        </div>
+    </form>
   </div>
 
   <div id="for preview" ng-show="prev" ng-cloak>
@@ -50,40 +48,57 @@
       <form name="previewEvent">
         <div layout="column">
           <div layout="row">
-            <h2>Select a theme</h2>
-            <h5 id="hc">Header Color</h5>
-            <h5 class="colors">Border Color</h5>
-            <h5 class="colors">Font Color</h5>
-            <h5 class="colors">Content Color</h5>
-          </div>
-          <div layout="row">
-            <md-button type="button" class="md-raised" id="default" ng-click="changeColor('#9E9E9E')">default</md-button>
-            <md-button type="button" class="md-raised" id="theme1" id="themes" ng-click="changeColor('#F44336')">red</md-button>
-            <md-button type="button" class="md-raised" id="theme2" id="themes" ng-click="changeColor('#2196F3')">blue</md-button>
-            <md-button type="button" class="md-raised" id="theme3" id="themes" ng-click="changeColor('#BCAAA4')">brown</md-button>
-            <md-button type="button" class="md-raised" id="theme4" id="themes" ng-click="changeColor('#4CAF50')">green</md-button>
-            <md-button type="button" class="md-raised" id="theme5" id="themes" ng-click="changeColor('#00BCD4')">cyan</md-button>
-            <div class="custom" layout="row" layout-align="end center">
-              <md-whiteframe flex="35" class="md-whiteframe-z2">
-                <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.headerColor"></color-picker>
-              </md-whiteframe>
-              <md-whiteframe flex="35" class="md-whiteframe-z2">
-                <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.borderColor"></color-picker>
-              </md-whiteframe>
-              <md-whiteframe flex="35" class="md-whiteframe-z2">
-                <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.fontColor"></color-picker>
-              </md-whiteframe>
-              <md-whiteframe flex="35" class="md-whiteframe-z2">
-                <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.contentColor"></color-picker>
-              </md-whiteframe>
+            <div>
+              <h2 style="margin-left: 20px">Select a theme</h2>
+              <p>
+                <md-button type="button" class="md-raised" id="default" ng-click="changeColor('#9E9E9E')">default</md-button>
+                <md-button type="button" class="md-raised" id="theme1" id="themes" ng-click="changeColor('#F44336')">red</md-button>
+                <md-button type="button" class="md-raised" id="theme2" id="themes" ng-click="changeColor('#2196F3')">blue</md-button>
+                <md-button type="button" class="md-raised" id="theme3" id="themes" ng-click="changeColor('#BCAAA4')">brown</md-button>
+                <md-button type="button" class="md-raised" id="theme4" id="themes" ng-click="changeColor('#4CAF50')">green</md-button>
+                <md-button type="button" class="md-raised" id="theme5" id="themes" ng-click="changeColor('#00BCD4')">cyan</md-button>
+              </p>
             </div>
           </div>
-          <h4>Event Page Preview</h4>
+
+          <div>
+            <div layout="row" layout-align="start center" style="margin-left:20px">
+              <div layout="column">
+                <h5 class="colors">Header Color</h5>
+                <md-whiteframe class="md-whiteframe-z2 custom">
+                  <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.headerColor"></color-picker>
+                </md-whiteframe>
+              </div>
+              <div layout="column">
+                <h5 class="colors">Border Color</h5>
+                <md-whiteframe class="md-whiteframe-z2 custom">
+                  <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.borderColor"></color-picker>
+                </md-whiteframe>
+              </div>
+              <div layout="column">
+                <h5 class="colors">Font Color</h5>
+                <md-whiteframe class="md-whiteframe-z2 custom">
+                  <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.fontColor"></color-picker>
+                </md-whiteframe>
+              </div>
+              <div layout="column">
+                <h5 class="colors">Content Color</h5>
+                <md-whiteframe class="md-whiteframe-z2 custom">
+                  <color-picker color-picker-format="'rgb'" ng-model="event.eventTheme.contentColor"></color-picker>
+                </md-whiteframe>
+              </div>
+
+            </div>
+          </div>
+          <br>
+          <p>
+          <h4 style="margin-left:20px">Event Page Preview</h4>
+          </p>
           <div layout="column" class="md-raised">
             <div id="padding">
               <div layout="row">
                 <md-toolbar md-scroll-shrink id="contentMainDiv" ng-style="{'border-color' : event.eventTheme.borderColor, 'color' : event.eventTheme.fontColor}">
-                  <img id="prevImage" src="{{event.imageUrl}}" alt="" height='500px' width='100%'>
+                  <img id="prevImage" ng-src="{{event.imageUrl}}" alt="" height='500px' width='100%'>
                 </md-toolbar>
               </div>
               <div id="card">
