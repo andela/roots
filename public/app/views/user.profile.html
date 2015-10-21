@@ -6,7 +6,7 @@
     </div>
   </md-toolbar>
   <md-content class="md-padding" style="min-height: 300px;">
-    <md-tabs md-dynamic-height md-border-bottom>      
+    <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="User Profile">
         <md-content class="md-padding" style="width: 80%; margin:0 auto">
             <h3 style="margin-bottom: 10px">{{userInformation.firstname | uppercase}}'s Profile</h3>
@@ -14,7 +14,7 @@
               <img ng-src="{{userInformation.profilePic}}" style="width:200px">
               <span style="height:40px;background:rgba(0,0,0,.3);display:block;margin-top:-5px;padding:10px 30px"><a ng-click="switchUserEditMode(true);">Change profile photo</a></span>
             </div>
-            <div id="user-image-wrapper" ng-show="userEditMode" style="height:250px;width:200px">      
+            <div id="user-image-wrapper" ng-show="userEditMode" style="height:250px;width:200px">
               <img id="userImg-preview" class="image-box" style="height: 200px; width:200px"  src="">
               <span style="height:40px;background:rgba(0,0,0,.3);display:block;margin-top:-5px;padding:10px 30px"><a ng-click="uploadPicture()" >Click to upload photo</a></span>
               <input ng-click="previewImg('#userImg-upload','#userImg-preview')" id="userImg-upload" accept="image/*" ngf-select="true" ng-model="userInformation.newImage" type="file">
@@ -28,7 +28,7 @@
               </div>
             </md-toolbar>
             </div>
-            <form>              
+            <form>
               <div ng-show="userEditMode">
                 <div layout="row" style="margin-top:20px;">
                   <input type="text" title="First name" flex="30" placeholder="First Name" class="input-textbox" ng-model="userInformation.firstname">
@@ -50,10 +50,12 @@
                   <input type="text" title="Phone Number 2" flex="30" placeholder="Phone Number 2" class="input-textbox" ng-model="userInformation.phoneNumber2">
                 </div>
                 <strong>Date Of Birth</strong>
-                <div layout="row">                
-                <input flex="30" type="text" class="input-textbox" id="datepicker" readonly ng-model="userInformation.dateOfBirth" jqdatepicker>
+                <div layout="row">
+                  <div layout="column" class="md-padding calendar">
+                    <datepicker show-weeks="false" ng-model="userInformation.dateOfBirth"></datepicker>
+                  </div>
                 </div>
-               
+
                 <strong>Address 1</strong>
                 <div layout="row">
                   <textarea flex="65" ng-model="userInformation.address1" style="height: 60px"></textarea>
@@ -66,27 +68,27 @@
 
               <div ng-show="!userEditMode" style="color: #337ab7">
                 <div layout="row" style="margin-top:20px;">
-                <span style="margin-right:30px;"><strong>First Name: </strong>{{userInformation.firstname | uppercase}}</span>                
+                <span style="margin-right:30px;"><strong>First Name: </strong>{{userInformation.firstname | uppercase}}</span>
                 </div><br>
                 <div layout="row">
                 <span style="margin-right:30px;">
                   <strong>Last Name: </strong>{{userInformation.lastname}}</span>
                 </div><br>
                 <div layout="row">
-                  <span style="margin-right:30px" ><strong>Email: </strong>{{userInformation.email}}</span>                              
-                </div><br>
-                <div layout="row">                  
-                  <span style="margin-right:30px"><strong>Gender: </strong>{{userInformation.genderDet}}</span>              
+                  <span style="margin-right:30px" ><strong>Email: </strong>{{userInformation.email}}</span>
                 </div><br>
                 <div layout="row">
-                  <span style="margin-right:30px" ><strong>Phone Number(s): </strong>{{userInformation.phoneNumber1}}<span ng-if="userInformation.phoneNumber2">, {{userInformation.phoneNumber2}}</span></span>                 
+                  <span style="margin-right:30px"><strong>Gender: </strong>{{userInformation.genderDet}}</span>
                 </div><br>
-                <!-- <div layout="row" ng-show="userInformation.phoneNumber2">                  
-                  <span style="margin-right:30px"><strong>Phone Number 2: </strong>{{userInformation.phoneNumber2}}</span>   
-                </div><br>    -->          
                 <div layout="row">
-                  <span style="margin-right:30px" ><strong>Date Of Birth: </strong> {{userInformation.dobDet}}</span>                                 
-                </div><br> 
+                  <span style="margin-right:30px" ><strong>Phone Number(s): </strong>{{userInformation.phoneNumber1}}<span ng-if="userInformation.phoneNumber2">, {{userInformation.phoneNumber2}}</span></span>
+                </div><br>
+                <!-- <div layout="row" ng-show="userInformation.phoneNumber2">
+                  <span style="margin-right:30px"><strong>Phone Number 2: </strong>{{userInformation.phoneNumber2}}</span>
+                </div><br>    -->
+                <div layout="row">
+                  <span style="margin-right:30px" ><strong>Date Of Birth: </strong> {{userInformation.dobDet}}</span>
+                </div><br>
                 <strong>Address 1</strong>
                 <div layout="row">
                   {{userInformation.address1}}
@@ -94,7 +96,7 @@
                 <strong>Address 2</strong>
                 <div layout="row">
                   {{userInformation.address2}}
-                </div>  
+                </div>
               </div>
               <br>
               <md-button class="md-raised" ng-click="switchUserEditMode(true)" ng-show="!userEditMode"> Edit Profile</md-button>
@@ -108,33 +110,33 @@
           <h3>Organizer Profile</h3>
           <ng-form>
 
-              <div ng-show="!organizerEditMode" style="color: #337ab7">             
+              <div ng-show="!organizerEditMode" style="color: #337ab7">
                 <div layout="row">
-                <span style="margin-right:30px" ><strong>Name: </strong>{{organizer.name}}</span>                
-                </div><br>             
+                <span style="margin-right:30px" ><strong>Name: </strong>{{organizer.name}}</span>
+                </div><br>
                 <h4>About</h4>
                 <div width="60%">{{organizer.about}}</div>
                 <br>
-                <h4>Profile Image</h4>               
-                <div>                
-                  <img class="image-box" ng-src="{{organizer.imageUrl}}" alt=""><br>               
+                <h4>Profile Image</h4>
+                <div>
+                  <img class="image-box" ng-src="{{organizer.imageUrl}}" alt=""><br>
                 </div><br>
               </div>
 
               <div ng-show="organizerEditMode">
-                
+
                   <label>Name</label>
                   <div layout="row">
                   <input flex="50" class="input-textbox" type="text" required name="e-title" ng-model="organizer.name">
                   <span class="req">*</span>
                   </div>
-                
+
                   <label>About</label>
                 <div layout="row">
                   <textarea flex="65" row="4" ng-model="organizer.about" style="height: 100px"></textarea>
                 </div><br>
                 <br>
-                <label>Profile Image</label>           
+                <label>Profile Image</label>
                 <div id="image-wrapper">
                   <img id="orgImg-preview" class="image-box" src="" alt=""><br>
                   <input ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.newImage" type="file"><br>
@@ -160,7 +162,7 @@
             </div>
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(true)" ng-show="!organizerEditMode && orgProfileExists"> Edit Profile</md-button>
             <md-button class="md-raised" ng-click="organizerButtnSave()" ng-show="organizerEditMode"> Save Changes</md-button>
-            <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="!organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>           
+            <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="!organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(false)" ng-show="organizerEditMode && orgProfileExists"> Cancel Changes</md-button>
           </ng-form><br>
         </md-content>
@@ -182,7 +184,7 @@
                     <md-card-content>
                       No event found under this category
                     </md-card-content>
-                </div> 
+                </div>
               </div>
             </div>
           </md-content>
@@ -198,13 +200,13 @@
                       <a ng-click="viewEvent(event._id)"><h2 class="md-title"><strong style="color:black;font-size:25px">{{event.name}}</strong></h2></a>
                       <a href="" style="margin-right:8px" ng-click="editEvent(event._id)">edit</a><a style="margin-right:8px" href="" ng-click="deleteEvent(event._id, eventDrafts)">delete</a><a href="" ng-click="viewEvent(event._id)">view</a>
                     </md-card-content>
-                  </md-card>                  
+                  </md-card>
                 </div>
                 <div ng-show="!eventDrafts || !eventDrafts.length">
                     <md-card-content>
                       No event found under this category
                     </md-card-content>
-                </div> 
+                </div>
               </div>
             </div>
           </md-content>
@@ -224,6 +226,6 @@
               <md-divider></md-divider>
             </md-list>
           </md-content>
-      </md-tab>  -->     
+      </md-tab>  -->
     </md-tabs>
   </md-content>
