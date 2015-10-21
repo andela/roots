@@ -104,8 +104,10 @@ img.bg {
 }
 
 #parallax-div {
+  /*height: 1024px;*/
   background: url('../img/bgimg.jpg');
   height:100%;
+  background-attachment: fixed;
 }
 
 #nav-menu {
