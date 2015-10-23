@@ -94,8 +94,8 @@ Utils.prototype.imageProcessing = function(req, res, next) {
         }
         next();
       }, {
-        width: 800,
-        height: 800
+        width: 500,
+        height: 500
       });
     } else {
       next();

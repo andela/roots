@@ -11,14 +11,14 @@ AuthController.prototype.authCallback = function(strategy) {
         return next(err);
       }
       if(!user){
-        res.redirect('/#/user/home');
+        res.redirect('/#/landing/home');
       }
       else {
 
         var token = jwt.sign(user, config.secret, {
             expiresInMinutes: 1440 //24hr expiration
         });
-        res.redirect('/#/user/home?token=' + token);
+        res.redirect('/#/landing/home?token=' + token);
       }
     })(req, res, next);
   };
@@ -31,20 +31,20 @@ AuthController.prototype.twitterAuthCallback = function(strategy) {
         return next(err);
       }
       if(!user){
-        res.redirect('/#/user/home');
+        res.redirect('/#/landing/home');
       }
       else {
           if(user.mailChanged) {
             var token = jwt.sign(user, config.secret, {
               expiresInMinutes: 1440 //24hr expiration
             });
-            res.redirect('/#/user/home?token=' + token);
+            res.redirect('/#/landing/home?token=' + token);
           }
           else {
             var twitToken = jwt.sign(user, config.secret, {
               expiresInMinutes: 1440 //24hr expiration
             });
-            res.redirect('/#/user/registration?twitToken=' + twitToken);
+            res.redirect('/#/landing/registration?twitToken=' + twitToken);
           }
       }
     })(req, res, next);

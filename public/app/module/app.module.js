@@ -3,9 +3,14 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
   .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('user.home',{
+    .state('landing.home',{
       url: '/home',
       templateUrl: '../app/views/home.view.html',
+      controller: 'homeCtrl'
+    })
+    .state('landing', {
+      url: '/landing',
+      templateUrl: '../app/views/navbar.view.html',
       controller: 'homeCtrl'
     })
     .state('user.passwordreset', {
@@ -50,7 +55,7 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       controller: 'moreEventsCtrl'
     });
 
-  $urlRouterProvider.otherwise('/user/home');
+  $urlRouterProvider.otherwise('/landing/home');
 });
 
 angular.module('eventApp')
@@ -68,7 +73,7 @@ angular.module('eventApp')
   .config(function($mdThemingProvider) {
     // Extend the red theme with a few different colors
     var neonRedMap = $mdThemingProvider.extendPalette('red', {
-      '500': '000000'
+      '500': '#2f4f4f'
     });
     // Register the new color palette map with the name <code>neonRed</code>
     $mdThemingProvider.definePalette('neonRed', neonRedMap);
