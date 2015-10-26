@@ -22,7 +22,7 @@
             <summernote height="300" ng-model="event.description" required></summernote>
           </md-textarea-container>
           <br>
-          <div layout-sm="row">
+          <div>
             <label>Country<span class="req">*</span></label>
             <country-list country-code="event.venue.countryCode"></country-list>
             <br>
@@ -31,7 +31,7 @@
           <br>
           <label>Event Date<span class="req">*</span></label>
           <br>
-          <div layout="row">
+          <div layout-sm="column">
             <div layout="column" class="md-padding calendar">
               Start Date: {{ event.startDate | date:'medium' }}
               <br>

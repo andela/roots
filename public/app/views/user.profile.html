@@ -8,7 +8,7 @@
   <md-content id="profilePane" class="md-padding">
     <md-tabs md-dynamic-height md-border-bottom>
       <md-tab label="User Profile">
-        <md-content class="md-padding profile-content-box">
+        <md-content class="md-padding">
             <h3 id="profileUsername">{{userInformation.firstname | uppercase}}'s Profile</h3>
             <div id="userProfileReadonlyPane" ng-show="!userEditMode">
               <img id="userProfileImage" ng-src="{{userInformation.profilePic}}">
@@ -105,7 +105,7 @@
           </md-content>
       </md-tab>
       <md-tab label="My Organizer Profile">
-        <md-content class="md-padding profile-content-box">
+        <md-content class="md-padding">
           <h3>Organizer Profile</h3>
           <ng-form>
               <div ng-show="!organizerEditMode" class="profileText">             
@@ -167,7 +167,7 @@
       </md-tab>
       <md-tab label="My Publshed Events">
         <md-content class="md-padding">
-            <div layout="row" class="profile-content-box">
+            <div layout="row">
               <div flex>
                 <div ng-repeat="event in publishedEvents | orderBy: '-created_at' ">
                   <md-card class="mini-event-cards">
@@ -189,7 +189,7 @@
       </md-tab>
        <md-tab label="My Event Drafts">
         <md-content class="md-padding">
-            <div layout="row" class="profile-content-box">
+            <div layout="row">
               <div flex>
                 <div ng-repeat="event in eventDrafts | orderBy: '-created_at' ">
                   <md-card class="mini-event-cards">

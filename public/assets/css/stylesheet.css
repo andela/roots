@@ -1,5 +1,9 @@
 .bg-text {
-  margin-top: 100px;
+  margin-top: 50px;
+}
+
+.tab-background {
+  background: #2f4f4f;
 }
 
 .preview-text-align {
@@ -15,17 +19,23 @@
 }
 
 #navbar-logo {
-  font-family: papyrus;
+  font-family: 'Oldenburg', cursive;
   color: white;
-  margin-left: 50px;
   cursor: pointer;
-  font-size: 25px;
+  font-size: 22px;
+}
+
+.navbar-logo {
+  font-family: 'Oldenburg', cursive;
+  cursor: pointer;
+  font-size: 22px;
 }
 
 #page-footer {
-  background:#6e7b8b;
+  background:#2f4f4f;
   position:relative;
-  padding:20px
+  padding:20px;
+  font-family: 'Noto Sans', sans-serif;
 }
 
 .error-div {
@@ -52,13 +62,13 @@
 }
 
 #motto-display-div {
-  background: #181111;
-  border: 2px solid gray;
+  background: transparent;
+  border: 2px solid white;
   border-radius: 9px;
 }
 
 .dialog-form {
-  font-family: "Courier";
+  font-family: 'Oldenburg', cursive;
 }
 
 .login-form {
@@ -88,7 +98,7 @@
   position: relative;
   min-height: 900px;
   max-height: auto;
-  background-color: #eee;
+  background-color: white;
   padding: 5%;
   margin-bottom: 0;
 }
@@ -103,9 +113,21 @@ img.bg {
   left: 0;
 }
 
+.top-nav {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.top-div {
+  background: white;
+  color: black;
+  z-index: 1;
+  /*border-bottom: 1px black solid;*/
+}
+
 #parallax-div {
-  /*height: 1024px;*/
-  background: url('../img/bgimg.jpg');
   height:100%;
   background-attachment: fixed;
 }
@@ -131,24 +153,25 @@ img.bg {
 
 #motto-display {
   color: white;
-  font-family: "Courier";
+  /*font-family: "Courier";*/
+  font-family: 'Oldenburg', cursive;
   font-size: 22px;
   margin: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 39em;
-  animation: type 9s infinite;
+  /*white-space: nowrap;*/
+  /*overflow: hidden;*/
+  /*width: 39em;*/
+  /*animation: type 9s infinite;*/
 }
 
-@keyframes type{
+/*@keyframes type{
   from { width: 0; }
-}
+}*/
 
 /* Landscape phone to portrait tablet */
 @media (max-width: 767px) {
   #motto-display {
       font-size: 20px;
-      width: 17em
+      /*width: 17em*/
   }
   #display-name {
     display: none;
@@ -159,9 +182,6 @@ img.bg {
   }
   #nav-menu {
     display: none;
-  }
-  #navbar-logo {
-    margin-left: 5px;
   }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
@@ -226,17 +246,6 @@ img.bg {
   }
 }
 
-.arrow {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  margin-left: -20px;
-  width: 40px;
-  height: 40px;
-  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yOTMuNzUxLDQ1NS44NjhjLTIwLjE4MSwyMC4xNzktNTMuMTY1LDE5LjkxMy03My42NzMtMC41OTVsMCwwYy0yMC41MDgtMjAuNTA4LTIwLjc3My01My40OTMtMC41OTQtNzMuNjcyICBsMTg5Ljk5OS0xOTBjMjAuMTc4LTIwLjE3OCw1My4xNjQtMTkuOTEzLDczLjY3MiwwLjU5NWwwLDBjMjAuNTA4LDIwLjUwOSwyMC43NzIsNTMuNDkyLDAuNTk1LDczLjY3MUwyOTMuNzUxLDQ1NS44Njh6Ii8+DQo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMjIwLjI0OSw0NTUuODY4YzIwLjE4LDIwLjE3OSw1My4xNjQsMTkuOTEzLDczLjY3Mi0wLjU5NWwwLDBjMjAuNTA5LTIwLjUwOCwyMC43NzQtNTMuNDkzLDAuNTk2LTczLjY3MiAgbC0xOTAtMTkwYy0yMC4xNzgtMjAuMTc4LTUzLjE2NC0xOS45MTMtNzMuNjcxLDAuNTk1bDAsMGMtMjAuNTA4LDIwLjUwOS0yMC43NzIsNTMuNDkyLTAuNTk1LDczLjY3MUwyMjAuMjQ5LDQ1NS44Njh6Ii8+DQo8L3N2Zz4=);
-  background-size: contain;
-}
-
 .bounce {
   -moz-animation: bounce 2s infinite;
   -webkit-animation: bounce 2s infinite;
@@ -244,14 +253,14 @@ img.bg {
 }
 
 #site-logo {
-   font-family: Courier;
+   font-family: 'Oldenburg', cursive;
    font-size: 80px;
 }
 
 .user-dropdown {
   font-size: 15px;
   cursor: pointer;
-  font-family: "Courier";
+  font-family: 'Oldenburg', cursive;
   display: inline-block;
 }
 
@@ -272,7 +281,6 @@ img.bg {
   margin: 0;
   z-index: 5;
   list-style: none;
-  width: 100%;
   padding: 0;
 }
 
@@ -294,10 +302,25 @@ img.bg {
   border-radius: 2px;
 }
 
+#navbar-image {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  border: 1px solid black;
+  border-radius: 2px;
+}
+
 .nav-link {
   font-size: 15px;
   cursor: pointer;
-  font-family: "Courier";
+  font-family: 'Oldenburg', cursive;
+}
+
+.navbar-link {
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Oldenburg', cursive;
+  color: black;
 }
 
 .nav-link:hover {
@@ -305,8 +328,12 @@ img.bg {
   cursor: pointer;
 }
 
+.noto-font {
+  font-family: 'Noto Sans', sans-serif;
+}
+
 .event-btn {
-  font-family: "Courier";
+  font-family: 'Noto Sans', sans-serif;
   margin-right: 5px;
 }
 
@@ -314,9 +341,18 @@ img.bg {
   color: #181111;
 }
 
+.nav-event-btn {
+  font-family: 'Noto Sans', sans-serif;
+  margin-right: 5px;
+  color: black
+}
+
 .nav-div {
-  /*background: rgba(0,0,0,.8);*/
-  background-color: rgb(119, 136, 153);
+  background: transparent;
+}
+
+.body-info {
+  margin-bottom: 140px;
 }
 
 .input-textbox {
@@ -550,7 +586,7 @@ label {
 #whiteFrame {
  margin-bottom: 5%;
  height: 250px;
- width: 80%;
+ /*width: 80%;*/
  margin-left: 13%;
 }
 
@@ -559,7 +595,7 @@ label {
 }
 
 #event-container {
- width: 900px;
+ width: auto;
 }
 
 #homeEvent-container{
@@ -573,7 +609,7 @@ label {
 
 #browseBtn {
   position: relative;
-  background-color: #eee;
+  background-color: white;
   padding: 5%;
   margin-bottom: 0;
 }
@@ -595,8 +631,9 @@ label {
 
 .event-card-inner{-webkit-box-shadow:0 1px 2px rgba(0,0,0,.15);-moz-box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:0 1px 2px rgba(0,0,0,.15);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;background-color:#fff}.event-card-inner:hover{-webkit-box-shadow:0 1px 4px rgba(0,0,0,.3);-moz-box-shadow:0 1px 4px rgba(0,0,0,.3);box-shadow:0 1px 4px rgba(0,0,0,.3);color:rgba(30, 25, 84,.8); cursor:pointer}
 
+
 #profileToolbar {
-  background: #597eaa;
+  background: #2f4f4f;
 }
 
 #profileHeader {
@@ -606,11 +643,6 @@ label {
 
 #profilePane {
   min-height: 300px;
-}
-
-.profile-content-box {
-  width: 80%;
-  margin:0 auto;
 }
 
 #user-image-wrapper {
@@ -640,7 +672,7 @@ label {
 }
 
 #userInfoHeader {
-  background:#f0f0f0;
+  background:#2f4f4f;
   color:black;
 }
 
