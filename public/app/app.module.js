@@ -3,9 +3,14 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
   .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('user.home',{
+    .state('landing.home',{
       url: '/home',
       templateUrl: '../app/views/home.view.html',
+      controller: 'homeCtrl'
+    })
+    .state('landing', {
+      url: '/landing',
+      templateUrl: '../app/views/navbar.view.html',
       controller: 'homeCtrl'
     })
     .state('user.passwordreset', {
@@ -50,7 +55,7 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       controller: 'moreEventsCtrl'
     });
 
-  $urlRouterProvider.otherwise('/user/home');
+  $urlRouterProvider.otherwise('/landing/home');
 });
 
 angular.module('eventApp')
