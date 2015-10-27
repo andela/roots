@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('eventApp')
   .controller('homeCtrl', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'UserService', '$location', '$state','EventService', function($scope, $rootScope, $mdDialog, $mdToast, UserService, $location, $state, EventService) {
     $("a[href='#downpage']").click(function() {
@@ -19,7 +18,7 @@ angular.module('eventApp')
       if (localStorage.getItem('userToken')) {
         UserService.decodeUser();
       }
-    }    
+    };
     
     $scope.logout = function() {
       localStorage.removeItem('userToken');
@@ -39,7 +38,7 @@ angular.module('eventApp')
     };
 
     $scope.toEvent = function() {
-      if ($scope.loggedIn = true)
+      if ($scope.loggedIn === true)
         $location.path("/cevent");
     };
 
@@ -149,6 +148,6 @@ angular.module('eventApp')
 
       $state.go('user.eventDetails', {event_id: eventId});
       document.body.scrollTop = document.documentElement.scrollTop = 0;
-    }
+    };
 
   }]);

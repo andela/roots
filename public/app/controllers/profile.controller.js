@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('eventApp')
   .controller('profileCtrl', ['$scope', '$rootScope', 'EventService', 'OrganizerService', 'Upload', 'UserService', '$state', '$window', function($scope, $rootScope, EventService, OrganizerService, Upload, UserService, $state, $window) {
 
@@ -63,7 +62,7 @@ angular.module('eventApp')
       } else {
         $scope.registerOrganizer();
       }
-    }
+    };
 
     $scope.registerOrganizer = function() {
 
@@ -158,13 +157,13 @@ angular.module('eventApp')
         var reader = new FileReader();
         reader.onloadend = function() {
           preview.src = reader.result;
-        }
+        };
         if (file) {
           reader.readAsDataURL(file);
         } else {
           preview.src = "";
         }
-      })
+      });
     };
 
     $scope.switchUserEditMode = function(mode) {
@@ -177,7 +176,7 @@ angular.module('eventApp')
       } else {
         $scope.userInformation = angular.copy($scope.tempUserProfile);
       }
-    }
+    };
 
     $scope.switchOrganizerEditMode = function(mode) {
       $scope.organizerEditMode = mode;
@@ -189,7 +188,7 @@ angular.module('eventApp')
         $scope.organizer = angular.copy($scope.tempOrgProfile);
 
       }
-    }
+    };
 
     $scope.syncGenderDateDet = function() {
 
@@ -203,7 +202,7 @@ angular.module('eventApp')
       }
 
       $scope.userInformation.dobDet = parseDate($scope.userInformation.dateOfBirth);
-    }
+    };
 
     $scope.editEvent = function(eventId) {
 
@@ -232,14 +231,15 @@ angular.module('eventApp')
               events.splice(i, 1);
               break;
             }
-          };
+          }
         });
     };
 
 
     function parseDate(date) {
-      if (!date)
+      if (!date){
         return "";
+      }
       var dateObj = new Date(Date.parse(date));
       var dateString = (Number(dateObj.getMonth()) + 1) + "-" + dateObj.getDate() + "-" + dateObj.getFullYear();
       return dateString;

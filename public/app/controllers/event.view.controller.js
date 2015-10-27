@@ -1,3 +1,4 @@
+'use strict';
 angular.module('eventApp')
   .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce) {
 
@@ -37,7 +38,7 @@ angular.module('eventApp')
           event_id: $stateParams.event_id
         });
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-      }
+      };
 
       $scope.deleteEvent = function(){
         EventService.deleteEvent($stateParams.event_id);
@@ -49,5 +50,5 @@ angular.module('eventApp')
           .success(function(data) {
             $scope.canPublish = false;          
           });
-      }
+      };
   }]);

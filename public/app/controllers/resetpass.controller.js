@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('eventApp')
   .controller('resetPasswordCtrl', ['$scope', 'UserService', '$stateParams', '$location', '$timeout', function($scope, UserService, $stateParams, $location, $timeout) {
 
