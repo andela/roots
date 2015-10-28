@@ -193,6 +193,9 @@ img.bg {
   }
 }
 @media (min-width: 768px) {
+  .details-div {
+    margin-right: 100px;
+  }
   .user-dropdown {
     position: relative;
   }
