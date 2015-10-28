@@ -240,19 +240,21 @@ UserController.prototype.getCurrentUser = function(req, res) {
       res.status(500).send(err);
     }
 
-    if (user.organizer_ref) {
+    if(user) {
+      if (user.organizer_ref) {
 
-      Organizer.populate(user, {
-        'path': 'organizer_ref'
-      }, function(err, user2) {
+        Organizer.populate(user, {
+          'path': 'organizer_ref'
+        }, function(err, user2) {
 
-        if (err) {
-          return res.json(err);
-        }
-        res.json(user2);
-      });
-    } else {
-      res.json(user);
+          if (err) {
+            return res.json(err);
+          }
+          res.json(user2);
+        });
+      } else {
+        res.json(user);
+      }
     }
   });
 };
