@@ -1,3 +1,4 @@
+'use strict';
 angular.module('eventApp')
   .factory('UserService', ['$http', '$stateParams', '$location', '$rootScope', 'Upload', 'baseUrl', function($http, $stateParams, $location, $rootScope, Upload, baseUrl) {
 

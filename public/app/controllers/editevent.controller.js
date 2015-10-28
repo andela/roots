@@ -1,3 +1,4 @@
+'use strict';
 angular.module('eventApp')
   .controller('editeventCtrl',['$scope','$stateParams', '$location', 'EventService', 'OrganizerService', 'Upload','$rootScope', '$state', '$sce', function ($scope, $stateParams, $location, EventService, OrganizerService, Upload, $rootScope, $state, $sce) {
     
@@ -49,14 +50,14 @@ angular.module('eventApp')
           if(prevImage){            
             prevImage.src = reader.result;            
           }
-        }
+        };
         if (file) {
           reader.readAsDataURL(file);
         } else {
           preview.src = "";
           prevImage.src = "";
         }
-    })
+    });
   };
     
     $scope.submitEventDetails = function (eventDetails){
@@ -75,7 +76,7 @@ angular.module('eventApp')
         .success(function(data) {
             $state.go('user.eventDetails', {event_id: $stateParams.event_id});
             document.body.scrollTop = document.documentElement.scrollTop = 0;
-        })
+        });
       }
     };
 
@@ -95,7 +96,7 @@ angular.module('eventApp')
         country: $scope.getCountryCode().code
       };
       $scope.details = '';
-    }
+    };
     $scope.cancelEdit = function (){
      
       $state.go('user.eventDetails', {event_id: $stateParams.event_id});
@@ -111,7 +112,7 @@ angular.module('eventApp')
     $scope.$watch("event.description",
       function(oldVal, newVal){
         if(oldVal !== newVal){
-          $scope.eventInfo = $sce.trustAsHtml($scope.event.description)
+          $scope.eventInfo = $sce.trustAsHtml($scope.event.description);
       }
     });
 

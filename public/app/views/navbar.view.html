@@ -1,11 +1,11 @@
-<div class="navbar" data-ng-init="signupCheck()">
-  <nav class="top-div">
+<div class="navbar top-nav" data-ng-init="signupCheck()">
+  <nav class="nav-div">
     <div class="nav-wrapper">
-    <span ui-sref="landing.home" class="navbar-logo"><strong>World Tree</strong></span>
+    <span ui-sref="landing.home" id="navbar-logo"><strong>World Tree</strong></span>
       <ul ng-if="!loggedIn" class="right" id="nav-menu">
-        <li><a ng-click="login('signup')" tabindex="-1" class="navbar-link">Sign up</a></li>
-        <li><a ng-click="login('login')" tabindex="-1" class="navbar-link">Log in</a></li>
-        <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue lighten-3 nav-event-btn" type="submit" name="action">Create Event</button>
+        <li><a ng-click="login('signup')" tabindex="-1" class="nav-link">Sign up</a></li>
+        <li><a ng-click="login('login')" tabindex="-1" class="nav-link">Log in</a></li>
+        <button ng-click="login('toCreate')" class="btn waves-effect waves-light blue lighten-3 event-btn" type="submit" name="action">Create Event</button>
       </ul>
       <ul ng-if="!loggedIn" class="right" id="icon-menu">
         <li class="user-dropdown">
@@ -18,8 +18,8 @@
       </ul>
       <ul ng-if="loggedIn" class="right">
         <li class="user-dropdown">
-          <a href="" ng-click="" style="color: black">
-          <img ng-src="{{profilePic}}" id="navbar-image">
+          <a href="" ng-click="">
+          <img ng-src="{{profilePic}}" class="navbar-image">
           <span id="display-name">Welcome {{userName | lowercase}}</span>
           </a>
           <ul class="user-menu">

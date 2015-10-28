@@ -1,3 +1,4 @@
+'use strict';
 angular.module('eventApp')
   .factory('OrganizerService', ['$http', 'Upload', 'baseUrl', function($http, Upload, baseUrl) {
 
