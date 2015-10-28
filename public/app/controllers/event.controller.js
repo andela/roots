@@ -1,3 +1,4 @@
+'use strict';
 angular.module('eventApp')
 
   .controller('eventCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'Upload', '$rootScope', '$state', '$window', '$sce', function($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $window, $sce) {
@@ -83,9 +84,10 @@ angular.module('eventApp')
     };
     $scope.details = '';
   };
-   $scope.publishEvent = function(publish){
+
+  $scope.publishEvent = function(publish){
     $scope.event.online = publish;      
-  }
+  };
 
   $scope.previewImg = function (inElement,prevElement,imageElement){
     $(inElement).on('change', function () {
@@ -98,14 +100,14 @@ angular.module('eventApp')
 
         if(prevImage)
           prevImage.src = reader.result;
-      }
+        };
         if ((file && prevImage) || file) {
           reader.readAsDataURL(file);
         } else {
           preview.src = "";
           prevImage.src = "";
         }
-    })
+    });
   };
   
   $scope.changeColor = function(elem) {
@@ -115,7 +117,7 @@ angular.module('eventApp')
   $scope.$watch("event.description",
     function(oldVal, newVal){
       if(oldVal !== newVal){
-        $scope.eventInfo = $sce.trustAsHtml($scope.event.description)
+        $scope.eventInfo = $sce.trustAsHtml($scope.event.description);
     }
   });
 

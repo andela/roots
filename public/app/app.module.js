@@ -73,7 +73,7 @@ angular.module('eventApp')
   .config(function($mdThemingProvider) {
     // Extend the red theme with a few different colors
     var neonRedMap = $mdThemingProvider.extendPalette('red', {
-      '500': '#2f4f4f'
+      '500': '000000'
     });
     // Register the new color palette map with the name <code>neonRed</code>
     $mdThemingProvider.definePalette('neonRed', neonRedMap);
@@ -114,7 +114,7 @@ angular.module('eventApp')
               'address': $scope.address
             },
             function(results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
+              if (status === google.maps.GeocoderStatus.OK) {
                 map.setCenter(results[0].geometry.location);
                 marker = new google.maps.Marker({
                   map: map,
@@ -148,7 +148,7 @@ angular.module('eventApp')
 
             // if value for the specified ngModel is a property of 
             // another object on the scope
-            if (ngModelName.indexOf(".") != -1) {
+            if (ngModelName.indexOf(".") !== -1) {
               var objAttributes = ngModelName.split(".");
               var lastAttribute = objAttributes.pop();
               var partialObjString = objAttributes.join(".");

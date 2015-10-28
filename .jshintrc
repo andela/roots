@@ -1,0 +1,14 @@
+{
+    "globalstrict"  : true,   
+    "globals"       : {
+      "angular" : false,
+      "$window" : false,
+      "$" : false,
+      "window" : false,
+      "localStorage" : false,
+      "google" : false,
+      "document" : false,
+      "FileReader" : false,
+      "$location" : false
+    }   
+}

@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('eventApp')
   .controller('moreEventsCtrl', ['$scope', '$rootScope', 'EventService', function($scope, $rootScope, EventService) {
 
@@ -32,7 +31,8 @@ angular.module('eventApp')
       venue: {
         country: ''
       }
-    }
+    };
+
     $scope.countryCode = "";
 
     $scope.$watch("countryCode", function() {

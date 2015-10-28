@@ -128,6 +128,8 @@ img.bg {
 }
 
 #parallax-div {
+  /*height: 1024px;*/
+  background: url('../public/assets/img/bgimg.jpg');
   height:100%;
   background-attachment: fixed;
 }
