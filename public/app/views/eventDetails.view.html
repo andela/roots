@@ -13,45 +13,52 @@
               </div>
             </div>
             <md-content flex layout-padding>
-              <div class="values">
-                <hr>
-                <h4><b>Event Details</b></h4>
-                <hr>
-                <br>
-                <h5>Category:</h5>
-                <h6>{{event.category}}</h6>
-                <br>               
-                <h5>Event Venue:</h5>
-                <h6>{{event.venue.address}}</h6>
-                <br>
-                <h5>Country:</h5>
-                <h6>{{event.venue.country}}</h6>
-                <br>
-                <h5> Start Date:</h5>
-                <h6>{{ event.startDate | date:'medium' }}</h6>
-                <h5> End Date:</h5>
-                <h6>{{ event.endDate | date:'medium' }}</h6>            
-                <h5>About this Event:</h5>
-                <h6 ng-bind-html="event.description"></h6>
-                <br>
-                <br>
-                <hr>
-                <h4><b>Organizer Details</b></h4>
-                <hr>
-                <br>
-                <h5>Organized By:</h5>
-                <h6>{{organizer.name}}</b></h6>
-                <br>
-                <h5>About this Organizer:</h5>
-                <h6>{{organizer.about}}</b></h6>
-                <br>
-                <h6>Call us: {{organizer.phoneNumber1}}</h6>
-                <br>
+              <div class="values" layout-md="row" layout-gt-md="row" layout-sm="column">
+                <div style="margin-right:100px;">
+                  <hr>
+                  <h4><b>Event Details</b></h4>
+                  <hr>
+                  <br>
+                  <h5>Category:</h5>
+                  <h6>{{event.category}}</h6>
+                  <br>               
+                  <h5>Event Venue:</h5>
+                  <h6>{{event.venue.address}}</h6>
+                  <br>
+                  <h5>Country:</h5>
+                  <h6>{{event.venue.country}}</h6>
+                  <br>
+                  <h5> Start Date:</h5>
+                  <h6>{{ event.startDate | date:'medium' }}</h6>
+                  <h5> End Date:</h5>
+                  <h6>{{ event.endDate | date:'medium' }}</h6>            
+                  <h5>About this Event:</h5>
+                  <h6 ng-bind-html="event.description"></h6>
+                  <br>
+                  <br>
+                </div>
+                <div ng-if="organizer">
+                  <hr>
+                  <h4><b>Organizer Details</b></h4>
+                  <hr>
+                  <div>
+                    <img class="image-box" ng-src="{{organizer.imageUrl}}" alt=""><br>
+                  </div><br>
+                  <br>
+                  <h5>Organized By:</h5>
+                  <h6><b>{{organizer.name}}</b></h6>
+                  <br>
+                  <h5>About this Organizer:</h5>
+                  <h6><b>{{organizer.about}}</b></h6>
+                  <br>
+                  <h6>Call us: {{organizer.phoneNumber1}}</h6>
+                  <br>
+                </div>
               </div>
             </md-content>
             <md-toolbar class="md-warn" id="sideHeaderDiv">
               <div class="md-toolbar-tools">
-                <h2 class="md-flex"><b>Getting to: {{event.venue.address}}</b></h2>
+                <h2 class="md-flex"><b>Getting There</b></h2>
               </div>
             </md-toolbar>
             <div address-based-google-map address="event.venue.address" zoom="16" id="addressMap"></div>
