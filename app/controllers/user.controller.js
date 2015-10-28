@@ -242,7 +242,6 @@ UserController.prototype.getCurrentUser = function(req, res) {
 
     if (user) {
       if(user.organizer_ref) {
-
         Organizer.populate(user, {
           'path': 'organizer_ref'
         }, function(err, user2) {
