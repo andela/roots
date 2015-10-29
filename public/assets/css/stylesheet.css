@@ -128,8 +128,6 @@ img.bg {
 }
 
 #parallax-div {
-  /*height: 1024px;*/
-  background: url('../public/assets/img/bgimg.jpg');
   height:100%;
   background-attachment: fixed;
 }
@@ -710,4 +708,8 @@ label {
 .event-card-name {
   color:black;
   font-size:25px;
+}
+
+#filter-text {
+  background:#2f4f4f;
 }
