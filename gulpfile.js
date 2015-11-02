@@ -61,15 +61,18 @@ var paths = {
     './public/app/controllers/moreevents.controller.js',
     './public/app/controllers/profile.controller.js',
     './public/app/controllers/resetpass.controller.js',
-    './public/app/controllers/twitter.controller.js'
+    './public/app/controllers/twitter.controller.js',
+    './public/app/directives/directives.js'
   ]
 };
-
 
 gulp.task('static-css', function() {
   return gulp.src(paths.staticCss).
   pipe(concat('main')).
-  pipe(cssmin()).
+  pipe(cssmin({
+      keepSpecialComments: 1,
+      rebase: false
+    })).
   pipe(rename({
     suffix: '.min.css'
   })).
@@ -96,7 +99,10 @@ gulp.task('static-js', function() {
 gulp.task('dynamic-css', function() {
   return gulp.src(paths.dynamicCss).
   pipe(concat('main-dynamic')).
-  pipe(cssmin()).
+  pipe(cssmin({
+      keepSpecialComments: 1,
+      rebase: false
+    })).
   pipe(rename({
     suffix: '.min.css'
   })).
