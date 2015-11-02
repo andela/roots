@@ -27,7 +27,6 @@ Utils.prototype.sendMail = function(mailOptions, done) {
     }
     if (done)
       done(err);
-    console.log(result);
     return result;
   });
 

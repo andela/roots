@@ -128,8 +128,6 @@ img.bg {
 }
 
 #parallax-div {
-  /*height: 1024px;*/
-  background: url('../public/assets/img/bgimg.jpg');
   height:100%;
   background-attachment: fixed;
 }
@@ -193,6 +191,10 @@ img.bg {
   }
 }
 @media (min-width: 768px) {
+  .details-div {
+    margin-right: 100px;
+    width: 50%;
+  }
   .user-dropdown {
     position: relative;
   }
@@ -707,4 +709,8 @@ label {
 .event-card-name {
   color:black;
   font-size:25px;
+}
+
+#filter-text {
+  background:#2f4f4f;
 }

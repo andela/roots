@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
 
   .controller('eventCtrl', ['$scope', '$stateParams', 'UserService', '$location', 'EventService', 'Upload', '$rootScope', '$state', '$window', '$sce', function($scope, $stateParams, UserService, $location, EventService, Upload, $rootScope, $state, $window, $sce) {
@@ -85,7 +85,7 @@ angular.module('eventApp')
     $scope.details = '';
   };
 
-  $scope.publishEvent = function(publish){
+   $scope.publishEvent = function(publish){
     $scope.event.online = publish;      
   };
 
@@ -100,7 +100,7 @@ angular.module('eventApp')
 
         if(prevImage)
           prevImage.src = reader.result;
-        };
+      };
         if ((file && prevImage) || file) {
           reader.readAsDataURL(file);
         } else {
