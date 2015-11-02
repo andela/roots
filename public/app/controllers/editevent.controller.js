@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
   .controller('editeventCtrl',['$scope','$stateParams', '$location', 'EventService', 'OrganizerService', 'Upload','$rootScope', '$state', '$sce', function ($scope, $stateParams, $location, EventService, OrganizerService, Upload, $rootScope, $state, $sce) {
     
@@ -97,6 +97,7 @@ angular.module('eventApp')
       };
       $scope.details = '';
     };
+
     $scope.cancelEdit = function (){
      
       $state.go('user.eventDetails', {event_id: $stateParams.event_id});

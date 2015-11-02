@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
   .controller('twitterCtrl', ['$scope', 'UserService', '$stateParams', '$location', '$timeout', function($scope, UserService, $stateParams, $location, $timeout) {
 

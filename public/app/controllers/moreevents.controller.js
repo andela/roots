@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
   .controller('moreEventsCtrl', ['$scope', '$rootScope', 'EventService', function($scope, $rootScope, EventService) {
 

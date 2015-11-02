@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
   .controller('profileCtrl', ['$scope', '$rootScope', 'EventService', 'OrganizerService', 'Upload', 'UserService', '$state', '$window', function($scope, $rootScope, EventService, OrganizerService, Upload, UserService, $state, $window) {
 
