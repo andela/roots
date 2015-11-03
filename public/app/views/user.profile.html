@@ -139,29 +139,82 @@
                   <img id="orgImg-preview" class="image-box" src="" alt=""><br>
                   <input ng-click="previewImg('#orgImg-upload','#orgImg-preview')" id="orgImg-upload" accept="image/*" ngf-select="true" ng-model="organizer.newImage" type="file"><br>
                 </div><br>
-              </div>
-
-            <div ng-show="$scope.orgProfileExists">
-              <label>Team Member's</label>
-              <div layout layout-sm="column">
-                <md-input-container class="md-padding" flex>
-                  <label>Name</label>
-                  <input  type="text" >
-                </md-input-container>
-                <md-input-container class="md-padding" flex>
-                  <label>Email</label>
-                  <input  type="email">
-                </md-input-container>
-                <md-input-container class="md-padding" flex>
-                  <label>Role</label>
-                  <input  type="text">
-                </md-input-container>
-              </div>
-            </div>
+              </div>           
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(true)" ng-show="!organizerEditMode && orgProfileExists"> Edit Profile</md-button>
             <md-button class="md-raised" ng-click="organizerButtnSave()" ng-show="organizerEditMode"> Save Changes</md-button>
             <md-button class="md-raised" ng-click="deleteOrganizer()" ng-show="!organizerEditMode && orgProfileExists">Delete Organizer Profile</md-button>
             <md-button class="md-raised" ng-click="switchOrganizerEditMode(false)" ng-show="organizerEditMode && orgProfileExists"> Cancel Changes</md-button>
+
+
+
+             <div ng-show="orgProfileExists" layout-margin>
+              <md-title>Team Member's</md-title>              
+
+              <div layout layout-sm="column" layout-padding ng-repeat="member in staff">
+                <div flex layout="column">
+                  <md-title>Name</md-title>
+                  <span>{{member.firstname | uppercase}} {{member.lastname | uppercase}} </span>
+                </div>
+                <div flex layout="column">
+                  <md-title>Email</md-title>
+                  <span>{{member.email}}</span>
+                </div>
+                <div flex layout="column">
+                  <md-title>Role</md-title>
+                  <input type="text" ng-model="member.role">
+                </div>               
+                <md-button class="md-fab md-mini"  title="Delete team member" ng-click="deleteTeamMember(member.id)">-</md-button>
+                <md-button class="md-fab md-mini" ng-if="member.role"  title="Change member role" ng-click="editMemberRole(member.id, member.role)">✔</md-button>               
+              </div>
+
+              <div layout layout-sm="column" layout-padding>
+                 <div flex layout="column" ng-if="newStaff.firstname">
+                    <md-title>Name</md-title>
+                    <span>{{newStaff.firstname | uppercase}} {{newStaff.lastname | uppercase}} </span>
+                  </div>
+                  <div flex layout="column" ng-if="newStaff.email">
+                    <md-title>Email</md-title>
+                    <span>{{newStaff.email}}</span>
+                  </div>
+
+                  <div flex layout="column" ng-if="newStaff.email">
+                    <md-title>Role<span class="req">*</span></md-title>
+                    <input type="text" ng-model="newStaff.role">
+                  </div>               
+                <md-button class="md-fab md-mini" title="Add team member" ng-if="newStaff.role" ng-click="addTeamMember()">+</md-button>
+              </div>
+              <div layout flex>
+                <md-autocomplete
+                    ng-disabled="false"
+                    md-no-cache="false"
+                    md-selected-item="selectedItem"
+                    md-search-text-change="searchTextChange(searchText)"               
+                    md-search-text="searchText"
+                    md-selected-item-change="selectedUserChange(user)"
+                    md-items="user in querySearch(searchText)"
+                    md-item-text="user.email"
+                    md-min-length="0"
+                    placeholder="Search and add team member"
+                    md-menu-class="autocomplete-custom-template" flex="60">
+                  <md-item-template>
+                    <span class="item-title">
+                      <img ng-src="{{user.profilePic}}" class="profile-icon">
+                      <span> {{user.email}} </span>
+                    </span>
+                    <span class="item-metadata">
+                      <span class="item-metastat">
+                        <strong>{{user.firstname | uppercase}}</strong>
+                      </span>
+                      <span class="item-metastat">
+                        <strong>{{user.lastname | uppercase}}</strong>
+                      </span>
+                    </span>
+                  </md-item-template>
+                </md-autocomplete>
+              </div>
+            </div>
+
+
           </ng-form><br>
         </md-content>
       </md-tab>
