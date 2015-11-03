@@ -306,6 +306,15 @@ angular.module('eventApp')
       }
 
       $scope.userInformation.dobDet = parseDate($scope.userInformation.dateOfBirth);
+
+      if($scope.userInformation.dobDet.indexOf("-") === 1){
+        $scope.userInformation.dobDet = '0' + $scope.userInformation.dobDet;
+      }
+
+       if($scope.userInformation.dobDet.lastIndexOf("-") === 4){
+        $scope.userInformation.dobDet = $scope.userInformation.dobDet.substring(0, 3) + '0' + $scope.userInformation.dobDet.substring(3);
+      }
+
     };
 
     $scope.editEvent = function(eventId) {
