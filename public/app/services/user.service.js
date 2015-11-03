@@ -27,6 +27,10 @@ angular.module('eventApp')
         var token = localStorage.getItem('userToken');
         return $http.get("/api/user?token=" + token);
       },
+      getAllUsers: function() {
+        var token = localStorage.getItem('userToken');
+        return $http.get("/api/users?token=" + token);
+      },
       editProfile: function(user) {
         var token = localStorage.getItem('userToken');
         return $http.put("/api/user?token=" + token, user);        
