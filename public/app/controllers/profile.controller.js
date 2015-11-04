@@ -377,7 +377,7 @@ angular.module('eventApp')
 
     $scope.querySearch = function(searchText) {
 
-      if (!searchText || !searchText === "") {
+      if (!searchText || searchText === "") {
         return $scope.users;
       }
       searchText = angular.lowercase(searchText);
