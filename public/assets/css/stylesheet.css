@@ -195,6 +195,14 @@ img.bg {
     margin-right: 100px;
     width: 50%;
   }
+
+  .task-div {
+    margin: 20px auto;
+    width: 90%;
+    border: 2px solid #2F4F4F;
+    border-radius: 9px;
+    padding: 10px;
+  }
   .user-dropdown {
     position: relative;
   }
@@ -440,8 +448,7 @@ label {
   font-size: 0.8em;
 }
 .req {
-  color: red;
-  font-size: 1.5em;
+  color: red;  
   margin-left: 5px;
 }
 
@@ -720,15 +727,25 @@ label {
   height: 50px;  
 }
 
-.autocomplete-custom-template li {
+.autocomplete-custom-template li, .tasks li {
   border-bottom: 1px solid #ccc;
   height: auto;
   padding-top: 8px;
   padding-bottom: 8px;
   white-space: normal; }
-.autocomplete-custom-template li:last-child {
+.autocomplete-custom-template li:last-child, .tasks li:last-child {
   border-bottom-width: 0; }
 .autocomplete-custom-template .item-title, .autocomplete-custom-template .item-metadata {
   display: block;
   line-height: 2; 
 }
+
+.taskbox {
+  padding-left: 2%;
+  margin-bottom: 20px;
+}
+
+.user-autocomplete {
+  margin-top: 80px;
+}
+

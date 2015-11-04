@@ -53,6 +53,11 @@ angular.module('eventApp',['ui.router','ngMaterial', 'ngMessages', 'ngResource',
       url: '/more-events',
       templateUrl: '../app/views/more.events.view.html',
       controller: 'moreEventsCtrl'
+    })
+     .state('user.eventTasks', {
+      url: '/eventtasks/:event_id',
+      templateUrl: '../app/views/event.task.html',
+      controller: 'eventTaskCtrl'
     });
 
   $urlRouterProvider.otherwise('/landing/home');
