@@ -23,6 +23,9 @@ var volunteerSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  skills: [{
+    type: String
+  }],
   schedules: [{
     description: {
       type: String
