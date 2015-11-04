@@ -228,6 +228,7 @@ TaskController.prototype.editTask = function(req, res) {
                         event_ref: eventId,
                         manager_ref: newTask.manager_ref,
                         description: newTask.description,
+                        completed: newTask.completed,
                         startDate: newTask.startDate,
                         endDate: newTask.endDate
                       }
@@ -469,7 +470,22 @@ TaskController.prototype.getEventTasks = function(req, res) {
         if (err) {
           res.status(500).send(err);
         } else {
-          res.json(tasks1);
+
+          //Populate volunteer_ref property of task object
+          //with matching details from volunteer profile
+          Volunteer.populate(tasks1, {
+            'path': 'volunteers.volunteer_ref'
+          }, function(err, populatedTask) {
+
+            if (err || !populatedTask) {
+              return res.status(422).send({
+                success: false,
+                message: 'Error populating task details!'
+              });
+            } else {
+              res.json(populatedTask);
+            }
+          });
         }
       });
     }

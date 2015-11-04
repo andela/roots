@@ -381,7 +381,7 @@ OrganizerController.prototype.deleteStaff = function(req, res) {
 OrganizerController.prototype.getCurrentProfile = function(req, res) {  
 
   //find organizer by the user reference (user_ref) instead of org_id
-  Organizer.findOne({ user_ref: req.body.decoded._id }, function(err, org) {
+  Organizer.findOne({ user_ref: req.decoded._id }, function(err, org) {
     if (err) {
       return res.status(500).send(err);
     } else if (!org) {

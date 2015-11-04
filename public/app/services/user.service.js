@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
   .factory('UserService', ['$http', '$stateParams', '$location', '$rootScope', 'Upload', 'baseUrl', function($http, $stateParams, $location, $rootScope, Upload, baseUrl) {
 
@@ -26,6 +26,10 @@ angular.module('eventApp')
       getCurrentUser: function() {
         var token = localStorage.getItem('userToken');
         return $http.get("/api/user?token=" + token);
+      },
+      getAllUsers: function() {
+        var token = localStorage.getItem('userToken');
+        return $http.get("/api/users?token=" + token);
       },
       editProfile: function(user) {
         var token = localStorage.getItem('userToken');

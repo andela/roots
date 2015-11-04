@@ -31,12 +31,12 @@
           <br>
           <label>Event Date<span class="req">*</span></label>
           <br>
-          <div layout-sm="column">
+          <div layout-sm="column" layout="row">
             <div layout="column" class="md-padding calendar">
               Start Date: {{ event.startDate | date:'medium' }}
               <br>
               <datetimepicker id="startdate" ng-model="event.startDate"></datetimepicker>
-            </div>
+            </div><br>
             <div layout="column" class="md-padding calendar">
               End Date: {{ event.endDate | date:'medium' }}
               <br>

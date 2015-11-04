@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 angular.module('eventApp')
   .factory('OrganizerService', ['$http', 'Upload', 'baseUrl', function($http, Upload, baseUrl) {
 
@@ -33,9 +33,23 @@ angular.module('eventApp')
       getOrganizer: function(orgId) {
           return $http.get("/api/organizer/" + orgId);
       },
-      getMyProfile: function(orgId) { 
+      getMyProfile: function() { 
           var token = localStorage.getItem('userToken');         
           return $http.get("/api/organizer/?token=" + token);
+      },
+      addTeamMember: function(orgId, param) { 
+          var token = localStorage.getItem('userToken');         
+          return $http.post("/api/organizer/" + orgId + "/team?token=" + token, {manager: param});
+      },
+
+      deleteTeamMember: function(orgId, memberId) { 
+          var token = localStorage.getItem('userToken');         
+          return $http.delete("/api/organizer/" + orgId + "/team/" + memberId + "?token=" + token);
+      },
+
+      editMemberRole: function(orgId, memberId, param) { 
+          var token = localStorage.getItem('userToken');         
+          return $http.put("/api/organizer/" + orgId + "/team/" + memberId + "?token=" + token, param);
       }
     };
   }]);
