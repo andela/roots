@@ -152,33 +152,34 @@
 
               <div layout layout-sm="column" layout-padding ng-repeat="member in staff">
                 <div flex layout="column">
-                  <md-title>Name</md-title>
+                  <md-title><b>Name</b></md-title>
                   <span>{{member.firstname | uppercase}} {{member.lastname | uppercase}} </span>
                 </div>
                 <div flex layout="column">
-                  <md-title>Email</md-title>
+                  <md-title><b>Email</b></md-title>
                   <span>{{member.email}}</span>
                 </div>
                 <div flex layout="column">
-                  <md-title>Role</md-title>
+                  <md-title><b>Role</b></md-title>
                   <input type="text" ng-model="member.role">
                 </div>               
                 <md-button class="md-fab md-mini"  title="Delete team member" ng-click="deleteTeamMember(member.id)">-</md-button>
                 <md-button class="md-fab md-mini" ng-if="member.role"  title="Change member role" ng-click="editMemberRole(member.id, member.role)">✔</md-button>               
               </div>
 
+              <h5>Add New Team Member</h5>
               <div layout layout-sm="column" layout-padding>
                  <div flex layout="column" ng-if="newStaff.firstname">
-                    <md-title>Name</md-title>
+                    <md-title><b>Name</b></md-title>
                     <span>{{newStaff.firstname | uppercase}} {{newStaff.lastname | uppercase}} </span>
                   </div>
                   <div flex layout="column" ng-if="newStaff.email">
-                    <md-title>Email</md-title>
+                    <md-title><b>Email</b></md-title>
                     <span>{{newStaff.email}}</span>
                   </div>
 
                   <div flex layout="column" ng-if="newStaff.email">
-                    <md-title>Role<span class="req">*</span></md-title>
+                    <md-title><b>Role</b><span class="req">*</span></md-title>
                     <input type="text" ng-model="newStaff.role">
                   </div>               
                 <md-button class="md-fab md-mini" title="Add team member" ng-if="newStaff.role" ng-click="addTeamMember()">+</md-button>
