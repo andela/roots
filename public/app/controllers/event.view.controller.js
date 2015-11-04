@@ -19,7 +19,7 @@ angular.module('eventApp')
             $scope.canPublish = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id && !$scope.event.online;
 
             $scope.canEdit = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id;
-            
+            $scope.canManageTasks = $scope.canEdit && $scope.event.user_ref.organizer_ref;
             if (event.user_ref.organizer_ref) {
 
               OrganizerService.getOrganizer(event.user_ref.organizer_ref)
@@ -50,5 +50,12 @@ angular.module('eventApp')
           .success(function(data) {
             $scope.canPublish = false;          
           });
+      };
+
+      $scope.manageTasks = function() {
+        $state.go('user.eventTasks', {
+          event_id: $stateParams.event_id
+        });
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
       };
   }]);
