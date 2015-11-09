@@ -21,5 +21,13 @@ module.exports = function(app) {
     //Delete task
     .delete(userCtrl.verifyToken, taskCtrl.deleteTask);
 
+  router.route('/user/tasks')
+    //Get all tasks managed by a user
+    .get(userCtrl.verifyToken, taskCtrl.getAllManagedTasks);
+
+  router.route('/event/:event_id/user/tasks')
+    //Get all event's tasks managed by a user
+    .get(userCtrl.verifyToken, taskCtrl.getEventManagedTasks);
+
   app.use('/api', router);
 }
