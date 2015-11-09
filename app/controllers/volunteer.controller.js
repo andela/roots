@@ -662,7 +662,7 @@ VolunteerController.prototype.scheduleReminder = function() {
   var scheduleLimit = new Date();
   var now = new Date();
   scheduleLimit.setHours(scheduleLimit.getHours() + 1);
-  
+
   Volunteer.find({
     'schedules.startDate': {
       $lte: scheduleLimit,
@@ -678,14 +678,14 @@ VolunteerController.prototype.scheduleReminder = function() {
       }
     }
   }, function(err, volunteers) {
-    
+
     if (!err && volunteers.length) {
       User.populate(volunteers, {
         'path': 'user_ref'
       }, function(err, populatedVolunteers) {
 
         if (!err) {
-          
+
           //Get list of volunteers to send remiders too, about one hour
           //before schedule
 
@@ -720,7 +720,7 @@ VolunteerController.prototype.scheduleReminder = function() {
                     html: 'Hello,\n\n' +
                       'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.'
                   };
-                  
+
                   utils.sendMail(mailOptions);
                   resolve(curIndex);
                 }
@@ -744,6 +744,131 @@ VolunteerController.prototype.scheduleReminder = function() {
           }
         }
 
+      });
+    }
+  });
+}
+
+//Get all task schedules for a user
+VolunteerController.prototype.getVolunteeredTasks = function(req, res) {
+
+  var userId = req.decoded._id;
+
+  Volunteer.find({
+    user_ref: userId
+  }, function(err, voluntr) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!voluntr) {
+
+      return res.json([]);
+    } else {
+
+      Event.populate(voluntr, {
+        path: 'event_ref'
+      }, function(err1, voluntr1) {
+
+        if (err1) {
+          res.status(500).send(err1);
+        } else {
+
+          Task.populate(voluntr1, {
+            path: 'task_ref'
+          }, function(err1, voluntr2) {
+
+            if (err1) {
+              res.status(500).send(err1);
+            } else {
+              return res.json(voluntr2);
+            }
+          });
+        }
+      });
+    }
+  });
+}
+
+//Get a volunteer's task's schedules
+VolunteerController.prototype.getVolunteeredTask = function(req, res) {
+
+  var volunteerId = req.params.volunteer_id;
+
+  Volunteer.findById(volunteerId, function(err, voluntr) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!voluntr) {
+
+      return res.json([]);
+    } else {
+
+      Event.populate(voluntr, {
+        path: 'event_ref'
+      }, function(err1, voluntr1) {
+
+        if (err) {
+          res.status(500).send(err);
+        } else {
+
+          Task.populate(voluntr1, {
+            path: 'task_ref'
+          }, function(err1, voluntr2) {
+
+            if (err1) {
+              return res.status(500).send(err1);
+            } else {
+              return res.json(voluntr2);
+            }
+          });
+
+        }
+      });
+    }
+  });
+}
+
+//Get all volunteer's tasks' schedules for an event
+VolunteerController.prototype.getVolunteeredTask = function(req, res) {
+
+  var eventId = req.params.event_id;
+  var userId = req.decoded._id;
+
+  Volunteer.find({
+    user_ref: userId,
+    event_ref: eventId,
+    added: true
+  }, function(err, voluntrs) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!voluntrs) {
+
+      return res.json([]);
+    } else {
+
+      Event.populate(voluntrs, {
+        path: 'event_ref'
+      }, function(err1, voluntrs1) {
+
+        if (err1) {
+          res.status(500).send(err1);
+        } else {
+
+          Task.populate(voluntrs1, {
+            path: 'task_ref'
+          }, function(err1, voluntrs2) {
+
+            if (err1) {
+              return res.status(500).send(err1);
+            } else {
+              return res.json(voluntr2);
+            }
+          });
+        }
       });
     }
   });
