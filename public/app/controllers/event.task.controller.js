@@ -17,7 +17,7 @@ angular.module('eventApp')
       } else {
         EventService.getEvent($stateParams.event_id)
           .success(function(event) {
-            $scope.event = event;
+            $scope.event = event.details;
 
 
             TaskService.getAllTasks($stateParams.event_id).success(function(tasks) {

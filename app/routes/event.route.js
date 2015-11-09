@@ -13,7 +13,7 @@ module.exports = function(app) {
   router.route('/events/published')
     //Get user's list of your published events
     .get(userCtrl.verifyToken, evtCtrl.getMyEvents);
-    
+
   router.route('/event')
     //Create new event
     .post(userCtrl.verifyToken, utils.imageProcessing, evtCtrl.createEvent);
@@ -24,7 +24,7 @@ module.exports = function(app) {
 
   router.route('/event/:event_id')
     //Get an event's details
-    .get(evtCtrl.getEvent)
+    .get(userCtrl.getUserFromToken, evtCtrl.getEvent)
     //Edit an event details
     .put(userCtrl.verifyToken, utils.imageProcessing, evtCtrl.editEventDetails)
     //Delete an event

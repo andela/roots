@@ -6,26 +6,28 @@ angular.module('eventApp')
 
         EventService.getEvent($stateParams.event_id)
           .success(function(event){
-            $scope.event = event;
+            $scope.event = event.details;           
+            $scope.role = event.role;
 
             $scope.event.description = $sce.trustAsHtml($scope.event.description);
 
-            $('.md-warn').css('background-color', event.eventTheme.headerColor);
-            $('.md-warn').css('color', event.eventTheme.fontColor);
-            $('.values').css('border-color', event.eventTheme.borderColor);
-            $('.values').css('background-color', event.eventTheme.contentColor);
-            $('.values').css('color', event.eventTheme.fontColor);
+            $('.md-warn').css('background-color', $scope.event.eventTheme.headerColor);
+            $('.md-warn').css('color', $scope.event.eventTheme.fontColor);
+            $('.values').css('border-color', $scope.event.eventTheme.borderColor);
+            $('.values').css('background-color', $scope.event.eventTheme.contentColor);
+            $('.values').css('color', $scope.event.eventTheme.fontColor);
 
-            $scope.canPublish = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id && !$scope.event.online;
+            $scope.canPublish = ($scope.role === "owner") && !$scope.event.online;
 
-            $scope.canEdit = $rootScope.loggedIn && $rootScope.userId === $scope.event.user_ref._id;
-            $scope.canManageTasks = $scope.canEdit && $scope.event.user_ref.organizer_ref;
-            if (event.user_ref.organizer_ref) {
+            $scope.canEdit = $scope.role === "owner";
 
-              OrganizerService.getOrganizer(event.user_ref.organizer_ref)
+            $scope.canManageTasks = $scope.role === "owner" && $scope.event.user_ref.organizer_ref;
+            if ($scope.event.user_ref.organizer_ref) {
+
+              OrganizerService.getOrganizer($scope.event.user_ref.organizer_ref)
                 .success(function(organizer) {                
                   $scope.organizer = organizer;
-                  $scope.organizer.phoneNumber1 = event.user_ref.phoneNumber1;
+                  $scope.organizer.phoneNumber1 = $scope.event.user_ref.phoneNumber1;
                 });
             }
           });

@@ -309,26 +309,26 @@ TaskController.prototype.getTask = function(req, res) {
         message: 'Invalid Task or Event id'
       });
     } else {
-      //Populate manager_ref property of task object
-      //with matching details from user profile
-      User.populate(task, {
-        'path': 'manager_ref'
-      }, function(err, userPopulatedTask) {
+      //Populate event_ref property of task object
+      //with matching details from event object
+      Event.populate(task, {
+        'path': 'event_ref'
+      }, function(err, eventPopulatedTask) {
 
-        if (err || !userPopulatedTask) {
-          return ({
+        if (err || !eventPopulatedTask) {
+          return res.status(422).send({
             success: false,
             message: 'Error populating task details!'
           });
         } else {
           //Populate volunteer_ref property of task object
           //with matching details from volunteer profile
-          Volunteer.populate(userPopulatedTask, {
+          Volunteer.populate(eventPopulatedTask, {
             'path': 'volunteers.volunteer_ref'
           }, function(err, populatedTask) {
 
             if (err || !populatedTask) {
-              return ({
+              return res.status(422).send({
                 success: false,
                 message: 'Error populating task details!'
               });
@@ -336,11 +336,11 @@ TaskController.prototype.getTask = function(req, res) {
               //Populate manager_ref property of task object
               //with matching details from user profile
               User.populate(populatedTask, {
-                'path': 'volunteers.volunteer_ref.user_ref'
+                'path': 'manager_ref volunteers.volunteer_ref.user_ref'
               }, function(err, taskDetailed) {
 
                 if (err || !taskDetailed) {
-                  return ({
+                  return res.status(422).send({
                     success: false,
                     message: 'Error populating task details!'
                   });
@@ -464,7 +464,7 @@ TaskController.prototype.getEventTasks = function(req, res) {
     } else {
 
       User.populate(tasks, {
-        path: 'manager_ref'
+        path: 'manager_ref volunteers.user_ref'
       }, function(err1, tasks1) {
 
         if (err) {
@@ -486,6 +486,73 @@ TaskController.prototype.getEventTasks = function(req, res) {
               res.json(populatedTask);
             }
           });
+        }
+      });
+    }
+  });
+}
+
+
+//Get all tasks managed by a user
+TaskController.prototype.getAllManagedTasks = function(req, res) {
+
+  var userId = req.decoded._id;
+
+  Task.find({
+    manager_ref: userId
+  }, function(err, tasks) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!tasks) {
+
+      return res.json([]);
+    } else {
+
+      Event.populate(tasks, {
+        path: 'event_ref'
+      }, function(err1, tasks1) {
+
+        if (err1) {
+          res.status(500).send(err1);
+        } else {
+
+          return res.json(tasks1);
+        }
+      });
+    }
+  });
+}
+
+//Get all event tasks managed by a user
+TaskController.prototype.getEventManagedTasks = function(req, res) {
+
+  var userId = req.decoded._id;
+  var eventId = req.params.event_id;
+
+  Task.find({
+    manager_ref: userId,
+    event_ref: eventId
+  }, function(err, tasks) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!tasks) {
+
+      return res.json([]);
+    } else {
+
+      Event.populate(tasks, {
+        path: 'event_ref'
+      }, function(err1, tasks1) {
+
+        if (err1) {
+          res.status(500).send(err1);
+        } else {
+
+          return res.json(tasks1);
         }
       });
     }

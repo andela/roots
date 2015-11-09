@@ -30,16 +30,13 @@ angular.module('eventApp')
           
           var token = localStorage.getItem('userToken');
           return $http.delete("/api/event/"+ evID + "?token=" + token);
-      },
-      editEventTasks: function(data, param) {
-          var token = localStorage.getItem('userToken');
-          return $http.put("/api/event/:event_id/tasks" + token, data, param);
-      },
+      },      
       getAllEvents: function() {
           return $http.get("/api/events");
       },
       getEvent: function(eventId) {
-          return $http.get("/api/event/" + eventId);
+          var token = localStorage.getItem('userToken');
+          return $http.get("/api/event/" + eventId + "?token=" + token);
       },
       getMyPublishedEvents: function() {
           var token = localStorage.getItem('userToken');                 
