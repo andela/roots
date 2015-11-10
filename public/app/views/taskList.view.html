@@ -1,8 +1,13 @@
 <md-dialog>
   <md-dialog-content>
- 		<div>
-<p>siuhdojevwoij</p>
-  <p> {{tasks[0].description}}</p>
-</div>
+  	<h5>SELECT A DEPARTMENT</h5>
+ 		<md-radio-group ng-model="volunteer.id">
+ 		  <md-radio-button ng-repeat="task in tasks" ng-value="task._id">
+ 		    <strong>{{task.description}}</strong>
+ 		  </md-radio-button>
+ 		</md-radio-group>
+ 		<strong>You can add your skills here:</strong>
+    <textarea ng-model="volunteer.skills"></textarea>
+    <md-button class="md-raised" ng-click="volunteerForTask(volunteer)">Volunteer</md-button>
   </md-dialog-content>
 </md-dialog>

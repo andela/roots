@@ -3,9 +3,9 @@ angular.module('eventApp')
   .factory('VolunteerService', ['$http', '$rootScope', function($http, $rootScope) {
     return {
 
-      volForTask: function(taskId) {
+      volForTask: function(volunteer) {
         var token = localStorage.getItem('userToken');
-        return $http.post("/api/task/"+ taskId +"/volunteers?token=" + token);
+        return $http.post("/api/task/"+ volunteer.id +"/volunteers?token=" + token, volunteer);
       },
       getAllVolsForTask: function(taskId) {
         var token = localStorage.getItem('userToken');

@@ -1,6 +1,6 @@
 "use strict";
 angular.module('eventApp')
-  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', 'VolunteerService', '$mdDialog', 'TaskService',function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce, VolunteerService, $mdDialog, TaskService) {
+  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', 'VolunteerService', '$mdDialog', 'TaskService', '$mdToast', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce, VolunteerService, $mdDialog, TaskService, $mdToast) {
 
       $scope.services = function(){
 
@@ -55,7 +55,6 @@ angular.module('eventApp')
       };
       
       $scope.showTasks = function(){
-        console.log('here');
         $mdDialog.show({
           clickOutsideToClose: true,
           controller: displayTasks,
@@ -66,16 +65,25 @@ angular.module('eventApp')
         });
       };
 
-      function displayTasks($scope){
-        console.log("here nko");
+      function displayTasks($scope, $mdDialog, $mdToast){
         TaskService.getAllTasks($stateParams.event_id).then(function(tasks){
           if (tasks) {
-            console.log("task", tasks)
             $scope.tasks = tasks.data;
           }
-          
         });
-      };
+
+        $scope.volunteerForTask = function(volunteer) {
+          VolunteerService.volForTask(volunteer);
+          $mdToast.show(
+            $mdToast.simple()
+              .content('You have successfully volunteered!')
+              .hideDelay(4000)
+              .position("bottom right")
+          );
+          $mdDialog.hide();
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        };
+      }
 
       $scope.manageTasks = function() {
         $state.go('user.eventTasks', {
