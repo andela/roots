@@ -21,7 +21,7 @@ EventController.prototype.createEvent = function(req, res) {
       message: 'Check parameters!'
     });
   }
-  
+
   var userId = req.decoded._id;
   var eventObj = req.body.formDataObject;
 
@@ -42,9 +42,9 @@ EventController.prototype.createEvent = function(req, res) {
       return res.status(500).send(err);
     }
 
-    var origin = req.get('origin') || req.get('host'); 
+    var origin = req.get('origin') || req.get('host');
     var eventUrl = origin + "#/user/eventdetails/" + newEvent._id;
-    
+
     //Send mail to event manager
     var mailOptions = {
       to: req.decoded.email,
@@ -53,7 +53,7 @@ EventController.prototype.createEvent = function(req, res) {
       text: newEvent.name + ' created',
       html: '<div style="color: #3b5160; font: Helvetica, Arial, sans-serif; font-weight: normal;"> Hello,<br/>' +
         'You just created <b>' + newEvent.name + '</b> event. ' +
-        'You can view the event at <a href="'+ eventUrl + '">' +  newEvent.name + '</a><br/>' +
+        'You can view the event at <a href="' + eventUrl + '">' + newEvent.name + '</a><br/>' +
         'If the address does not appear as link, please copy this url to your browser address bar ' + eventUrl + '</div>'
     };
 
@@ -72,7 +72,7 @@ EventController.prototype.editEventDetails = function(req, res) {
       message: 'Check parameters!'
     });
   }
-  
+
   var eventObj = req.body.formDataObject;
   var eventId = req.params.event_id;
 
@@ -101,7 +101,7 @@ EventController.prototype.editEventDetails = function(req, res) {
 
       //Prevent imageUrl field being assigned string 'null'
       eventObj.imageUrl = eventObj.imageUrl || "";
-      
+
       Event.findByIdAndUpdate(eventId, {
         $set: {
           name: eventObj.name,
@@ -349,10 +349,60 @@ EventController.prototype.getEvent = function(req, res) {
         if (err) {
           res.status(500).send(err);
         } else {
-          
-          res.json(evt1);
-        }
+          if (req.user) {
+            //Check if user is the event creator
+            if (req.user._id.toString() === evt1.user_ref._id.toString()) {
 
+              res.json({
+                details: evt1,
+                role: 'owner'
+              });
+
+            } else {
+              //Check if user is one of the event task managers
+              Task.findOne({
+                event_ref: eventId,
+                manager_ref: req.user._id
+              }, function(err, task) {
+
+                if (task) {
+
+                  res.json({
+                    details: evt1,
+                    role: 'manager'
+                  });
+                } else {
+                  //Check if user is a vounteer
+                  Task.findOne({
+                    event_ref: eventId,
+                    'volunteers.user_ref': req.user._id
+                  }, function(err, task) {
+
+                    if (task) {
+
+                      res.json({
+                        details: evt1,
+                        role: 'volunteer'
+                      });
+                    } else {
+
+                      res.json({
+                        details: evt1,
+                        role: 'user'
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          } else {
+
+            res.json({
+              details: evt1,
+              role: 'guest'
+            });
+          }
+        }
       });
     }
   });

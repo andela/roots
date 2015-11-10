@@ -10,23 +10,24 @@ angular.module('eventApp')
 
     EventService.getEvent($stateParams.event_id)
       .success(function(event){
-        event.startDate = parseDate(event.startDate);
-        event.endDate = parseDate(event.endDate);
-        $scope.event = event;
 
-        $('.md-warn').css('border-color', event.eventTheme.borderColor);
-        $('.md-warn').css('background-color', event.eventTheme.headerColor);
-        $('.md-warn').css('color', event.eventTheme.fontColor);
-        $('.values').css('border-color', event.eventTheme.borderColor);
-        $('.values').css('background-color', event.eventTheme.contentColor);
-        $('.values').css('color', event.eventTheme.fontColor);
+        event.details.startDate = parseDate(event.details.startDate);
+        event.details.endDate = parseDate(event.details.endDate);
+        $scope.event = event.details;
 
-        if (event.user_ref.organizer_ref) {
+        $('.md-warn').css('border-color', $scope.event.eventTheme.borderColor);
+        $('.md-warn').css('background-color', $scope.event.eventTheme.headerColor);
+        $('.md-warn').css('color', $scope.event.eventTheme.fontColor);
+        $('.values').css('border-color', $scope.event.eventTheme.borderColor);
+        $('.values').css('background-color', $scope.event.eventTheme.contentColor);
+        $('.values').css('color', $scope.event.eventTheme.fontColor);
 
-          OrganizerService.getOrganizer(event.user_ref.organizer_ref)
+        if ($scope.event.user_ref.organizer_ref) {
+
+          OrganizerService.getOrganizer($scope.event.user_ref.organizer_ref)
             .success(function(organizer) {                
               $scope.organizer = organizer;
-              $scope.organizer.phoneNumber1 = event.user_ref.phoneNumber1;
+              $scope.organizer.phoneNumber1 = $scope.event.user_ref.phoneNumber1;
             });
         }
 

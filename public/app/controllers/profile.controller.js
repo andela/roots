@@ -15,7 +15,6 @@ angular.module('eventApp')
 
       $scope.tempUserProfile;
       $scope.tempOrgProfile;
-      $scope.organizer = {};
       $scope.staff = [];
       $scope.searchText = "";
       $scope.users = [];

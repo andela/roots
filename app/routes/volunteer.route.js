@@ -33,5 +33,21 @@
      //Get list of volunteers added to an event
      .get(userCtrl.verifyToken, volunteerCtrl.getEventVolunteers);
 
+   router.route('/user/volunteers')
+     //Get all task schedules for a user
+     .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTasks);
+
+   router.route('/tasks/volunteers/volunteer_id')
+     //Get a volunteer's task's schedules
+     .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTask);
+
+   router.route('/tasks/volunteers/volunteer_id')
+     //Get a volunteer's task's schedules
+     .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTask);
+
+     router.route('/event/:event_id/user/volunteers')
+     //Get all volunteer's tasks' schedules for an event
+     .get(userCtrl.verifyToken, volunteerCtrl.getEventVolunteers);
+
    app.use('/api', router);
  }
