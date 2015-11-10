@@ -41,13 +41,9 @@
      //Get a volunteer's task's schedules
      .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTask);
 
-   router.route('/tasks/volunteers/volunteer_id')
-     //Get a volunteer's task's schedules
-     .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTask);
-
      router.route('/event/:event_id/user/volunteers')
      //Get all volunteer's tasks' schedules for an event
-     .get(userCtrl.verifyToken, volunteerCtrl.getEventVolunteers);
+     .get(userCtrl.verifyToken, volunteerCtrl.getEventVolunteersTaskSchedules);
 
    app.use('/api', router);
  }

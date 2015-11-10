@@ -1,6 +1,6 @@
 "use strict";
 angular.module('eventApp')
-  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce) {
+  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', 'VolunteerService', '$mdDialog', 'TaskService',function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce, VolunteerService, $mdDialog, TaskService) {
 
       $scope.services = function(){
 
@@ -52,6 +52,29 @@ angular.module('eventApp')
           .success(function(data) {
             $scope.canPublish = false;          
           });
+      };
+      
+      $scope.showTasks = function(){
+        console.log('here');
+        $mdDialog.show({
+          clickOutsideToClose: true,
+          controller: displayTasks,
+          locals: {
+            view: 'taskList'
+          },
+          templateUrl: "app/views/taskList.view.html"
+        });
+      };
+
+      function displayTasks($scope){
+        console.log("here nko");
+        TaskService.getAllTasks($stateParams.event_id).then(function(tasks){
+          if (tasks) {
+            console.log("task", tasks)
+            $scope.tasks = tasks.data;
+          }
+          
+        });
       };
 
       $scope.manageTasks = function() {

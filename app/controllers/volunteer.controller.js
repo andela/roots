@@ -831,7 +831,7 @@ VolunteerController.prototype.getVolunteeredTask = function(req, res) {
 }
 
 //Get all volunteer's tasks' schedules for an event
-VolunteerController.prototype.getVolunteeredTask = function(req, res) {
+VolunteerController.prototype.getEventVolunteersTaskSchedules = function(req, res) {
 
   var eventId = req.params.event_id;
   var userId = req.decoded._id;
