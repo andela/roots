@@ -220,8 +220,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                       Task.findByIdAndUpdate(taskId, {
                         $push: {
                           volunteers: {
-                            volunteer_ref: volunteerId,
-                            user_ref: userId
+                            volunteer_ref: volunteerId
                           }
                         }
                       }, {
@@ -796,32 +795,44 @@ VolunteerController.prototype.getVolunteeredTask = function(req, res) {
 
   var volunteerId = req.params.volunteer_id;
 
-  Volunteer.findById(volunteerId, function(err, voluntr) {
+  Volunteer.findById(volunteerId, function(err, volunteer) {
 
     if (err) {
 
       return res.status(500).send(err);
-    } else if (!voluntr) {
+    } else if (!volunteer) {
 
       return res.json([]);
     } else {
 
-      Event.populate(voluntr, {
+      Event.populate(volunteer, {
         path: 'event_ref'
-      }, function(err1, voluntr1) {
+      }, function(err1, eventPopulatedVolunteer) {
 
         if (err) {
           res.status(500).send(err);
         } else {
 
-          Task.populate(voluntr1, {
+          Task.populate(eventPopulatedVolunteer, {
             path: 'task_ref'
-          }, function(err1, voluntr2) {
+          }, function(err1, taskPopulatedVolunteer) {
 
             if (err1) {
               return res.status(500).send(err1);
             } else {
-              return res.json(voluntr2);
+
+
+              User.populate(taskPopulatedVolunteer, {
+                path: 'user_ref'
+              }, function(err1, userPopulatedVolunteer) {
+
+                if (err1) {
+                  return res.status(500).send(err1);
+                } else {
+
+                  return res.json(userPopulatedVolunteer);
+                }
+              });
             }
           });
 
@@ -874,5 +885,48 @@ VolunteerController.prototype.getEventVolunteersTaskSchedules = function(req, re
     }
   });
 };
+
+//Get all event volunteers that are yet to be added to a task
+VolunteerController.prototype.getPendingVolunteers = function(req, res) {
+
+  var eventId = req.params.event_id;
+
+  Volunteer.find({
+    event_ref: eventId,
+    added: false
+  }, function(err, volunteers) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!volunteers) {
+
+      return res.json([]);
+    } else {
+
+      Task.populate(eventPopulatedVolunteers, {
+        path: 'task_ref'
+      }, function(err1, taskPopulatedVolunteers) {
+
+        if (err1) {
+          return res.status(500).send(err1);
+        } else {
+
+          User.populate(taskPopulatedVolunteers, {
+            path: 'user_ref'
+          }, function(err1, userPopulatedVolunteers) {
+
+            if (err1) {
+              return res.status(500).send(err1);
+            } else {
+
+              return res.json(userPopulatedVolunteers);
+            }
+          });
+        }
+      });
+    }
+  });
+}
 
 module.exports = VolunteerController;
