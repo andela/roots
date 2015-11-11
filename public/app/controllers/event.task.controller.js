@@ -90,16 +90,15 @@ angular.module('eventApp')
                   });
                 });
 
-                $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
-              });
           } else if ($scope.isVolunteer()) {
             $scope.volunteers = [];
             TaskService.getAllMyEventVolunteers($stateParams.event_id).success(function(volunteers) {
 
               $scope.volunteers = volunteers;
-            })
+            });
 
           }
+        });
       };
     };
 
