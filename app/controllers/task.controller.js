@@ -463,27 +463,31 @@ TaskController.prototype.getEventTasks = function(req, res) {
       });
     } else {
 
-      User.populate(tasks, {
-        path: 'manager_ref volunteers.user_ref'
-      }, function(err1, tasks1) {
+      //Populate volunteer_ref property of task object
+      //with matching details from volunteer profile
+      Volunteer.populate(tasks, {
+        'path': 'volunteers.volunteer_ref'
+      }, function(err, populatedTask) {
 
-        if (err) {
-          res.status(500).send(err);
+        if (err || !populatedTask) {
+          return res.status(422).send({
+            success: false,
+            message: 'Error populating task details!'
+          });
         } else {
+          //Populate manager_ref property of task object
+          //with matching details from user profile
+          User.populate(populatedTask, {
+            'path': 'manager_ref volunteers.volunteer_ref.user_ref'
+          }, function(err, taskDetailed) {
 
-          //Populate volunteer_ref property of task object
-          //with matching details from volunteer profile
-          Volunteer.populate(tasks1, {
-            'path': 'volunteers.volunteer_ref'
-          }, function(err, populatedTask) {
-
-            if (err || !populatedTask) {
+            if (err || !taskDetailed) {
               return res.status(422).send({
                 success: false,
                 message: 'Error populating task details!'
               });
             } else {
-              res.json(populatedTask);
+              res.json(taskDetailed);
             }
           });
         }
@@ -546,13 +550,41 @@ TaskController.prototype.getEventManagedTasks = function(req, res) {
 
       Event.populate(tasks, {
         path: 'event_ref'
-      }, function(err1, tasks1) {
+      }, function(err1, eventPopulatedTasks) {
 
         if (err1) {
           res.status(500).send(err1);
         } else {
 
-          return res.json(tasks1);
+          //Populate volunteer_ref property of task object
+          //with matching details from volunteer profile
+          Volunteer.populate(eventPopulatedTasks, {
+            'path': 'volunteers.volunteer_ref'
+          }, function(err, populatedTasks) {
+
+            if (err || !populatedTasks) {
+              return res.status(422).send({
+                success: false,
+                message: 'Error populating task details!'
+              });
+            } else {
+              //Populate manager_ref property of task object
+              //with matching details from user profile
+              User.populate(populatedTasks, {
+                'path': 'manager_ref volunteers.volunteer_ref.user_ref'
+              }, function(err, detailedTasks) {
+
+                if (err || !detailedTasks) {
+                  return res.status(422).send({
+                    success: false,
+                    message: 'Error populating task details!'
+                  });
+                } else {
+                  res.json(detailedTasks);
+                }
+              });
+            }
+          });
         }
       });
     }
