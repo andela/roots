@@ -1,6 +1,6 @@
 "use strict";
 angular.module('eventApp')
-  .controller('profileCtrl', ['$scope', '$rootScope', 'EventService', 'OrganizerService', 'Upload', 'UserService', 'TaskService', '$state', '$window', function($scope, $rootScope, EventService, OrganizerService, Upload, UserService, TaskService, $state, $window) {
+  .controller('profileCtrl', ['$scope', '$rootScope', 'EventService', 'OrganizerService', 'Upload', 'UserService', 'TaskService', 'VolunteerService', '$state', '$window', function($scope, $rootScope, EventService, OrganizerService, Upload, UserService, TaskService, VolunteerService, $state, $window) {
 
 
     if (!localStorage.getItem('userToken')) {
@@ -12,6 +12,7 @@ angular.module('eventApp')
       $scope.userEditMode = false;
       $scope.organizerEditMode = true;
       $scope.orgProfileExists = false;
+      $scope.organizer = {};
 
       $scope.staff = [];
       $scope.searchText = "";
@@ -35,32 +36,34 @@ angular.module('eventApp')
           $scope.userInformation.profilePic = "../../assets/img/icons/default-avatar.png";
         }
         $scope.syncGenderDateDet();
+
+        //Retrieve organizer staff members
+        if ($scope.orgProfileExists) {
+          OrganizerService.getMyProfile().success(function(res) {
+
+            var filtered;            
+
+            $scope.staff = res.staff.map(function(member) {
+              filtered = {};
+              filtered.id = member._id;
+              filtered.managerId = member.manager_ref._id;
+              filtered.firstname = member.manager_ref.firstname;
+              filtered.lastname = member.manager_ref.lastname;
+              filtered.email = member.manager_ref.email;
+              filtered.role = member.role;
+              return filtered;
+            });
+
+          }).error(function(err, status) {
+            processError(err, status);
+          });
+        }
       }).error(function(err, status) {
         processError(err, status);
       });
 
 
-      //Retrieve organizer staff members
-      if ($scope.organizer) {
-        OrganizerService.getMyProfile().success(function(res) {
 
-          var filtered;
-
-          $scope.staff = res.staff.map(function(member) {
-            filtered = {};
-            filtered.id = member._id;
-            filtered.managerId = member.manager_ref._id;
-            filtered.firstname = member.manager_ref.firstname;
-            filtered.lastname = member.manager_ref.lastname;
-            filtered.email = member.manager_ref.email;
-            filtered.role = member.role;
-            return filtered;
-          });
-
-        }).error(function(err, status) {
-          processError(err, status);
-        });
-      }
 
       UserService.getAllUsers().success(function(res) {
 
@@ -98,7 +101,7 @@ angular.module('eventApp')
         processError(err, status);
       });
 
-      TaskService.getVolunteeredTasks().success(function(res) {
+      VolunteerService.getVolunteeredTasks().success(function(res) {
         $scope.volunteeredTasks = res;
 
       }).error(function(err, status) {

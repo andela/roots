@@ -271,8 +271,8 @@
                   <md-card class="mini-event-cards">
                     <img ng-src="{{task.event_ref.imageUrl}}" width="300px" height="300px">
                     <md-card-content>
-                      Event name: <h2 class="md-title"><strong class="event-card-name">{{task.event_ref.name}}</strong></h2>
-                      Department: <h2 class="md-title"><strong class="event-card-name">{{task.description}}</strong></h2>
+                      <strong>Event name</strong><p>{{task.event_ref.name}}</p>
+                      <strong>Department</strong><p>{{task.description}}</p>
                     </md-card-content>
                     <div class="md-actions" layout="row" layout-align="end center">
                       <md-button ng-click="viewTasks(task.event_ref._id)">View...</md-button>
@@ -296,8 +296,8 @@
                 <md-card class="mini-event-cards">
                   <img ng-src="{{volunteer.event_ref.imageUrl}}" width="300px" height="300px">
                   <md-card-content>
-                    Event name: <h2 class="md-title"><strong class="event-card-name">{{volunteer.event_ref.name}}</strong></h2>
-                    Department: <h2 class="md-title"><strong class="event-card-name">{{volunteer.task_ref.description}}</strong></h2>
+                    <strong>Event name</strong><p>{{volunteer.event_ref.name}}</p>
+                    <strong>Department</strong><p>{{volunteer.task_ref.description}}</p>
                   </md-card-content>
                   <div class="md-actions" layout="row" layout-align="end center" ng-if"volunteer.added">
                     <md-button ng-click="viewTasks(volunteer.event_ref._id)">View...</md-button>
