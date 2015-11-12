@@ -69,15 +69,22 @@ angular.module('eventApp')
         });
 
         $scope.volunteerForTask = function(volunteer) {
-          VolunteerService.volForTask(volunteer);
-          $mdToast.show(
+          
+          VolunteerService.volForTask(volunteer).success(function(res){
+
+            $mdToast.show(
             $mdToast.simple()
               .content('You have successfully volunteered!')
               .hideDelay(4000)
               .position("bottom right")
-          );
-          $mdDialog.hide();
-          document.body.scrollTop = document.documentElement.scrollTop = 0;
+            );
+            $mdDialog.hide();
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+          }).error(function(err, status){
+
+            processError(err, status);
+          });
+          
         };
       }
 
@@ -114,4 +121,29 @@ angular.module('eventApp')
       });
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     };
+
+    function processError(err, status) {
+
+      if (Number(status) === 422 || Number(status) === 401 || Number(status) === 403) {        
+
+        $mdToast.show(
+          $mdToast.simple()
+            .content(err.message)
+            .hideDelay(4000)
+            .position("bottom right")
+          );
+          $mdDialog.hide();
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+      } else {
+
+         $mdToast.show(
+          $mdToast.simple()
+            .content("An error just occured, please try again!")
+            .hideDelay(4000)
+            .position("bottom right")
+          );
+          $mdDialog.hide();
+          document.body.scrollTop = document.documentElement.scrollTop = 0;       
+      }
+    }
   }]);
