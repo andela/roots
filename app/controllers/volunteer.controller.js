@@ -877,7 +877,7 @@ VolunteerController.prototype.getEventVolunteersTaskSchedules = function(req, re
             if (err1) {
               return res.status(500).send(err1);
             } else {
-              return res.json(voluntr2);
+              return res.json(voluntrs2);
             }
           });
         }
@@ -889,10 +889,10 @@ VolunteerController.prototype.getEventVolunteersTaskSchedules = function(req, re
 //Get all event volunteers that are yet to be added to a task
 VolunteerController.prototype.getPendingVolunteers = function(req, res) {
 
-  var eventId = req.params.event_id;
+  var taskId = req.params.task_id;
 
   Volunteer.find({
-    event_ref: eventId,
+    task_ref: taskId,
     added: false
   }, function(err, volunteers) {
 
@@ -904,7 +904,7 @@ VolunteerController.prototype.getPendingVolunteers = function(req, res) {
       return res.json([]);
     } else {
 
-      Task.populate(eventPopulatedVolunteers, {
+      Task.populate(volunteers, {
         path: 'task_ref'
       }, function(err1, taskPopulatedVolunteers) {
 
