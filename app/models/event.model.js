@@ -65,12 +65,6 @@ var eventSchema = new mongoose.Schema({
     message: {
       type: String
     }
-  }],
-  tasks: [{
-    task_ref: {
-      type: String,
-      ref: 'Task'
-    }
   }]
 },{
   versionKey: false

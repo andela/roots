@@ -1,4 +1,4 @@
-<div id="preview" class="switch-container" data-ng-init="services()">
+<div id="preview" class="switch-container" ng-controller="eventViewCtrl" data-ng-init="services()">
   <div layout="column">
     <md-toolbar md-scroll-shrink id="contentMainDiv">
       <img ng-src="{{event.imageUrl}}" height='500px' width='100%' />
@@ -74,8 +74,7 @@
     <md-button class="md-raised" type="submit" ng-click="manageTasks();" ng-show="canManageTasks">Manage event tasks</md-button>
   </section>
   <div class="md-toolbar-tools centre" layout-align="center">
+    <md-button class="md-raised" ng-click="showTasks();">Volunteer</md-button>
     <md-button class="md-raised" ui-sref="user.moreEvents">More Events...</md-button>
   </div>
-</div>
-</div>
 </div>

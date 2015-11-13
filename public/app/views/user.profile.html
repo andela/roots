@@ -160,7 +160,7 @@
                   <span>{{member.email}}</span>
                 </div>
                 <div flex layout="column">
-                  <md-title><b>Role</b></md-title>
+                  <md-title><b>Department</b></md-title>
                   <input type="text" ng-model="member.role">
                 </div>               
                 <md-button class="md-fab md-mini"  title="Delete team member" ng-click="deleteTeamMember(member.id)">-</md-button>
@@ -179,7 +179,7 @@
                   </div>
 
                   <div flex layout="column" ng-if="newStaff.email">
-                    <md-title><b>Role</b><span class="req">*</span></md-title>
+                    <md-title><b>Department</b><span class="req">*</span></md-title>
                     <input type="text" ng-model="newStaff.role">
                   </div>               
                 <md-button class="md-fab md-mini" title="Add team member" ng-if="newStaff.role" ng-click="addTeamMember()">+</md-button>

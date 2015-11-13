@@ -1,6 +1,6 @@
 "use strict";
 angular.module('eventApp')
-  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce) {
+  .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', 'VolunteerService', '$mdDialog', 'TaskService', '$mdToast', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce, VolunteerService, $mdDialog, TaskService, $mdToast) {
 
       $scope.services = function(){
 
@@ -53,6 +53,37 @@ angular.module('eventApp')
             $scope.canPublish = false;          
           });
       };
+      
+      $scope.showTasks = function(){
+        $mdDialog.show({
+          clickOutsideToClose: true,
+          controller: displayTasks,
+          locals: {
+            view: 'taskList'
+          },
+          templateUrl: "app/views/taskList.view.html"
+        });
+      };
+
+      function displayTasks($scope, $mdDialog, $mdToast){
+        TaskService.getAllTasks($stateParams.event_id).then(function(tasks){
+          if (tasks) {
+            $scope.tasks = tasks.data;
+          }
+        });
+
+        $scope.volunteerForTask = function(volunteer) {
+          VolunteerService.volForTask(volunteer);
+          $mdToast.show(
+            $mdToast.simple()
+              .content('You have successfully volunteered!')
+              .hideDelay(4000)
+              .position("bottom right")
+          );
+          $mdDialog.hide();
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        };
+      }
 
       $scope.manageTasks = function() {
         $state.go('user.eventTasks', {

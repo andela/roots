@@ -56,7 +56,7 @@ angular.module('eventApp')
                 return filtered;
               });
 
-              $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile"
+              $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
             });
           });
       }
@@ -153,7 +153,7 @@ angular.module('eventApp')
     $scope.selectedUserChange = function(user) {
       $scope.newTask = angular.extend({}, user);
 
-    }
+    };
 
 
     $scope.querySearch = function(searchText) {
@@ -167,7 +167,7 @@ angular.module('eventApp')
 
         return (user.firstname.indexOf(searchText) === 0 || user.lastname.indexOf(searchText) === 0 || user.email.indexOf(searchText) === 0);
       });
-    }
+    };
 
     function parseDate(date) {
       return new Date(Date.parse(date));

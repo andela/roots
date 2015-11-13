@@ -371,7 +371,7 @@ angular.module('eventApp')
     $scope.selectedUserChange = function(user) {
       $scope.newStaff = angular.extend({}, user);
 
-    }
+    };
 
 
     $scope.querySearch = function(searchText) {
@@ -385,6 +385,6 @@ angular.module('eventApp')
 
         return (user.firstname.indexOf(searchText) === 0 || user.lastname.indexOf(searchText) === 0 || user.email.indexOf(searchText) === 0);
       });
-    }
+    };
 
   }]);
