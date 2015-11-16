@@ -31,10 +31,6 @@ var taskSchema = new mongoose.Schema({
     volunteer_ref: {
       type: String,
       ref: 'Volunteer'
-    },
-    user_ref: {
-      type: String,
-      ref: 'User'
     }
   }]
 

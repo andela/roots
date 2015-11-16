@@ -4,10 +4,12 @@ var Promise = require('promise');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Task = require('../models/task.model');
+require('../models/volunteer.model');
 var Utils = require('../middleware/utils');
 var mongoose = require('mongoose');
 
 var Event = mongoose.model('Event');
+var Volunteer = mongoose.model('Volunteer');
 var utils = new Utils();
 
 var EventController = function() {};
@@ -349,7 +351,7 @@ EventController.prototype.getEvent = function(req, res) {
         if (err) {
           res.status(500).send(err);
         } else {
-          if (req.user) {
+          if (req.user && req.user._id && evt1.user_ref && evt1.user_ref._id) {
             //Check if user is the event creator
             if (req.user._id.toString() === evt1.user_ref._id.toString()) {
 
@@ -373,9 +375,10 @@ EventController.prototype.getEvent = function(req, res) {
                   });
                 } else {
                   //Check if user is a vounteer
-                  Task.findOne({
+                  Volunteer.findOne({
                     event_ref: eventId,
-                    'volunteers.user_ref': req.user._id
+                    added: true,
+                    user_ref: req.user._id
                   }, function(err, task) {
 
                     if (task) {

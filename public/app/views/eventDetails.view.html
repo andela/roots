@@ -68,10 +68,12 @@
     </div>
   </div>
   <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-    <md-button class="md-raised" type="submit" ng-click="editEvent();" ng-show="canEdit">Edit Event</md-button>
-    <md-button class="md-raised" type="submit" ng-click="deleteEvent();" ng-show="canEdit">Delete event</md-button>
-    <md-button class="md-raised" type="submit" ng-click="publishEvent();" ng-show="canPublish">Publish event</md-button>
-    <md-button class="md-raised" type="submit" ng-click="manageTasks();" ng-show="canManageTasks">Manage event tasks</md-button>
+    <md-button class="md-raised" type="submit" ng-click="editEvent();" ng-show="isEventOwner()">Edit Event</md-button>
+    <md-button class="md-raised" type="submit" ng-click="deleteEvent();" ng-show="isEventOwner()">Delete event</md-button>
+    <md-button class="md-raised" type="submit" ng-click="publishEvent();" ng-show="canPublish()">Publish event</md-button>
+    <md-button class="md-raised" type="submit" ng-click="viewTasks();" ng-show="canManageTasks()">Manage event tasks</md-button>
+    <md-button class="md-raised" type="submit" ng-click="viewTasks();" ng-show="isTaskManager()">Manage assigned tasks</md-button>
+    <md-button class="md-raised" type="submit" ng-click="viewTasks();" ng-show="isVolunteer()">View schedule(s)</md-button>
   </section>
   <div class="md-toolbar-tools centre" layout-align="center">
     <md-button class="md-raised" ng-click="showTasks();">Volunteer</md-button>

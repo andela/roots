@@ -193,7 +193,7 @@
                     md-search-text="searchText"
                     md-selected-item-change="selectedUserChange(user)"
                     md-items="user in querySearch(searchText)"
-                    md-item-text="user.email"
+                    md-item-text=""
                     md-min-length="0"
                     placeholder="Search and add team member"
                     md-menu-class="autocomplete-custom-template" flex="60">
@@ -262,6 +262,56 @@
               </div>
             </div>
           </md-content>
+      </md-tab>
+      <md-tab label="My Event Tasks">
+        <md-content class="md-padding">
+            <div layout="row">
+              <div flex>
+                <div ng-repeat="task in eventTasks">
+                  <md-card class="mini-event-cards">
+                    <img ng-src="{{task.event_ref.imageUrl}}" width="300px" height="300px">
+                    <md-card-content>
+                      <strong>Event name</strong><p>{{task.event_ref.name}}</p>
+                      <strong>Department</strong><p>{{task.description}}</p>
+                    </md-card-content>
+                    <div class="md-actions" layout="row" layout-align="end center">
+                      <md-button ng-click="viewTasks(task.event_ref._id)">View...</md-button>
+                    </div>
+                  </md-card>
+                </div>
+                <div ng-show="!eventTasks || !eventTasks.length">
+                    <md-card-content>
+                      No task found under this category
+                    </md-card-content>
+                </div>
+              </div>
+            </div>
+          </md-content>
+      </md-tab>
+      <md-tab label="My Volunteered Tasks">
+        <md-content class="md-padding">
+          <div layout="row">
+            <div flex>
+              <div ng-repeat="volunteer in volunteeredTasks">
+                <md-card class="mini-event-cards">
+                  <img ng-src="{{volunteer.event_ref.imageUrl}}" width="300px" height="300px">
+                  <md-card-content>
+                    <strong>Event name</strong><p>{{volunteer.event_ref.name}}</p>
+                    <strong>Department</strong><p>{{volunteer.task_ref.description}}</p>
+                  </md-card-content>
+                  <div class="md-actions" layout="row" layout-align="end center" ng-if"volunteer.added">
+                    <md-button ng-click="viewTasks(volunteer.event_ref._id)">View...</md-button>
+                  </div>
+                </md-card>
+              </div>
+              <div ng-show="!volunteeredTasks || !volunteeredTasks.length">
+                  <md-card-content>
+                    No task found under this category
+                  </md-card-content>
+              </div>
+            </div>
+          </div>
+        </md-content>
       </md-tab>
       <!-- <md-tab label="My Saved Events">
         <md-content class="md-padding" layout-padding style="max-height:500px;padding: 10px;">
