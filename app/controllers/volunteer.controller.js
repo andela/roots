@@ -113,12 +113,14 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
                               from: 'World tree :heavy_check_mark: <no-reply@worldtreeinc.com>',
                               subject: volunteerName + ' volunteered for ' + eventName,
                               text: volunteerName + ' volunteered for ' + eventName,
-                              html: 'Hello,\n\n' +
+                              html: 'Hello,<br/>' +
                                 '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b> .<br/> His skills are ' + skills + '. You can contact <b>' + volunteerName + '</b> at <b>' + managerEmail + '</b>.'
-                                
+
                             };
                             utils.sendMail(mailOptions);
-                            return res.json({success: true});
+                            return res.json({
+                              success: true
+                            });
                           }
                         });
                       }
@@ -145,6 +147,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
   var taskDescription;
   var volunteerEmail;
   var userId;
+  var managerEmail;
 
   //Check if volunteer has already volunteered for same task
   Task.findOne({
@@ -199,75 +202,91 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                   });
                 } else {
 
-                  taskDescription = task.description;
-
-                  //Validate task event id
-                  Event.findById(task.event_ref, function(err, evt) {
+                  User.findById(task.manager_ref, function(err, user) {
 
                     if (err) {
                       return res.status(500).send(err);
-                    } else if (!evt) {
+                    } else if (!user) {
                       return res.status(422).send({
                         success: false,
-                        message: 'Task event not found!'
+                        message: 'Could not retrieve task manager details!'
                       });
                     } else {
 
-                      eventName = evt.name;
 
-                      //Update task model to indicate that volunteer
-                      //has been added to the task
-                      Task.findByIdAndUpdate(taskId, {
-                        $push: {
-                          volunteers: {
-                            volunteer_ref: volunteerId
-                          }
-                        }
-                      }, {
-                        'new': true
-                      }, function(err, task) {
+                      managerEmail = user.email;
+
+                      taskDescription = task.description;
+
+                      //Validate task event id
+                      Event.findById(task.event_ref, function(err, evt) {
 
                         if (err) {
                           return res.status(500).send(err);
-                        } else if (!task) {
+                        } else if (!evt) {
                           return res.status(422).send({
                             success: false,
-                            message: 'Error adding volunteer to event task!'
+                            message: 'Task event not found!'
                           });
                         } else {
 
-                          //Indicate that volunteer has been added to the task
-                          //in the volunteer model
-                          Volunteer.findByIdAndUpdate(volunteerId, {
-                            $set: {
-                              added: true
+                          eventName = evt.name;
+
+                          //Update task model to indicate that volunteer
+                          //has been added to the task
+                          Task.findByIdAndUpdate(taskId, {
+                            $push: {
+                              volunteers: {
+                                volunteer_ref: volunteerId
+                              }
                             }
-                          }, function(err, volunteer) {
+                          }, {
+                            'new': true
+                          }, function(err, task) {
 
                             if (err) {
                               return res.status(500).send(err);
-                            } else if (!volunteer) {
+                            } else if (!task) {
                               return res.status(422).send({
                                 success: false,
-                                message: 'Error occured while updating volunteer details!'
+                                message: 'Error adding volunteer to event task!'
                               });
                             } else {
 
-                              //Send mail to volunteer
-                              var mailOptions = {
-                                to: volunteerEmail,
-                                from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                                subject: 'You have been added as volunteer to ' + eventName + ' event',
-                                text: 'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for volunteering.',
-                                html: 'Hello,\n\n' +
-                                  'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for volunteering.'
-                              };
+                              //Indicate that volunteer has been added to the task
+                              //in the volunteer model
+                              Volunteer.findByIdAndUpdate(volunteerId, {
+                                $set: {
+                                  added: true
+                                }
+                              }, function(err, volunteer) {
 
-                              utils.sendMail(mailOptions);
+                                if (err) {
+                                  return res.status(500).send(err);
+                                } else if (!volunteer) {
+                                  return res.status(422).send({
+                                    success: false,
+                                    message: 'Error occured while updating volunteer details!'
+                                  });
+                                } else {
 
-                              return res.json({
-                                success: true,
-                                message: 'User added as volunteer.'
+                                  //Send mail to volunteer
+                                  var mailOptions = {
+                                    to: volunteerEmail,
+                                    from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                                    subject: 'You have been added as volunteer to ' + eventName + ' event',
+                                    text: 'You have been added as volunteer to <strong>' + taskDescription + '</strong> of <strong>' + eventName + '</strong> event.<br/>Thank you for volunteering. Please <a href="mailto:' + managerEmail + '" target="_top">reply</a> this mail to discuss your availability',
+                                    html: 'Hello,<br/>' +
+                                      'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.<br/>Thank you for volunteering. Please <a href="mailto:' + managerEmail + '" target="_top">reply</a> this mail to discuss your availability'
+                                  };
+
+                                  utils.sendMail(mailOptions);
+
+                                  return res.json({
+                                    success: true,
+                                    message: 'User added as volunteer.'
+                                  });
+                                }
                               });
                             }
                           });
@@ -354,6 +373,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
 
   var taskDescription;
   var volunteerEmail;
+  var managerEmail;
   var eventName;
   var prevSchedules;
 
@@ -405,93 +425,113 @@ VolunteerController.prototype.addSchedule = function(req, res) {
               });
             } else {
 
-              taskDescription = task.description;
-
-              //Retrieve task event
-              Event.findById(task.event_ref, function(err, evt) {
+              User.findById(task.manager_ref, function(err, user) {
 
                 if (err) {
                   return res.status(500).send(err);
-                } else if (!evt) {
+                } else if (!task) {
                   return res.status(422).send({
                     success: false,
-                    message: 'Task event not found!'
+                    message: 'Could not retrieve manager details!'
                   });
                 } else {
+                  managerEmail = user.email;
 
-                  eventName = evt.name;
+                  taskDescription = task.description;
 
-                  //Add schedule to volunteer
-                  Volunteer.findByIdAndUpdate(volunteerId, {
-                    $push: {
-                      schedules: schedule
-
-                    }
-                  }, {
-                    'new': true
-                  }, function(err, volunteer) {
+                  //Retrieve task event
+                  Event.findById(task.event_ref, function(err, evt) {
 
                     if (err) {
                       return res.status(500).send(err);
-                    } else if (!volunteer) {
+                    } else if (!evt) {
                       return res.status(422).send({
                         success: false,
-                        message: 'Error scheduling task to volunteer!'
+                        message: 'Task event not found!'
                       });
                     } else {
 
-                      //After retrieving the volunteer's complete new schedule list
-                      //compare it with the prev schedule list to get newly added schedule
-                      var newSchedules = volunteer.schedules;
-                      var index;
+                      eventName = evt.name;
 
-                      prevSchedules.forEach(function(prevSchd) {
+                      //Add schedule to volunteer
+                      Volunteer.findByIdAndUpdate(volunteerId, {
+                        $push: {
+                          schedules: schedule
 
-                        var isNewSchd = newSchedules.every(function(newSchd) {
+                        }
+                      }, {
+                        'new': true
+                      }, function(err, volunteer) {
 
-                          if (newSchd._id.toString() === prevSchd._id.toString()) {
+                        if (err) {
+                          return res.status(500).send(err);
+                        } else if (!volunteer) {
+                          return res.status(422).send({
+                            success: false,
+                            message: 'Error scheduling task to volunteer!'
+                          });
+                        } else {
 
-                            index = newSchedules.indexOf(newSchd);
-                            return false;
+                          //After retrieving the volunteer's complete new schedule list
+                          //compare it with the prev schedule list to get newly added schedule
+                          var newSchedules = volunteer.schedules;
+                          var index;
+
+                          prevSchedules.forEach(function(prevSchd) {
+
+                            var isNewSchd = newSchedules.every(function(newSchd) {
+
+                              if (newSchd._id.toString() === prevSchd._id.toString()) {
+
+                                index = newSchedules.indexOf(newSchd);
+                                return false;
+                              }
+
+                              return true;
+                            });
+
+                            if (!isNewSchd) {
+
+                              newSchedules.splice(index, 1);
+                            }
+                          });
+
+                          if (newSchedules.length > 0) {
+
+                            for (var i = 0; i < newSchedules.length; i++) {
+
+                              if (schedule.startDate.toString() === newSchedules[i].startDate.toString() && schedule.endDate.toString() === newSchedules[i].endDate.toString() && schedule.description === newSchedules[i].description) {
+
+                                newSchedules[0] = newSchedules[i];
+
+                                break;
+                              }
+                            }
                           }
 
-                          return true;
-                        });
+                          var scheduleDetail = "<strong>" + schedule.description + "</strong>" + ": between <strong>" + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
+                          scheduleDetail += "</strong> and <strong>" + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "</strong>";
 
-                        if (!isNewSchd) {
+                          //Send notification to volunteer
+                          var mailOptions = {
+                            to: volunteerEmail,
+                            from: 'World tree ✔ <no-reply@worldtreeinc.com>',
+                            subject: 'A task has been assigned to you on ' + eventName + ' event',
 
-                          newSchedules.splice(index, 1);
+                            text: 'The following task schedule: ' + scheduleDetail +
+                              ' on <strong>' + eventName + '</strong> event has been assigned to you. <br/>Thank you as we look forward to your punctuality. You may <a href="mailto:' + managerEmail + '" target="_top">reply</a> this mail to discuss your availability.',
+                            html: 'Hello,<br/>' +
+                              'The following task schedule: ' + scheduleDetail +
+                              ' on <strong>' + eventName + '</strong> event has been assigned to you. <br/>Thank you as we look forward to your punctuality. You may <a href="mailto:' + managerEmail + '" target="_top">reply</a> this mail to discuss your availability.'
+                          };
+
+                          utils.sendMail(mailOptions);
+
+                          return res.json(newSchedules[0]);
                         }
+
                       });
-
-                      if (newSchedules.length > 0) {
-
-                        for (var i = 0; i < newSchedules.length; i++) {
-
-                          if (schedule.description === newSchedules[i].startDate && schedule.startDate === newSchedules[i].endDate && schedule.description === newSchedules[i].endDate) {
-
-                            newSchedules[0] = newSchedules[i];
-
-                            break;
-                          }
-                        }
-                      }
-
-                      //Send notification to volunteer
-                      var mailOptions = {
-                        to: volunteerEmail,
-                        from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                        subject: 'A task has been assigned to you on ' + eventName + ' event',
-                        text: '<b>' + schedule.description + ' </b> task has been assigned to you on <b>' + eventName + ' event. Thank you as we look forward to your punctuality.<b>',
-                        html: 'Hello,\n\n' +
-                          '<b>' + schedule.description + '</b> task has been assigned to you on <b>' + eventName + '</b> event. Thank you as we look forward to your punctuality.'
-                      };
-
-                      utils.sendMail(mailOptions);
-
-                      return res.json(newSchedules[0]);
                     }
-
                   });
                 }
               });
@@ -708,7 +748,7 @@ VolunteerController.prototype.scheduleReminder = function() {
                   volunteer.schedules.forEach(function(schedule) {
 
                     schedules += schedule.description + ": between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
-                    schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "\n\n"
+                    schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "<br/>"
                   });
 
                   //Send reminder to volunteer
@@ -716,9 +756,9 @@ VolunteerController.prototype.scheduleReminder = function() {
                     to: volunteer.user_ref.email,
                     from: 'World tree ✔ <no-reply@worldtreeinc.com>',
                     subject: 'A gentle reminder from ' + evt.name + ' event',
-                    text: 'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.',
-                    html: 'Hello,\n\n' +
-                      'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time\n<b>' + schedules + '</b>\n. Thanks for your anticipated promptness.'
+                    text: 'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time<br/><b>' + schedules + '</b><br/>. Thanks for your anticipated promptness.',
+                    html: 'Hello,<br/>' +
+                      'This is a gentle reminder of a task(s) from <b>' + evt.name + '</b> event, which you volunteered for. Following is the task(s) scheduled to start in about an hour time<br/><b>' + schedules + '</b><br/>. Thanks for your anticipated promptness.'
                   };
 
                   utils.sendMail(mailOptions);
