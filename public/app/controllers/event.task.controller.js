@@ -62,7 +62,7 @@ angular.module('eventApp')
                     return filtered;
                   });
 
-                  $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile"
+                  $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
                 });
                 //If event is viewed by an event task manager
               } else if ($scope.isTaskManager()) {
@@ -98,7 +98,7 @@ angular.module('eventApp')
                     }
 
                       getPendingVolunteersCalls.push(VolunteerService.getTaskPendingVolunteers(tasks[i]._id));
-                    };
+                    }
 
                   //Get list of users who have volunteered for any of the
                   //manager's tasks, but not added yet to the event
@@ -129,7 +129,7 @@ angular.module('eventApp')
 
           }
         });
-      };
+      }
     };
 
     $rootScope.hideBtn = false;
@@ -379,7 +379,7 @@ angular.module('eventApp')
 
         processError(err, status);
       });
-    }
+    };
 
     $scope.deleteSchedule = function(taskId, volunteerId, scheduleId) {
 

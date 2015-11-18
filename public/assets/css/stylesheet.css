@@ -749,3 +749,51 @@ label {
   margin-top: 80px;
 }
 
+.task-details {
+  margin-top: -75px;
+  z-index: 2;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+#event-name {
+  margin: 0 auto;
+}
+
+.main-task {
+  background: linear-gradient(100deg, #6cf 10%, #00FFFF 32%);
+}
+
+.main-volunteers {
+  background-color: #ffffff;
+}
+
+.event-img {
+  background-size: 30%;
+}
+
+.table-row {
+  padding-left: 2em;
+  text-align: center;
+}
+
+table, th , td, tr {
+      border-spacing: 1em;
+      padding: 1em;
+      text-align: center;
+   }
+   
+   table tr:nth-child(odd) {
+      background-color: #f2f2f2;
+   }
+
+   table tr:nth-child(even) {
+      background-color: #ffffff;
+   }
+
+.vol-content {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #cccccc;
+  border-radius: 0px 0px 5px 5px;
+}

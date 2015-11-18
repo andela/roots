@@ -1,73 +1,69 @@
 <div id="preview" class="switch-container" data-ng-init="services()">
   <div layout="column">
     <md-toolbar md-scroll-shrink id="contentMainDiv">
-      <img ng-src="{{event.imageUrl}}" height='500px' width='100%' />
+      <img ng-src="{{event.imageUrl}}"/>
     </md-toolbar>
     <link rel="stylesheet" href="../../libs/bootstrap/dist/css/bootstrap.min.css" />
-    <div>
-      <md-card>
+    <div class="task-details" layout layout-align="center center">
+      <md-card flex style="background-color: #F9F9FB;">
         <div layout="column" class="md-raised">
           <div id="padding">
             <div layout="row">
-              <div class="md-warn" id="eventTitleDiv">
-                <h3 class="md-flex">{{event.name}}</h3>
-              </div>
+              <h3 class="md-flex" id="event-name">{{event.name | uppercase}}</h3>
             </div>
+            <hr>
             <md-content flex layout-padding ng-show="isEventOwner()">
               <div class="taskbox" layout="row" layout-sm="column">
-                <div class="task-div">
+                <div>
+                  <br/>
                   <h4><strong>Manage Tasks</strong></h4>
-                  <h5>Tasks</h5>
-                  <div flex class="tasks">
-                    <li flex layout="column" layout-padding ng-repeat="task in tasks">
-                      <div layout>
-                        <div flex="15" layout="column">
-                          <md-title><strong>Managed By</strong></md-title>
-                          <span>{{task.firstname | uppercase}} {{task.lastname | uppercase}} </span>
-                          <md-title><strong>Email</strong></md-title>
-                          <span>{{task.email}}</span>
-                        </div>
-                        <div flex="20" layout="column">
-                          <md-title><strong>Department</strong></md-title>
-                          <input type="text" ng-model="task.description">
-                        </div>
-                        <div flex="15" layout="column">
-                          <md-title><strong>Status</strong></md-title>
-                          <md-checkbox ng-checked="task.completed" ng-click="task.completed = !task.completed">
-                            Completed
-                          </md-checkbox>
-                        </div>
-                        <div class="dropdown" layout="column" flex="20">
-                          <md-title><strong>Start Date</strong></md-title>
-                          <a class="dropdown-toggle" id="dropdown4" role="button" data-toggle="dropdown">
-                            <div class="input-group">
-                              <input type="text" class="form-control" data-ng-model="task.startDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                          </a>
-                          <ul class="dropdown-menu" role="menu">
-                            <datetimepicker data-ng-model="task.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown4' }" />
-                          </ul>
-                        </div>
-                        <div class="dropdown" layout="column" flex="20">
-                          <md-title><strong>End Date</strong></md-title>
-                          <a class="dropdown-toggle" id="dropdown5" role="button" data-toggle="dropdown">
-                            <div class="input-group">
-                              <input type="text" class="form-control" data-ng-model="task.endDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                            </div>
-                          </a>
-                          <ul class="dropdown-menu" role="menu">
-                            <datetimepicker data-ng-model="task.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown5' }" />
-                          </ul>
-                        </div>
-                        <md-button class="md-fab md-mini" title="Delete task" ng-click="deleteTask(task._id)">-</md-button>
-                        <md-button class="md-fab md-mini" ng-if="task.description && task.endDate &&task.startDate" title="Edit task" ng-click="editTask(task)">✔</md-button>
-                      </div>
-                    </li>
+                  <div layout="row" layout-padding class="tasks">
+                    <div>
+                      <table>
+                        <tr>
+                          <th>Department</th>
+                          <th class="table-row">Manager</th>
+                          <th class="table-row">Email</th>
+                          <th class="table-row">Status</th>
+                          <th class="table-row">Start Date</th>
+                          <th class="table-row">End Date</th>
+                        </tr>
+                        <tr ng-repeat="task in tasks">
+                          <td class="table-row">{{task.description}}</td>
+                          <td class="table-row">{{task.firstname | uppercase}} {{task.lastname | uppercase}}</td>
+                          <td class="table-row">{{task.email}}</td>
+                          <td class="table-row">
+                            <md-checkbox ng-checked="task.completed" ng-click="task.completed = !task.completed">
+                              Completed
+                            </md-checkbox>
+                          </td>
+                          <td class="table-row">
+                            <a class="dropdown-toggle" id="dropdown4" role="button" data-toggle="dropdown">
+                              <div class="input-group">
+                                <input type="text" class="form-control" data-ng-model="task.startDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                              </div>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                              <datetimepicker data-ng-model="task.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown4' }" />
+                            </ul>
+                          </td>
+                          <td class="table-row">
+                            <a class="dropdown-toggle" id="dropdown5" role="button" data-toggle="dropdown">
+                              <div class="input-group">
+                                <input type="text" class="form-control" data-ng-model="task.endDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                              </div>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                              <datetimepicker data-ng-model="task.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown5' }" />
+                            </ul>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
                   </div>
-                  <h5>Add new task</h5>
                   <div flex layout class="taskbox" layout-padding ng-if="newTask.firstname">
                     <div flex="15" layout="column">
-                      <md-title><strong>Managed By</strong></md-title>
+                      <md-title><strong>Manager</strong></md-title>
                       <span>{{newTask.firstname | uppercase}} {{newTask.lastname | uppercase}} </span>
                       <md-title><strong>Email</strong></md-title>
                       <span>{{newTask.email}}</span>
@@ -121,18 +117,19 @@
                 </div>
               </div>
             </md-content>
-            <md-content flex layout-padding ng-show="isTaskManager()">
-              <div class="taskbox" layout="row" layout-sm="column">
-                <div class="task-div">
-                  <h4><strong>Manage Tasks</strong></h4>
-                  <div flex class="tasks">
-                    <li flex layout="column" layout-padding ng-repeat="task in tasks">
+            <div flex layout-padding ng-show="isTaskManager()" class="taskbox" layout="row" layout-sm="column">
+              <div>
+              <h4><strong>MANAGER TASKS</strong></h4>
+              <div flex class="tasks">
+                <li flex layout="column" layout-padding ng-repeat="task in tasks">
+                  <md-card>
+                    <md-card-content>
                       <div layout>
-                        <div flex="40" layout="column">
+                        <div flex="20" layout="column">
                           <md-title><strong>Department</strong></md-title>
                           {{task.description}}
                         </div>
-                        <div flex="15" layout="column">
+                        <div flex="20" layout="column">
                           <md-title><strong>Status</strong></md-title>
                           <md-checkbox ng-checked="task.completed" ng-click="task.completed = !task.completed">
                             Completed
@@ -147,123 +144,131 @@
                           {{ task.endDate | date:'medium' }}
                         </div>
                       </div>
-                      <ul layout="column" layout-padding>
-                        <h5>Volunteers</h5>
-                        <li layout="column" layout-padding ng-repeat="volunteer in task.volunteers">
-                          <div layout>
-                            <div flex="25" layout="column">
-                              <md-title><strong>Email</strong></md-title>
-                              {{volunteer.volunteer_ref.user_ref.email}}
-                            </div>
-                            <div flex="30" layout="column">
-                              <md-title><strong>Name</strong></md-title>
-                              {{volunteer.volunteer_ref.user_ref.firstname | uppercase}} {{volunteer.volunteer_ref.user_ref.lastname | uppercase}}
-                            </div>                           
-                            <md-button class="md-fab md-mini" title="Remove volunteer" ng-click="removeVolunteerFromTask(task._id, volunteer.volunteer_ref._id, true)">-</md-button>
-                          </div>
-                          <ul layout="column" layout-padding>
-                            <h5>Schedules</h5>
-                            <li layout="column" layout-padding ng-repeat="schedule in volunteer.volunteer_ref.schedules">
-                              <div layout>
-                                <div flex="20" layout="column">
-                                  <md-title><strong>Task</strong></md-title>
-                                  <input type="text" ng-model="schedule.description">
-                                </div>
-                                <div flex="15" layout="column">
-                                  <md-title><strong>Status</strong></md-title>
-                                  <md-checkbox ng-checked="schedule.completed" ng-click="schedule.completed = !schedule.completed">
-                                    Completed
-                                  </md-checkbox>
-                                </div>
-                                <div class="dropdown" layout="column" flex="20">
-                                  <md-title><strong>Start Date</strong></md-title>
-                                  <a class="dropdown-toggle" id="dropdown6" role="button" data-toggle="dropdown">
-                                    <div class="input-group">
-                                      <input type="text" class="form-control" data-ng-model="schedule.startDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                    </div>
-                                  </a>
-                                  <ul class="dropdown-menu" role="menu">
-                                    <datetimepicker data-ng-model="schedule.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown6' }" />
-                                  </ul>
-                                </div>
-                                <div class="dropdown" layout="column" flex="20">
-                                  <md-title><strong>End Date</strong></md-title>
-                                  <a class="dropdown-toggle" id="dropdown7" role="button" data-toggle="dropdown">
-                                    <div class="input-group">
-                                      <input type="text" class="form-control" data-ng-model="schedule.endDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                    </div>
-                                  </a>
-                                  <ul class="dropdown-menu" role="menu">
-                                    <datetimepicker data-ng-model="schedule.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown7' }" />
-                                  </ul>
-                                </div>
-                                <md-button class="md-fab md-mini" title="Delete schedule" ng-click="deleteSchedule(task._id, volunteer.volunteer_ref._id, schedule._id)">-</md-button>
-                                <md-button class="md-fab md-mini" ng-if="schedule.description && schedule.endDate &&schedule.startDate" title="Edit schedule" ng-click="editSchedule(volunteer.volunteer_ref._id, schedule._id, schedule)">✔</md-button>
+                      <hr>
+                      <div layout="column" layout-padding>
+                        <h5>VOLUNTEERS</h5>
+                        <div layout="column" class="vol-content" layout-padding ng-repeat="volunteer in task.volunteers">
+                          <div layout="column">
+                            <div layout="row">
+                              <div flex="25" layout="column">
+                                <md-title><strong>Email</strong></md-title>
+                                {{volunteer.volunteer_ref.user_ref.email}}
                               </div>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
+                              <div flex="30" layout="column">
+                                <md-title><strong>Name</strong></md-title>
+                                {{volunteer.volunteer_ref.user_ref.firstname | uppercase}} {{volunteer.volunteer_ref.user_ref.lastname | uppercase}}
+                              </div>                           
+                              <md-button class="md-fab md-mini" title="Remove volunteer" ng-click="removeVolunteerFromTask(task._id, volunteer.volunteer_ref._id, true)">-</md-button>
+                            </div>
+                            <div layout="column" layout-padding ng-repeat="schedule in volunteer.volunteer_ref.schedules">
+                              <md-card>
+                                <md-card-content>
+                                  <h5>Schedule</h5>
+                                  <div layout="column" layout-padding>
+                                    <div layout>
+                                      <div flex="20" layout="column">
+                                        <md-title><strong>Task</strong></md-title>
+                                        <input type="text" ng-model="schedule.description">
+                                      </div>
+                                      <div flex="15" layout="column">
+                                        <md-title><strong>Status</strong></md-title>
+                                        <md-checkbox ng-checked="schedule.completed" ng-click="schedule.completed = !schedule.completed">
+                                          Completed
+                                        </md-checkbox>
+                                      </div>
+                                      <div class="dropdown" layout="column" flex="20">
+                                        <md-title><strong>Start Date</strong></md-title>
+                                        <a class="dropdown-toggle" id="dropdown6" role="button" data-toggle="dropdown">
+                                          <div class="input-group">
+                                            <input type="text" class="form-control" data-ng-model="schedule.startDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                          </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                          <datetimepicker data-ng-model="schedule.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown6'}"/>
+                                        </ul>
+                                      </div>
+                                      <div class="dropdown" layout="column" flex="20">
+                                        <md-title><strong>End Date</strong></md-title>
+                                        <a class="dropdown-toggle" id="dropdown7" role="button" data-toggle="dropdown">
+                                          <div class="input-group">
+                                            <input type="text" class="form-control" data-ng-model="schedule.endDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                          </div>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu">
+                                          <datetimepicker data-ng-model="schedule.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown7'}"/>
+                                        </ul>
+                                      </div>
+                                      <md-button class="md-fab md-mini" title="Delete schedule" ng-click="deleteSchedule(task._id, volunteer.volunteer_ref._id, schedule._id)">-</md-button>
+                                      <md-button class="md-fab md-mini" ng-if="schedule.description && schedule.endDate &&schedule.startDate" title="Edit schedule" ng-click="editSchedule(volunteer.volunteer_ref._id, schedule._id, schedule)">✔</md-button>
+                                    </div>
+                                  </div>
+                                </md-card-content>
+                              </md-card>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </md-card-content>
+                  </md-card>
+                </li>
+              </div>
+              <div layout="column" layout-padding>
+                <div flex layout class="taskbox" layout-padding ng-if="volunteer.user_ref.firstname">
+                  <div flex="20" layout="column">
+                    <md-title><strong>Volunteer name</strong></md-title>
+                    <span>{{volunteer.user_ref.firstname | uppercase}} {{volunteer.user_ref.lastname | uppercase}} </span>
+                    <md-title><strong>Department</strong></md-title>
+                    <span>{{volunteer.task}}</span>
                   </div>
-                  <div layout="column" layout-padding>
-                    <h5>Add volunteer task</h5>
-                    <div flex layout class="taskbox" layout-padding ng-if="volunteer.user_ref.firstname">
-                      <div flex="20" layout="column">
-                        <md-title><strong>Volunteer name</strong></md-title>
-                        <span>{{volunteer.user_ref.firstname | uppercase}} {{volunteer.user_ref.lastname | uppercase}} </span>
-                        <md-title><strong>Department</strong></md-title>
-                        <span>{{volunteer.task}}</span>
+                  <div flex="25" layout="column">
+                    <md-title><strong>Task</strong><span class="req">*</span></md-title>
+                    <input type="text" ng-model="schedule.description">
+                  </div>
+                  <div class="dropdown" layout="column" flex="25">
+                    <md-title><strong>Start Date</strong><span class="req">*</span></md-title>
+                    <a class="dropdown-toggle" id="dropdown8" role="button" data-toggle="dropdown">
+                      <div class="input-group">
+                        <input type="text" class="form-control" data-ng-model="schedule.startDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                       </div>
-                      <div flex="25" layout="column">
-                        <md-title><strong>Task</strong><span class="req">*</span></md-title>
-                        <input type="text" ng-model="schedule.description">
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                      <datetimepicker data-ng-model="schedule.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown8' }" />
+                    </ul>
+                  </div>
+                  <div class="dropdown" layout="column" flex="25">
+                    <md-title><strong>End Date</strong><span class="req">*</span></md-title>
+                    <a class="dropdown-toggle" id="dropdown9" role="button" data-toggle="dropdown">
+                      <div class="input-group">
+                        <input type="text" class="form-control" data-ng-model="schedule.endDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                       </div>
-                      <div class="dropdown" layout="column" flex="25">
-                        <md-title><strong>Start Date</strong><span class="req">*</span></md-title>
-                        <a class="dropdown-toggle" id="dropdown8" role="button" data-toggle="dropdown">
-                          <div class="input-group">
-                            <input type="text" class="form-control" data-ng-model="schedule.startDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                          </div>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                          <datetimepicker data-ng-model="schedule.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown8' }" />
-                        </ul>
-                      </div>
-                      <div class="dropdown" layout="column" flex="25">
-                        <md-title><strong>End Date</strong><span class="req">*</span></md-title>
-                        <a class="dropdown-toggle" id="dropdown9" role="button" data-toggle="dropdown">
-                          <div class="input-group">
-                            <input type="text" class="form-control" data-ng-model="schedule.endDate"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                          </div>
-                        </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                          <datetimepicker data-ng-model="schedule.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown9' }" />
-                        </ul>
-                      </div>
-                      <md-button class="md-fab md-mini" title="Add volunteer task" ng-if="schedule.description && schedule.endDate && schedule.startDate" ng-click="addTaskSchedule()">+</md-button>
-                    </div>
-                    <div layout flex>
-                      <md-autocomplete ng-disabled="false" md-no-cache="false" md-selected-item="selectedItem" md-search-text="volunteerSearchText" md-selected-item-change="selectedVolunteerChange(volunteer)" md-items="volunteer in volunteerSearch(volunteerSearchText)" md-item-text="" md-min-length="0" placeholder="{{searchLabel}}" md-menu-class="autocomplete-custom-template" flex="60">
-                        <md-item-template>
-                          <span class="item-title">
-                            <img ng-src="{{volunteer.user_ref.profilePic}}" class="profile-icon">
-                            <span> Department: {{volunteer.task}} </span>
-                          </span>
-                          <span class="item-metadata">
-                            <span class="item-metastat">
-                              <strong>{{volunteer.user_ref.firstname | uppercase}}</strong>
-                            </span>
-                              <span class="item-metastat">
-                              <strong>{{volunteer.user_ref.lastname | uppercase}}</strong>
-                            </span>
-                              <span class="item-metastat">
-                              <strong>{{volunteer.user_ref.email}}</strong>
-                            </span>
-                          </span>
-                        </md-item-template>
-                      </md-autocomplete>
-                    </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                      <datetimepicker data-ng-model="schedule.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown9' }" />
+                    </ul>
+                  </div>
+                  <md-button class="md-fab md-mini" title="Add volunteer task" ng-if="schedule.description && schedule.endDate && schedule.startDate" ng-click="addTaskSchedule()">+</md-button>
+                </div>
+                <div layout flex>
+                  <md-autocomplete ng-disabled="false" md-no-cache="false" md-selected-item="selectedItem" md-search-text="volunteerSearchText" md-selected-item-change="selectedVolunteerChange(volunteer)" md-items="volunteer in volunteerSearch(volunteerSearchText)" md-item-text="" md-min-length="0" placeholder="{{searchLabel}}" md-menu-class="autocomplete-custom-template" flex="60">
+                    <md-item-template>
+                      <span class="item-title">
+                        <img ng-src="{{volunteer.user_ref.profilePic}}" class="profile-icon">
+                        <span> Department: {{volunteer.task}} </span>
+                      </span>
+                      <span class="item-metadata">
+                        <span class="item-metastat">
+                          <strong>{{volunteer.user_ref.firstname | uppercase}}</strong>
+                        </span>
+                          <span class="item-metastat">
+                          <strong>{{volunteer.user_ref.lastname | uppercase}}</strong>
+                        </span>
+                          <span class="item-metastat">
+                          <strong>{{volunteer.user_ref.email}}</strong>
+                        </span>
+                      </span>
+                    </md-item-template>
+                  </md-autocomplete>
+                </div>
                   </div>
                   <h5>Add/remove pending volunteers from event</h5>
                   <div flex layout="column" class="taskbox" layout-padding>
@@ -272,17 +277,17 @@
                     </div>
                     <div layout layout-padding flex ng-repeat="volunteer in pendingVolunteers">
                       <img ng-src="{{volunteer.user_ref.profilePic}}" class="profile-icon">
-                      <div flex="20" layout="column">
+                      <div flex="30" layout="column">
                         <md-title><strong>Name</strong></md-title>
                         <span>{{volunteer.user_ref.firstname | uppercase}} {{volunteer.user_ref.lastname | uppercase}} </span>
                         <md-title><strong>Email</strong></md-title>
                         <span>{{volunteer.user_ref.email}}</span>
                       </div>
-                      <div flex="20" layout="column">
+                      <div class="dropdown" layout="column" flex="30" layout="column">
                         <md-title><strong>Department</strong></md-title>
                         <span>{{volunteer.task_ref.description | uppercase}}</span>
                       </div>
-                      <div flex="20" layout="column">
+                      <div class="dropdown" layout="column" flex="30" layout="column">
                         <md-title><strong>skills</strong></md-title>
                         <span>{{volunteer.skills}}</span>
                       </div>
@@ -292,36 +297,34 @@
                   </div>
                 </div>
               </div>
-            </md-content>
             <md-content flex layout-padding ng-show="isVolunteer()">
               <div class="taskbox" layout="row" layout-sm="column">
-                <div class="task-div">
+                <div flex>
                   <h4><strong>Scheduled Tasks</strong></h4>
-                  <li flex layout="column" layout-padding ng-repeat="volunteer in volunteers">
-                    <h6>Department: {{volunteer.task_ref.description}}</h6>
-                    <ul>
-                    <li layout ng-repeat="schedule in volunteer.schedules">
-                      <div flex="20" layout="column">
-                        <md-title><strong>Task</strong></md-title>
-                        {{schedule.description}}
-                      </div>
-                      <div flex="15" layout="column">
-                        <md-title><strong>Status</strong></md-title>
-                        <md-checkbox ng-checked="schedule.completed">
-                          Completed
-                        </md-checkbox>
-                      </div>
-                      <div class="dropdown" layout="column" flex="20">
-                        <md-title><strong>Start Date</strong></md-title>
-                        {{ schedule.startDate | date:'medium' }}
-                      </div>
-                      <div class="dropdown" layout="column" flex="20">
-                        <md-title><strong>End Date</strong></md-title>
-                        {{ schedule.endDate | date:'medium' }}
-                      </div>
-                    </li>
-                    </ul>
-                  </li>
+                  <div layout="column" layout-padding ng-repeat="volunteer in volunteers">
+                    <div>
+                      <table>
+                        <tr>
+                          <th class="table-row">Department</th>
+                          <th class="table-row">Task</th>
+                          <th class="table-row">Status</th>
+                          <th class="table-row">Start Date</th>
+                          <th class="table-row">End Date</th>
+                        </tr>
+                        <tr ng-repeat="schedule in volunteer.schedules">
+                          <td class="table-row">{{volunteer.task_ref.description}}</td>
+                          <td class="table-row">{{schedule.description}}</td>
+                          <td class="table-row">
+                            <md-checkbox ng-checked="schedule.completed">
+                              Completed
+                            </md-checkbox>
+                          </td>
+                          <td class="table-row">{{ schedule.startDate | date:'medium' }}</td>
+                          <td class="table-row">{{ schedule.endDate | date:'medium' }}</td>
+                        </tr> 
+                      </table><br/>
+                    </div>
+                  </div>
                 </div>
               </div>
             </md-content>
