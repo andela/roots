@@ -22,6 +22,10 @@ var eventSchema = new mongoose.Schema({
   online: {
     type: Boolean,
     default: false
+  },
+  enableVolunteer: {
+    type: Boolean,
+    default: false
   },  
   venue: {
     name: String,

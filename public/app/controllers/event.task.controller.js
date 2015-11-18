@@ -488,7 +488,9 @@ angular.module('eventApp')
 
       return $scope.volunteers.filter(function(volunteer) {
 
-        return (volunteer.user_ref.firstname.indexOf(searchText) === 0 || volunteer.user_ref.lastname.indexOf(searchText) === 0 || volunteer.user_ref.email.indexOf(searchText) === 0);
+         //Filtering with the name variable allows user to search with firstname and lastname combined
+        var name = volunteer.user_ref.firstname + " " + volunteer.user_ref.lastname;
+        return (volunteer.user_ref.firstname.indexOf(searchText) === 0 || volunteer.user_ref.lastname.indexOf(searchText) === 0 || name.indexOf(searchText) === 0 || volunteer.user_ref.email.indexOf(searchText) === 0);
       });
     };
 
@@ -499,9 +501,10 @@ angular.module('eventApp')
       }
       searchText = angular.lowercase(searchText);
 
+       //Filtering with the name variable allows user to search with firstname and lastname combined
       return $scope.staff.filter(function(member) {
-
-        return (member.firstname.indexOf(searchText) === 0 || member.lastname.indexOf(searchText) === 0 || member.email.indexOf(searchText) === 0);
+        var name = member.firstname + " " + member.lastname;
+        return (member.firstname.indexOf(searchText) === 0 || member.lastname.indexOf(searchText) === 0 || name.indexOf(searchText) === 0 || member.email.indexOf(searchText) === 0);
       });
     };
 
@@ -517,6 +520,23 @@ angular.module('eventApp')
     $scope.isVolunteer = function() {
       return $scope.role === "volunteer";
     };
+
+    //To determine if the enable volunteer or disable volunteer button to be rendered
+    $scope.volunteerOn = function() {
+      return $scope.event.enableVolunteer;
+    }
+
+    //To switch the volunteer for event mode on/off
+    $scope.switchVolunteerMode = function(mode) {
+
+      EventService.switchVolunteerMode($stateParams.event_id, mode).success(function(res){
+
+        $scope.event.enableVolunteer = mode;
+      }).error(function(err, status){
+
+        processError(err, status);
+      });
+    }
 
     function parseDate(date) {
       return new Date(Date.parse(date));
