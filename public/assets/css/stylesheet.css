@@ -760,10 +760,6 @@ label {
   margin: 0 auto;
 }
 
-.main-task {
-  background: linear-gradient(100deg, #6cf 10%, #00FFFF 32%);
-}
-
 .main-volunteers {
   background-color: #ffffff;
 }
@@ -796,4 +792,11 @@ table, th , td, tr {
   border-width: 1px;
   border-color: #cccccc;
   border-radius: 0px 0px 5px 5px;
+}
+
+#schedule-card {
+  text-align: center;
+}
+#schedule-card:hover {
+  background-color: #f4f3f2;
 }
