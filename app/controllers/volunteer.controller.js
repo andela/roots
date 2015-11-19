@@ -704,11 +704,17 @@ VolunteerController.prototype.scheduleReminder = function() {
   scheduleLimit.setHours(scheduleLimit.getHours() + 1);
 
   Volunteer.find({
-    'schedules.startDate': {
-      $lte: scheduleLimit,
-      $gt: now
+    schedules: {
+      $elemMatch: {
+        startDate: {
+          $lte: scheduleLimit,
+          $gt: now
+        }
+      }
     }
   }, {
+    user_ref: 1,
+    event_ref: 1,
     schedules: {
       $elemMatch: {
         startDate: {
