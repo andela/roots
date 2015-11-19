@@ -524,8 +524,12 @@ angular.module('eventApp')
     };
 
     //To determine if the enable volunteer or disable volunteer button to be rendered
-    $scope.volunteerOn = function() {
-      return $scope.event.enableVolunteer;
+    $scope.canDisableVolunteer = function() {
+      return $scope.event.enableVolunteer && $scope.role === "owner";
+    }
+
+    $scope.canEnableVolunteer = function() {
+      return !$scope.event.enableVolunteer && $scope.role === "owner";
     }
 
     //To switch the volunteer for event mode on/off
