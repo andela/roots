@@ -1,4 +1,4 @@
-<div id="preview" class="switch-container" data-ng-init="services()">
+<div id="preview" class="switch-container" ng-controller="eventViewCtrl" data-ng-init="services()">
   <div layout="column">
     <md-toolbar md-scroll-shrink id="contentMainDiv">
       <img ng-src="{{event.imageUrl}}" height='500px' width='100%' />
@@ -68,14 +68,15 @@
     </div>
   </div>
   <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-    <md-button class="md-raised" type="submit" ng-click="editEvent();" ng-show="canEdit">Edit Event</md-button>
-    <md-button class="md-raised" type="submit" ng-click="deleteEvent();" ng-show="canEdit">Delete event</md-button>
-    <md-button class="md-raised" type="submit" ng-click="publishEvent();" ng-show="canPublish">Publish event</md-button>
-    <md-button class="md-raised" type="submit" ng-click="manageTasks();" ng-show="canManageTasks">Manage event tasks</md-button>
+    <md-button class="md-raised" type="submit" ng-click="editEvent();" ng-show="isEventOwner()">Edit Event</md-button>
+    <md-button class="md-raised" type="submit" ng-click="deleteEvent();" ng-show="isEventOwner()">Delete event</md-button>
+    <md-button class="md-raised" type="submit" ng-click="publishEvent();" ng-show="canPublish()">Publish event</md-button>
+    <md-button class="md-raised" type="submit" ng-click="viewTasks();" ng-show="canManageTasks()">Manage event tasks</md-button>
+    <md-button class="md-raised" type="submit" ng-click="viewTasks();" ng-show="isTaskManager()">Manage assigned tasks</md-button>
+    <md-button class="md-raised" type="submit" ng-click="viewTasks();" ng-show="isVolunteer()">View schedule(s)</md-button>
   </section>
   <div class="md-toolbar-tools centre" layout-align="center">
+    <md-button class="md-raised" ng-click="showTasks();" ng-show="volunteerEnabled()">Volunteer</md-button>
     <md-button class="md-raised" ui-sref="user.moreEvents">More Events...</md-button>
   </div>
-</div>
-</div>
 </div>

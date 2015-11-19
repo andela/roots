@@ -46,5 +46,9 @@ module.exports = function(app) {
   router.route('/event/:event_id/reuse')
     .post(userCtrl.verifyToken, evtCtrl.reuseEvent);
 
+  //Swicth event volunteer mode
+  router.route('/event/:event_id/volunteer/switch-mode')
+    .post(userCtrl.verifyToken, evtCtrl.enableEventVolunteer);
+
   app.use('/api', router);
 }

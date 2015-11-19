@@ -22,6 +22,10 @@ var eventSchema = new mongoose.Schema({
   online: {
     type: Boolean,
     default: false
+  },
+  enableVolunteer: {
+    type: Boolean,
+    default: false
   },  
   venue: {
     name: String,
@@ -64,12 +68,6 @@ var eventSchema = new mongoose.Schema({
     },
     message: {
       type: String
-    }
-  }],
-  tasks: [{
-    task_ref: {
-      type: String,
-      ref: 'Task'
     }
   }]
 },{

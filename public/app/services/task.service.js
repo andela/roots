@@ -23,6 +23,14 @@ angular.module('eventApp')
       deleteTask: function(eventId, taskId) {
         var token = localStorage.getItem('userToken');
         return $http.delete("/api/event/" + eventId + "/task/" + taskId + "?token=" + token);
+      },
+      getAllUserTasks: function() {
+        var token = localStorage.getItem('userToken');
+        return $http.get("/api/user/tasks?token=" + token);
+      },
+      getAllUserEventTasks: function(eventId) {
+        var token = localStorage.getItem('userToken');
+        return $http.get("/api/event/" + eventId + "/user/tasks?token=" + token);
       }
     };
   }]);
