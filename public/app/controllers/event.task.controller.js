@@ -63,7 +63,7 @@ angular.module('eventApp')
                   return filtered;
                 });
 
-                $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile"
+                $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
               });
               //If event is viewed by an event task manager
             } else if ($scope.isTaskManager()) {
@@ -99,7 +99,9 @@ angular.module('eventApp')
                   }
 
                   getPendingVolunteersCalls.push(VolunteerService.getTaskPendingVolunteers(tasks[i]._id));
+
                 };
+
 
                 //Get list of users who have volunteered for any of the
                 //manager's tasks, but not added yet to the event
@@ -110,6 +112,7 @@ angular.module('eventApp')
                     volunteers.data.forEach(function(volunteer) {
                       volunteer.skills = volunteer.skills.toString();
                       $scope.pendingVolunteers.push(volunteer);
+
                     });
                   });
                 });
@@ -374,14 +377,13 @@ angular.module('eventApp')
             break;
           }
 
-
         }
 
       }).error(function(err, status) {
 
         processError(err, status);
       });
-    }
+    };
 
     $scope.deleteSchedule = function(taskId, volunteerId, scheduleId) {
 
@@ -526,11 +528,11 @@ angular.module('eventApp')
     //To determine if the enable volunteer or disable volunteer button to be rendered
     $scope.canDisableVolunteer = function() {
       return $scope.event.enableVolunteer && $scope.role === "owner";
-    }
+    };
 
     $scope.canEnableVolunteer = function() {
       return !$scope.event.enableVolunteer && $scope.role === "owner";
-    }
+    };
 
     //To switch the volunteer for event mode on/off
     $scope.switchVolunteerMode = function(mode) {
@@ -542,7 +544,7 @@ angular.module('eventApp')
 
         processError(err, status);
       });
-    }
+    };
 
     function parseDate(date) {
       return new Date(Date.parse(date));
