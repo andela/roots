@@ -47,22 +47,6 @@ angular.module('eventApp')
                 });
               });
 
-<<<<<<< HEAD
-              OrganizerService.getMyProfile().success(function(res) {
-
-                var filtered;
-                //Load all the team members of the event manager's organizer profile
-                $scope.staff = res.staff.map(function(member) {
-                  filtered = {};
-                  filtered.memberId = member._id;
-                  filtered.manager_ref = member.manager_ref._id;
-                  filtered.firstname = angular.lowercase(member.manager_ref.firstname);
-                  filtered.lastname = angular.lowercase(member.manager_ref.lastname);
-                  filtered.email = angular.lowercase(member.manager_ref.email);
-                  filtered.profilePic = member.manager_ref.profilePic;
-                  filtered.description = member.role;
-                  return filtered;
-=======
                 OrganizerService.getMyProfile().success(function(res) {
 
                   var filtered;
@@ -80,11 +64,8 @@ angular.module('eventApp')
                   });
 
                   $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
->>>>>>> refactor(frontend) task and volunteer process
                 });
 
-<<<<<<< HEAD
-                $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile"
               });
               //If event is viewed by an event task manager
             } else if ($scope.isTaskManager()) {
@@ -131,51 +112,6 @@ angular.module('eventApp')
                     volunteers.data.forEach(function(volunteer) {
                       volunteer.skills = volunteer.skills.toString();
                       $scope.pendingVolunteers.push(volunteer);
-=======
-                $scope.volunteers = [];
-                $scope.tasks = [];
-                $scope.schedule = {};
-                $scope.volunteer = {};
-                $scope.pendingVolunteers = [];
-
-                //Get all tasks assigned to the task manager
-                //which is populated by volunteers' details under each task
-                TaskService.getAllUserEventTasks($stateParams.event_id).success(function(tasks) {
-
-                  $scope.tasks = tasks;
-                 
-                  var getPendingVolunteersCalls = [];
-
-                  //Get all volunteers under manager's tasks, and add matching task(department)
-                  //details to each volunteer object, before adding the volunteer objects
-                  //to the scope volunteers array, from which a task manager can select a volunteer
-                  //to assign a schedule
-                  for (var i = 0; i < tasks.length; i++) {
-
-                    for (var j = 0; j < tasks[i].volunteers.length; j++) {
-                      var volunteer = {};
-                      volunteer = angular.copy(tasks[i].volunteers[j].volunteer_ref);
-                      volunteer.task = angular.lowercase(tasks[i].description);
-                      volunteer.taskId = tasks[i]._id;
-                      volunteer.user_ref.firstname = angular.lowercase(volunteer.user_ref.firstname);
-                      volunteer.user_ref.lastname = angular.lowercase(volunteer.user_ref.lastname);
-                      $scope.volunteers.push(volunteer);
-                    }
-
-                      getPendingVolunteersCalls.push(VolunteerService.getTaskPendingVolunteers(tasks[i]._id));
-                    }
-
-                  //Get list of users who have volunteered for any of the
-                  //manager's tasks, but not added yet to the event
-                  $q.all(getPendingVolunteersCalls).then(function(data){                    
-                 
-                    data.forEach(function(volunteers){
-
-                      volunteers.data.forEach(function(volunteer){
-                        volunteer.skills = volunteer.skills.toString();
-                        $scope.pendingVolunteers.push(volunteer);
-                      });
->>>>>>> refactor(frontend) task and volunteer process
                     });
                   });
                 });
@@ -191,18 +127,12 @@ angular.module('eventApp')
               //Get list of volunteer's task schedules
               VolunteerService.getAllMyEventVolunteers($stateParams.event_id).success(function(volunteers) {
 
-<<<<<<< HEAD
                 $scope.volunteers = volunteers;
               });
 
             }
           });
       };
-=======
-          }
-        });
-      }
->>>>>>> refactor(frontend) task and volunteer process
     };
 
     $rootScope.hideBtn = false;
@@ -445,7 +375,6 @@ angular.module('eventApp')
 
             break;
           }
-
 
         }
 
