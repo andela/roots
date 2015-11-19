@@ -403,9 +403,10 @@ angular.module('eventApp')
       }
       searchText = angular.lowercase(searchText);
 
+      //Filtering with the name variable allows user to search with firstname and lastname combined
       return $scope.users.filter(function(user) {
-
-        return (user.firstname.indexOf(searchText) === 0 || user.lastname.indexOf(searchText) === 0 || user.email.indexOf(searchText) === 0);
+        var name = user.firstname + " " + user.lastname;
+        return (user.firstname.indexOf(searchText) === 0 || user.lastname.indexOf(searchText) === 0 || name.indexOf(searchText) === 0 || user.email.indexOf(searchText) === 0);
       });
     };
 

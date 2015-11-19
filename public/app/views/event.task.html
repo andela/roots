@@ -332,6 +332,8 @@
   </div>
   <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
     <md-button class="md-raised" type="submit" ng-click="viewEvent();">Back</md-button>
+    <md-button class="md-raised" type="submit" ng-click="switchVolunteerMode(true);" ng-show="canEnableVolunteer()">Enable Volunteering</md-button>
+    <md-button class="md-raised" type="submit" ng-click="switchVolunteerMode(false);" ng-show="canDisableVolunteer()">Disable Volunteering</md-button>
   </section>
   <div class="md-toolbar-tools centre" layout-align="center">
     <md-button class="md-raised" ui-sref="user.moreEvents">More Events...</md-button>

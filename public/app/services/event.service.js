@@ -49,6 +49,10 @@ angular.module('eventApp')
       publishEvent: function(eventId) {   
           var token = localStorage.getItem('userToken');       
           return $http.put("/api/event/" + eventId + "/launch?token=" + token);
+      },
+      switchVolunteerMode: function(eventId, mode) {   
+          var token = localStorage.getItem('userToken');       
+          return $http.post("/api/event/" + eventId + "/volunteer/switch-mode?token=" + token, {mode: mode});
       }
     };
   }]);

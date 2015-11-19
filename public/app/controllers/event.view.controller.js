@@ -25,10 +25,22 @@ angular.module('eventApp')
                 $scope.organizer.phoneNumber1 = $scope.event.user_ref.phoneNumber1;
               });
           }
+
+          //API call to retrieve all event tasks
+          //So as to hide or show the volunteer for event button depending on if there is any event tasks
+          TaskService.getAllTasks($stateParams.event_id).then(function(tasks){
+            if (tasks) {
+              $scope.tasks = tasks.data;
+
+              //departments global variable holds event tasks so that it can be referenced in the controller for volunteer for event dialog box, avoiding need to make another getAllTasks API call
+              departments = $scope.tasks;
+            }
+          });
         });
     };
 
     $rootScope.hideBtn = false;
+    var departments;
 
     
       $scope.editEvent = function() {
@@ -61,12 +73,9 @@ angular.module('eventApp')
         });
       };
 
-      function displayTasks($scope, $mdDialog, $mdToast){
-        TaskService.getAllTasks($stateParams.event_id).then(function(tasks){
-          if (tasks) {
-            $scope.tasks = tasks.data;
-          }
-        });
+      function displayTasks($scope, $mdDialog, $mdToast){   
+
+        $scope.tasks = departments;    
 
         $scope.volunteerForTask = function(volunteer) {
           
@@ -121,6 +130,11 @@ angular.module('eventApp')
       });
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     };
+
+    //To determine if the volunteer for event button should be rendered
+    $scope.volunteerEnabled = function() {
+      return $scope.event.enableVolunteer && $scope.tasks.length;
+    }
 
     function processError(err, status) {
 

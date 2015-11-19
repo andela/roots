@@ -595,4 +595,43 @@ EventController.prototype.reuseEvent = function(req, res) {
   });
 }
 
+//Swicth enable volunteer mode for an event
+EventController.prototype.enableEventVolunteer = function(req, res) {
+
+  var eventId = req.params.event_id;
+  var mode = req.body.mode;
+  var userId = req.decoded._id;
+
+  mode = mode ? true : false;
+
+  Event.findById(eventId, function(err, evt) {
+
+    if (evt.user_ref.toString() !== userId.toString()) {
+
+      return res.status(401).send({
+        success: false,
+        message: 'Unauthorized!'
+      });
+    } else {
+
+      Event.findByIdAndUpdate(eventId, {
+        $set: {
+          enableVolunteer: mode
+        }
+      }, function(err, evt) {
+
+        if (err) {
+          return res.status(500).json(err);
+        } else {
+
+          return res.json({
+            success: true,
+            message: 'Volunteer mode swicthed!'
+          });
+        }
+      });
+    }
+  });
+}
+
 module.exports = EventController;
