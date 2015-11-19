@@ -161,7 +161,8 @@
                               <md-button class="md-fab md-mini" title="Remove volunteer" ng-click="removeVolunteerFromTask(task._id, volunteer.volunteer_ref._id, true)">-</md-button>
                             </div>
                             <div layout="column" layout-padding ng-repeat="schedule in volunteer.volunteer_ref.schedules">
-                              <md-card>
+                              <md-card >
+                              <div layout layout-align="center center" id="schedule-card">
                                 <md-card-content>
                                   <h5>Schedule</h5>
                                   <div layout="column" layout-padding>
@@ -203,6 +204,7 @@
                                     </div>
                                   </div>
                                 </md-card-content>
+                              </div>
                               </md-card>
                             </div>
                           </div>
