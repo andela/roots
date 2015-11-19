@@ -101,7 +101,9 @@ angular.module('eventApp')
                   }
 
                   getPendingVolunteersCalls.push(VolunteerService.getTaskPendingVolunteers(tasks[i]._id));
+
                 };
+
 
                 //Get list of users who have volunteered for any of the
                 //manager's tasks, but not added yet to the event
@@ -112,6 +114,7 @@ angular.module('eventApp')
                     volunteers.data.forEach(function(volunteer) {
                       volunteer.skills = volunteer.skills.toString();
                       $scope.pendingVolunteers.push(volunteer);
+
                     });
                   });
                 });
@@ -375,7 +378,6 @@ angular.module('eventApp')
 
             break;
           }
-
         }
 
       }).error(function(err, status) {
