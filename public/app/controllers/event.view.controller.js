@@ -41,6 +41,8 @@ angular.module('eventApp')
 
     $rootScope.hideBtn = false;
     var departments;
+    $scope.event = {};
+    $scope.tasks = {};
 
     
       $scope.editEvent = function() {
@@ -134,7 +136,7 @@ angular.module('eventApp')
     //To determine if the volunteer for event button should be rendered
     $scope.volunteerEnabled = function() {
       return $scope.event.enableVolunteer && $scope.tasks.length;
-    }
+    };
 
     function processError(err, status) {
 

@@ -47,25 +47,23 @@ angular.module('eventApp')
                 });
               });
 
-                OrganizerService.getMyProfile().success(function(res) {
+              OrganizerService.getMyProfile().success(function(res) {
 
-                  var filtered;
-                  //Load all the team members of the event manager's organizer profile
-                  $scope.staff = res.staff.map(function(member) {
-                    filtered = {};
-                    filtered.memberId = member._id;
-                    filtered.manager_ref = member.manager_ref._id;
-                    filtered.firstname = angular.lowercase(member.manager_ref.firstname);
-                    filtered.lastname = angular.lowercase(member.manager_ref.lastname);
-                    filtered.email = angular.lowercase(member.manager_ref.email);
-                    filtered.profilePic = member.manager_ref.profilePic;
-                    filtered.description = member.role;
-                    return filtered;
-                  });
-
-                  $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
+                var filtered;
+                //Load all the team members of the event manager's organizer profile
+                $scope.staff = res.staff.map(function(member) {
+                  filtered = {};
+                  filtered.memberId = member._id;
+                  filtered.manager_ref = member.manager_ref._id;
+                  filtered.firstname = angular.lowercase(member.manager_ref.firstname);
+                  filtered.lastname = angular.lowercase(member.manager_ref.lastname);
+                  filtered.email = angular.lowercase(member.manager_ref.email);
+                  filtered.profilePic = member.manager_ref.profilePic;
+                  filtered.description = member.role;
+                  return filtered;
                 });
 
+                $scope.searchLabel = $scope.staff.length ? "Search team member and assign task..." : "Add team members to organizer profile";
               });
               //If event is viewed by an event task manager
             } else if ($scope.isTaskManager()) {
@@ -378,6 +376,7 @@ angular.module('eventApp')
 
             break;
           }
+
         }
 
       }).error(function(err, status) {
@@ -529,11 +528,11 @@ angular.module('eventApp')
     //To determine if the enable volunteer or disable volunteer button to be rendered
     $scope.canDisableVolunteer = function() {
       return $scope.event.enableVolunteer && $scope.role === "owner";
-    }
+    };
 
     $scope.canEnableVolunteer = function() {
       return !$scope.event.enableVolunteer && $scope.role === "owner";
-    }
+    };
 
     //To switch the volunteer for event mode on/off
     $scope.switchVolunteerMode = function(mode) {
@@ -545,7 +544,7 @@ angular.module('eventApp')
 
         processError(err, status);
       });
-    }
+    };
 
     function parseDate(date) {
       return new Date(Date.parse(date));
