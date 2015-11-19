@@ -17,11 +17,14 @@ var VolunteerController = function() {};
 VolunteerController.prototype.volunteerForTask = function(req, res) {
 
   var taskId = req.params.task_id;
+  var skills = req.body.skills;
   var volunteerId = req.decoded._id; //id of the user volunteering
   var eventId;
   var eventMail;
   var eventName;
   var volunteerName;
+  var managerId;
+  var managerEmail;
 
   //Check if user has already volunteered for same task
   Volunteer.findOne({
@@ -48,90 +51,88 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
             message: 'Invalid task id!'
           });
         } else {
+          managerId = task.manager_ref;
 
-          eventId = task.event_ref;
+          User.findById(managerId, function(err, manager) {
+            managerEmail = manager.email;
+            eventId = task.event_ref;
 
-          //Validate if event specified for the task is valid
-          Event.findById(eventId, function(err, evt) {
+            //Validate if event specified for the task is valid
+            Event.findById(eventId, function(err, evt) {
 
-            if (err) {
-              return res.status(500).send(err);
-            } else if (!evt) {
-              return res.status(422).send({
-                success: false,
-                message: 'Task event not found!'
-              });
-            } else {
+              if (err) {
+                return res.status(500).send(err);
+              } else if (!evt) {
+                return res.status(422).send({
+                  success: false,
+                  message: 'Task event not found!'
+                });
+              } else {
+                eventName = evt.name;
 
-              eventName = evt.name;
+                //Validate event manager specified
+                User.findById(evt.user_ref, function(err, user) {
 
-              //Validate event manager specified
-              User.findById(evt.user_ref, function(err, user) {
+                  if (err) {
+                    return res.status(500).send(err);
+                  } else if (!user) {
+                    return res.status(422).send({
+                      success: false,
+                      message: 'Could not find event creator!'
+                    });
+                  } else {
+                    eventMail = user.email;
+                    User.findById(volunteerId, function(err, user) {
 
-                if (err) {
-                  return res.status(500).send(err);
-                } else if (!user) {
-                  return res.status(422).send({
-                    success: false,
-                    message: 'Could not find event creator!'
-                  });
-                } else {
+                      if (err) {
+                        return res.status(500).send(err);
+                      } else if (!user) {
+                        return res.status(422).send({
+                          success: false,
+                          message: 'Invalid volunteer id!'
+                        });
+                      } else {
 
-                  eventMail = user.email;
+                        volunteerName = user.firstname;
+                        var volunteer = new Volunteer();
 
-                  User.findById(volunteerId, function(err, user) {
+                        volunteer.event_ref = eventId;
+                        volunteer.task_ref = taskId;
+                        volunteer.user_ref = volunteerId;
+                        volunteer.skills = skills;
 
-                    if (err) {
-                      return res.status(500).send(err);
-                    } else if (!user) {
-                      return res.status(422).send({
-                        success: false,
-                        message: 'Invalid volunteer id!'
-                      });
-                    } else {
+                        //Create a volunteer object, which is linked to a task
+                        volunteer.save(function(err) {
 
-                      volunteerName = user.firstname;
-                      var volunteer = new Volunteer();
-
-                      volunteer.event_ref = eventId;
-                      volunteer.task_ref = taskId;
-                      volunteer.user_ref = volunteerId;
-
-                      //Create a volunteer object, which is linked to a task
-                      volunteer.save(function(err) {
-
-                        if (err) {
-                          return res.status(500).send(err);
-                        } else {
-
-                          //Send mail to the volunteer
-                          var mailOptions = {
-                            to: eventMail,
-                            from: 'World tree ✔ <no-reply@worldtreeinc.com>',
-                            subject: volunteerName + ' volunteered for ' + eventName,
-                            text: '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b>.',
-                            html: 'Hello,\n\n' +
-                              '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b>.'
-                          };
-
-                          utils.sendMail(mailOptions);
-
-                          return res.json(volunteer);
-                        }
-                      });
-
-                    }
-                  });
-                }
-
-              });
-            }
+                          if (err) {
+                            return res.status(500).send(err);
+                          } else {
+                            //Send mail to the volunteer
+                            var mailOptions = {
+                              to: [eventMail, managerEmail],
+                              from: 'World tree :heavy_check_mark: <no-reply@worldtreeinc.com>',
+                              subject: volunteerName + ' volunteered for ' + eventName,
+                              text: volunteerName + ' volunteered for ' + eventName,
+                              html: 'Hello,\n\n' +
+                                '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b> .<br/> His skills are ' + skills + '. You can contact <b>' + volunteerName + '</b> at <b>' + managerEmail + '</b>.'
+                                
+                            };
+                            utils.sendMail(mailOptions);
+                            return res.json({success: true});
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            });
           });
         }
       });
     }
   });
-}
+};
 
 //API call for an event manager to accept a volunteer request
 
@@ -179,7 +180,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
             } else if (!user) {
               return res.status(422).send({
                 success: false,
-                message: 'Could not found volunteer details!'
+                message: 'Could not find volunteer details!'
               });
             } else {
 
@@ -219,8 +220,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                       Task.findByIdAndUpdate(taskId, {
                         $push: {
                           volunteers: {
-                            volunteer_ref: volunteerId,
-                            user_ref: userId
+                            volunteer_ref: volunteerId
                           }
                         }
                       }, {
@@ -258,9 +258,9 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                                 to: volunteerEmail,
                                 from: 'World tree ✔ <no-reply@worldtreeinc.com>',
                                 subject: 'You have been added as volunteer to ' + eventName + ' event',
-                                text: 'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for your sacrifice.',
+                                text: 'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for volunteering.',
                                 html: 'Hello,\n\n' +
-                                  'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for your sacrifice.'
+                                  'You have been added as volunteer to <b>' + taskDescription + '</b> of <b>' + eventName + '</b> event.\nThank you for volunteering.'
                               };
 
                               utils.sendMail(mailOptions);
@@ -283,7 +283,7 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
       });
     }
   });
-}
+};
 
 
 //API call for volunteer or event manager to cancel volunteering
@@ -334,7 +334,7 @@ VolunteerController.prototype.removeVolunteerFromTask = function(req, res) {
       });
     }
   });
-}
+};
 
 //API call for an event manager to schedule a task to a volunteer
 
@@ -501,7 +501,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
       });
     }
   });
-}
+};
 
 VolunteerController.prototype.editSchedule = function(req, res) {
 
@@ -578,7 +578,7 @@ VolunteerController.prototype.deleteSchedule = function(req, res) {
       });
     }
   });
-}
+};
 
 //Get list of users who volunteered for a task
 VolunteerController.prototype.getTaskVolunteers = function(req, res) {
@@ -616,7 +616,7 @@ VolunteerController.prototype.getTaskVolunteers = function(req, res) {
       });
     }
   });
-}
+};
 
 //Get list of users who were added to an event
 VolunteerController.prototype.getEventVolunteers = function(req, res) {
@@ -655,7 +655,7 @@ VolunteerController.prototype.getEventVolunteers = function(req, res) {
       });
     }
   });
-}
+};
 
 VolunteerController.prototype.scheduleReminder = function() {
 
@@ -747,7 +747,7 @@ VolunteerController.prototype.scheduleReminder = function() {
       });
     }
   });
-}
+};
 
 //Get all task schedules for a user
 VolunteerController.prototype.getVolunteeredTasks = function(req, res) {
@@ -788,39 +788,51 @@ VolunteerController.prototype.getVolunteeredTasks = function(req, res) {
       });
     }
   });
-}
+};
 
 //Get a volunteer's task's schedules
 VolunteerController.prototype.getVolunteeredTask = function(req, res) {
 
   var volunteerId = req.params.volunteer_id;
 
-  Volunteer.findById(volunteerId, function(err, voluntr) {
+  Volunteer.findById(volunteerId, function(err, volunteer) {
 
     if (err) {
 
       return res.status(500).send(err);
-    } else if (!voluntr) {
+    } else if (!volunteer) {
 
       return res.json([]);
     } else {
 
-      Event.populate(voluntr, {
+      Event.populate(volunteer, {
         path: 'event_ref'
-      }, function(err1, voluntr1) {
+      }, function(err1, eventPopulatedVolunteer) {
 
         if (err) {
           res.status(500).send(err);
         } else {
 
-          Task.populate(voluntr1, {
+          Task.populate(eventPopulatedVolunteer, {
             path: 'task_ref'
-          }, function(err1, voluntr2) {
+          }, function(err1, taskPopulatedVolunteer) {
 
             if (err1) {
               return res.status(500).send(err1);
             } else {
-              return res.json(voluntr2);
+
+
+              User.populate(taskPopulatedVolunteer, {
+                path: 'user_ref'
+              }, function(err1, userPopulatedVolunteer) {
+
+                if (err1) {
+                  return res.status(500).send(err1);
+                } else {
+
+                  return res.json(userPopulatedVolunteer);
+                }
+              });
             }
           });
 
@@ -828,10 +840,10 @@ VolunteerController.prototype.getVolunteeredTask = function(req, res) {
       });
     }
   });
-}
+};
 
 //Get all volunteer's tasks' schedules for an event
-VolunteerController.prototype.getVolunteeredTask = function(req, res) {
+VolunteerController.prototype.getEventVolunteersTaskSchedules = function(req, res) {
 
   var eventId = req.params.event_id;
   var userId = req.decoded._id;
@@ -865,7 +877,50 @@ VolunteerController.prototype.getVolunteeredTask = function(req, res) {
             if (err1) {
               return res.status(500).send(err1);
             } else {
-              return res.json(voluntr2);
+              return res.json(voluntrs2);
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+//Get all event volunteers that are yet to be added to a task
+VolunteerController.prototype.getPendingVolunteers = function(req, res) {
+
+  var taskId = req.params.task_id;
+
+  Volunteer.find({
+    task_ref: taskId,
+    added: false
+  }, function(err, volunteers) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!volunteers) {
+
+      return res.json([]);
+    } else {
+
+      Task.populate(volunteers, {
+        path: 'task_ref'
+      }, function(err1, taskPopulatedVolunteers) {
+
+        if (err1) {
+          return res.status(500).send(err1);
+        } else {
+
+          User.populate(taskPopulatedVolunteers, {
+            path: 'user_ref'
+          }, function(err1, userPopulatedVolunteers) {
+
+            if (err1) {
+              return res.status(500).send(err1);
+            } else {
+
+              return res.json(userPopulatedVolunteers);
             }
           });
         }

@@ -37,17 +37,17 @@
      //Get all task schedules for a user
      .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTasks);
 
-   router.route('/tasks/volunteers/volunteer_id')
+   router.route('/tasks/volunteers/:volunteer_id')
      //Get a volunteer's task's schedules
      .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTask);
 
-   router.route('/tasks/volunteers/volunteer_id')
-     //Get a volunteer's task's schedules
-     .get(userCtrl.verifyToken, volunteerCtrl.getVolunteeredTask);
-
-     router.route('/event/:event_id/user/volunteers')
+   router.route('/event/:event_id/user/volunteers')
      //Get all volunteer's tasks' schedules for an event
-     .get(userCtrl.verifyToken, volunteerCtrl.getEventVolunteers);
+     .get(userCtrl.verifyToken, volunteerCtrl.getEventVolunteersTaskSchedules);
+
+   router.route('/task/:task_id/volunteers/pending')
+     //Get all event volunteers that are yet to be added to a task
+     .get(userCtrl.verifyToken, volunteerCtrl.getPendingVolunteers);
 
    app.use('/api', router);
  }
