@@ -19,6 +19,10 @@ angular.module('eventApp')
         var token = localStorage.getItem('userToken');
         return $http.get("/api/task/" + taskId + "/volunteers/pending?token=" + token);
       },
+      getEventPendingVolunteers: function(eventId) {
+        var token = localStorage.getItem('userToken');
+        return $http.get("/api/event/" + eventId + "/volunteers/pending?token=" + token);
+      },
       addVolunteerToTask: function(taskId, volunteerId) {
         var token = localStorage.getItem('userToken');
         return $http.post("/api/task/" + taskId + "/volunteers/" + volunteerId + "?token=" + token);

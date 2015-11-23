@@ -6,6 +6,8 @@ angular.module('eventApp')
     $scope.staff = [];
     $scope.searchText = "";
     $scope.event = {};
+    $scope.schedule = {};
+    $scope.prevVolunteer;
 
     $scope.newTask = {
 
@@ -29,6 +31,10 @@ angular.module('eventApp')
               //Get all tasks created for the event
               TaskService.getAllTasks($stateParams.event_id).success(function(tasks) {
 
+                $scope.schedule = {};
+                $scope.volunteer = {};
+                $scope.pendingVolunteers = [];
+
                 var user;
 
                 //Map task with task manager user details for 
@@ -44,6 +50,15 @@ angular.module('eventApp')
                   task.endDate = parseDate(task.endDate);
 
                   return task;
+                });
+
+                VolunteerService.getEventPendingVolunteers($stateParams.event_id).success(function(volunteers) {
+
+                  volunteers.forEach(function(volunteer) {
+
+                    volunteer.skills = volunteer.skills.toString();
+                    $scope.pendingVolunteers.push(volunteer);
+                  });
                 });
               });
 
@@ -68,7 +83,6 @@ angular.module('eventApp')
               //If event is viewed by an event task manager
             } else if ($scope.isTaskManager()) {
 
-              $scope.volunteers = [];
               $scope.tasks = [];
               $scope.schedule = {};
               $scope.volunteer = {};
@@ -82,21 +96,8 @@ angular.module('eventApp')
 
                 var getPendingVolunteersCalls = [];
 
-                //Get all volunteers under manager's tasks, and add matching task(department)
-                //details to each volunteer object, before adding the volunteer objects
-                //to the scope volunteers array, from which a task manager can select a volunteer
-                //to assign a schedule
+                //Get list of tasks assigned to a task manager, and pull list of pending volunteers for those tasks
                 for (var i = 0; i < tasks.length; i++) {
-
-                  for (var j = 0; j < tasks[i].volunteers.length; j++) {
-                    var volunteer = {};
-                    volunteer = angular.copy(tasks[i].volunteers[j].volunteer_ref);
-                    volunteer.task = angular.lowercase(tasks[i].description);
-                    volunteer.taskId = tasks[i]._id;
-                    volunteer.user_ref.firstname = angular.lowercase(volunteer.user_ref.firstname);
-                    volunteer.user_ref.lastname = angular.lowercase(volunteer.user_ref.lastname);
-                    $scope.volunteers.push(volunteer);
-                  }
 
                   getPendingVolunteersCalls.push(VolunteerService.getTaskPendingVolunteers(tasks[i]._id));
 
@@ -116,9 +117,6 @@ angular.module('eventApp')
                     });
                   });
                 });
-
-                $scope.searchLabel = $scope.volunteers.length ? "Select volunteer to assign task" : "No volunteer found";
-
               });
 
               //If viewed by a task volunteer
@@ -151,6 +149,7 @@ angular.module('eventApp')
         .success(function(res) {
           var newTask = angular.copy($scope.newTask);
           newTask._id = res._id;
+          newTask.volunteers = [];
           $scope.tasks.push(newTask);
           $scope.newTask = {};
           $window.alert("Task added!");
@@ -230,18 +229,6 @@ angular.module('eventApp')
               volunteer_ref: volunteer
             });
 
-            //Add matching task(department)
-            //details to the volunteer object, before adding the volunteer object
-            //to the scope volunteers array, from which a task manager can select a volunteer
-            //to assign a schedule
-            var selectedVolunteer = angular.copy(volunteer);
-
-            selectedVolunteer.task = angular.lowercase($scope.tasks[i].description);
-            selectedVolunteer.taskId = $scope.tasks[i]._id;
-            selectedVolunteer.user_ref.firstname = angular.lowercase(selectedVolunteer.user_ref.firstname);
-            selectedVolunteer.user_ref.lastname = angular.lowercase(selectedVolunteer.user_ref.lastname);
-            $scope.volunteers.push(selectedVolunteer);
-
             var idx = -1;
             for (var j = 0; j < $scope.pendingVolunteers.length; j++) {
 
@@ -294,24 +281,6 @@ angular.module('eventApp')
             }
           }
 
-          idx = -1;
-
-          for (var i = 0; i < $scope.volunteers.length; i++) {
-
-            if ($scope.volunteers[i]._id === volunteerId) {
-
-              idx = i;
-
-              break;
-            }
-
-          }
-
-          if (idx > -1) {
-
-            $scope.volunteers.splice(idx, 1);
-          }
-
         } else {
 
           var idx = -1;
@@ -342,88 +311,63 @@ angular.module('eventApp')
       });
     };
 
-    $scope.addTaskSchedule = function() {
+    $scope.showNewSchedule = function(taskId, volunteer) {
+
+      if ($scope.prevVolunteer) {
+        $scope.prevVolunteer.newSchedule = false;
+      }
+
+      volunteer.newSchedule = true;
+      $scope.prevVolunteer = volunteer;
+      $scope.schedule = {};
+      $scope.schedule.taskId = taskId;
+      $scope.schedule.volunteerId = volunteer.volunteer_ref._id;
+
+    }
+
+    $scope.addNewSchedule = function() {
 
       //API call to add a schedule
-      VolunteerService.addTaskSchedule($scope.volunteer.taskId, $scope.volunteer._id, $scope.schedule).success(function(res) {
+      VolunteerService.addTaskSchedule($scope.schedule.taskId, $scope.schedule.volunteerId, $scope.schedule).success(function(res) {
 
         //On success assign the id of the newly created schedule to the scope schedule object
         $scope.schedule._id = res._id;
 
-        //Add a schedule to the volunteer selected from the auto complete field
-        //Navigate through the tasks array to get which task(department) the volunteer is assigned to
-        for (var i = 0; i < $scope.tasks.length; i++) {
-
-          if ($scope.tasks[i]._id === $scope.volunteer.taskId) {
-            var idx = -1;
-            //Navigate through the volunteers array of the matching task
-            //to retrieve the actual volunteer object in the tasks array
-            for (var j = 0; j < $scope.tasks[i].volunteers.length; j++) {
-
-              if ($scope.tasks[i].volunteers[j].volunteer_ref._id === $scope.volunteer._id) {
-
-                //Initialize the volunteer's schedule field with [] if it is undefined
-                $scope.tasks[i].volunteers[j].volunteer_ref.schedules = $scope.tasks[i].volunteers[j].volunteer_ref.schedules || [];
-
-                //Push the newly created schedule details to the schedules array of the volunteer object
-                $scope.tasks[i].volunteers[j].volunteer_ref.schedules.push(angular.copy($scope.schedule));
-                $scope.schedule = {};
-                $scope.volunteer = {};
-                $window.alert('Schedule added');
-                break;
-              }
-            }
-
-            break;
-          }
-
-        }
+        //Copy the newly created schedule into the schedules array of the volunteer
+        $scope.prevVolunteer.volunteer_ref.schedules = $scope.prevVolunteer.volunteer_ref.schedules || [];
+        $scope.prevVolunteer.volunteer_ref.schedules.push(angular.copy($scope.schedule));
+        $scope.schedule = {};
+        //Hide the new schedule fields inside the volunteer box
+        $scope.prevVolunteer.newSchedule = false;
+        $window.alert('Schedule added');
 
       }).error(function(err, status) {
-
         processError(err, status);
       });
-    };
+    }
 
-    $scope.deleteSchedule = function(taskId, volunteerId, scheduleId) {
+    $scope.deleteSchedule = function(volunteer, scheduleId) {
 
       //API call to delete a volunteer's schedule
-      VolunteerService.deleteSchedule(volunteerId, scheduleId).success(function(res) {
-        //Navigate through the tasks array to get which task(department) the volunteer is assigned to 
-        for (var i = 0; i < $scope.tasks.length; i++) {
+      VolunteerService.deleteSchedule(volunteer.volunteer_ref._id, scheduleId).success(function(res) {
 
-          if ($scope.tasks[i]._id === taskId) {
+        var idx = -1;
+        //Navigate through the schedules array of the volunteer object to get and remove the deleted schedule
+        for (var k = 0; k < volunteer.volunteer_ref.schedules.length; k++) {
 
-            var idx = -1;
+          if (volunteer.volunteer_ref.schedules[k]._id === scheduleId) {
 
-            //Navigate through the volunteers array of the task object to get the volunteer object from the tasks array
-            for (var j = 0; j < $scope.tasks[i].volunteers.length; j++) {
-
-              if ($scope.tasks[i].volunteers[j].volunteer_ref._id === volunteerId) {
-
-                var idx = -1;
-                //Navigate through the schedules array of the volunteer object to get and remove the deleted schedule
-                for (var k = 0; k < $scope.tasks[i].volunteers[j].volunteer_ref.schedules.length; k++) {
-
-                  if ($scope.tasks[i].volunteers[j].volunteer_ref.schedules[k]._id === scheduleId) {
-
-                    idx = k;
-                    break;
-                  }
-                }
-
-                if (idx > -1) {
-
-                  $scope.tasks[i].volunteers[j].volunteer_ref.schedules.splice(idx, 1);
-                  $window.alert('Schedule deleted');
-                }
-                break;
-              }
-            }
-
+            idx = k;
             break;
           }
         }
+
+        if (idx > -1) {
+
+          volunteer.volunteer_ref.schedules.splice(idx, 1);
+          $window.alert('Schedule deleted');
+        }
+
 
       }).error(function(err, status) {
 
@@ -441,6 +385,23 @@ angular.module('eventApp')
         processError(err, status);
       });
     };
+
+    $scope.copySchedule = function(taskId, volunteer, schedule) {
+
+      if ($scope.prevVolunteer) {
+        $scope.prevVolunteer.newSchedule = false;
+      }
+
+      volunteer.newSchedule = true;
+      $scope.prevVolunteer = volunteer;
+      $scope.schedule = {};
+      $scope.schedule.description = schedule.description;
+      $scope.schedule.endDate = schedule.endDate;
+      $scope.schedule.startDate = schedule.startDate;
+      $scope.schedule.taskId = taskId;
+      $scope.schedule.volunteerId = volunteer.volunteer_ref._id;
+
+    }
 
     function processError(err, status) {
 
@@ -475,27 +436,6 @@ angular.module('eventApp')
     $scope.selectedUserChange = function(user) {
       $scope.newTask = angular.extend({}, user);
 
-    };
-
-    $scope.selectedVolunteerChange = function(volunteer) {
-      $scope.volunteer = angular.extend({}, volunteer);
-
-    };
-
-
-    $scope.volunteerSearch = function(searchText) {
-
-      if (!searchText || searchText === "") {
-        return $scope.volunteers;
-      }
-      searchText = angular.lowercase(searchText);
-
-      return $scope.volunteers.filter(function(volunteer) {
-
-        //Filtering with the name variable allows user to search with firstname and lastname combined
-        var name = volunteer.user_ref.firstname + " " + volunteer.user_ref.lastname;
-        return (volunteer.user_ref.firstname.indexOf(searchText) === 0 || volunteer.user_ref.lastname.indexOf(searchText) === 0 || name.indexOf(searchText) === 0 || volunteer.user_ref.email.indexOf(searchText) === 0);
-      });
     };
 
     $scope.userSearch = function(searchText) {

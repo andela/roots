@@ -510,7 +510,7 @@ VolunteerController.prototype.addSchedule = function(req, res) {
                           }
 
                           var scheduleDetail = "<strong>" + schedule.description + "</strong>" + ": between <strong>" + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
-                          scheduleDetail += "</strong> and <strong>" + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "</strong>";
+                          scheduleDetail += "UTC</strong> and <strong>" + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "UTC</strong>";
 
                           //Send notification to volunteer
                           var mailOptions = {
@@ -754,7 +754,7 @@ VolunteerController.prototype.scheduleReminder = function() {
                   volunteer.schedules.forEach(function(schedule) {
 
                     schedules += schedule.description + ": between " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.startDate);
-                    schedules += " and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "<br/>"
+                    schedules += "UTC and " + moment().format('ddd, DD, MMM, YYYY HH:mm ZZ', schedule.endDate) + "UTC<br/>"
                   });
 
                   //Send reminder to volunteer
@@ -939,6 +939,49 @@ VolunteerController.prototype.getPendingVolunteers = function(req, res) {
 
   Volunteer.find({
     task_ref: taskId,
+    added: false
+  }, function(err, volunteers) {
+
+    if (err) {
+
+      return res.status(500).send(err);
+    } else if (!volunteers) {
+
+      return res.json([]);
+    } else {
+
+      Task.populate(volunteers, {
+        path: 'task_ref'
+      }, function(err1, taskPopulatedVolunteers) {
+
+        if (err1) {
+          return res.status(500).send(err1);
+        } else {
+
+          User.populate(taskPopulatedVolunteers, {
+            path: 'user_ref'
+          }, function(err1, userPopulatedVolunteers) {
+
+            if (err1) {
+              return res.status(500).send(err1);
+            } else {
+
+              return res.json(userPopulatedVolunteers);
+            }
+          });
+        }
+      });
+    }
+  });
+}
+
+//Get all event volunteers that are yet to be added
+VolunteerController.prototype.getAllPendingVolunteers = function(req, res) {
+
+  var eventId = req.params.event_id;
+
+  Volunteer.find({
+    event_ref: eventId,
     added: false
   }, function(err, volunteers) {
 

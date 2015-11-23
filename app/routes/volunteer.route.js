@@ -49,5 +49,9 @@
      //Get all event volunteers that are yet to be added to a task
      .get(userCtrl.verifyToken, volunteerCtrl.getPendingVolunteers);
 
+   router.route('/event/:event_id/volunteers/pending')
+     //Get all event volunteers that are yet to be added
+     .get(userCtrl.verifyToken, volunteerCtrl.getAllPendingVolunteers);
+
    app.use('/api', router);
  }
