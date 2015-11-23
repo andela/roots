@@ -5,6 +5,7 @@ var config = require('../../config/config');
 var User = require('../models/user.model');
 var Organizer = require('../models/organizer.model');
 var Volunteer = require('../models/volunteer.model');
+var Event = require('../models/event.model');
 var Task = require('../models/task.model');
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
@@ -96,6 +97,60 @@ UserController.prototype.verifyToken = function(req, res, next) {
     return res.status(403).send({
       success: false,
       message: 'No token provided.'
+    });
+
+  }
+};
+
+UserController.prototype.checkUserRoles = function(req, res, next) {
+  //get volunteer Id
+  var volunteerId = req.params.volunteer_id;
+
+  if (volunteerId) {
+    Volunteer.findById(volunteerId, function(err, volunteer) {
+      if (err) {
+        return res.status(422).send({
+          success: false,
+          message: 'Error retrieving volunteer details.'
+        });
+      } else if (volunteer) {
+        Event.findById(volunteer.event_ref, function(err, eventObj) {
+          if (err) {
+            return res.status(422).send({
+              success: false,
+              message: 'Event does not exist.'
+            });
+            //pass middleware if user is event owner
+          } else if (eventObj && eventObj.user_ref.toString() === req.decoded._id) {
+            next();
+          } else {
+            //find task tied to volunteer
+            Task.findById(volunteer.task_ref, function(err, taskObj) {
+              if (err) {
+                return res.status(422).send({
+                  success: false,
+                  message: 'Task does not exist.'
+                });
+                //pass middleware if user is task manager
+              } else {
+                if (taskObj && taskObj.manager_ref.toString() === req.decoded._id) {
+                  next();
+                } else {
+                  return res.status(422).send({
+                    success: false,
+                    message: 'Unauthorized'
+                  });
+                }
+              }
+            });
+          }
+        });
+      } else {
+        return res.status(422).send({
+          success: false,
+          message: 'Volunteer not found!'
+        });
+      }
     });
 
   }
@@ -259,7 +314,7 @@ UserController.prototype.getCurrentUser = function(req, res) {
     }
 
     if (user) {
-      if(user.organizer_ref) {
+      if (user.organizer_ref) {
         Organizer.populate(user, {
           'path': 'organizer_ref'
         }, function(err, user2) {

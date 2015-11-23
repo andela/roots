@@ -15,9 +15,9 @@
 
    router.route('/task/:task_id/volunteers/:volunteer_id')
      //Accept user as volunteer for task
-     .post(userCtrl.verifyToken, volunteerCtrl.addVolunteerToTask)
+     .post(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.addVolunteerToTask)
      //Delete volunteer from task
-     .delete(userCtrl.verifyToken, volunteerCtrl.removeVolunteerFromTask);
+     .delete(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.removeVolunteerFromTask);
 
    router.route('/task/:task_id/volunteers/:volunteer_id/schedules')
      //Add schedule to volunteer
