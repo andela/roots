@@ -2,6 +2,9 @@
 angular.module('eventApp')
   .controller('eventViewCtrl', ['$scope', '$stateParams', '$location', 'EventService', 'OrganizerService', '$rootScope', '$state', '$sce', 'VolunteerService', '$mdDialog', 'TaskService', '$mdToast', function($scope, $stateParams, $location, EventService, OrganizerService, $rootScope, $state, $sce, VolunteerService, $mdDialog, TaskService, $mdToast) {
 
+    $scope.event = {};
+    $scope.tasks = [];
+
     $scope.services = function() {
 
       EventService.getEvent($stateParams.event_id)

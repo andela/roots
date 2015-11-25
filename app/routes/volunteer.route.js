@@ -15,19 +15,19 @@
 
    router.route('/task/:task_id/volunteers/:volunteer_id')
      //Accept user as volunteer for task
-     .post(userCtrl.verifyToken, volunteerCtrl.addVolunteerToTask)
+     .post(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.addVolunteerToTask)
      //Delete volunteer from task
-     .delete(userCtrl.verifyToken, volunteerCtrl.removeVolunteerFromTask);
+     .delete(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.removeVolunteerFromTask);
 
    router.route('/task/:task_id/volunteers/:volunteer_id/schedules')
      //Add schedule to volunteer
-     .post(userCtrl.verifyToken, volunteerCtrl.addSchedule);
+     .post(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.addSchedule);
 
    router.route('/task/volunteers/:volunteer_id/schedules/:schedule_id')
      //Edit schedule details
-     .put(userCtrl.verifyToken, volunteerCtrl.editSchedule)
+     .put(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.editSchedule)
      //Delete schedule
-     .delete(userCtrl.verifyToken, volunteerCtrl.deleteSchedule);
+     .delete(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.deleteSchedule);
 
    router.route('/event/:event_id/volunteers')
      //Get list of volunteers added to an event
@@ -48,6 +48,10 @@
    router.route('/task/:task_id/volunteers/pending')
      //Get all event volunteers that are yet to be added to a task
      .get(userCtrl.verifyToken, volunteerCtrl.getPendingVolunteers);
+
+   router.route('/event/:event_id/volunteers/pending')
+     //Get all event volunteers that are yet to be added
+     .get(userCtrl.verifyToken, volunteerCtrl.getAllPendingVolunteers);
 
    app.use('/api', router);
  }
