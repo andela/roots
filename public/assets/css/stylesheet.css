@@ -448,7 +448,7 @@ label {
   font-size: 0.8em;
 }
 .req {
-  color: red;  
+  color: red;
   margin-left: 5px;
 }
 
@@ -493,7 +493,7 @@ p {
 }
 
 #contentMainDiv {
- margin: auto; 
+ margin: auto;
  height: 500px;
  width: 100%;
  font-size: 20px;
@@ -724,7 +724,7 @@ label {
 
 .profile-icon {
   width: 50px;
-  height: 50px;  
+  height: 50px;
 }
 
 .autocomplete-custom-template li, .tasks li {
@@ -737,7 +737,7 @@ label {
   border-bottom-width: 0; }
 .autocomplete-custom-template .item-title, .autocomplete-custom-template .item-metadata {
   display: block;
-  line-height: 2; 
+  line-height: 2;
 }
 
 .taskbox {
@@ -778,7 +778,7 @@ table, th , td, tr {
       padding: 1em;
       text-align: center;
    }
-   
+
    table tr:nth-child(odd) {
       background-color: #f2f2f2;
    }
@@ -793,7 +793,6 @@ table, th , td, tr {
   border-color: #cccccc;
   border-radius: 0px 0px 5px 5px;
 }
-<<<<<<< HEAD
 
 #schedule-card {
   text-align: center;
