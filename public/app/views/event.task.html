@@ -13,9 +13,9 @@
             </div>
             <hr>
             <md-content flex layout-padding ng-show="isEventOwner()">
-              <md-tabs md-dynamic-height md-border-bottom>
+              <md-tabs md-dynamic-height md-border-bottom >
                 <md-tab label="Manage Tasks">
-                  <div class="taskbox" layout="row" layout-sm="column">
+                  <div class="taskbox" layout="row" layout-sm="column" style="padding-bottom: 15%;">
                     <div>
                       <br/>
                       <h4><strong>Manage Tasks</strong></h4>
@@ -59,9 +59,9 @@
                                 </ul>
                               </td>
                               <td>
-                                <md-button class="md-fab md-mini" title="Delete task" ng-click="deleteTask(task._id)">-</md-button>                        
+                                <md-button class="md-fab md-mini" title="Delete task" ng-click="deleteTask(task._id)">-</md-button>
                               </td>
-                               <td>                                
+                               <td>
                                 <md-button class="md-fab md-mini" ng-if="task.description && task.endDate &&task.startDate" title="Edit task" ng-click="editTask(task)">✔</md-button>
                               </td>
                             </tr>
@@ -125,7 +125,7 @@
                   </div>
                 </md-tab>
                 <md-tab label="Manage Volunteer details">
-                  <div class="taskbox">
+                  <div class="taskbox" style="padding-bottom: 15%;">
                     <h4><strong>MANAGE VOLUNTEER DETAILS</strong></h4>
                     <div flex class="tasks" style="width: 70em;">
                       <li flex layout="column" layout-padding ng-repeat="task in tasks">
