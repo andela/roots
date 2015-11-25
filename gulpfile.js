@@ -16,7 +16,7 @@ var paths = {
     './public/libs/angular-material/angular-material.min.css',
     './public/libs/summernote/dist/summernote.css',
     './public/libs/angularjs-color-picker/angularjs-color-picker.min.css',
-    './public/libs/angular-bootstrap-datetimepicker/src/css/datetimepicker.css,',
+    './public/libs/angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
     './public/assets/css/jquery-ui-css.css',
     './public/assets/css/materialize.css'
   ],
@@ -29,7 +29,6 @@ var paths = {
     './public/libs/moment/moment.js',
     './public/libs/bootstrap/dist/js/bootstrap.js',
     './public/libs/angular-ui-router/release/angular-ui-router.js',
-    './public/libs/venturocket-angular-slider/build/angular-slider.js',
     './public/libs/angular-touch/angular-touch.js',
     './public/libs/angular-bootstrap/ui-bootstrap-tpls.min.js',
     './public/libs/angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
