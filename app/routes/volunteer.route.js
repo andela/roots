@@ -21,13 +21,13 @@
 
    router.route('/task/:task_id/volunteers/:volunteer_id/schedules')
      //Add schedule to volunteer
-     .post(userCtrl.verifyToken, volunteerCtrl.addSchedule);
+     .post(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.addSchedule);
 
    router.route('/task/volunteers/:volunteer_id/schedules/:schedule_id')
      //Edit schedule details
-     .put(userCtrl.verifyToken, volunteerCtrl.editSchedule)
+     .put(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.editSchedule)
      //Delete schedule
-     .delete(userCtrl.verifyToken, volunteerCtrl.deleteSchedule);
+     .delete(userCtrl.verifyToken, userCtrl.checkUserRoles, volunteerCtrl.deleteSchedule);
 
    router.route('/event/:event_id/volunteers')
      //Get list of volunteers added to an event
