@@ -25,6 +25,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
   var volunteerName;
   var managerId;
   var managerEmail;
+  var volunteerEmail;
 
   //Check if user has already volunteered for same task
   Volunteer.findOne({
@@ -94,6 +95,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
                       } else {
 
                         volunteerName = user.firstname;
+                        volunteerEmail = user.email;
                         var volunteer = new Volunteer();
 
                         volunteer.event_ref = eventId;
@@ -114,7 +116,7 @@ VolunteerController.prototype.volunteerForTask = function(req, res) {
                               subject: volunteerName + ' volunteered for ' + eventName,
                               text: volunteerName + ' volunteered for ' + eventName,
                               html: 'Hello,<br/>' +
-                                '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b> .<br/> His skills are ' + skills + '. You can contact <b>' + volunteerName + '</b> at <b>' + managerEmail + '</b>.'
+                                '<b>' + volunteerName + '</b> volunteered for your event: <b>' + eventName + '</b> .<br/> His skills are ' + skills + '. You can contact <b>' + volunteerName + '</b> at <b>' + volunteerEmail + '</b>.'
 
                             };
                             utils.sendMail(mailOptions);
@@ -202,7 +204,9 @@ VolunteerController.prototype.addVolunteerToTask = function(req, res) {
                   });
                 } else {
 
-                  User.findById(task.manager_ref, function(err, user) {
+                  //Retrieve the details of the person adding the volunteer to task
+                  //which can either be event/task manager
+                  User.findById(req.decoded._id, function(err, user) {
 
                     if (err) {
                       return res.status(500).send(err);
@@ -425,7 +429,9 @@ VolunteerController.prototype.addSchedule = function(req, res) {
               });
             } else {
 
-              User.findById(task.manager_ref, function(err, user) {
+              //Retrieve the details of the person adding the volunteer to task
+              //which can either be event/task manager
+              User.findById(req.decoded._id, function(err, user) {
 
                 if (err) {
                   return res.status(500).send(err);
