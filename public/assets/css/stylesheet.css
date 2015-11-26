@@ -141,7 +141,40 @@ img.bg {
     left: 50%;
     margin-left: -512px;
   }
+
+  .more-events {
+    margin-left: 0em;
+  }
 }
+
+.plus-tooltip {
+  margin-top: -20px; 
+  margin-left: 14em; 
+  color: #ff9933;
+}
+
+#image-div {
+  height: 25em;
+}
+
+@media (max-width: 600px) {
+  .plus-tooltip {
+    margin-left: 295px;
+  }
+
+  #image-div {
+    width: 19em;
+  }
+
+  #more-events-banner {
+    height: 380px;
+  }
+
+  .more-events {
+    margin-left: 0 !important;
+  }
+}
+
 
 #display-name {
   font-size: 15px;
